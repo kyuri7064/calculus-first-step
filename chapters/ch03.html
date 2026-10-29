@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit1" data-chapter="03">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s03-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s03-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(x\)가 \(a\)가 <strong>아니면서</strong> \(a\)에 한없이 가까워질 때 \(f(x)\)가 \(L\)에 가까워지면 \(\lim_{x\to a}f(x)=L\)이에요.</li>
+          <li>왼쪽에서 다가가는 <strong>좌극한</strong>, 오른쪽에서 다가가는 <strong>우극한</strong>이 같아야 극한이 존재해요.</li>
+          <li>극한값은 함숫값 \(f(a)\)와 관계없어요. \(f(a)\)가 없거나 달라도 극한은 있을 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>If \(f(x)\) approaches \(L\) as \(x\) approaches \(a\) <strong>without equaling</strong> \(a\), then \(\lim_{x\to a}f(x)=L\).</li>
+          <li>The limit exists only when the <strong>left-hand</strong> and <strong>right-hand</strong> limits are equal.</li>
+          <li>The limit doesn't depend on \(f(a)\); it can exist even if \(f(a)\) is undefined or different.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">좌극한 · 우극한</span><span class="def-label" data-lang="en">One-sided limits</span>
+          $$\lim_{x\to a}f(x)=L\iff \lim_{x\to a-}f(x)=\lim_{x\to a+}f(x)=L$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 최대정수함수 \([x]\): \(\lim_{x\to1-}[x]=0\), \(\lim_{x\to1+}[x]=1\)이라 \(\lim_{x\to1}[x]\)는 존재하지 않아요. &nbsp; \(\lim_{x\to0}\frac1{x^2}=\infty\) (발산)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Greatest integer function \([x]\): \(\lim_{x\to1-}[x]=0\) but \(\lim_{x\to1+}[x]=1\), so \(\lim_{x\to1}[x]\) doesn't exist. &nbsp; \(\lim_{x\to0}\frac1{x^2}=\infty\) (diverges)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 왼쪽·오른쪽에서 a로 다가가기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="fl-pick">
+              <label><input type="radio" name="fl-pick" value="hole" checked><span><span data-lang="ko">구멍</span><span data-lang="en">Hole</span></span></label>
+              <label><input type="radio" name="fl-pick" value="jump"><span><span data-lang="ko">점프</span><span data-lang="en">Jump</span></span></label>
+              <label><input type="radio" name="fl-pick" value="diff"><span><span data-lang="ko">함숫값이 다름</span><span data-lang="en">Different value</span></span></label>
+              <label><input type="radio" name="fl-pick" value="inf"><span><span data-lang="ko">무한대</span><span data-lang="en">Infinity</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="fl-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="fl-canvas" role="img" data-i18n-attr="aria-label:fl.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="5" style="fill:var(--g-third)"/></svg>
+              <span data-lang="ko">◀ 왼쪽에서 다가가는 점 \(x=a-h\)</span><span data-lang="en">◀ approaching from the left, \(x=a-h\)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><rect x="13" y="1" width="10" height="10" style="fill:var(--g-accent)"/></svg>
+              <span data-lang="ko">▶ 오른쪽에서 다가가는 점 \(x=a+h\) (네모)</span><span data-lang="en">▶ approaching from the right, \(x=a+h\) (square)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4" style="fill:none;stroke:var(--g-main);stroke-width:2"/></svg>
+              <span data-lang="ko">○ 그래프에 없는 점 &nbsp;●실제 함숫값</span><span data-lang="en">○ point not on the graph &nbsp;● actual value</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th>\(f(a-h)\)</th><td id="fl-left">—</td></tr>
+            <tr><th>\(f(a+h)\)</th><td id="fl-right">—</td></tr>
+            <tr><th><span data-lang="ko">좌극한</span><span data-lang="en">Left-hand limit</span> \(\lim_{x\to a-}f(x)\)</th><td id="fl-ll">—</td></tr>
+            <tr><th><span data-lang="ko">우극한</span><span data-lang="en">Right-hand limit</span> \(\lim_{x\to a+}f(x)\)</th><td id="fl-rl">—</td></tr>
+            <tr><th><span data-lang="ko">함숫값</span><span data-lang="en">Value</span> \(f(a)\)</th><td id="fl-fa">—</td></tr>
+          </tbody></table>
+          <p class="verdict" id="fl-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="fl-h"><span data-lang="ko">\(a\)까지의 거리</span><span data-lang="en">Distance to \(a\)</span> \(h\)</label>
+              <input id="fl-h" type="range" min="0.01" max="1" step="0.01" value="0.8">
+              <output id="fl-h-out" for="fl-h">0.80</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="fl-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="fl-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" data-lang="ko">▶을 누르면 \(h\)가 줄어들며 두 점이 양쪽에서 \(a\)로 다가가요. 두 점의 높이가 <strong>같은 값</strong>으로 모이면 극한이 존재해요.</p>
+          <p class="note" style="margin:12px 2px 0" data-lang="en">Press ▶ and \(h\) shrinks, moving both points toward \(a\). If their heights gather at the <strong>same value</strong>, the limit exists.</p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\frac{|x|}{x}\)가 존재하는지 조사하시오.</p>
+            <p data-lang="en">Does \(\displaystyle\lim_{x\to0}\frac{|x|}{x}\) exist?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-03-1-a" hidden>
+              <p data-lang="ko">\(x>0\)이면 \(\frac{|x|}{x}=1\), \(x\lt0\)이면 \(\frac{|x|}{x}=-1\)이에요. 따라서 우극한은 1, 좌극한은 \(-1\)로 서로 달라서 극한은 존재하지 않아요.</p>
+              <p data-lang="en">For \(x>0\), \(\frac{|x|}{x}=1\); for \(x\lt0\), it is \(-1\). The right-hand limit 1 and left-hand limit \(-1\) differ, so the limit doesn't exist.</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=\begin{cases}x+1 & (x\lt1)\\ ax-1 & (x\ge1)\end{cases}\)에서 \(\displaystyle\lim_{x\to1}f(x)\)가 존재하도록 하는 상수 \(a\)의 값을 구하시오.</p>
+            <p data-lang="en">For \(f(x)=\begin{cases}x+1 & (x\lt1)\\ ax-1 & (x\ge1)\end{cases}\), find \(a\) so that \(\displaystyle\lim_{x\to1}f(x)\) exists.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-03-1-b" hidden>
+              <p data-lang="ko">좌극한은 \(\lim_{x\to1-}(x+1)=2\), 우극한은 \(\lim_{x\to1+}(ax-1)=a-1\)이에요. 두 값이 같아야 하므로 \(a-1=2\), 즉 \(a=3\).</p>
+              <p data-lang="en">Left-hand limit: \(\lim_{x\to1-}(x+1)=2\). Right-hand limit: \(\lim_{x\to1+}(ax-1)=a-1\). They must match, so \(a-1=2\), i.e. \(a=3\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\lim_{x\to a}f(x)\)는 \(f(a)\)를 계산하면 된다.</p>
+              <p data-lang="en">\(\displaystyle\lim_{x\to a}f(x)\) is just \(f(a)\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">극한은 \(x=a\) <strong>근처</strong>의 값으로 정해져요. 그림의 "함숫값이 다름"에서는 극한이 1인데 \(f(1)=3\)이고, "구멍"에서는 \(f(1)\)이 없는데도 극한이 2예요.</p>
+              <p data-lang="en">The limit depends on values <strong>near</strong> \(x=a\). In "Different value" the limit is 1 but \(f(1)=3\); in "Hole" \(f(1)\) doesn't exist, yet the limit is 2.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">극한이 존재하지 않으면 무한대로 발산하는 것이다.</p>
+              <p data-lang="en">If a limit doesn't exist, it must go to infinity.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">"점프"처럼 좌극한과 우극한이 서로 다른 유한한 값이어도 극한은 존재하지 않아요. ∞로 발산하는 것은 그중 한 경우일 뿐이에요.</p>
+              <p data-lang="en">As in "Jump", different finite one-sided limits also mean no limit. Diverging to ∞ is only one of the cases.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s03-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>두 함수가 <strong>각각 수렴할 때</strong> 합·차·곱·몫의 극한은 극한값끼리 계산해요.</li>
+          <li>\(\frac00\) 꼴은 <strong>인수분해</strong>나 <strong>유리화</strong>로 0이 되는 인수를 약분해요.</li>
+          <li>\(\frac{\infty}{\infty}\) 꼴은 최고차항으로 나누고, 어려우면 <strong>조임 정리</strong>를 써요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>When both functions <strong>converge</strong>, limits of sums, differences, products and quotients follow the limits.</li>
+          <li>For \(\frac00\), <strong>factor</strong> or <strong>rationalize</strong> and cancel the factor that becomes 0.</li>
+          <li>For \(\frac{\infty}{\infty}\), divide by the highest power; when stuck, use the <strong>squeeze theorem</strong>.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">계산 예</span><span class="def-label" data-lang="en">Worked examples</span>
+          $$\lim_{x\to2}\frac{x^2-4}{x-2}=\lim_{x\to2}(x+2)=4,\qquad \lim_{x\to0}\frac{\sqrt{x+1}-1}{x}=\lim_{x\to0}\frac{1}{\sqrt{x+1}+1}=\frac12$$
+          $$\lim_{x\to\infty}\frac{3x^2-x}{x^2+5}=3,\qquad -x^2\le x^2\sin\frac1x\le x^2\ \Rightarrow\ \lim_{x\to0}x^2\sin\frac1x=0$$
+          <p class="note" data-lang="ko">\(x\to2\)일 때 \(x\ne2\)이므로 \(x-2\)로 약분할 수 있어요.</p>
+          <p class="note" data-lang="en">As \(x\to2\), \(x\ne2\), so cancelling \(x-2\) is allowed.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 계산 요령 네 가지 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">계산 요령 고르기</span><span data-lang="en">Choose a technique</span></legend>
+            <div class="seg" id="fc-pick">
+              <label><input type="radio" name="fc-pick" value="fac" checked><span><span data-lang="ko">0/0 인수분해</span><span data-lang="en">0/0 factor</span></span></label>
+              <label><input type="radio" name="fc-pick" value="rat"><span><span data-lang="ko">0/0 유리화</span><span data-lang="en">0/0 rationalize</span></span></label>
+              <label><input type="radio" name="fc-pick" value="inf"><span>\(\frac{\infty}{\infty}\)</span></label>
+              <label><input type="radio" name="fc-pick" value="sq"><span><span data-lang="ko">조임 정리</span><span data-lang="en">Squeeze</span></span></label>
+            </div>
+          </fieldset>
+          <div class="def-box" style="margin-bottom:10px">
+            <p data-fc="fac">$$\lim_{x\to2}\frac{x^2-4}{x-2}=\lim_{x\to2}\frac{(x-2)(x+2)}{x-2}=\lim_{x\to2}(x+2)=4$$</p>
+            <p data-fc="rat" hidden>$$\lim_{x\to0}\frac{\sqrt{x+1}-1}{x}=\lim_{x\to0}\frac{(x+1)-1}{x(\sqrt{x+1}+1)}=\lim_{x\to0}\frac{1}{\sqrt{x+1}+1}=\frac12$$</p>
+            <p data-fc="inf" hidden>$$\lim_{x\to\infty}\frac{3x^2-x}{x^2+5}=\lim_{x\to\infty}\frac{3-\frac1x}{1+\frac5{x^2}}=\frac{3-0}{1+0}=3$$</p>
+            <p data-fc="sq" hidden>$$-x^2\le x^2\sin\frac1x\le x^2,\qquad \pm x^2\to0\ \Longrightarrow\ \lim_{x\to0}x^2\sin\frac1x=0$$</p>
+          </div>
+          <div class="viz-canvas-wrap">
+            <canvas id="fc-canvas" role="img" data-i18n-attr="aria-label:fc.canvas"></canvas>
+          </div>
+          <ul class="legend" id="fc-legend"></ul>
+          <table class="readout-table"><tbody id="fc-table"></tbody></table>
+          <p class="note" style="margin:6px 2px 0" id="fc-note"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="fc-h" id="fc-h-label"></label>
+              <input id="fc-h" type="range" min="0.01" max="1" step="0.01" value="0.6">
+              <output id="fc-h-out" for="fc-h">0.60</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="fc-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="fc-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to3}\frac{x^2-x-6}{x-3}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to3}\frac{x^2-x-6}{x-3}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-03-2-a" hidden>
+              <p data-lang="ko">\(\frac00\) 꼴이므로 분자를 인수분해해요. \(x\ne3\)이므로 \(x-3\)으로 약분할 수 있어요.</p>
+              <p data-lang="en">It's \(\frac00\), so factor the numerator; since \(x\ne3\) we may cancel \(x-3\).</p>
+              $$\lim_{x\to3}\frac{(x-3)(x+2)}{x-3}=\lim_{x\to3}(x+2)=5$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\frac{\sqrt{x+4}-2}{x}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to0}\frac{\sqrt{x+4}-2}{x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-03-2-b" hidden>
+              <p data-lang="ko">분자·분모에 \(\sqrt{x+4}+2\)를 곱해 분자를 유리화해요.</p>
+              <p data-lang="en">Multiply top and bottom by \(\sqrt{x+4}+2\):</p>
+              $$\lim_{x\to0}\frac{(x+4)-4}{x(\sqrt{x+4}+2)}=\lim_{x\to0}\frac{1}{\sqrt{x+4}+2}=\frac14$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(x=2\)를 대입하면 \(\frac00\)이니까 극한값은 0(또는 1)이다.</p>
+              <p data-lang="en">Plugging in \(x=2\) gives \(\frac00\), so the limit is 0 (or 1).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\frac00\)은 값이 정해지지 않은 꼴(부정형)이에요. 0이 되는 인수를 약분하는 등 꼴을 바꿔야 해요. 그림의 첫 번째 모드에서는 극한값이 4예요.</p>
+              <p data-lang="en">\(\frac00\) is an indeterminate form. Rewrite it, e.g. by cancelling the factor that becomes 0. In the first mode the limit is 4.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\frac{x^2-4}{x-2}\)와 \(x+2\)는 완전히 같은 함수다.</p>
+              <p data-lang="en">\(\frac{x^2-4}{x-2}\) and \(x+2\) are exactly the same function.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">왼쪽 함수는 \(x=2\)에서 정의되지 않아서 그래프에 구멍이 있어요. 두 함수는 \(x\ne2\)에서만 같아요. 그래도 극한은 \(x=2\) <strong>근처</strong>만 보므로 극한값은 같아요.</p>
+              <p data-lang="en">The left one is undefined at \(x=2\), so its graph has a hole; they agree only for \(x\ne2\). The limit only looks <strong>near</strong> 2, so the limits agree.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- ③ 함수의 극한의 엄밀한 정의 -->
+    <section id="s03-3">
+      <div class="concept-body">
+
+        <div class="concept-core">
+          <p class="prereq">
+            <strong data-i18n="prereq"></strong>
+            <a href="#s03-1"><span data-lang="ko">03-① 함수의 수렴과 발산</span><span data-lang="en">03-① Limits of functions</span></a>
+            <a href="ch01.html#s01-4"><span data-lang="ko">01-④ 수열의 극한의 엄밀한 정의</span><span data-lang="en">01-④ Rigorous limit of a sequence</span></a>
+          </p>
+
+          <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+          <ol class="core-summary" data-lang="ko">
+            <li>"한없이 가까워진다"는 말만으로는 <strong>얼마나</strong> 가까워지는지 알 수 없어요.</li>
+            <li>그래서 허용 오차 \(\varepsilon\)을 <strong>먼저</strong> 주고, 그에 맞는 \(\delta\)를 <strong>찾을 수 있는지</strong> 따져요.</li>
+            <li><strong>모든</strong> 양수 \(\varepsilon\)에 대해 \(\delta\)를 찾을 수 있으면 \(\displaystyle\lim_{x\to a}f(x)=L\)이에요.</li>
+          </ol>
+          <ol class="core-summary" data-lang="en">
+            <li>"Gets arbitrarily close" alone does not say <strong>how</strong> close.</li>
+            <li>So a tolerance \(\varepsilon\) is given <strong>first</strong>, and we ask whether a matching \(\delta\) <strong>can be found</strong>.</li>
+            <li>If a \(\delta\) exists for <strong>every</strong> positive \(\varepsilon\), then \(\displaystyle\lim_{x\to a}f(x)=L\).</li>
+          </ol>
+
+          <p class="note" data-lang="ko"><strong>왜 필요할까?</strong> \(x\to0\)일 때 \(f(x)=x^2+1\)과 \(0.5\) 사이의 거리 \(x^2+0.5\)는 계속 줄어들지만 \(0.5\)보다 작아지지는 않아요. "거리가 줄어든다"만으로는 극한을 말할 수 없다는 뜻이에요. (실제 극한은 1이에요.)</p>
+          <p class="note" data-lang="en"><strong>Why do we need this?</strong> As \(x\to0\), the distance \(x^2+0.5\) between \(f(x)=x^2+1\) and \(0.5\) keeps shrinking, yet never drops below \(0.5\). "The distance shrinks" is not enough to define a limit. (The real limit is 1.)</p>
+
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">함수의 극한의 엄밀한 정의 <span class="en">(ε-δ definition)</span></span>
+            <span class="def-label" data-lang="en">Rigorous definition of a limit <span class="en">(ε-δ 논법)</span></span>
+            <p data-lang="ko">임의의 양수 \(\htmlClass{k-eps}{\varepsilon}\)에 대하여 양수 \(\htmlClass{k-delta}{\delta}\)가 존재하여, \(0<|x-a|<\htmlClass{k-delta}{\delta}\)인 임의의 \(x\)에 대하여 \(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\)이 성립하면 "\(x\to a\)일 때 \(f(x)\)가 \(L\)에 수렴한다"고 해요.</p>
+            <p data-lang="en">If for every positive \(\htmlClass{k-eps}{\varepsilon}\) there is a positive \(\htmlClass{k-delta}{\delta}\) such that \(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\) for every \(x\) with \(0<|x-a|<\htmlClass{k-delta}{\delta}\), we say "\(f(x)\) converges to \(L\) as \(x\to a\)".</p>
+            $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-delta}{\delta}>0\;\;\forall x\;\big(\,0<|x-a|<\htmlClass{k-delta}{\delta}\;\rightarrow\;|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\,\big)$$
+          </div>
+
+          <table class="phrase-table">
+            <caption class="sr-only"><span data-lang="ko">기호와 뜻 짝짓기</span><span data-lang="en">Symbols and their meanings</span></caption>
+            <tbody>
+              <tr><th>\(\forall\,\htmlClass{k-eps}{\varepsilon}>0\)</th>
+                <td><span data-lang="ko">어떤 양수 <span class="k-eps">ε</span>을 주더라도 (허용 오차를 아무리 작게 정해도)</span><span data-lang="en">no matter which positive <span class="k-eps">ε</span> is given (however tiny the tolerance)</span></td></tr>
+              <tr><th>\(\exists\,\htmlClass{k-delta}{\delta}>0\)</th>
+                <td><span data-lang="ko">그에 맞는 양수 <span class="k-delta">δ</span>를 찾을 수 있어서</span><span data-lang="en">we can find a matching positive <span class="k-delta">δ</span> so that</span></td></tr>
+              <tr><th>\(0<|x-a|<\htmlClass{k-delta}{\delta}\)</th>
+                <td><span data-lang="ko">\(x\)가 \(a\)가 <strong>아니면서</strong> \(a\)와의 거리가 <span class="k-delta">δ</span>보다 작으면</span><span data-lang="en">whenever \(x\) is <strong>not</strong> \(a\) but within <span class="k-delta">δ</span> of \(a\)</span></td></tr>
+              <tr><th>\(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\)</th>
+                <td><span data-lang="ko">\(f(x)\)와 \(L\)의 거리는 <span class="k-eps">ε</span>보다 작다</span><span data-lang="en">the distance from \(f(x)\) to \(L\) is less than <span class="k-eps">ε</span></span></td></tr>
+            </tbody>
+          </table>
+          <p class="read-aloud" data-lang="ko"><span aria-hidden="true">🔊</span> <strong>읽는 법:</strong> \(\varepsilon\)은 "엡실론", \(\delta\)는 "델타", \(\forall\)은 "모든(임의의)", \(\exists\)는 "존재한다". <span class="k-eps">ε는 주황색 실선 밑줄</span>, <span class="k-delta">δ는 <span data-color-name="third"></span> 점선 밑줄</span>로 표시했어요.</p>
+          <p class="read-aloud" data-lang="en"><span aria-hidden="true">🔊</span> <strong>Read as:</strong> \(\varepsilon\) "epsilon", \(\delta\) "delta", \(\forall\) "for all", \(\exists\) "there exists". <span class="k-eps">ε is orange with a solid underline</span>; <span class="k-delta">δ is <span data-color-name="third"></span> with a dashed underline</span>.</p>
+        </div>
+
+        <div class="concept-viz">
+          <div class="viz-panel">
+            <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+            <div class="viz-canvas-wrap">
+              <canvas id="l-canvas" role="img" data-i18n-attr="aria-label:l.canvas"></canvas>
+            </div>
+            <ul class="legend">
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+                <span data-lang="ko">\(y=f(x)\), 점 \((1,3)\)은 비어 있음 ○</span><span data-lang="en">\(y=f(x)\), point \((1,3)\) is missing ○</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="lg-h" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H5" style="stroke:var(--g-accent);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#lg-h);stroke:var(--g-accent);stroke-width:1.5"/></svg>
+                <span data-lang="ko">ε-띠 \(L\pm\varepsilon\) (가로 빗금)</span><span data-lang="en">ε-band \(L\pm\varepsilon\) (horizontal hatch)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="lg-v" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M2.5 0V5" style="stroke:var(--g-third);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#lg-v);stroke:var(--g-third);stroke-width:1.5"/></svg>
+                <span data-lang="ko">δ-띠 \(a\pm\delta\) (세로 빗금)</span><span data-lang="en">δ-band \(a\pm\delta\) (vertical hatch)</span></li>
+            </ul>
+
+            <table class="readout-table">
+              <tbody>
+                <tr><th><span data-lang="ko">허용 오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</th><td id="l-eps">—</td></tr>
+                <tr><th><span data-lang="ko">왼쪽으로 갈 수 있는 거리</span><span data-lang="en">Room on the left</span> \(\delta_1\)</th><td id="l-d1">—</td></tr>
+                <tr><th><span data-lang="ko">오른쪽으로 갈 수 있는 거리</span><span data-lang="en">Room on the right</span> \(\delta_2\)</th><td id="l-d2">—</td></tr>
+                <tr class="hl"><th><span data-lang="ko">찾은 δ (더 좁은 쪽)</span><span data-lang="en">δ found (narrower side)</span></th><td id="l-delta">—</td></tr>
+              </tbody>
+            </table>
+
+            <div class="controls">
+              <div class="slider-row">
+                <label for="l-e"><span data-lang="ko">허용 오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</label>
+                <input id="l-e" type="range" min="0.1" max="1.5" step="0.01" value="1">
+                <output id="l-e-out" for="l-e">1.00</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="l-play" type="button" aria-pressed="false">
+                  <span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span>
+                </button>
+              </div>
+            </div>
+            <p class="sr-only" id="l-live" aria-live="polite"></p>
+            <p class="note" style="margin:12px 2px 0" data-lang="ko">그림의 함수는 \(f(x)=\dfrac{x^3-1}{x-1}\)이에요. \(x=1\)에서는 정의되지 않지만(빈 점 ○), \(x\ne1\)이면 \(f(x)=x^2+x+1\)이라서 \(\displaystyle\lim_{x\to1}f(x)=3\)이에요. \(\varepsilon\)을 줄여도 언제나 \(\delta\)를 찾을 수 있어요. 곡선이 오른쪽에서 더 가파르기 때문에 \(\delta_2\)가 더 좁고, 그래서 \(\delta=\delta_2\)가 돼요.</p>
+            <p class="note" style="margin:12px 2px 0" data-lang="en">Here \(f(x)=\dfrac{x^3-1}{x-1}\). It is undefined at \(x=1\) (open dot ○), but for \(x\ne1\), \(f(x)=x^2+x+1\), so \(\displaystyle\lim_{x\to1}f(x)=3\). However small \(\varepsilon\) gets, a \(\delta\) can be found. The curve is steeper on the right, so \(\delta_2\) is narrower and \(\delta=\delta_2\).</p>
+          </div>
+        </div>
+
+        <div class="concept-more">
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+              <p data-lang="ko">엄밀한 정의를 이용하여 \(\displaystyle\lim_{x\to2}(3x-1)=5\)임을 증명하시오.</p>
+              <p data-lang="en">Prove \(\displaystyle\lim_{x\to2}(3x-1)=5\) using the rigorous definition.</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-3-a"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-03-3-a" hidden>
+                <p data-lang="ko">양수 \(\varepsilon\)이 임의로 주어졌다고 하자. \(\delta=\dfrac{\varepsilon}{3}\)이라 하면, \(0<|x-2|<\delta\)인 임의의 \(x\)에 대하여</p>
+                <p data-lang="en">Let any \(\varepsilon>0\) be given. Choose \(\delta=\dfrac{\varepsilon}{3}\). Then for every \(x\) with \(0<|x-2|<\delta\),</p>
+                $$|(3x-1)-5|=3|x-2|<3\delta=\varepsilon$$
+                <p data-lang="ko">따라서 \(\displaystyle\lim_{x\to2}(3x-1)=5\). <strong>요령:</strong> \(|f(x)-L|\)을 \(|x-a|\)로 나타내 보면 \(\delta\)를 어떻게 잡을지 보여요.</p>
+                <p data-lang="en">Hence \(\displaystyle\lim_{x\to2}(3x-1)=5\). <strong>Tip:</strong> rewrite \(|f(x)-L|\) in terms of \(|x-a|\) to see how to choose \(\delta\).</p>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+              <p data-lang="ko">엄밀한 정의를 이용하여 \(\displaystyle\lim_{x\to1}x^2=1\)임을 증명하시오.</p>
+              <p data-lang="en">Prove \(\displaystyle\lim_{x\to1}x^2=1\) using the rigorous definition.</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-03-3-b"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-03-3-b" hidden>
+                <p data-lang="ko">\(|x^2-1|=|x-1|\,|x+1|\)에서 \(|x-1|\)은 \(\delta\)로 작게 만들 수 있지만 \(|x+1|\)은 그렇지 않으므로, 먼저 \(|x+1|\)의 크기를 제한해요. \(|x-1|<1\)이면 \(0<x<2\)이므로 \(|x+1|<3\)이에요.</p>
+                <p data-lang="en">In \(|x^2-1|=|x-1|\,|x+1|\), \(\delta\) controls \(|x-1|\) but not \(|x+1|\), so bound \(|x+1|\) first. If \(|x-1|<1\), then \(0<x<2\), so \(|x+1|<3\).</p>
+                <p data-lang="ko">양수 \(\varepsilon\)이 임의로 주어졌다고 하자. \(\delta=\min\!\left(1,\dfrac{\varepsilon}{3}\right)\)이라 하면, \(0<|x-1|<\delta\)인 임의의 \(x\)에 대하여</p>
+                <p data-lang="en">Let any \(\varepsilon>0\) be given and choose \(\delta=\min\!\left(1,\dfrac{\varepsilon}{3}\right)\). For every \(x\) with \(0<|x-1|<\delta\),</p>
+                $$|x^2-1|=|x-1|\,|x+1|<\delta\cdot3\le\frac{\varepsilon}{3}\cdot3=\varepsilon$$
+                <p data-lang="ko">따라서 \(\displaystyle\lim_{x\to1}x^2=1\).</p>
+                <p data-lang="en">Hence \(\displaystyle\lim_{x\to1}x^2=1\).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(\delta\)를 먼저 정해 놓고, 그에 맞는 \(\varepsilon\)을 고른다.</p>
+                <p data-lang="en">Pick \(\delta\) first, then choose a matching \(\varepsilon\).</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">순서가 반대예요. \(\varepsilon\)이 <strong>먼저</strong> 주어지고(도전), \(\delta\)는 그 \(\varepsilon\)에 맞춰 <strong>찾는</strong> 값이에요(응답). 그래서 \(\delta\)는 보통 \(\varepsilon\)의 식으로 써요.</p>
+                <p data-lang="en">The order is reversed. \(\varepsilon\) is given <strong>first</strong> (the challenge), and \(\delta\) is <strong>found</strong> for that \(\varepsilon\) (the answer). That is why \(\delta\) is usually written in terms of \(\varepsilon\).</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(x=a\)일 때의 값 \(f(a)\)도 \(|f(a)-L|<\varepsilon\)을 만족해야 한다.</p>
+                <p data-lang="en">The value \(f(a)\) must also satisfy \(|f(a)-L|<\varepsilon\).</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">\(0<|x-a|\) 조건 때문에 \(x=a\)는 빼고 생각해요. 그림처럼 \(f(a)\)가 정의되지 않거나 \(L\)과 달라도 극한은 존재할 수 있어요.</p>
+                <p data-lang="en">Because of \(0<|x-a|\), \(x=a\) itself is left out. As in the picture, the limit can exist even if \(f(a)\) is undefined or different from \(L\).</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(\varepsilon=0.1\) 하나에 대해 \(\delta\)를 찾았으니 증명이 끝났다.</p>
+                <p data-lang="en">I found a \(\delta\) for \(\varepsilon=0.1\), so the proof is done.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko"><strong>모든</strong> 양수 \(\varepsilon\)에 대해 찾아야 해요. 슬라이더로 \(\varepsilon\)을 아무리 줄여도 δ-띠가 생기는 것을 확인해 보세요.</p>
+                <p data-lang="en">It must work for <strong>every</strong> positive \(\varepsilon\). Shrink \(\varepsilon\) with the slider and check that a δ-band always appears.</p></div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">🌏</span><span data-i18n="usageTitle"></span></h3>
+            <ul class="usage-list" data-lang="ko">
+              <li><strong>연속과 미분:</strong> 연속의 엄밀한 정의, 미분계수의 극한, 정적분의 극한은 모두 이 정의 위에 서 있어요.</li>
+              <li><strong>공학의 허용 오차:</strong> "결과의 오차를 ε 안으로 맞추려면 입력을 얼마나 정확히(δ) 맞춰야 할까?"라는 질문과 같은 구조예요.</li>
+              <li><strong>컴퓨터 계산:</strong> 원하는 정확도에 도달하려면 얼마나 잘게 계산해야 하는지 판단할 때 쓰여요.</li>
+            </ul>
+            <ul class="usage-list" data-lang="en">
+              <li><strong>Continuity and derivatives:</strong> rigorous continuity, the derivative limit and the integral limit all rest on this definition.</li>
+              <li><strong>Engineering tolerance:</strong> "How precisely (δ) must the input be set to keep the output error within ε?" has exactly this structure.</li>
+              <li><strong>Computing:</strong> deciding how fine a calculation must be to reach a desired accuracy.</li>
+            </ul>
+            <div class="link-row">
+              <a class="btn btn-outline btn-sm" href="ch04.html#s04-4"><span data-lang="ko">04-④ 연속성의 엄밀한 정의</span><span data-lang="en">04-④ Rigorous continuity</span></a>
+              <a class="btn btn-outline btn-sm" href="ch05.html#s05-1"><span data-lang="ko">05-① 미분계수</span><span data-lang="en">05-① The derivative</span></a>
+            </div>
+          </div>
+
+          <div class="rigor-cta">
+            <p data-lang="ko">🔍 극한이 <strong>없는</strong> 함수(점프 불연속)에서는 왜 δ를 찾을 수 없을까? 놀이터에서 직접 확인해 보세요.</p>
+            <p data-lang="en">🔍 Why can't a \(\delta\) be found when the limit <strong>doesn't</strong> exist (a jump)? Try it in the playground.</p>
+            <a class="btn btn-outline btn-sm" href="../rigor.html#func-limit" data-i18n="rigorCta"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 03-③ ε-δ: ε-띠에 맞는 δ-띠 찾기.  f(x) = (x³−1)/(x−1), a = 1, L = 3 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var f = function (x) { return x * x + x + 1; };     // x ≠ 1 에서의 식
+  var A = 1, L = 3;
+  var E = $('l-e');
+
+  /* f(x) = 3 ± ε 이 되는 x (x > −1/2 쪽 근) */
+  function xAt(y) { return (-1 + Math.sqrt(4 * y - 3)) / 2; }
+  function deltas(e) {
+    var d1 = A - xAt(L - e), d2 = xAt(L + e) - A;   // ε < 2.25 범위에서 성립
+    return { d1: d1, d2: d2, d: Math.min(d1, d2) };
+  }
+
+  var g = Graph.create($('l-canvas'), { xMin: -0.25, xMax: 1.95, yMin: 0.6, yMax: 5.4, aspect: 0.85, maxHeight: 380 });
+  g.render = function () {
+    var e = +E.value, c = g.c, D = deltas(e);
+    g.clear(); g.grid(); g.axes();
+    // ε-띠 (가로 빗금)
+    g.band('y', L - e, L + e, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent, stroke: c.accent });
+    // δ-띠 (세로 빗금)
+    g.band('x', A - D.d, A + D.d, { fill: c.fillThird, hatch: 'v', hatchColor: c.third, stroke: c.third });
+    // 곡선이 ε-띠를 벗어나는 경계 (δ₁, δ₂의 끝)
+    g.line(xAt(L - e), g.o.yMin, xAt(L - e), L - e, { color: c.text2, width: 1.2, dash: [2, 4] });
+    g.line(xAt(L + e), g.o.yMin, xAt(L + e), L + e, { color: c.text2, width: 1.2, dash: [2, 4] });
+
+    g.plot(f, { color: c.main, width: 3 });
+    // δ-띠 안의 곡선은 굵게: 모두 ε-띠 안에 들어간다
+    g.plot(f, { color: c.main, width: 6.5, from: A - D.d, to: A + D.d });
+    g.point(A, L, { filled: false, color: c.main, r: 6.5 });
+
+    g.label(g.o.xMin, L + e, 'L + ε', { color: c.accent, align: 'left', dx: 6, dy: -12, bold: true });
+    g.label(g.o.xMin, L - e, 'L − ε', { color: c.accent, align: 'left', dx: 6, dy: 12, bold: true });
+    g.label(g.o.xMin, L, 'L = 3', { color: c.text, align: 'left', dx: 6, bold: true });
+    g.label(A - D.d, g.o.yMax, 'a − δ', { color: c.third, align: 'right', dx: -4, dy: 14, bold: true });
+    g.label(A + D.d, g.o.yMax, 'a + δ', { color: c.third, align: 'left', dx: 4, dy: 14, bold: true });
+    g.label(A, L, ko() ? '(1, 3) 비어 있음' : '(1, 3) missing', { color: c.text2, align: 'left', dx: 12, dy: 16 });
+    g.label(0.05, f(0.05), 'y = f(x)', { color: c.main, align: 'left', dx: 14, dy: 12, bold: true });
+  };
+
+  function update() {
+    var e = +E.value, D = deltas(e);
+    $('l-eps').textContent = fmt(e);
+    $('l-d1').textContent = fmt(D.d1, 3);
+    $('l-d2').textContent = fmt(D.d2, 3);
+    $('l-delta').textContent = fmt(D.d, 3);
+    g.draw();
+  }
+  Graph.bindSlider(E, $('l-e-out'), { format: function (v) { return fmt(v); }, onInput: update });
+  E.addEventListener('change', function () {
+    var e = +E.value, d = deltas(e).d;
+    $('l-live').textContent = ko()
+      ? 'ε가 ' + fmt(e) + '일 때 δ를 ' + fmt(d, 3) + '로 잡으면, 0 < |x − 1| < δ인 모든 x에서 f(x)가 3 ± ε 안에 있습니다.'
+      : 'For ε = ' + fmt(e) + ', taking δ = ' + fmt(d, 3) + ' keeps f(x) within 3 ± ε for all x with 0 < |x − 1| < δ.';
+  });
+  // ▶ ε을 점점 줄이기
+  Graph.player({ button: $('l-play'), input: E, duration: 7000, reverse: true });
+  document.addEventListener('settingschange', function () { g.draw(); });
+});
+
+/* 03-② 함수의 극한값 계산: 인수분해, 유리화, ∞/∞, 조임 정리 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var H = $('fc-h');
+
+  var M = {
+    fac: { f: function (x) { return (x * x - 4) / (x - 2); }, g: function (x) { return x + 2; }, a: 2, L: 4, Ltext: '4',
+           view: { xMin: -0.3, xMax: 4.2, yMin: -0.5, yMax: 6.6 },
+           leg: { ko: [['main', '(x² − 4)/(x − 2) (실선, (2, 4)에 구멍 ○)'], ['third', '약분한 x + 2 (점선)']], en: [['main', '(x² − 4)/(x − 2) (solid, hole ○ at (2, 4))'], ['third', 'cancelled form x + 2 (dotted)']] },
+           note: { ko: '두 그래프가 완전히 겹치고 \\((2,4)\\)의 구멍 하나만 달라요. 극한은 구멍이 아니라 그 <strong>근처</strong>를 보니까 4예요.', en: 'The two graphs coincide except for the hole at \\((2,4)\\). The limit looks <strong>near</strong> the hole, so it is 4.' } },
+    rat: { f: function (x) { return (Math.sqrt(x + 1) - 1) / x; }, g: function (x) { return 1 / (Math.sqrt(x + 1) + 1); }, a: 0, L: 0.5, Ltext: '½',
+           view: { xMin: -0.95, xMax: 2.2, yMin: -0.05, yMax: 1.1 },
+           leg: { ko: [['main', '(√(x+1) − 1)/x (실선, (0, ½)에 구멍 ○)'], ['third', '유리화한 1/(√(x+1) + 1) (점선)']], en: [['main', '(√(x+1) − 1)/x (solid, hole ○ at (0, ½))'], ['third', 'rationalized 1/(√(x+1) + 1) (dotted)']] },
+           note: { ko: '유리화하면 0이 되는 인수 \\(x\\)가 약분되어, \\(x=0\\)을 넣을 수 있는 식 \\(\\frac{1}{\\sqrt{x+1}+1}\\)이 돼요.', en: 'Rationalizing cancels the factor \\(x\\), leaving \\(\\frac{1}{\\sqrt{x+1}+1}\\), which you can evaluate at \\(x=0\\).' } },
+    inf: { f: function (x) { return (3 * x * x - x) / (x * x + 5); }, a: null, L: 3, Ltext: '3',
+           view: { xMin: -4, xMax: 106, yMin: -0.3, yMax: 3.7 },
+           leg: { ko: [['main', '(3x² − x)/(x² + 5) (실선)'], ['accent', '수평 점선 y = 3 (긴 점선)']], en: [['main', '(3x² − x)/(x² + 5) (solid)'], ['accent', 'horizontal line y = 3 (long dashes)']] },
+           note: { ko: '\\(x\\)가 커지면 \\(\\frac1x\\)과 \\(\\frac5{x^2}\\)이 0으로 사라져 \\(\\frac31=3\\)만 남아요. 그래서 그래프가 \\(y=3\\)에 붙어 가요.', en: 'As \\(x\\) grows, \\(\\frac1x\\) and \\(\\frac5{x^2}\\) vanish, leaving \\(\\frac31=3\\), so the graph hugs \\(y=3\\).' } },
+    sq:  { f: function (x) { return x * x * Math.sin(1 / x); }, a: 0, L: 0, Ltext: '0',
+           view: { xMin: -1.05, xMax: 1.05, yMin: -1.1, yMax: 1.1 },
+           leg: { ko: [['main', 'x² sin(1/x) (실선)'], ['third', '위아래 경계 ±x² (점선)']], en: [['main', 'x² sin(1/x) (solid)'], ['third', 'bounds ±x² (dotted)']] },
+           note: { ko: '\\(\\sin\\frac1x\\)은 0 근처에서 점점 빠르게 흔들리지만, 언제나 \\(\\pm x^2\\) 사이에 갇혀 있어요. 경계가 0으로 좁아지니 가운데도 0으로 조여져요.', en: '\\(\\sin\\frac1x\\) wiggles faster near 0, yet it is always trapped between \\(\\pm x^2\\). The bounds close to 0, so the middle is squeezed to 0.' } }
+  };
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>' };
+  var mode = document.querySelector('input[name="fc-pick"]:checked').value;
+  var g = Graph.create($('fc-canvas'), { xMin: 0, xMax: 4, yMin: 0, yMax: 6, aspect: 0.8, maxHeight: 340 });
+
+  g.render = function () {
+    var m = M[mode], h = +H.value, c = g.c;
+    g.setView(m.view);
+    g.clear(); g.grid(); g.axes();
+    if (mode === 'inf') {
+      g.hline(3, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMax, 3, 'y = 3', { color: c.accent, align: 'right', dx: -6, dy: -14, bold: true });
+      g.plot(m.f, { color: c.main, width: 3.5, from: 0, to: 106 });
+      var x = 1 / h;
+      g.point(x, m.f(x), { color: c.accent, r: 7, label: 'x = ' + fmt(x, 1), labelStyle: { bold: true, dy: 18 } });
+      return;
+    }
+    if (mode === 'sq') {
+      g.plot(function (t) { return t * t; }, { color: c.third, width: 2, dash: [2, 4] });
+      g.plot(function (t) { return -t * t; }, { color: c.third, width: 2, dash: [2, 4] });
+      g.plot(m.f, { color: c.main, width: 2.5, samples: 3000 });
+    } else {
+      g.plot(m.g, { color: c.third, width: 6, dash: [2, 6] });
+      g.plot(m.f, { color: c.main, width: 3, from: m.view.xMin, to: m.a - 1e-6 });
+      g.plot(m.f, { color: c.main, width: 3, from: m.a + 1e-6, to: m.view.xMax });
+      g.point(m.a, m.L, { color: c.main, filled: false, r: 6.5 });
+    }
+    var xl = m.a - h, xr = m.a + h;
+    g.point(xl, m.f(xl), { color: c.third, r: 6 });
+    g.point(xr, m.f(xr), { color: c.accent, r: 6 });
+    g.label(m.a, m.L, (ko() ? '극한값 ' : 'limit ') + m.Ltext, { color: c.text, align: 'left', dx: 12, dy: -16, bold: true });
+  };
+
+  function rows() {
+    var m = M[mode], h = +H.value;
+    if (mode === 'inf') { var x = 1 / h; return [['x = 1/h', fmt(x, 2)], ['f(x)', fmt(m.f(x), 5)], ['|f(x) − 3|', fmt(Math.abs(m.f(x) - 3), 5)]]; }
+    return [['f(' + (m.a === 0 ? '−h' : 'a − h') + ')', fmt(m.f(m.a - h), 5)], ['f(' + (m.a === 0 ? 'h' : 'a + h') + ')', fmt(m.f(m.a + h), 5)],
+            [ko() ? '극한값' : 'limit', m.Ltext]];
+  }
+  function update() {
+    $('fc-table').innerHTML = rows().map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    g.draw();
+  }
+  function setMode(k) {
+    mode = k;
+    var m = M[k], L = Site.lang();
+    document.querySelectorAll('[data-fc]').forEach(function (p) { p.hidden = p.getAttribute('data-fc') !== k; });
+    $('fc-legend').innerHTML = m.leg[L].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('fc-h-label').innerHTML = k === 'inf' ? (L === 'ko' ? '\\(h\\) (\\(x=\\frac1h\\), 줄일수록 \\(x\\)가 커져요)' : '\\(h\\) (\\(x=\\frac1h\\); smaller \\(h\\), larger \\(x\\))')
+                                           : (L === 'ko' ? '\\(a\\)까지의 거리 \\(h\\)' : 'distance to \\(a\\), \\(h\\)');
+    $('fc-note').innerHTML = m.note[L];
+    if (window.renderMathInElement) [$('fc-h-label'), $('fc-note')].forEach(function (el) {
+      renderMathInElement(el, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    });
+    update();
+  }
+
+  Graph.bindSlider(H, $('fc-h-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('fc-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  H.addEventListener('change', function () { $('fc-live').textContent = rows().map(function (r) { return r[0] + ' ' + r[1]; }).join(', '); });
+  Graph.player({ button: $('fc-play'), input: H, duration: 7000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+
+/* 03-① 함수의 수렴과 발산: 왼쪽·오른쪽에서 다가가기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var H = $('fl-h');
+  var V1 = { xMin: -0.5, xMax: 2.5, yMin: -0.6, yMax: 4.3 };
+
+  // left/right: 한쪽 식, LL/RL: 한쪽 극한(문자열은 ∞), fa: 함숫값(null = 정의 안 됨)
+  var FN = {
+    hole: { a: 1, left: function (x) { return x + 1; }, right: function (x) { return x + 1; }, LL: 2, RL: 2, fa: null, view: V1,
+            def: { ko: '\\(f(x)=\\dfrac{x^2-1}{x-1}\\) (\\(x=1\\)에서 정의되지 않음)', en: '\\(f(x)=\\dfrac{x^2-1}{x-1}\\) (undefined at \\(x=1\\))' } },
+    jump: { a: 1, left: function (x) { return x; }, right: function (x) { return x + 1; }, LL: 1, RL: 2, fa: 2, view: V1,
+            def: { ko: '\\(f(x)=x\\ (x\\lt1),\\quad f(x)=x+1\\ (x\\ge1)\\)', en: '\\(f(x)=x\\ (x\\lt1),\\quad f(x)=x+1\\ (x\\ge1)\\)' } },
+    diff: { a: 1, left: function (x) { return x * x; }, right: function (x) { return x * x; }, LL: 1, RL: 1, fa: 3, view: V1,
+            def: { ko: '\\(f(x)=x^2\\ (x\\ne1),\\quad f(1)=3\\)', en: '\\(f(x)=x^2\\ (x\\ne1),\\quad f(1)=3\\)' } },
+    inf:  { a: 0, left: function (x) { return 1 / (x * x); }, right: function (x) { return 1 / (x * x); }, LL: '∞', RL: '∞', fa: null,
+            view: { xMin: -1.6, xMax: 1.6, yMin: -0.8, yMax: 12 },
+            def: { ko: '\\(f(x)=\\dfrac{1}{x^2}\\) (\\(x=0\\)에서 정의되지 않음)', en: '\\(f(x)=\\dfrac{1}{x^2}\\) (undefined at \\(x=0\\))' } }
+  };
+  var F = FN[document.querySelector('input[name="fl-pick"]:checked').value];
+  var g = Graph.create($('fl-canvas'), Object.assign({ aspect: 0.8, maxHeight: 350 }, V1));
+
+  g.render = function () {
+    g.setView(F.view);
+    var h = +H.value, c = g.c, a = F.a, o = g.o, yTop = o.yMax;
+    g.clear(); g.grid(); g.axes();
+    g.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+    g.label(a, 0, 'a = ' + a, { color: c.text2, dy: 28, bold: true });
+    // 곡선 (a 에서 끊어서 두 조각)
+    g.plot(F.left, { color: c.main, width: 3.5, from: F.view.xMin, to: a - 1e-6 });
+    g.plot(F.right, { color: c.main, width: 3.5, from: a + 1e-6, to: F.view.xMax });
+    // 구멍과 실제 함숫값
+    if (typeof F.LL === 'number') g.point(a, F.LL, { color: c.main, filled: false, r: 6 });
+    if (typeof F.RL === 'number' && F.RL !== F.LL) g.point(a, F.RL, { color: c.main, filled: false, r: 6 });
+    if (F.fa !== null) g.point(a, F.fa, { color: c.main, r: 6, label: 'f(' + a + ') = ' + F.fa, labelStyle: { bold: true, dx: 12 } });
+    // 다가가는 두 점
+    var xl = a - h, xr = a + h, yl = F.left(xl), yr = F.right(xr);
+    var cl = Math.min(yl, yTop * 0.98), cr = Math.min(yr, yTop * 0.98);
+    g.line(xl, 0, xl, cl, { color: c.third, width: 1.2, dash: [2, 4] });
+    g.line(xr, 0, xr, cr, { color: c.accent, width: 1.2, dash: [2, 4] });
+    g.line(o.xMin, cl, xl, cl, { color: c.third, width: 1.2, dash: [2, 4] });
+    g.line(xr, cr, o.xMax, cr, { color: c.accent, width: 1.2, dash: [2, 4] });
+    g.point(xl, cl, { color: c.third, r: 6.5 });
+    // 오른쪽 점은 네모 (색 + 모양으로 구분)
+    var ctx = g.ctx, px = g.X(xr), py = g.Y(cr);
+    ctx.save(); ctx.fillStyle = c.accent; ctx.strokeStyle = c.bg; ctx.lineWidth = 2;
+    ctx.fillRect(px - 6, py - 6, 12, 12); ctx.strokeRect(px - 6, py - 6, 12, 12); ctx.restore();
+    g.label(xl, 0, '◀ a−h', { color: c.third, dy: 14, bold: true });
+    g.label(xr, 0, 'a+h ▶', { color: c.accent, dy: 14, bold: true });
+    if (yl > yTop) g.label(xl, yTop, '↑', { color: c.text, dy: 10, bold: true });
+  };
+
+  function show(v) { return typeof v === 'number' ? fmt(v, 4) : (v === null ? (ko() ? '정의되지 않음' : 'undefined') : v); }
+  function verdict() {
+    var L = Site.lang();
+    if (F.LL === '∞') return { ok: false, text: L === 'ko' ? '양쪽 모두 한없이 커져요: lim f(x) = ∞ (발산)' : 'Both sides grow without bound: lim f(x) = ∞ (diverges)' };
+    if (F.LL !== F.RL) return { ok: false, text: L === 'ko' ? '좌극한 ' + F.LL + ' ≠ 우극한 ' + F.RL + ' 이므로 극한이 존재하지 않아요.' : 'Left ' + F.LL + ' ≠ right ' + F.RL + ', so the limit does not exist.' };
+    var extra = F.fa === null ? (L === 'ko' ? ' (f(a)가 없어도 괜찮아요)' : ' (even though f(a) is undefined)')
+              : F.fa !== F.LL ? (L === 'ko' ? ' (함숫값 f(a) = ' + F.fa + ' 과 달라도 괜찮아요)' : ' (even though f(a) = ' + F.fa + ')') : '';
+    return { ok: true, text: (L === 'ko' ? '좌극한 = 우극한 = ' + F.LL + ' 이므로 lim f(x) = ' + F.LL : 'Left = right = ' + F.LL + ', so lim f(x) = ' + F.LL) + extra };
+  }
+
+  function update() {
+    var h = +H.value;
+    $('fl-left').textContent = fmt(F.left(F.a - h), 4);
+    $('fl-right').textContent = fmt(F.right(F.a + h), 4);
+    $('fl-ll').textContent = show(F.LL);
+    $('fl-rl').textContent = show(F.RL);
+    $('fl-fa').textContent = show(F.fa);
+    var v = verdict(), el = $('fl-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    F = FN[k];
+    var d = $('fl-def');
+    d.innerHTML = F.def[Site.lang()];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+
+  Graph.bindSlider(H, $('fl-h-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('fl-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  H.addEventListener('change', function () { $('fl-live').textContent = 'h = ' + fmt(+H.value) + '. ' + verdict().text; });
+  Graph.player({ button: $('fl-play'), input: H, duration: 7000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setFn(document.querySelector('input[name="fl-pick"]:checked').value); else g.draw(); });
+  setFn(document.querySelector('input[name="fl-pick"]:checked').value);
+});
+</script>
+</body>
+</html>

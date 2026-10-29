@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit2" data-chapter="05">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s05-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s05-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>모든 점 \(x\)에 그 점의 미분계수 \(f'(x)\)를 대응시킨 새 함수가 <strong>도함수</strong>예요.</li>
+          <li>도함수를 구하는 것을 "미분한다"고 해요. 기호는 \(f'(x),\ y',\ \frac{dy}{dx},\ \frac{d}{dx}f(x)\).</li>
+          <li>다항함수는 \((x^n)'=nx^{n-1}\)과 합·곱·몫의 미분법으로 바로 미분할 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The function that sends each \(x\) to its derivative \(f'(x)\) is the <strong>derivative function</strong>.</li>
+          <li>Finding it is called differentiating. Notation: \(f'(x),\ y',\ \frac{dy}{dx},\ \frac{d}{dx}f(x)\).</li>
+          <li>Polynomials can be differentiated directly with \((x^n)'=nx^{n-1}\) and the sum, product and quotient rules.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">도함수의 정의</span><span class="def-label" data-lang="en">Definition</span>
+          $$f'(x)=\lim_{h\to0}\frac{f(x+h)-f(x)}{h}$$
+          <span class="def-label" data-lang="ko">미분 공식</span><span class="def-label" data-lang="en">Rules</span>
+          $$(c)'=0,\quad (x^n)'=nx^{n-1},\quad (cf)'=cf',\quad (f\pm g)'=f'\pm g'$$
+          $$(fg)'=f'g+fg',\qquad \left(\frac fg\right)'=\frac{f'g-fg'}{g^2}\ (g\ne0)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \((x^3-2x+5)'=3x^2-2\), &nbsp; \(\left((x^2+1)(x-3)\right)'=2x(x-3)+(x^2+1)=3x^2-6x+1\). \(f(x)=|x|\)는 \(x=0\)에서 미분가능하지 않아서 도함수의 정의역에서 0이 빠져요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \((x^3-2x+5)'=3x^2-2\), &nbsp; \(\left((x^2+1)(x-3)\right)'=2x(x-3)+(x^2+1)=3x^2-6x+1\). \(|x|\) isn't differentiable at 0, so 0 is left out of the derivative's domain.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 접선의 기울기를 모아 도함수 그래프 그리기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="df-pick">
+              <label><input type="radio" name="df-pick" value="quad" checked><span>\(x^2\)</span></label>
+              <label><input type="radio" name="df-pick" value="cubic"><span>\(\frac13x^3-x\)</span></label>
+              <label><input type="radio" name="df-pick" value="abs"><span>\(|x|\)</span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title"><span data-lang="ko">⬆️ \(y=f(x)\)와 점 P에서의 접선</span><span data-lang="en">⬆️ \(y=f(x)\) and the tangent at P</span></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="df-top" role="img" data-i18n-attr="aria-label:df.top"></canvas>
+          </div>
+          <p class="mini-chart-title"><span data-lang="ko">⬇️ 접선의 기울기를 높이로 찍은 \(y=f'(x)\)</span><span data-lang="en">⬇️ \(y=f'(x)\): each tangent slope plotted as a height</span></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="df-bot" role="img" data-i18n-attr="aria-label:df.bot"></canvas>
+          </div>
+          <ul class="legend" id="df-legend"></ul>
+          <table class="readout-table"><tbody id="df-table"></tbody></table>
+          <p class="verdict" id="df-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="df-x"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span></label>
+              <input id="df-x" type="range" min="-2.2" max="2.2" step="0.01" value="-2.2">
+              <output id="df-x-out" for="df-x">−2.20</output>
+            </div>
+            <label class="check-row"><input type="checkbox" id="df-all"><span><span data-lang="ko">도함수 그래프 전체 보기</span><span data-lang="en">Show the whole derivative graph</span></span></label>
+            <div class="control-buttons">
+              <button class="play-btn" id="df-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="df-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">도함수의 정의를 이용하여 \(f(x)=x^2+3x\)의 도함수를 구하시오.</p>
+            <p data-lang="en">Use the definition to find the derivative of \(f(x)=x^2+3x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-05-2-a" hidden>
+              <p data-lang="ko">\(f(x+h)-f(x)=(x+h)^2+3(x+h)-x^2-3x=2xh+h^2+3h\)이므로</p>
+              <p data-lang="en">\(f(x+h)-f(x)=(x+h)^2+3(x+h)-x^2-3x=2xh+h^2+3h\), so</p>
+              $$f'(x)=\lim_{h\to0}\frac{2xh+h^2+3h}{h}=\lim_{h\to0}(2x+h+3)=2x+3$$
+              <p data-lang="ko">공식 \((x^2)'+(3x)'=2x+3\)과 같은 결과예요.</p>
+              <p data-lang="en">The same as the rules give: \((x^2)'+(3x)'=2x+3\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=\dfrac{x^2+1}{x-1}\)의 도함수를 구하시오.</p>
+            <p data-lang="en">Find the derivative of \(f(x)=\dfrac{x^2+1}{x-1}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-05-2-b" hidden>
+              <p data-lang="ko">몫의 미분법에서 분자는 "(위 미분)(아래) − (위)(아래 미분)"이에요.</p>
+              <p data-lang="en">By the quotient rule, the numerator is "(top)′(bottom) − (top)(bottom)′".</p>
+              $$f'(x)=\frac{2x(x-1)-(x^2+1)\cdot1}{(x-1)^2}=\frac{x^2-2x-1}{(x-1)^2}\quad(x\ne1)$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">곱의 미분은 각각 미분해서 곱하면 된다: \((fg)'=f'g'\).</p>
+              <p data-lang="en">Differentiate each factor and multiply: \((fg)'=f'g'\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\((fg)'=f'g+fg'\)예요. \(x^2=x\cdot x\)로 확인해 보면 \(f'g'=1\cdot1=1\)이지만 실제 도함수는 \(2x\)예요.</p>
+              <p data-lang="en">\((fg)'=f'g+fg'\). Check with \(x^2=x\cdot x\): \(f'g'=1\cdot1=1\), but the true derivative is \(2x\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f(x)\)의 값이 크면 \(f'(x)\)도 크다.</p>
+              <p data-lang="en">If \(f(x)\) is large, so is \(f'(x)\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(f'(x)\)는 그래프의 <strong>높이</strong>가 아니라 <strong>기울기</strong>예요. 그림에서 \(\frac13x^3-x\)의 꼭대기(\(x=-1\))는 높지만 접선이 수평이라 \(f'(-1)=0\)이에요.</p>
+              <p data-lang="en">\(f'(x)\) is the <strong>slope</strong>, not the <strong>height</strong>. In the picture, the peak of \(\frac13x^3-x\) at \(x=-1\) is high, but the tangent is flat, so \(f'(-1)=0\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s05-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>도함수 \(f'\)을 한 번 더 미분한 함수가 <strong>이계도함수</strong> \(f''\)예요.</li>
+          <li>\(f''\)은 "기울기가 얼마나 빨리 변하는지"를 알려 줘요. 위치의 이계도함수는 <strong>가속도</strong>예요.</li>
+          <li>계속 미분하면 삼계도함수 \(f'''\), \(n\)계도함수 \(f^{(n)}\)도 생각할 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Differentiating \(f'\) once more gives the <strong>second derivative</strong> \(f''\).</li>
+          <li>\(f''\) tells how fast the slope changes; the second derivative of position is <strong>acceleration</strong>.</li>
+          <li>Continuing gives the third derivative \(f'''\) and the \(n\)-th derivative \(f^{(n)}\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">기호</span><span class="def-label" data-lang="en">Notation</span>
+          $$f''(x),\qquad y'',\qquad \frac{d^2y}{dx^2},\qquad \frac{d^2}{dx^2}f(x)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=x^4-3x^2\)이면 \(f'(x)=4x^3-6x\), \(f''(x)=12x^2-6\). &nbsp; 위치 \(s=t^3\)이면 속도 \(v=3t^2\), 가속도 \(a=6t\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=x^4-3x^2\): \(f'(x)=4x^3-6x\), \(f''(x)=12x^2-6\). &nbsp; Position \(s=t^3\): velocity \(v=3t^2\), acceleration \(a=6t\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: f, f′, f″ 세 그래프를 세로로 나란히 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="d2-pick">
+              <label><input type="radio" name="d2-pick" value="cubic" checked><span>\(\frac13x^3-x\)</span></label>
+              <label><input type="radio" name="d2-pick" value="quartic"><span>\(\frac14x^4-x^2\)</span></label>
+              <label><input type="radio" name="d2-pick" value="motion"><span><span data-lang="ko">운동 \(s=t^3-6t^2+9t\)</span><span data-lang="en">Motion \(s=t^3-6t^2+9t\)</span></span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title" id="d2-cap0"></p>
+          <div class="viz-canvas-wrap"><canvas id="d2-c0" role="img" data-i18n-attr="aria-label:d2.c0"></canvas></div>
+          <p class="mini-chart-title" id="d2-cap1"></p>
+          <div class="viz-canvas-wrap"><canvas id="d2-c1" role="img" data-i18n-attr="aria-label:d2.c1"></canvas></div>
+          <p class="mini-chart-title" id="d2-cap2"></p>
+          <div class="viz-canvas-wrap"><canvas id="d2-c2" role="img" data-i18n-attr="aria-label:d2.c2"></canvas></div>
+          <ul class="legend" id="d2-legend"></ul>
+          <table class="readout-table"><tbody id="d2-table"></tbody></table>
+          <p class="verdict" id="d2-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="d2-x" id="d2-x-label"></label>
+              <input id="d2-x" type="range" min="-2.2" max="2.2" step="0.01" value="-1.6">
+              <output id="d2-x-out" for="d2-x">−1.60</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="d2-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="d2-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=2x^3-5x^2+x\)일 때 \(f''(1)\)의 값을 구하시오.</p>
+            <p data-lang="en">For \(f(x)=2x^3-5x^2+x\), find \(f''(1)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-05-3-a" hidden>
+              <p data-lang="ko">\(f'(x)=6x^2-10x+1\), 한 번 더 미분하면 \(f''(x)=12x-10\)이에요. 따라서 \(f''(1)=12-10=2\)예요.</p>
+              <p data-lang="en">\(f'(x)=6x^2-10x+1\); differentiating again, \(f''(x)=12x-10\). So \(f''(1)=12-10=2\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">수직선 위를 움직이는 점의 시각 \(t\)에서의 위치가 \(s(t)=t^3-6t^2+9t\)일 때, 점이 운동 방향을 바꾸는 순간의 가속도를 모두 구하시오.</p>
+            <p data-lang="en">A point moves on a line with position \(s(t)=t^3-6t^2+9t\). Find its acceleration at each moment it changes direction.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-05-3-b" hidden>
+              <p data-lang="ko">속도 \(v=s'=3t^2-12t+9=3(t-1)(t-3)\)의 부호가 \(t=1,\,3\)에서 바뀌므로 이때 방향이 바뀌어요. 가속도 \(a=v'=6t-12\)이므로 \(a(1)=-6\), \(a(3)=6\)이에요. 그림의 "운동"에서 확인해 보세요.</p>
+              <p data-lang="en">Velocity \(v=s'=3t^2-12t+9=3(t-1)(t-3)\) changes sign at \(t=1,\,3\), so the direction changes there. Acceleration \(a=v'=6t-12\) gives \(a(1)=-6\) and \(a(3)=6\). Check with "Motion" in the picture.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\dfrac{d^2y}{dx^2}=\left(\dfrac{dy}{dx}\right)^2\)이다.</p>
+              <p data-lang="en">\(\dfrac{d^2y}{dx^2}=\left(\dfrac{dy}{dx}\right)^2\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\frac{d^2y}{dx^2}\)는 "두 번 미분"이라는 기호일 뿐 제곱이 아니에요. \(y=x^3\)이면 \(\frac{d^2y}{dx^2}=6x\)이지만 \(\left(\frac{dy}{dx}\right)^2=9x^4\)이에요.</p>
+              <p data-lang="en">\(\frac{d^2y}{dx^2}\) means "differentiate twice", not a square. For \(y=x^3\), \(\frac{d^2y}{dx^2}=6x\) but \(\left(\frac{dy}{dx}\right)^2=9x^4\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">가속도가 음수이면 물체는 느려진다.</p>
+              <p data-lang="en">Negative acceleration means the object slows down.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">속도와 가속도의 <strong>부호가 같으면</strong> 빨라지고, <strong>다르면</strong> 느려져요. 그림의 "운동"에서 \(1\lt t\lt2\)이면 \(v\lt0,\ a\lt0\)이라 반대 방향으로 점점 <strong>빨라져요</strong>.</p>
+              <p data-lang="en">The object speeds up when velocity and acceleration have the <strong>same sign</strong>, and slows down when they <strong>differ</strong>. In "Motion", for \(1\lt t\lt2\), \(v\lt0\) and \(a\lt0\): it <strong>speeds up</strong> in the negative direction.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- ① 미분계수 -->
+    <section id="s05-1">
+      <div class="concept-body">
+
+        <!-- 핵심 개념 -->
+        <div class="concept-core">
+          <p class="prereq">
+            <strong data-i18n="prereq"></strong>
+            <a href="ch03.html#s03-1"><span data-lang="ko">03-① 함수의 수렴과 발산</span><span data-lang="en">03-① Limits of functions</span></a>
+            <a href="ch03.html#s03-2"><span data-lang="ko">03-② 함수의 극한값 계산</span><span data-lang="en">03-② Computing limits</span></a>
+          </p>
+
+          <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+          <ol class="core-summary" data-lang="ko">
+            <li>두 점 P, Q를 잇는 <strong>할선의 기울기</strong>가 평균변화율이에요.</li>
+            <li>Q를 P에 한없이 가깝게(\(h\to0\)) 보낸 평균변화율의 극한값이 <strong>미분계수 \(f'(a)\)</strong>예요.</li>
+            <li>미분계수는 그 점에서의 <strong>순간변화율</strong>이고, 그래프에서는 <strong>접선의 기울기</strong>예요.</li>
+          </ol>
+          <ol class="core-summary" data-lang="en">
+            <li>The <strong>slope of the secant</strong> through P and Q is the average rate of change.</li>
+            <li>The limit of that average rate as Q slides to P (\(h\to0\)) is the <strong>derivative \(f'(a)\)</strong>.</li>
+            <li>It is the <strong>instantaneous rate of change</strong> at that point — the <strong>slope of the tangent</strong> on the graph.</li>
+          </ol>
+
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">평균변화율 <span class="en">(average rate of change)</span></span>
+            <span class="def-label" data-lang="en">Average rate of change <span class="en">(평균변화율)</span></span>
+            <p data-lang="ko">\(x\)의 값이 \(a\)에서 \(a+h\)까지 변할 때 \((h\ne0)\)</p>
+            <p data-lang="en">As \(x\) changes from \(a\) to \(a+h\) \((h\ne0)\):</p>
+            $$\frac{\Delta y}{\Delta x}=\frac{f(a+h)-f(a)}{h}$$
+          </div>
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">미분계수 <span class="en">(derivative)</span></span>
+            <span class="def-label" data-lang="en">Derivative at a point <span class="en">(미분계수)</span></span>
+            $$f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$$
+            <p class="note" data-lang="ko">이 극한값이 <strong>존재할 때</strong> "\(f\)는 \(x=a\)에서 미분가능하다"고 해요. 이때 점 \((a, f(a))\)에서의 접선은 \(y-f(a)=f'(a)(x-a)\)예요.</p>
+            <p class="note" data-lang="en">When this limit <strong>exists</strong>, \(f\) is called differentiable at \(x=a\). The tangent line at \((a, f(a))\) is \(y-f(a)=f'(a)(x-a)\).</p>
+          </div>
+          <p class="read-aloud" data-lang="ko"><span aria-hidden="true">🔊</span> <strong>읽는 법:</strong> \(f'(a)\)는 "에프 프라임 에이", \(\Delta x\)는 "델타 엑스"라고 읽어요.</p>
+          <p class="read-aloud" data-lang="en"><span aria-hidden="true">🔊</span> <strong>Read as:</strong> \(f'(a)\) is "f prime of a", and \(\Delta x\) is "delta x".</p>
+        </div>
+
+        <!-- 직관 그림 -->
+        <div class="concept-viz">
+          <div class="viz-panel">
+            <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+            <div class="viz-canvas-wrap">
+              <canvas id="d-canvas" role="img" data-i18n-attr="aria-label:d.canvas"></canvas>
+            </div>
+            <ul class="legend">
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+                <span data-lang="ko">\(y=f(x)\) (굵은 실선)</span><span data-lang="en">\(y=f(x)\) (thick solid)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-third" x1="0" y1="6" x2="36" y2="6"/></svg>
+                <span data-lang="ko">할선 PQ (짧은 점선)</span><span data-lang="en">Secant PQ (dotted)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+                <span data-lang="ko">점 P의 접선 (긴 점선)</span><span data-lang="en">Tangent at P (long dashes)</span></li>
+            </ul>
+
+            <table class="readout-table">
+              <tbody>
+                <tr><th>P\((a, f(a))\)</th><td id="d-p">—</td></tr>
+                <tr><th>Q\((a+h, f(a+h))\)</th><td id="d-q">—</td></tr>
+                <tr><th><span data-lang="ko">할선의 기울기 (평균변화율)</span><span data-lang="en">Secant slope (average rate)</span></th><td id="d-sec">—</td></tr>
+                <tr class="hl"><th><span data-lang="ko">접선의 기울기</span><span data-lang="en">Tangent slope</span> \(f'(a)\)</th><td id="d-tan">—</td></tr>
+                <tr><th><span data-lang="ko">두 기울기의 차이</span><span data-lang="en">Difference</span></th><td id="d-diff">—</td></tr>
+              </tbody>
+            </table>
+            <p class="viz-msg" id="d-msg" hidden>
+              <span data-lang="ko">\(h=0\)이면 Q가 P와 같은 점이 되어 할선을 그릴 수 없어요. 평균변화율도 \(\frac00\)이 되어 정의되지 않아요. 그래서 \(h=0\)을 <strong>대입</strong>하는 대신 \(h\to0\)인 <strong>극한</strong>을 생각해요.</span>
+              <span data-lang="en">At \(h=0\), Q is the same point as P, so there is no secant and the average rate is \(\frac00\) (undefined). That is why we take the <strong>limit</strong> \(h\to0\) instead of <strong>plugging in</strong> \(h=0\).</span>
+            </p>
+
+            <div class="controls">
+              <div class="slider-row">
+                <label for="d-a"><span data-lang="ko">점 P의 위치</span><span data-lang="en">Point P</span> \(a\)</label>
+                <input id="d-a" type="range" min="-2.2" max="2.2" step="0.01" value="0.6">
+                <output id="d-a-out" for="d-a">0.60</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="d-play-a" type="button" aria-pressed="false">
+                  <span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span>
+                </button>
+              </div>
+              <div class="slider-row">
+                <label for="d-h"><span data-lang="ko">P와 Q의 간격</span><span data-lang="en">Gap from P to Q</span> \(h\)</label>
+                <input id="d-h" type="range" min="-1.5" max="1.5" step="0.01" value="1.2">
+                <output id="d-h-out" for="d-h">1.20</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="d-play-h" type="button" aria-pressed="false">
+                  <span class="play-icon" aria-hidden="true">▶</span><span>\(h\to0\)</span>
+                  <span class="sr-only" data-lang="ko">(h를 0에 가깝게 보내기)</span><span class="sr-only" data-lang="en">(send h toward 0)</span>
+                </button>
+              </div>
+            </div>
+            <p class="sr-only" id="d-live" aria-live="polite"></p>
+            <p class="note" style="margin:12px 2px 0" data-lang="ko">이 그림의 함수는 \(f(x)=\frac13x^3-x+1\)이에요. 정의대로 계산하면 할선의 기울기는 \(a^2-1+ah+\frac{h^2}{3}\)이고, \(h\to0\)이면 \(f'(a)=a^2-1\)이 돼요. \(h\)를 <strong>음수</strong>로 두고 0에 보내도 같은 값에 가까워지는지 확인해 보세요!</p>
+            <p class="note" style="margin:12px 2px 0" data-lang="en">Here \(f(x)=\frac13x^3-x+1\). By the definition, the secant slope is \(a^2-1+ah+\frac{h^2}{3}\), which tends to \(f'(a)=a^2-1\) as \(h\to0\). Try a <strong>negative</strong> \(h\) too — does it approach the same value?</p>
+          </div>
+        </div>
+
+        <!-- 예시 문제 · 실수 · 활용 -->
+        <div class="concept-more">
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+              <p data-lang="ko">함수 \(f(x)=x^2\)에 대하여 미분계수의 정의를 이용하여 \(f'(3)\)을 구하시오.</p>
+              <p data-lang="en">For \(f(x)=x^2\), use the definition to find \(f'(3)\).</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-1-a"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-05-1-a" hidden>
+                $$\frac{f(3+h)-f(3)}{h}=\frac{(3+h)^2-9}{h}=\frac{6h+h^2}{h}=6+h\quad(h\ne0)$$
+                <p data-lang="ko">\(h\ne0\)이므로 약분할 수 있어요. 따라서 \(f'(3)=\displaystyle\lim_{h\to0}(6+h)=6\).</p>
+                <p data-lang="en">We may cancel \(h\) because \(h\ne0\). So \(f'(3)=\displaystyle\lim_{h\to0}(6+h)=6\).</p>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+              <p data-lang="ko">곡선 \(y=x^3\) 위의 점 \((1,1)\)에서의 접선의 방정식을 구하시오.</p>
+              <p data-lang="en">Find the equation of the tangent line to \(y=x^3\) at the point \((1,1)\).</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-05-1-b"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-05-1-b" hidden>
+                <p data-lang="ko">\(f(x)=x^3\)이라 하면 접선의 기울기는</p>
+                <p data-lang="en">Let \(f(x)=x^3\). The slope of the tangent is</p>
+                $$f'(1)=\lim_{h\to0}\frac{(1+h)^3-1}{h}=\lim_{h\to0}\frac{3h+3h^2+h^3}{h}=\lim_{h\to0}(3+3h+h^2)=3$$
+                <p data-lang="ko">접선은 점 \((1,1)\)을 지나고 기울기가 3이므로 \(y-1=3(x-1)\), 즉 \(y=3x-2\).</p>
+                <p data-lang="en">It passes through \((1,1)\) with slope 3, so \(y-1=3(x-1)\), i.e. \(y=3x-2\).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(f'(a)\)는 \(f(a)\)를 미분한 것이고, \(f(a)\)는 상수이니까 \(f'(a)=0\)이다.</p>
+                <p data-lang="en">\(f'(a)\) is the derivative of \(f(a)\), which is a constant, so \(f'(a)=0\).</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">\(f'(a)\)는 "\(x=a\)에서의 미분계수"예요. 극한을 먼저 계산하고 그 결과가 \(f'(a)\)예요. 예제 1처럼 \(f(x)=x^2\)이면 \(f'(3)=6\)이지, 0이 아니에요.</p>
+                <p data-lang="en">\(f'(a)\) means "the derivative at \(x=a\)". Compute the limit first; that value is \(f'(a)\). For \(f(x)=x^2\), \(f'(3)=6\), not 0 (see Example 1).</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(h\to0\)은 \(h\)가 양수 쪽에서만 0으로 가는 것이다.</p>
+                <p data-lang="en">\(h\to0\) means \(h\) approaches 0 only from the positive side.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">\(h\)는 음수 쪽에서도 0으로 가요. 양쪽에서 같은 값에 가까워져야 미분계수가 존재해요. 위 그림에서 \(h\)를 음수로 두고 확인해 보세요.</p>
+                <p data-lang="en">\(h\) approaches 0 from the negative side too. The derivative exists only when both sides approach the same value. Try a negative \(h\) in the picture.</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">그래프가 끊어지지 않았으면(연속이면) 그 점에서 미분가능하다.</p>
+                <p data-lang="en">If the graph has no break (continuous), the function is differentiable there.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">미분가능하면 연속이지만, 그 역은 성립하지 않아요. \(f(x)=|x|\)는 \(x=0\)에서 연속이지만 \(\displaystyle\lim_{h\to0+}\frac{|h|}{h}=1\), \(\displaystyle\lim_{h\to0-}\frac{|h|}{h}=-1\)이라 미분계수가 없어요. (뾰족한 점)</p>
+                <p data-lang="en">Differentiable implies continuous, but not the other way. \(f(x)=|x|\) is continuous at 0, yet \(\displaystyle\lim_{h\to0+}\frac{|h|}{h}=1\) and \(\displaystyle\lim_{h\to0-}\frac{|h|}{h}=-1\), so there is no derivative (a sharp corner).</p></div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">🌏</span><span data-i18n="usageTitle"></span></h3>
+            <ul class="usage-list" data-lang="ko">
+              <li><strong>물리:</strong> 위치의 순간변화율이 <strong>속도</strong>, 속도의 순간변화율이 <strong>가속도</strong>예요.</li>
+              <li><strong>경제:</strong> 생산량을 조금 늘릴 때 비용이 얼마나 느는지(한계비용)를 미분계수로 나타내요.</li>
+              <li><strong>근사:</strong> 접점 근처에서는 곡선을 접선으로 바꿔 계산할 수 있어요 (일차 근사).</li>
+            </ul>
+            <ul class="usage-list" data-lang="en">
+              <li><strong>Physics:</strong> the instantaneous rate of change of position is <strong>velocity</strong>; of velocity, <strong>acceleration</strong>.</li>
+              <li><strong>Economics:</strong> how much cost rises when output grows a little (marginal cost) is a derivative.</li>
+              <li><strong>Approximation:</strong> near the point, the curve can be replaced by its tangent line (linear approximation).</li>
+            </ul>
+            <div class="link-row">
+              <a class="btn btn-outline btn-sm" href="../applications.html#related-rates"><span data-lang="ko">🏫 원뿔 컵에 물 붓기 (연계변화율)</span><span data-lang="en">🏫 Filling a cone cup (related rates)</span></a>
+              <a class="btn btn-outline btn-sm" href="../applications.html#linear-approx"><span data-lang="ko">🏫 확대하면 접선이 보여요 (일차 근사)</span><span data-lang="en">🏫 Zoom in to see the tangent</span></a>
+            </div>
+          </div>
+
+          <div class="rigor-cta">
+            <p data-lang="ko">🔍 미분계수도 결국 <strong>극한</strong>이에요. "한없이 가까워진다"의 정확한 뜻이 궁금하다면?</p>
+            <p data-lang="en">🔍 A derivative is a <strong>limit</strong>, too. Curious what "gets arbitrarily close" means exactly?</p>
+            <a class="btn btn-outline btn-sm" href="../rigor.html#func-limit" data-i18n="rigorCta"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 05-③ 이계도함수: f, f′, f″ 를 세로로 맞춰 놓고 보기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('d2-x');
+
+  // fs: [f, f′, f″], views: 각 그래프의 [yMin, yMax]
+  var FN = {
+    cubic:   { fs: [function (x) { return x * x * x / 3 - x; }, function (x) { return x * x - 1; }, function (x) { return 2 * x; }],
+               range: [-2.2, 2.2], start: -1.6, views: [[-2.2, 2.2], [-1.6, 4.4], [-4.8, 4.8]], v: 'x',
+               names: ['f', 'f′', 'f″'], text: ['f(x) = x³/3 − x', 'f′(x) = x² − 1', 'f″(x) = 2x'] },
+    quartic: { fs: [function (x) { return x * x * x * x / 4 - x * x; }, function (x) { return x * x * x - 2 * x; }, function (x) { return 3 * x * x - 2; }],
+               range: [-2.2, 2.2], start: -1.6, views: [[-1.4, 1.6], [-6.6, 6.6], [-2.6, 13]], v: 'x',
+               names: ['f', 'f′', 'f″'], text: ['f(x) = x⁴/4 − x²', 'f′(x) = x³ − 2x', 'f″(x) = 3x² − 2'] },
+    motion:  { fs: [function (t) { return t * t * t - 6 * t * t + 9 * t; }, function (t) { return 3 * t * t - 12 * t + 9; }, function (t) { return 6 * t - 12; }],
+               range: [0, 4.2], start: 0.3, views: [[-0.8, 6.6], [-4.4, 12.2], [-13.5, 13.5]], v: 't',
+               names: ['s', 'v', 'a'], text: ['s(t) = t³ − 6t² + 9t', 'v(t) = s′(t) = 3t² − 12t + 9', 'a(t) = v′(t) = 6t − 12'] }
+  };
+  var CAP = {
+    ko: { fn: ['⬆️ y = f(x)', '↕️ y = f′(x): 위 그래프의 접선 기울기', '⬇️ y = f″(x): 가운데 그래프의 접선 기울기'],
+          motion: ['⬆️ 위치 s(t)', '↕️ 속도 v(t) = s′(t)', '⬇️ 가속도 a(t) = v′(t) = s″(t)'] },
+    en: { fn: ['⬆️ y = f(x)', '↕️ y = f′(x): slope of the tangent above', '⬇️ y = f″(x): slope of the tangent in the middle'],
+          motion: ['⬆️ position s(t)', '↕️ velocity v(t) = s′(t)', '⬇️ acceleration a(t) = v′(t) = s″(t)'] }
+  };
+  var K = document.querySelector('input[name="d2-pick"]:checked').value;
+  var gs = [0, 1, 2].map(function (i) {
+    return Graph.create($('d2-c' + i), { xMin: -2.4, xMax: 2.4, yMin: -2, yMax: 2, aspect: 0.42, minHeight: 140, maxHeight: 190 });
+  });
+
+  gs.forEach(function (g, i) {
+    g.render = function () {
+      var F = FN[K], a = +X.value, c = g.c, y = F.fs[i](a);
+      var col = [c.main, c.accent, c.third][i], dash = [[], [11, 6], [2, 5]][i];
+      var pad = (F.range[1] - F.range[0]) * 0.06;
+      g.setView({ xMin: F.range[0] - pad, xMax: F.range[1] + pad, yMin: F.views[i][0], yMax: F.views[i][1] });
+      g.clear(); g.grid(); g.axes({ xLabel: F.v, yLabel: F.names[i] });
+      g.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+      // 이 그래프의 접선 → 기울기가 바로 아래 그래프의 높이
+      if (i < 2) g.lineThrough(a, y, F.fs[i + 1](a), { color: c.text2, width: 1.8 });
+      else g.line(a, 0, a, y, { color: col, width: 3 });
+      g.plot(F.fs[i], { color: col, width: i === 0 ? 3.5 : 3, dash: dash, from: F.range[0], to: F.range[1] });
+      g.point(a, y, { color: col, r: 6 });
+    };
+  });
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             tan: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1.8"/>' };
+
+  function update() {
+    var F = FN[K], a = +X.value, L = Site.lang(), motion = K === 'motion', v;
+    var vals = F.fs.map(function (f) { return f(a); });
+    var caps = CAP[L][motion ? 'motion' : 'fn'];
+    [0, 1, 2].forEach(function (i) { $('d2-cap' + i).textContent = caps[i]; });
+    $('d2-legend').innerHTML = [['main', F.text[0]], ['accent', F.text[1]], ['third', F.text[2]], ['tan', L === 'ko' ? '각 점에서의 접선 (가는 실선)' : 'tangent at each point (thin)']]
+      .map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    var rows = [[F.v, fmt(a)]].concat(F.names.map(function (n, i) { return [n + '(' + F.v + ')', fmt(vals[i], 3)]; }));
+    $('d2-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 3 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var d2 = vals[2], d1 = vals[1];
+    if (!motion) {
+      if (d2 > 0.04) v = ko() ? 'f″(a) > 0: f′이 증가하는 중이라 접선의 기울기가 점점 커져요. 그래서 f의 그래프는 아래로 볼록(∪)해요.'
+                              : 'f″(a) > 0: f′ is increasing, so the tangent slope keeps growing. The graph of f is concave up (∪).';
+      else if (d2 < -0.04) v = ko() ? 'f″(a) < 0: f′이 감소하는 중이라 접선의 기울기가 점점 작아져요. 그래서 f의 그래프는 위로 볼록(∩)해요.'
+                                    : 'f″(a) < 0: f′ is decreasing, so the tangent slope keeps shrinking. The graph of f is concave down (∩).';
+      else v = ko() ? 'f″(a) = 0: 기울기가 커지다가 작아지는(또는 그 반대) 경계예요. 볼록한 방향이 바뀌는 점(변곡점)의 후보예요.'
+                    : 'f″(a) = 0: the boundary where the slope switches between growing and shrinking. A candidate inflection point.';
+    } else {
+      if (Math.abs(d1) < 0.05) v = ko() ? 'v = 0: 한순간 멈추고 운동 방향이 바뀌어요. 이때 가속도는 a = ' + fmt(d2) + '이에요.'
+                                         : 'v = 0: the point stops for an instant and turns around. Acceleration here is a = ' + fmt(d2) + '.';
+      else if (Math.abs(d2) < 0.05) v = ko() ? 'a = 0: 속도가 가장 크거나 가장 작은 순간이에요 (속도 그래프의 꼭대기·바닥).'
+                                              : 'a = 0: velocity is at its largest or smallest (a peak or valley of the velocity graph).';
+      else {
+        var dir = d1 > 0 ? (ko() ? '양의 방향' : 'positive direction') : (ko() ? '음의 방향' : 'negative direction');
+        v = d1 * d2 > 0
+          ? (ko() ? 'v와 a의 부호가 같아요: ' + dir + '으로 점점 빨라지는 중이에요.' : 'v and a have the same sign: speeding up in the ' + dir + '.')
+          : (ko() ? 'v와 a의 부호가 달라요: ' + dir + '으로 가면서 점점 느려지는 중이에요.' : 'v and a have opposite signs: slowing down while moving in the ' + dir + '.');
+      }
+    }
+    var el = $('d2-verdict');
+    el.className = 'verdict';
+    el.textContent = '→ ' + v;
+    gs.forEach(function (g) { g.draw(); });
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k];
+    X.min = F.range[0]; X.max = F.range[1]; X.value = F.start;
+    $('d2-x-label').textContent = k === 'motion' ? (ko() ? '시각 t' : 'time t') : (ko() ? '점의 x좌표 a' : 'x-coordinate a');
+    X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(X, $('d2-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('d2-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  X.addEventListener('change', function () { $('d2-live').textContent = $('d2-verdict').textContent; });
+  Graph.player({ button: $('d2-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') {
+      $('d2-x-label').textContent = K === 'motion' ? (ko() ? '시각 t' : 'time t') : (ko() ? '점의 x좌표 a' : 'x-coordinate a');
+      update();
+    } else gs.forEach(function (g) { g.draw(); });
+  });
+  setFn(K);
+});
+
+/* 05-② 도함수: 접선의 기울기를 모으면 f′의 그래프가 된다 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('df-x'), ALL = $('df-all');
+
+  // kink: 미분가능하지 않은 점 (없으면 null)
+  var FN = {
+    quad:  { f: function (x) { return x * x; }, df: function (x) { return 2 * x; }, kink: null,
+             top: [-0.8, 5.2], bot: [-4.8, 4.8], dfText: "f′(x) = 2x" },
+    cubic: { f: function (x) { return x * x * x / 3 - x; }, df: function (x) { return x * x - 1; }, kink: null,
+             top: [-2.2, 2.2], bot: [-1.6, 4.4], dfText: "f′(x) = x² − 1" },
+    abs:   { f: Math.abs, df: function (x) { return x > 0 ? 1 : x < 0 ? -1 : NaN; }, kink: 0,
+             top: [-0.6, 2.6], bot: [-1.8, 1.8], dfText: "f′(x) = −1 (x < 0), 1 (x > 0)" }
+  };
+  var K = document.querySelector('input[name="df-pick"]:checked').value;
+  var X0 = -2.5, X1 = 2.5;
+  function atKink() { var F = FN[K]; return F.kink !== null && Math.abs(+X.value - F.kink) < 0.005; }
+
+  var top = Graph.create($('df-top'), { xMin: X0, xMax: X1, yMin: -1, yMax: 5, aspect: 0.55, minHeight: 190, maxHeight: 260 });
+  var bot = Graph.create($('df-bot'), { xMin: X0, xMax: X1, yMin: -5, yMax: 5, aspect: 0.5, minHeight: 170, maxHeight: 240 });
+
+  top.render = function () {
+    var F = FN[K], a = +X.value, c = top.c, fa = F.f(a);
+    top.setView({ yMin: F.top[0], yMax: F.top[1] });
+    top.clear(); top.grid(); top.axes();
+    top.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+    top.plot(F.f, { color: c.main, width: 3.5 });
+    if (atKink()) {
+      // 꺾인 점: 왼쪽·오른쪽 기울기가 달라 접선 하나를 정할 수 없다
+      top.lineThrough(a, fa, -1, { color: c.accent, width: 2, dash: [11, 6] });
+      top.lineThrough(a, fa, 1, { color: c.accent, width: 2, dash: [11, 6] });
+      top.label(top.o.xMin, top.o.yMax, ko() ? '접선이 하나로 안 정해져요' : 'no single tangent', { color: c.text, align: 'left', dx: 8, dy: 14, bold: true });
+    } else {
+      var m = F.df(a);
+      top.lineThrough(a, fa, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+      top.label(top.o.xMin, top.o.yMax, (ko() ? '접선의 기울기 ' : 'tangent slope ') + fmt(m), { color: c.accent, align: 'left', dx: 8, dy: 14, bold: true });
+    }
+    top.point(a, fa, { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: a > 0 ? 'left' : 'right', dx: a > 0 ? 10 : -10, dy: 16 } });
+  };
+
+  bot.render = function () {
+    var F = FN[K], a = +X.value, c = bot.c;
+    bot.setView({ yMin: F.bot[0], yMax: F.bot[1] });
+    bot.clear(); bot.grid(); bot.axes({ yLabel: "y = f′(x)" });
+    bot.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+    // 미분가능하지 않은 점에서는 그래프를 나눠 그린다
+    var parts = F.kink === null ? [[X0, X1]] : [[X0, F.kink - 1e-6], [F.kink + 1e-6, X1]];
+    if (ALL.checked) parts.forEach(function (p) { bot.plot(F.df, { color: c.third, width: 2, dash: [2, 5], from: p[0], to: p[1] }); });
+    parts.forEach(function (p) {
+      var to = Math.min(p[1], a);
+      if (to > p[0]) bot.plot(F.df, { color: c.third, width: 4.5, dash: [2, 6], from: p[0], to: to });
+    });
+    if (F.kink !== null && (ALL.checked || a >= F.kink - 0.005)) {
+      bot.point(F.kink, -1, { color: c.third, filled: false, r: 5.5 });
+      if (ALL.checked || a > F.kink + 0.005) bot.point(F.kink, 1, { color: c.third, filled: false, r: 5.5 });
+    }
+    if (atKink()) bot.label(a, 0, ko() ? 'f′(0) 없음' : 'f′(0) undefined', { color: c.text, align: 'left', dx: 10, dy: -14, bold: true });
+    else {
+      var m = F.df(a);
+      bot.line(a, 0, a, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+      bot.point(a, m, { color: c.accent, r: 6.5, label: "(a, f′(a))", labelStyle: { bold: true, align: a > 0 ? 'right' : 'left', dx: a > 0 ? -12 : 12, dy: m >= 0 ? -12 : 16 } });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (위, 실선)'], ['accent', '접선과 그 기울기 높이 (긴 점선)'], ['third', 'y = f′(x) (아래, 짧은 점선)']],
+    en: [['main', 'y = f(x) (top, solid)'], ['accent', 'tangent and its slope as a height (long dashes)'], ['third', 'y = f′(x) (bottom, dotted)']]
+  };
+
+  function update() {
+    var F = FN[K], a = +X.value, v;
+    var kink = atKink(), m = kink ? NaN : F.df(a);
+    var rows = [['P = (a, f(a))', '(' + fmt(a) + ', ' + fmt(F.f(a)) + ')'],
+                [ko() ? "접선의 기울기 f′(a)" : "tangent slope f′(a)", kink ? (ko() ? '없음 (미분 불가능)' : 'none (not differentiable)') : fmt(m, 3)],
+                [ko() ? '도함수' : 'derivative', F.dfText]];
+    $('df-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 1 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (kink) v = { ok: false, text: ko() ? 'x = 0에서 왼쪽 기울기 −1과 오른쪽 기울기 1이 달라서 미분가능하지 않아요. 그래서 도함수의 정의역에서 0이 빠져요 (아래 그래프의 빈 점 ○).'
+                                         : 'At x = 0 the left slope −1 and right slope 1 differ, so f is not differentiable there. 0 is left out of the derivative\'s domain (open dots ○ below).' };
+    else if (m > 0.005) v = { text: ko() ? '접선이 오른쪽 위로 올라가요: f′(a) > 0이라 아래 그래프의 점이 x축 위에 있어요. 이때 f는 증가하고 있어요.'
+                                         : 'The tangent rises to the right: f′(a) > 0, so the point below sits above the x-axis. f is increasing here.' };
+    else if (m < -0.005) v = { text: ko() ? '접선이 오른쪽 아래로 내려가요: f′(a) < 0이라 아래 그래프의 점이 x축 아래에 있어요. 이때 f는 감소하고 있어요.'
+                                          : 'The tangent falls to the right: f′(a) < 0, so the point below sits under the x-axis. f is decreasing here.' };
+    else v = { ok: true, text: ko() ? '접선이 수평이에요: f′(a) = 0이라 아래 그래프가 x축과 만나요. 위 그래프의 꼭대기나 바닥이 바로 이런 곳이에요.'
+                                    : 'The tangent is flat: f′(a) = 0, so the graph below meets the x-axis. Peaks and valleys above happen exactly here.' };
+    var el = $('df-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    top.draw(); bot.draw();
+  }
+  function setLegend() {
+    $('df-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(X, $('df-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  ALL.addEventListener('change', update);
+  $('df-pick').addEventListener('change', function (e) { K = e.target.value; update(); });
+  X.addEventListener('change', function () { $('df-live').textContent = $('df-verdict').textContent; });
+  // ▶ 점 P를 왼쪽에서 오른쪽으로 옮기며 f′의 그래프를 그려 나간다
+  Graph.player({ button: $('df-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else { top.draw(); bot.draw(); } });
+  setLegend();
+  update();
+});
+
+/* 05-① 미분계수: 할선이 접선으로 다가가는 그림 */
+document.addEventListener('DOMContentLoaded', function () {
+  var f = function (x) { return x * x * x / 3 - x + 1; };
+  var df = function (x) { return x * x - 1; };          // 정의로 구한 f'(x)
+  var fmt = Graph.fmt;
+  var A = document.getElementById('d-a'), H = document.getElementById('d-h');
+  var $ = function (id) { return document.getElementById(id); };
+  var ko = function () { return Site.lang() === 'ko'; };
+  var g = Graph.create($('d-canvas'), { xMin: -2.6, xMax: 2.6, yMin: -2.4, yMax: 4.4, aspect: 0.85, maxHeight: 380 });
+
+  g.render = function () {
+    var a = +A.value, h = +H.value, c = g.c, fa = f(a), m = df(a);
+    g.clear(); g.grid(); g.axes();
+    g.plot(f, { color: c.main, width: 3.5 });
+    g.label(2.2, f(2.2), 'y = f(x)', { color: c.main, align: 'right', dx: -12, bold: true });
+
+    // 접선 (긴 점선)
+    g.lineThrough(a, fa, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+    var tx = a > 0 ? a - 1.3 : a + 1.3;
+    g.label(tx, fa + m * (tx - a), ko() ? '접선' : 'tangent', { color: c.accent, dy: 18, bold: true });
+
+    // 할선 (짧은 점선) — h = 0 이면 그릴 수 없다
+    if (Math.abs(h) >= 0.005) {
+      var b = a + h, fb = f(b), s = (fb - fa) / h;
+      g.lineThrough(a, fa, s, { color: c.third, width: 2.5, dash: [2, 5] });
+      if (Math.abs(h) > 0.2) {
+        g.line(a, fa, b, fa, { color: c.text2, width: 1.5, dash: [4, 4] });
+        g.line(b, fa, b, fb, { color: c.text2, width: 1.5, dash: [4, 4] });
+        g.label((a + b) / 2, fa, 'h', { color: c.text2, dy: fb > fa ? 14 : -14 });
+        g.label(b, (fa + fb) / 2, 'Δy', { color: c.text2, dx: h > 0 ? 20 : -20 });
+      }
+      var sx = b + (h > 0 ? 0.5 : -0.5);
+      g.label(sx, fa + s * (sx - a), ko() ? '할선' : 'secant', { color: c.third, dy: -16, bold: true });
+      g.point(b, fb, { color: c.third, label: 'Q', labelStyle: { bold: true } });
+    }
+    g.point(a, fa, { color: c.accent, label: 'P', labelStyle: { bold: true, dx: -24 } });
+  };
+
+  function update() {
+    var a = +A.value, h = +H.value, fa = f(a);
+    $('d-p').textContent = '(' + fmt(a) + ', ' + fmt(fa) + ')';
+    $('d-tan').textContent = fmt(df(a), 3);
+    var zero = Math.abs(h) < 0.005;
+    $('d-msg').hidden = !zero;
+    if (zero) {
+      $('d-q').textContent = '= P';
+      $('d-sec').textContent = '0/0 ?';
+      $('d-diff').textContent = '—';
+    } else {
+      var s = (f(a + h) - fa) / h;
+      $('d-q').textContent = '(' + fmt(a + h) + ', ' + fmt(f(a + h)) + ')';
+      $('d-sec').textContent = fmt(s, 3);
+      $('d-diff').textContent = fmt(Math.abs(s - df(a)), 3);
+    }
+    g.draw();
+  }
+
+  Graph.bindSlider(A, $('d-a-out'), { format: function (v) { return fmt(v); }, onInput: update });
+  Graph.bindSlider(H, $('d-h-out'), { format: function (v) { return fmt(v); }, onInput: update });
+
+  // 화면 읽기 프로그램용 요약 (손을 뗐을 때)
+  function speak() {
+    var a = +A.value, h = +H.value;
+    var sec = Math.abs(h) < 0.005 ? (ko() ? '정의되지 않음' : 'undefined') : fmt((f(a + h) - f(a)) / h, 3);
+    $('d-live').textContent = ko()
+      ? 'a ' + fmt(a) + ', h ' + fmt(h) + '. 할선의 기울기 ' + sec + ', 접선의 기울기 ' + fmt(df(a), 3) + '.'
+      : 'a ' + fmt(a) + ', h ' + fmt(h) + '. Secant slope ' + sec + ', tangent slope ' + fmt(df(a), 3) + '.';
+  }
+  A.addEventListener('change', speak);
+  H.addEventListener('change', speak);
+
+  // ▶ 점 P 움직이기
+  Graph.player({ button: $('d-play-a'), input: A, duration: 7000 });
+
+  // ▶ h → 0 : 지금의 h에서 0 쪽으로 점점 느리게 다가간다 (부호 유지)
+  var hBtn = $('d-play-h'), hRaf = null, hStart = 0, h0 = 0;
+  function hState(on) {
+    hBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    hBtn.querySelector('.play-icon').textContent = on ? '⏸' : '▶';
+  }
+  function hStop() { cancelAnimationFrame(hRaf); hRaf = null; hState(false); H.dispatchEvent(new Event('change', { bubbles: true })); }
+  function hFrame(ts) {
+    if (!hRaf) return;
+    if (!hStart) hStart = ts;
+    var p = Math.min(1, (ts - hStart) / 3500);
+    var v = h0 * Math.pow(1 - p, 1.6);
+    var done = p >= 1 || Math.abs(v) < 0.01;
+    if (done) v = h0 > 0 ? 0.01 : -0.01;
+    H.value = v;
+    H.dispatchEvent(new Event('input', { bubbles: true }));
+    if (done) hStop(); else hRaf = requestAnimationFrame(hFrame);
+  }
+  hBtn.addEventListener('click', function () {
+    if (hRaf) { hStop(); return; }
+    h0 = +H.value;
+    if (Math.abs(h0) < 0.05) h0 = h0 < 0 ? -1.5 : 1.5;
+    hStart = 0; hState(true);
+    hRaf = requestAnimationFrame(hFrame);
+  });
+  H.addEventListener('pointerdown', function () { if (hRaf) hStop(); });
+  H.addEventListener('keydown', function () { if (hRaf) hStop(); });
+
+  document.addEventListener('settingschange', function () { g.draw(); });
+});
+</script>
+</body>
+</html>

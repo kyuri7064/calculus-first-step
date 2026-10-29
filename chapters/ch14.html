@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>14 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit3" data-chapter="14">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s14-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s14-1" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>두 곡선 사이의 넓이는 "위 곡선 − 아래 곡선"을 적분해서 구해요.</li>
+          <li>넓이는 항상 양수라서, 위아래가 바뀌는 곳에서 구간을 나누거나 <strong>절댓값</strong>을 씌워요.</li>
+          <li>먼저 두 곡선의 <strong>교점</strong>을 구해 적분 구간을 정해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The area between two curves is the integral of "top curve − bottom curve".</li>
+          <li>Area is always positive, so split where top and bottom switch, or use an <strong>absolute value</strong>.</li>
+          <li>Find the <strong>intersection points</strong> first to get the limits.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">두 곡선 사이의 넓이</span><span class="def-label" data-lang="en">Area between curves</span>
+          $$S=\int_a^b\big|f(x)-g(x)\big|\,dx$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(y=x\)와 \(y=x^2\)은 \(x=0,1\)에서 만나고, 그 사이에서 \(x\ge x^2\)이므로 \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(y=x\) and \(y=x^2\) meet at \(x=0,1\) with \(x\ge x^2\) between, so \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s14-2" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>입체를 \(x\)축에 수직인 평면으로 얇게 자르면, 각 조각의 부피는 (단면의 넓이) × (두께)예요.</li>
+          <li>이 조각들을 모두 더한 극한이 부피예요: 단면의 넓이 \(S(x)\)를 적분해요.</li>
+          <li>곡선을 \(x\)축 둘레로 회전시킨 <strong>회전체</strong>는 단면이 원이라 \(S(x)=\pi f(x)^2\)이에요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Slice a solid by planes perpendicular to the \(x\)-axis: each slice's volume is (cross-section area) × (thickness).</li>
+          <li>The limit of the sum is the volume: integrate the cross-section area \(S(x)\).</li>
+          <li>For a <strong>solid of revolution</strong> about the \(x\)-axis, cross-sections are circles: \(S(x)=\pi f(x)^2\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">입체도형의 부피</span><span class="def-label" data-lang="en">Volume of a solid</span>
+          $$V=\int_a^bS(x)\,dx,\qquad V_{\text{rev}}=\pi\int_a^b\{f(x)\}^2\,dx$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 반원 \(y=\sqrt{r^2-x^2}\)을 회전시키면 구: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Rotating the semicircle \(y=\sqrt{r^2-x^2}\) gives a sphere: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s14-3" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>속도 \(v(t)\)를 적분하면 <strong>위치의 변화량</strong>이에요 (순변화량 정리). 뒤로 간 거리는 빼져요.</li>
+          <li>실제로 <strong>움직인 거리</strong>는 속력 \(|v(t)|\)를 적분해요.</li>
+          <li>그래프로 보면, 속도 그래프와 \(t\)축 사이의 넓이가 움직인 거리예요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Integrating velocity \(v(t)\) gives the <strong>change in position</strong> (net change theorem); backward motion is subtracted.</li>
+          <li>The actual <strong>distance traveled</strong> integrates the speed \(|v(t)|\).</li>
+          <li>On a graph, the area between the velocity curve and the \(t\)-axis is the distance.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">위치의 변화량과 움직인 거리</span><span class="def-label" data-lang="en">Displacement and distance</span>
+          $$x(b)-x(a)=\int_a^bv(t)\,dt,\qquad s=\int_a^b|v(t)|\,dt$$
+          <p class="note" data-lang="ko">\(s\): 시각 \(a\)에서 \(b\)까지 움직인 거리</p>
+          <p class="note" data-lang="en">\(s\): distance traveled from time \(a\) to \(b\)</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(v(t)=t^2-4\), \(0\le t\le3\): 위치의 변화량 \(\int_0^3(t^2-4)\,dt=-3\). 움직인 거리는 \(t=2\)에서 방향이 바뀌므로 \(\int_0^2(4-t^2)\,dt+\int_2^3(t^2-4)\,dt=\frac{16}3+\frac73=\frac{23}3\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(v(t)=t^2-4\), \(0\le t\le3\): displacement \(\int_0^3(t^2-4)\,dt=-3\). The direction changes at \(t=2\), so distance \(=\int_0^2(4-t^2)\,dt+\int_2^3(t^2-4)\,dt=\frac{16}3+\frac73=\frac{23}3\).</p>
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#velocity"><span data-lang="ko">🏫 학교 속 미적분: 속도와 거리</span><span data-lang="en">🏫 Calculus at School: velocity and distance</span></a></div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+</body>
+</html>

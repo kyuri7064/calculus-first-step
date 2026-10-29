@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit1" data-chapter="02">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s02-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s02-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>수열의 항을 끝없이 더한 식 \(\sum_{n=1}^{\infty}a_n\)을 <strong>무한급수</strong>라고 해요.</li>
+          <li>앞에서부터 \(n\)개를 더한 <strong>부분합</strong> \(S_n\)이 \(S\)에 수렴하면 급수는 수렴하고, 그 합은 \(S\)예요.</li>
+          <li>급수가 수렴하면 \(\lim a_n=0\)이에요. 하지만 그 역은 성립하지 않아요 (조화급수).</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Adding the terms of a sequence forever, \(\sum_{n=1}^{\infty}a_n\), gives an <strong>infinite series</strong>.</li>
+          <li>If the <strong>partial sums</strong> \(S_n\) (the first \(n\) terms) converge to \(S\), the series converges with sum \(S\).</li>
+          <li>If the series converges, then \(\lim a_n=0\) — but not conversely (the harmonic series).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">부분합과 급수의 합</span><span class="def-label" data-lang="en">Partial sums and the sum</span>
+          $$S_n=\sum_{k=1}^{n}a_k,\qquad \sum_{n=1}^{\infty}a_n=\lim_{n\to\infty}S_n$$
+          <span class="def-label" data-lang="ko">발산 판정</span><span class="def-label" data-lang="en">Divergence test</span>
+          <p data-lang="ko">\(\lim_{n\to\infty}a_n\ne0\)이면 \(\sum a_n\)은 발산해요.</p>
+          <p data-lang="en">If \(\lim_{n\to\infty}a_n\ne0\), then \(\sum a_n\) diverges.</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\displaystyle\sum_{n=1}^{\infty}\frac{1}{n(n+1)}\): \(\frac1{k(k+1)}=\frac1k-\frac1{k+1}\)이므로 \(S_n=1-\frac1{n+1}\to1\). 합은 1이에요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\displaystyle\sum_{n=1}^{\infty}\frac{1}{n(n+1)}\): since \(\frac1{k(k+1)}=\frac1k-\frac1{k+1}\), \(S_n=1-\frac1{n+1}\to1\). The sum is 1.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 항 a_n(막대)과 부분합 S_n(점)을 함께 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">급수 고르기</span><span data-lang="en">Choose a series</span></legend>
+            <div class="seg" id="ps-pick">
+              <label><input type="radio" name="ps-pick" value="tel" checked><span>\(\sum\frac{1}{n(n+1)}\)</span></label>
+              <label><input type="radio" name="ps-pick" value="geo"><span>\(\sum\frac{1}{2^n}\)</span></label>
+              <label><input type="radio" name="ps-pick" value="alt"><span>\(1-1+1-\cdots\)</span></label>
+              <label><input type="radio" name="ps-pick" value="har"><span>\(\sum\frac1n\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="ps-canvas" role="img" data-i18n-attr="aria-label:ps.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="ps-d" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 5L5 0" style="stroke:var(--g-third);stroke-width:1.2"/></pattern></defs><rect x="10" y="1" width="16" height="10" style="fill:url(#ps-d);stroke:var(--g-third);stroke-width:1.5"/></svg>
+              <span data-lang="ko">항 \(a_n\) (빗금 막대)</span><span data-lang="en">term \(a_n\) (hatched bar)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/><circle cx="18" cy="6" r="4" style="fill:var(--g-main)"/></svg>
+              <span data-lang="ko">부분합 \(S_n\) (점과 실선)</span><span data-lang="en">partial sum \(S_n\) (dots and solid line)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">급수의 합 (긴 점선, 수렴할 때만)</span><span data-lang="en">sum of the series (long dashes, if convergent)</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th><span data-lang="ko">\(n\)번째 항</span><span data-lang="en">\(n\)-th term</span> \(a_n\)</th><td id="ps-a">—</td></tr>
+            <tr class="hl"><th><span data-lang="ko">부분합</span><span data-lang="en">Partial sum</span> \(S_n\)</th><td id="ps-s">—</td></tr>
+            <tr id="ps-gap-row"><th><span data-lang="ko">합과의 차이</span><span data-lang="en">Gap to the sum</span> \(|S-S_n|\)</th><td id="ps-gap">—</td></tr>
+          </tbody></table>
+          <p class="note" style="margin:6px 2px 0" id="ps-formula"></p>
+          <p class="verdict" id="ps-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ps-n"><span data-lang="ko">더한 항의 개수</span><span data-lang="en">Terms added</span> \(n\)</label>
+              <input id="ps-n" type="range" min="1" max="60" step="1" value="5">
+              <output id="ps-n-out" for="ps-n">5</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ps-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ps-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" data-lang="ko">막대(항)가 점점 짧아지는 것과 점(부분합)이 한 값에 멈추는 것은 다른 이야기예요. \(\sum\frac1n\)을 골라 보세요. 막대는 0으로 줄어드는데 점은 계속 올라가요.</p>
+          <p class="note" style="margin:12px 2px 0" data-lang="en">Bars (terms) shrinking is not the same as dots (partial sums) settling. Try \(\sum\frac1n\): the bars shrink to 0, yet the dots keep climbing.</p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\sum_{n=1}^{\infty}\frac{1}{(2n-1)(2n+1)}\)의 합을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\sum_{n=1}^{\infty}\frac{1}{(2n-1)(2n+1)}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-1-a" hidden>
+              <p data-lang="ko">\(\frac{1}{(2k-1)(2k+1)}=\frac12\left(\frac1{2k-1}-\frac1{2k+1}\right)\)이므로 중간 항이 서로 지워져서</p>
+              <p data-lang="en">Since \(\frac{1}{(2k-1)(2k+1)}=\frac12\left(\frac1{2k-1}-\frac1{2k+1}\right)\), the middle terms cancel:</p>
+              $$S_n=\frac12\left(1-\frac1{2n+1}\right)\ \longrightarrow\ \frac12$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\sum_{n=1}^{\infty}\frac{n}{n+1}\)의 수렴, 발산을 조사하시오.</p>
+            <p data-lang="en">Does \(\displaystyle\sum_{n=1}^{\infty}\frac{n}{n+1}\) converge or diverge?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-1-b" hidden>
+              <p data-lang="ko">\(\displaystyle\lim_{n\to\infty}\frac{n}{n+1}=1\ne0\)이므로 발산 판정에 의해 이 급수는 발산해요. 거의 1씩 계속 더하는 셈이니 부분합이 한없이 커져요.</p>
+              <p data-lang="en">\(\displaystyle\lim_{n\to\infty}\frac{n}{n+1}=1\ne0\), so by the divergence test the series diverges. You keep adding almost 1, so the partial sums grow without bound.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\lim a_n=0\)이면 \(\sum a_n\)은 수렴한다.</p>
+              <p data-lang="en">If \(\lim a_n=0\), then \(\sum a_n\) converges.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">거꾸로만 성립해요. 조화급수 \(\sum\frac1n\)은 항이 0으로 가지만 부분합이 한없이 커져요. \(\lim a_n=0\)은 수렴하기 위한 <strong>필요조건</strong>일 뿐이에요.</p>
+              <p data-lang="en">Only the converse holds. The harmonic series \(\sum\frac1n\) has terms going to 0, yet its partial sums grow without bound. \(\lim a_n=0\) is only a <strong>necessary</strong> condition.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\sum\frac1{2^n}\)의 값은 \(\lim\frac1{2^n}=0\)이다.</p>
+              <p data-lang="en">\(\sum\frac1{2^n}\) equals \(\lim\frac1{2^n}=0\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">급수의 합은 <strong>항의 극한</strong>이 아니라 <strong>부분합의 극한</strong>이에요. \(\sum\frac1{2^n}=1\)이에요. 그림에서 막대(항)와 점(부분합)을 비교해 보세요.</p>
+              <p data-lang="en">The sum is the limit of the <strong>partial sums</strong>, not of the <strong>terms</strong>. \(\sum\frac1{2^n}=1\). Compare the bars (terms) with the dots (partial sums).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s02-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>첫째항 \(a\), 공비 \(r\)인 등비수열을 끝없이 더한 것이 <strong>무한등비급수</strong>예요.</li>
+          <li>\(|r|\lt1\)이면 수렴하고 합은 \(\frac{a}{1-r}\), \(|r|\ge1\)이면 발산해요 (\(a\ne0\)).</li>
+          <li>순환소수를 분수로 바꿀 때도 쓸 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Adding a geometric sequence with first term \(a\) and ratio \(r\) forever gives an <strong>infinite geometric series</strong>.</li>
+          <li>If \(|r|\lt1\) it converges to \(\frac{a}{1-r}\); if \(|r|\ge1\) it diverges (\(a\ne0\)).</li>
+          <li>It also turns repeating decimals into fractions.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">무한등비급수의 합</span><span class="def-label" data-lang="en">Sum of an infinite geometric series</span>
+          $$\sum_{n=1}^{\infty}ar^{n-1}=a+ar+ar^2+\cdots=\frac{a}{1-r}\qquad(|r|\lt1)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(0.\dot3=\frac3{10}+\frac3{100}+\cdots=\dfrac{\frac3{10}}{1-\frac1{10}}=\frac13\), &nbsp; \(0.\dot9=\dfrac{\frac9{10}}{1-\frac1{10}}=1\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(0.\dot3=\frac3{10}+\frac3{100}+\cdots=\dfrac{\frac3{10}}{1-\frac1{10}}=\frac13\), &nbsp; \(0.\dot9=\dfrac{\frac9{10}}{1-\frac1{10}}=1\)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 첫째항 a, 공비 r 로 무한등비급수 만들기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <div class="viz-canvas-wrap">
+            <canvas id="gs-canvas" role="img" data-i18n-attr="aria-label:gs.canvas"></canvas>
+          </div>
+          <p class="mini-chart-title"><span data-lang="ko">➡️ 수직선 위에서 한 항씩 더해 가기 (위에서 아래로)</span><span data-lang="en">➡️ Adding one term at a time on the number line (top to bottom)</span></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="gs-steps" role="img" data-i18n-attr="aria-label:gs.steps"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/><circle cx="18" cy="6" r="4" style="fill:var(--g-main)"/></svg>
+              <span data-lang="ko">부분합 \(S_n\)</span><span data-lang="en">partial sum \(S_n\)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">합 \(\frac{a}{1-r}\) (긴 점선, \(|r|\lt1\)일 때만)</span><span data-lang="en">sum \(\frac{a}{1-r}\) (long dashes, only if \(|r|\lt1\))</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th><span data-lang="ko">부분합</span><span data-lang="en">Partial sum</span> \(S_n\)</th><td id="gs-s">—</td></tr>
+            <tr class="hl"><th>\(\frac{a}{1-r}\)</th><td id="gs-sum">—</td></tr>
+            <tr><th><span data-lang="ko">남은 차이</span><span data-lang="en">Remaining gap</span> \(\left|\frac{a}{1-r}-S_n\right|\)</th><td id="gs-gap">—</td></tr>
+          </tbody></table>
+          <p class="verdict" id="gs-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="gs-a"><span data-lang="ko">첫째항</span><span data-lang="en">First term</span> \(a\)</label>
+              <input id="gs-a" type="range" min="0.1" max="2" step="0.1" value="1">
+              <output id="gs-a-out" for="gs-a">1.0</output>
+            </div>
+            <div class="slider-row">
+              <label for="gs-r"><span data-lang="ko">공비</span><span data-lang="en">Ratio</span> \(r\)</label>
+              <input id="gs-r" type="range" min="-1.2" max="1.2" step="0.05" value="0.5">
+              <output id="gs-r-out" for="gs-r">0.50</output>
+            </div>
+            <div class="slider-row">
+              <label for="gs-n"><span data-lang="ko">더한 항의 개수</span><span data-lang="en">Terms added</span> \(n\)</label>
+              <input id="gs-n" type="range" min="1" max="40" step="1" value="6">
+              <output id="gs-n-out" for="gs-n">6</output>
+            </div>
+            <div class="control-buttons" id="gs-quick">
+              <button class="play-btn" id="gs-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+              <button class="btn btn-outline btn-sm" type="button" data-a="0.9" data-r="0.1">0.999⋯</button>
+              <button class="btn btn-outline btn-sm" type="button" data-a="0.5" data-r="0.5">½ + ¼ + ⋯</button>
+              <button class="btn btn-outline btn-sm" type="button" data-a="1" data-r="-0.5">r = −0.5</button>
+              <button class="btn btn-outline btn-sm" type="button" data-a="0.5" data-r="1">r = 1</button>
+            </div>
+          </div>
+          <p class="sr-only" id="gs-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\sum_{n=1}^{\infty}3\left(\frac23\right)^{n-1}\)의 합을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\sum_{n=1}^{\infty}3\left(\frac23\right)^{n-1}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-2-a" hidden>
+              <p data-lang="ko">첫째항 \(a=3\), 공비 \(r=\frac23\)이고 \(|r|\lt1\)이므로</p>
+              <p data-lang="en">First term \(a=3\), ratio \(r=\frac23\), and \(|r|\lt1\), so</p>
+              $$\frac{a}{1-r}=\frac{3}{1-\frac23}=9$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">급수 \(\displaystyle\sum_{n=1}^{\infty}(2x-1)^n\)이 수렴하도록 하는 \(x\)의 범위와 그때의 합을 구하시오.</p>
+            <p data-lang="en">For which \(x\) does \(\displaystyle\sum_{n=1}^{\infty}(2x-1)^n\) converge, and what is the sum?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-2-b" hidden>
+              <p data-lang="ko">첫째항과 공비가 모두 \(2x-1\)이에요. 첫째항이 0인 \(x=\frac12\)이면 모든 항이 0이라 합은 0으로 수렴하고, 그 밖에는 \(|2x-1|\lt1\)이어야 해요. 두 경우를 합치면</p>
+              <p data-lang="en">Both the first term and the ratio are \(2x-1\). If \(x=\frac12\), every term is 0 and the sum is 0; otherwise we need \(|2x-1|\lt1\). Together:</p>
+              $$-1\lt2x-1\lt1\iff 0\lt x\lt1,\qquad \sum_{n=1}^{\infty}(2x-1)^n=\frac{2x-1}{1-(2x-1)}=\frac{2x-1}{2-2x}$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">등비수열처럼 \(-1\lt r\le1\)이면 무한등비급수도 수렴한다.</p>
+              <p data-lang="en">Like the geometric sequence, the series converges for \(-1\lt r\le1\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">급수는 \(|r|\lt1\)일 때만 수렴해요 (\(a\ne0\)). \(r=1\)이면 \(a+a+a+\cdots\)라 한없이 커져요. 그림의 [r = 1] 버튼으로 확인해 보세요.</p>
+              <p data-lang="en">The series converges only for \(|r|\lt1\) (\(a\ne0\)). With \(r=1\) it's \(a+a+a+\cdots\), which grows without bound. Try the [r = 1] button.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\sum_{n=1}^{\infty}\left(\frac12\right)^{n}\)의 합은 \(\frac{1}{1-\frac12}=2\)이다.</p>
+              <p data-lang="en">\(\sum_{n=1}^{\infty}\left(\frac12\right)^{n}=\frac{1}{1-\frac12}=2\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">공식의 \(a\)는 <strong>첫째항</strong>이에요. 여기서 첫째항은 \(\frac12\)이라 합은 \(\frac{\frac12}{1-\frac12}=1\)이에요. 시작 번호(\(n=1\) 또는 \(n=0\))를 꼭 확인하세요.</p>
+              <p data-lang="en">In the formula, \(a\) is the <strong>first term</strong>. Here it is \(\frac12\), so the sum is \(\frac{\frac12}{1-\frac12}=1\). Always check where the index starts.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s02-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>부분합을 직접 구하기 어려울 때, 부분합 없이 수렴·발산을 판정하는 방법이 있어요.</li>
+          <li><strong>양항급수</strong>(모든 항 ≥ 0)는 부분합이 유계이면 수렴해요. 더 큰 급수·작은 급수와 <strong>비교</strong>할 수도 있어요.</li>
+          <li>부호가 번갈아 나오는 <strong>교대급수</strong>는 항의 크기가 줄어들며 0으로 가면 수렴해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>When partial sums are hard to find, some tests decide convergence without them.</li>
+          <li>A <strong>series of positive terms</strong> converges iff its partial sums are bounded; we can also <strong>compare</strong> with a larger or smaller series.</li>
+          <li>An <strong>alternating series</strong> converges if the sizes of its terms decrease to 0.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">비교 판정법 (\(0\le a_n\le b_n\))</span><span class="def-label" data-lang="en">Comparison test (\(0\le a_n\le b_n\))</span>
+          <p data-lang="ko">\(\sum b_n\)이 수렴하면 \(\sum a_n\)도 수렴하고, \(\sum a_n\)이 발산하면 \(\sum b_n\)도 발산해요.</p>
+          <p data-lang="en">If \(\sum b_n\) converges, so does \(\sum a_n\); if \(\sum a_n\) diverges, so does \(\sum b_n\).</p>
+          <span class="def-label" data-lang="ko">교대급수 판정법 (\(b_n\ge b_{n+1}\ge0\))</span><span class="def-label" data-lang="en">Alternating series test (\(b_n\ge b_{n+1}\ge0\))</span>
+          $$\sum_{n=1}^{\infty}(-1)^{n+1}b_n\ \text{converges}\iff \lim_{n\to\infty}b_n=0$$
+          <p class="note" data-lang="ko">(converges = 수렴한다)</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 조화급수 \(1+\frac12+\frac13+\cdots\)는 항이 0으로 가는데도 발산해요. 교대조화급수 \(1-\frac12+\frac13-\cdots\)는 수렴해요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> The harmonic series \(1+\frac12+\frac13+\cdots\) diverges even though its terms go to 0. The alternating harmonic series \(1-\frac12+\frac13-\cdots\) converges.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 비교 판정법(수렴/발산), 교대급수 판정법 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">판정법 고르기</span><span data-lang="en">Choose a test</span></legend>
+            <div class="seg" id="ct-pick">
+              <label><input type="radio" name="ct-pick" value="up" checked><span><span data-lang="ko">비교: 위에서 막기</span><span data-lang="en">Compare: cap from above</span></span></label>
+              <label><input type="radio" name="ct-pick" value="down"><span><span data-lang="ko">비교: 아래에서 밀기</span><span data-lang="en">Compare: push from below</span></span></label>
+              <label><input type="radio" name="ct-pick" value="alt"><span><span data-lang="ko">교대급수</span><span data-lang="en">Alternating</span></span></label>
+            </div>
+          </fieldset>
+          <div class="def-box" style="margin-bottom:10px">
+            <p data-ct="up">$$\frac1{k^2}\le\frac1{k(k-1)}\ (k\ge2)\ \Longrightarrow\ \sum_{k=1}^{n}\frac1{k^2}\le1+\sum_{k=2}^{n}\frac1{k(k-1)}=2-\frac1n\lt2$$</p>
+            <p data-ct="down" hidden>$$1+\frac12+\Big(\frac13+\frac14\Big)+\Big(\frac15+\cdots+\frac18\Big)+\cdots\ \ge\ 1+\frac12+\frac12+\frac12+\cdots$$</p>
+            <p data-ct="alt" hidden>$$1-\frac12+\frac13-\frac14+\cdots,\qquad b_n=\frac1n:\ \ b_1\ge b_2\ge b_3\ge\cdots,\ \ b_n\to0$$</p>
+          </div>
+          <div class="viz-canvas-wrap">
+            <canvas id="ct-canvas" role="img" data-i18n-attr="aria-label:ct.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ct-legend"></ul>
+          <table class="readout-table"><tbody id="ct-table"></tbody></table>
+          <p class="verdict" id="ct-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ct-n"><span data-lang="ko">더한 항의 개수</span><span data-lang="en">Terms added</span> \(n\)</label>
+              <input id="ct-n" type="range" min="1" max="64" step="1" value="8">
+              <output id="ct-n-out" for="ct-n">8</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ct-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ct-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\sum_{n=1}^{\infty}\frac{1}{n^2+n+1}\)의 수렴, 발산을 조사하시오.</p>
+            <p data-lang="en">Does \(\displaystyle\sum_{n=1}^{\infty}\frac{1}{n^2+n+1}\) converge?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-3-a" hidden>
+              <p data-lang="ko">모든 항이 양수이고 \(\frac{1}{n^2+n+1}\lt\frac{1}{n(n+1)}\)이에요. 오른쪽 급수 \(\sum\frac1{n(n+1)}\)은 1에 수렴하므로(02-①), 비교 판정법에 의해 주어진 급수도 수렴해요.</p>
+              <p data-lang="en">All terms are positive and \(\frac{1}{n^2+n+1}\lt\frac{1}{n(n+1)}\). Since \(\sum\frac1{n(n+1)}\) converges to 1 (02-①), the comparison test says the given series converges.</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\sum_{n=1}^{\infty}\frac{1}{\sqrt n}\)과 \(\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{\sqrt n}\)의 수렴, 발산을 각각 조사하시오.</p>
+            <p data-lang="en">Decide whether \(\displaystyle\sum_{n=1}^{\infty}\frac{1}{\sqrt n}\) and \(\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{\sqrt n}\) converge.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-02-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-02-3-b" hidden>
+              <p data-lang="ko">\(\frac1{\sqrt n}\ge\frac1n\)이고 \(\sum\frac1n\)이 발산하므로, 비교 판정법에 의해 \(\sum\frac1{\sqrt n}\)은 발산해요.</p>
+              <p data-lang="en">\(\frac1{\sqrt n}\ge\frac1n\) and \(\sum\frac1n\) diverges, so by comparison \(\sum\frac1{\sqrt n}\) diverges.</p>
+              <p data-lang="ko">반면 \(b_n=\frac1{\sqrt n}\)은 감소하고 0으로 가므로, 교대급수 판정법에 의해 \(\sum\frac{(-1)^{n+1}}{\sqrt n}\)은 수렴해요. 부호만 바뀌어도 결과가 달라질 수 있어요.</p>
+              <p data-lang="en">But \(b_n=\frac1{\sqrt n}\) decreases to 0, so by the alternating series test \(\sum\frac{(-1)^{n+1}}{\sqrt n}\) converges. Changing only the signs can change the answer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(a_n\le b_n\)이고 큰 쪽 \(\sum b_n\)이 발산하면, 작은 쪽 \(\sum a_n\)도 발산한다.</p>
+              <p data-lang="en">If \(a_n\le b_n\) and the larger \(\sum b_n\) diverges, the smaller \(\sum a_n\) diverges too.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">아무것도 알 수 없어요. 예를 들어 \(\frac1{n^2}\le\frac1n\)이고 \(\sum\frac1n\)은 발산하지만 \(\sum\frac1{n^2}\)은 수렴해요. 비교 판정법은 <strong>큰 쪽이 수렴</strong>하거나 <strong>작은 쪽이 발산</strong>할 때만 써요.</p>
+              <p data-lang="en">Nothing follows. E.g. \(\frac1{n^2}\le\frac1n\), and \(\sum\frac1n\) diverges, yet \(\sum\frac1{n^2}\) converges. Use the test only when the <strong>larger converges</strong> or the <strong>smaller diverges</strong>.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">부호가 번갈아 바뀌는 급수는 항상 수렴한다.</p>
+              <p data-lang="en">Any series with alternating signs converges.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">항의 크기 \(b_n\)이 줄어들면서 <strong>0으로 가야</strong> 해요. \(\sum(-1)^{n+1}\frac{n}{n+1}\)은 \(b_n\to1\)이라 발산해요.</p>
+              <p data-lang="en">The sizes \(b_n\) must decrease <strong>to 0</strong>. \(\sum(-1)^{n+1}\frac{n}{n+1}\) has \(b_n\to1\), so it diverges.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 02-① 무한급수의 뜻: 항(막대)과 부분합(점) */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var NN = $('ps-n');
+
+  // S: 급수의 합 (발산이면 null), type: conv / inf / osc
+  var SER = {
+    tel: { a: function (n) { return 1 / (n * (n + 1)); }, S: 1, type: 'conv',
+           f: { ko: '부분합 공식: \\(S_n=1-\\frac{1}{n+1}\\) (중간 항이 서로 지워져요)', en: 'Formula: \\(S_n=1-\\frac{1}{n+1}\\) (middle terms cancel)' } },
+    geo: { a: function (n) { return Math.pow(0.5, n); }, S: 1, type: 'conv',
+           f: { ko: '부분합 공식: \\(S_n=1-\\frac{1}{2^n}\\) (남은 거리가 매번 절반으로)', en: 'Formula: \\(S_n=1-\\frac{1}{2^n}\\) (the remaining gap halves each time)' } },
+    alt: { a: function (n) { return n % 2 ? 1 : -1; }, S: null, type: 'osc',
+           f: { ko: '부분합: \\(1, 0, 1, 0, \\cdots\\) (한 값에 머물지 않아요)', en: 'Partial sums: \\(1, 0, 1, 0, \\cdots\\) (never settle)' } },
+    har: { a: function (n) { return 1 / n; }, S: null, type: 'inf',
+           f: { ko: '\\(S_n\\)은 대략 \\(\\ln n+0.577\\)만큼 커져요. 느리지만 끝없이 커져요.', en: '\\(S_n\\) grows like \\(\\ln n+0.577\\) — slowly, but without bound.' } }
+  };
+  var K = document.querySelector('input[name="ps-pick"]:checked').value;
+  function partial(n) { var s = 0; for (var k = 1; k <= n; k++) s += SER[K].a(k); return s; }
+
+  var g = Graph.create($('ps-canvas'), { xMin: 0, xMax: 10, yMin: -0.2, yMax: 1.2, aspect: 0.72, maxHeight: 340 });
+  g.render = function () {
+    var M = SER[K], n = +NN.value, c = g.c, xMax = Math.max(10, n + 2);
+    var lo = 0, hi = 1, s = 0, sums = [];
+    for (var k = 1; k <= n; k++) { s += M.a(k); sums.push(s); lo = Math.min(lo, M.a(k), s); hi = Math.max(hi, M.a(k), s); }
+    var pad = (hi - lo) * 0.1 + 0.08;
+    g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: lo - pad, yMax: hi + pad });
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: '' });
+    var w = Math.min(0.6, 0.6 * 20 / Math.max(20, n));
+    for (k = 1; k <= n; k++) g.rect(k - w / 2, 0, k + w / 2, M.a(k), { fill: c.fillThird, hatch: 'd', hatchColor: c.third, stroke: c.third, width: 1 });
+    if (M.S !== null) {
+      g.hline(M.S, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMin, M.S, (ko() ? '합 ' : 'sum ') + M.S, { color: c.accent, align: 'left', dx: 36, dy: -14, bold: true });
+    }
+    for (k = 1; k < n; k++) g.line(k, sums[k - 1], k + 1, sums[k], { color: c.main, width: 2 });
+    var r = n > 40 ? 3 : 4.5;
+    for (k = 1; k < n; k++) g.point(k, sums[k - 1], { color: c.main, r: r });
+    g.point(n, sums[n - 1], { color: c.accent, r: 7, label: 'S' + sub(n) + ' = ' + fmt(sums[n - 1], 4), labelStyle: { bold: true } });
+  };
+  function sub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  function verdictText() {
+    var T = {
+      conv: { ko: '수렴: 부분합이 ' + SER[K].S + '에 한없이 가까워져요. 급수의 합은 ' + SER[K].S + '이에요.', en: 'Converges: the partial sums approach ' + SER[K].S + '. The sum is ' + SER[K].S + '.' },
+      inf:  { ko: '발산: 항은 0으로 가는데도 부분합은 한없이 커져요.', en: 'Diverges: the terms go to 0, yet the partial sums grow without bound.' },
+      osc:  { ko: '발산(진동): 부분합이 1과 0을 오가요. 항이 0으로 가지 않으니 발산해요.', en: 'Diverges (oscillates): the partial sums alternate 1, 0. The terms don\'t go to 0.' }
+    };
+    return T[SER[K].type][Site.lang()];
+  }
+
+  function update() {
+    var M = SER[K], n = +NN.value, s = partial(n);
+    $('ps-a').textContent = fmt(M.a(n), 5);
+    $('ps-s').textContent = fmt(s, 5);
+    $('ps-gap-row').hidden = M.S === null;
+    if (M.S !== null) $('ps-gap').textContent = fmt(Math.abs(M.S - s), 5);
+    var el = $('ps-verdict');
+    el.className = 'verdict ' + (M.type === 'conv' ? 'ok' : 'no');
+    el.textContent = (M.type === 'conv' ? '✓ ' : '→ ') + verdictText();
+    g.draw();
+  }
+  function setSeries(k) {
+    K = k;
+    var f = $('ps-formula');
+    f.innerHTML = SER[k].f[Site.lang()];
+    if (window.renderMathInElement) renderMathInElement(f, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+
+  Graph.bindSlider(NN, $('ps-n-out'), { format: function (v) { return String(v); }, onInput: function () { update(); } });
+  $('ps-pick').addEventListener('change', function (e) { setSeries(e.target.value); });
+  NN.addEventListener('change', function () { $('ps-live').textContent = 'n = ' + NN.value + ', Sₙ = ' + fmt(partial(+NN.value), 4) + '. ' + verdictText(); });
+  Graph.player({ button: $('ps-play'), input: NN, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setSeries(K); else g.draw(); });
+  setSeries(K);
+});
+
+/* 02-② 무한등비급수: a, r 로 급수 만들기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var A = $('gs-a'), R = $('gs-r'), NN = $('gs-n');
+
+  function sums() {
+    var a = +A.value, r = +R.value, n = +NN.value, s = 0, out = [0];
+    for (var k = 1; k <= n; k++) { s += a * Math.pow(r, k - 1); out.push(s); }
+    return out;   // out[k] = S_k, out[0] = 0
+  }
+  function conv() { return Math.abs(+R.value) < 1 - 1e-9; }
+  function total() { return +A.value / (1 - +R.value); }
+
+  var g = Graph.create($('gs-canvas'), { xMin: 0, xMax: 10, yMin: 0, yMax: 2, aspect: 0.62, maxHeight: 300 });
+  g.render = function () {
+    var S = sums(), n = S.length - 1, c = g.c, xMax = Math.max(10, n + 2);
+    var lo = 0, hi = 0;
+    S.forEach(function (v) { lo = Math.min(lo, v); hi = Math.max(hi, v); });
+    if (conv()) { lo = Math.min(lo, total()); hi = Math.max(hi, total()); }
+    var pad = (hi - lo) * 0.12 + 0.1;
+    g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: lo - pad, yMax: hi + pad });
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'Sₙ' });
+    if (conv()) {
+      g.hline(total(), { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMin, total(), 'a/(1−r) = ' + fmt(total(), 3), { color: c.accent, align: 'left', dx: 36, dy: -14, bold: true });
+    }
+    for (var k = 1; k < n; k++) g.line(k, S[k], k + 1, S[k + 1], { color: c.main, width: 2 });
+    for (k = 1; k < n; k++) g.point(k, S[k], { color: c.main, r: n > 25 ? 3.2 : 4.5 });
+    g.point(n, S[n], { color: c.accent, r: 7, label: 'S' + sub(n) + ' = ' + fmt(S[n], 4), labelStyle: { bold: true } });
+  };
+  function sub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  // 수직선 위 계단: k번째 줄에서 S(k−1) → S(k) 화살표
+  var st = Graph.create($('gs-steps'), { xMin: -0.2, xMax: 2.2, yMin: -8, yMax: 0.5, aspect: 0.42, minHeight: 170, maxHeight: 220 });
+  st.render = function () {
+    var S = sums(), n = S.length - 1, c = st.c, rows = Math.min(n, 8);
+    var lo = 0, hi = 0;
+    for (var k = 0; k <= rows; k++) { lo = Math.min(lo, S[k]); hi = Math.max(hi, S[k]); }
+    if (conv()) { lo = Math.min(lo, total()); hi = Math.max(hi, total()); }
+    var pad = (hi - lo) * 0.1 + 0.05;
+    st.setView({ xMin: lo - pad, xMax: hi + pad, yMin: -rows - 0.6, yMax: 0.6 });
+    st.clear();
+    st.line(st.o.xMin, 0, st.o.xMax, 0, { color: c.axis, width: 1.5 });
+    st.point(0, 0, { color: c.axis, r: 4 });
+    st.label(0, 0, '0', { color: c.text2, dy: -12 });
+    if (conv()) {
+      st.vline(total(), { color: c.accent, width: 2, dash: [8, 5] });
+      st.label(total(), 0, 'a/(1−r)', { color: c.accent, dy: -12, bold: true });
+    }
+    for (k = 1; k <= rows; k++) {
+      var x0 = S[k - 1], x1 = S[k], y = -k;
+      st.line(x0, y, x1, y, { color: c.main, width: 3 });
+      var dir = x1 >= x0 ? -1 : 1, px = st.X(x1), py = st.Y(y), ctx = st.ctx;   // 화살촉
+      ctx.save(); ctx.fillStyle = c.main; ctx.beginPath();
+      ctx.moveTo(px, py); ctx.lineTo(px + dir * 8, py - 5); ctx.lineTo(px + dir * 8, py + 5); ctx.fill(); ctx.restore();
+      st.line(x1, y, x1, y - 1 + 0.15, { color: c.text2, width: 1, dash: [2, 3] });
+      st.label(st.o.xMin, y, '+a' + (k > 1 ? 'r' + (k > 2 ? sup(k - 1) : '') : ''), { color: c.text2, align: 'left', dx: 4 });
+    }
+    if (n > rows) st.label((st.o.xMin + st.o.xMax) / 2, -rows, '⋯', { color: c.text2, dy: 14, bold: true });
+  };
+  function sup(k) { return String(k).replace(/\d/g, function (d) { return '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]; }); }
+
+  function verdictText() {
+    var r = +R.value;
+    if (conv()) return { ok: true, text: ko() ? '|r| < 1 이므로 수렴하고, 합은 a/(1−r) = ' + fmt(total(), 4) + '이에요.' : '|r| < 1, so it converges to a/(1−r) = ' + fmt(total(), 4) + '.' };
+    if (Math.abs(r - 1) < 1e-9) return { ok: false, text: ko() ? 'r = 1 이므로 a + a + a + ⋯ 가 되어 한없이 커져요 (발산).' : 'r = 1 gives a + a + a + ⋯, which grows without bound (diverges).' };
+    if (r > 1) return { ok: false, text: ko() ? 'r > 1 이므로 항이 점점 커져서 발산해요.' : 'r > 1: the terms grow, so it diverges.' };
+    return { ok: false, text: ko() ? 'r ≤ −1 이므로 부분합이 크게 흔들리며 발산해요.' : 'r ≤ −1: the partial sums swing wildly and diverge.' };
+  }
+
+  function update() {
+    var S = sums(), n = S.length - 1;
+    // 차이가 아주 작으면 자릿수를 늘린다 (0.999999 가 1.00000 으로 반올림되어 보이지 않게)
+    var gap = conv() ? Math.abs(total() - S[n]) : 1;
+    var d = gap < 1e-4 ? 10 : gap < 1e-2 ? 7 : 5;
+    $('gs-s').textContent = fmt(S[n], d);
+    $('gs-sum').textContent = conv() ? fmt(total(), 5) : (ko() ? '공식 사용 불가' : 'formula invalid');
+    $('gs-gap').textContent = conv() ? (gap < 1e-10 ? (ko() ? '0에 아주 가까움' : 'almost 0') : fmt(gap, d)) : '—';
+    var v = verdictText(), el = $('gs-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw(); st.draw();
+  }
+
+  Graph.bindSlider(A, $('gs-a-out'), { format: function (v) { return fmt(v, 1); }, onInput: update });
+  Graph.bindSlider(R, $('gs-r-out'), { format: function (v) { return fmt(v); }, onInput: update });
+  Graph.bindSlider(NN, $('gs-n-out'), { format: function (v) { return String(v); }, onInput: update });
+  $('gs-quick').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-a]');
+    if (!b) return;
+    A.value = b.getAttribute('data-a'); R.value = b.getAttribute('data-r');
+    A.dispatchEvent(new Event('input')); R.dispatchEvent(new Event('input'));
+    $('gs-live').textContent = 'a = ' + A.value + ', r = ' + R.value + '. ' + verdictText().text;
+  });
+  [A, R, NN].forEach(function (el) { el.addEventListener('change', function () { $('gs-live').textContent = verdictText().text; }); });
+  Graph.player({ button: $('gs-play'), input: NN, duration: 7000 });
+  document.addEventListener('settingschange', function () { update(); });
+});
+
+/* 02-③ 수렴 판정법: 비교(위에서 막기 / 아래에서 밀기), 교대급수 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var NN = $('ct-n');
+  var LN2 = Math.LN2, PI26 = Math.PI * Math.PI / 6;
+
+  function sq(n) { var s = 0; for (var k = 1; k <= n; k++) s += 1 / (k * k); return s; }
+  function cap(n) { return 2 - 1 / n; }
+  function har(n) { var s = 0; for (var k = 1; k <= n; k++) s += 1 / k; return s; }
+  function floorBound(n) { return 1 + Math.floor(Math.log2(n) + 1e-12) / 2; }
+  function alt(n) { var s = 0; for (var k = 1; k <= n; k++) s += (k % 2 ? 1 : -1) / k; return s; }
+
+  var mode = document.querySelector('input[name="ct-pick"]:checked').value;
+  var g = Graph.create($('ct-canvas'), { xMin: 0, xMax: 10, yMin: 0, yMax: 2.2, aspect: 0.7, maxHeight: 330 });
+
+  g.render = function () {
+    var n = +NN.value, c = g.c, xMax = Math.max(12, n + 3), k, r = n > 40 ? 3 : 4.2;
+    if (mode === 'up') {
+      g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: -0.1, yMax: 2.35 });
+      g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: '' });
+      g.hline(2, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMin, 2, ko() ? '위쪽 벽 2' : 'ceiling 2', { color: c.accent, align: 'left', dx: 36, dy: -14, bold: true });
+      for (k = 1; k < n; k++) g.line(k, cap(k), k + 1, cap(k + 1), { color: c.third, width: 2, dash: [2, 4] });
+      for (k = 1; k <= n; k++) g.point(k, cap(k), { color: c.third, filled: false, r: r });
+      for (k = 1; k < n; k++) g.line(k, sq(k), k + 1, sq(k + 1), { color: c.main, width: 2.5 });
+      for (k = 1; k <= n; k++) g.point(k, sq(k), { color: c.main, r: r });
+      g.label(n, cap(n), ko() ? '큰 급수' : 'larger', { color: c.third, align: 'right', dx: -8, dy: -14, bold: true });
+      g.label(n, sq(n), ko() ? '∑ 1/n²' : '∑ 1/n²', { color: c.main, align: 'right', dx: -8, dy: 16, bold: true });
+    } else if (mode === 'down') {
+      var top = Math.max(har(n), floorBound(n)) + 0.5;
+      g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: -0.1, yMax: Math.max(3, top) });
+      g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: '' });
+      // 아래 계단 (묶음 하한)
+      for (k = 1; k <= n; k++) {
+        var b = floorBound(k);
+        g.line(k, b, k + 1, b, { color: c.third, width: 2.5, dash: [2, 4] });
+        if (k > 1 && floorBound(k - 1) !== b) g.line(k, floorBound(k - 1), k, b, { color: c.third, width: 2.5, dash: [2, 4] });
+      }
+      for (k = 1; k < n; k++) g.line(k, har(k), k + 1, har(k + 1), { color: c.main, width: 2.5 });
+      for (k = 1; k <= n; k++) g.point(k, har(k), { color: c.main, r: r });
+      g.label(n, har(n), '∑ 1/n', { color: c.main, align: 'right', dx: -8, dy: -14, bold: true });
+      g.label(n, floorBound(n), ko() ? '아래 계단 (2ᵏ마다 +½)' : 'stairs (+½ at each 2ᵏ)', { color: c.third, align: 'right', dx: -8, dy: 16, bold: true });
+    } else {
+      g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: 0.35, yMax: 1.08 });
+      g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'Sₙ' });
+      // 극한값은 S_n 과 S_(n+1) 사이에 있다
+      var lo = Math.min(alt(n), alt(n + 1)), hi = Math.max(alt(n), alt(n + 1));
+      g.band('y', lo, hi, { fill: c.fillThird, hatch: 'h', hatchColor: c.third, stroke: c.third });
+      g.hline(LN2, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMin, LN2, 'ln 2 ≈ 0.693', { color: c.accent, align: 'left', dx: 36, dy: 14, bold: true });
+      for (k = 1; k < n; k++) g.line(k, alt(k), k + 1, alt(k + 1), { color: c.main, width: 2 });
+      for (k = 1; k <= n; k++) g.point(k, alt(k), { color: c.main, r: r, filled: k % 2 === 1 });
+      g.point(n, alt(n), { color: c.accent, r: 7, label: 'S' + sub(n) + ' = ' + fmt(alt(n), 4), labelStyle: { bold: true } });
+    }
+  };
+  function sub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  var LEG = {
+    up: { ko: [['main', '∑ 1/n²의 부분합 (실선, 채운 점)'], ['third', '큰 급수 1 + ∑ 1/(n(n−1))의 부분합 = 2 − 1/n (점선, 빈 점)'], ['accent', '위쪽 벽 2 (긴 점선)']],
+          en: [['main', 'partial sums of ∑ 1/n² (solid, filled dots)'], ['third', 'larger series 1 + ∑ 1/(n(n−1)) = 2 − 1/n (dotted, open dots)'], ['accent', 'ceiling 2 (long dashes)']] },
+    down: { ko: [['main', '조화급수 ∑ 1/n의 부분합 (실선)'], ['third', '묶음 하한 1 + ⌊log₂n⌋/2 (점선 계단)']],
+            en: [['main', 'partial sums of the harmonic series (solid)'], ['third', 'grouping lower bound 1 + ⌊log₂n⌋/2 (dotted stairs)']] },
+    alt: { ko: [['main', '부분합 Sₙ (홀수 번째 ●, 짝수 번째 ○)'], ['accent', '극한값 ln 2 (긴 점선)'], ['third', 'Sₙ과 Sₙ₊₁ 사이 (가로 빗금): 극한값이 이 안에 있어요']],
+           en: [['main', 'partial sums Sₙ (odd ●, even ○)'], ['accent', 'limit ln 2 (long dashes)'], ['third', 'between Sₙ and Sₙ₊₁ (hatched): the limit lies inside']] }
+  };
+  var SWATCH = {
+    main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+    third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+    accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>'
+  };
+
+  function rows(n) {
+    if (mode === 'up') return [
+      ['∑ 1/k² (k ≤ n)', fmt(sq(n), 5)], [ko() ? '큰 급수 2 − 1/n' : 'larger: 2 − 1/n', fmt(cap(n), 5)],
+      [ko() ? '실제 합 π²/6' : 'actual sum π²/6', fmt(PI26, 5)]];
+    if (mode === 'down') return [
+      ['∑ 1/k (k ≤ n)', fmt(har(n), 5)], [ko() ? '아래 계단 1 + ⌊log₂n⌋/2' : 'stairs 1 + ⌊log₂n⌋/2', fmt(floorBound(n), 1)],
+      [ko() ? '계단이 다음에 오르는 n' : 'next step up at n', String(Math.pow(2, Math.floor(Math.log2(n) + 1e-12) + 1))]];
+    return [
+      ['Sₙ', fmt(alt(n), 5)], ['ln 2', fmt(LN2, 5)],
+      ['|Sₙ − ln 2|', fmt(Math.abs(alt(n) - LN2), 5)],
+      [ko() ? '다음 항의 크기 1/(n+1) (오차는 이보다 작아요)' : 'next term 1/(n+1) (the error is smaller)', fmt(1 / (n + 1), 5)]];
+  }
+  function verdict() {
+    var T = {
+      up: { ko: '∑ 1/n²의 부분합은 계속 커지지만 큰 급수(→ 2)에 막혀 2를 넘지 못해요. 유계이므로 수렴해요.', en: 'The partial sums of ∑ 1/n² keep rising but are capped below 2 by the larger series. Bounded, so it converges.' },
+      down: { ko: '아래 계단이 끝없이 올라가므로 그 위에 있는 조화급수도 한없이 커져요. 발산해요.', en: 'The stairs below climb forever, so the harmonic series above them grows without bound. It diverges.' },
+      alt: { ko: '부분합이 ln 2 위아래를 번갈아 오가고, 그 폭(다음 항의 크기)이 0으로 줄어들어요. 수렴해요.', en: 'The partial sums alternate above and below ln 2, and the gap (next term size) shrinks to 0. It converges.' }
+    };
+    return { ok: mode !== 'down', text: T[mode][Site.lang()] };
+  }
+
+  function update() {
+    var n = +NN.value;
+    $('ct-table').innerHTML = rows(n).map(function (r, i) { return '<tr' + (i === 0 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var v = verdict(), el = $('ct-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    document.querySelectorAll('[data-ct]').forEach(function (p) { p.hidden = p.getAttribute('data-ct') !== m; });
+    $('ct-legend').innerHTML = LEG[m][Site.lang()].map(function (it) {
+      return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SWATCH[it[0]] + '</svg><span>' + it[1] + '</span></li>';
+    }).join('');
+    update();
+  }
+
+  Graph.bindSlider(NN, $('ct-n-out'), { format: function (v) { return String(v); }, onInput: function () { update(); } });
+  $('ct-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  NN.addEventListener('change', function () { $('ct-live').textContent = 'n = ' + NN.value + '. ' + verdict().text; });
+  Graph.player({ button: $('ct-play'), input: NN, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+</script>
+</body>
+</html>

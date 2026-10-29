@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit3" data-chapter="10">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s10-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s10-1" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(F'(x)=f(x)\)일 때 \(F\)를 \(f\)의 <strong>역도함수</strong>라고 해요. 미분을 거꾸로 한 것이에요.</li>
+          <li>상수는 미분하면 0이라, 역도함수는 상수만큼 차이 나는 것이 무수히 많아요. 이것을 모두 모은 것이 <strong>부정적분</strong>이에요.</li>
+          <li>그래서 부정적분에는 반드시 <strong>적분상수 \(C\)</strong>를 붙여요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>If \(F'(x)=f(x)\), then \(F\) is an <strong>antiderivative</strong> of \(f\) — differentiation in reverse.</li>
+          <li>Constants vanish when differentiated, so antiderivatives differ by constants; all of them together form the <strong>indefinite integral</strong>.</li>
+          <li>That's why an indefinite integral always carries a <strong>constant \(C\)</strong>.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">부정적분</span><span class="def-label" data-lang="en">Indefinite integral</span>
+          $$\int f(x)\,dx=F(x)+C\qquad\left(F'(x)=f(x)\right)$$
+          $$\int k\,f(x)\,dx=k\int f(x)\,dx,\qquad \int\{f(x)\pm g(x)\}\,dx=\int f(x)\,dx\pm\int g(x)\,dx$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int(3x^2+2x)\,dx=x^3+x^2+C\). 확인: \((x^3+x^2+C)'=3x^2+2x\) ✓</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int(3x^2+2x)\,dx=x^3+x^2+C\). Check: \((x^3+x^2+C)'=3x^2+2x\) ✓</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s10-2" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>미분 공식을 거꾸로 읽으면 여러 함수의 부정적분 공식을 얻어요.</li>
+          <li>\(x^r\)은 지수를 1 올리고 그 수로 나눠요. 단 \(r=-1\)일 때는 \(\ln|x|\)가 돼요.</li>
+          <li>지수함수와 삼각함수도 도함수 공식을 거꾸로 이용해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Reading derivative formulas backward gives integral formulas.</li>
+          <li>For \(x^r\), raise the power by 1 and divide by it — except \(r=-1\), which gives \(\ln|x|\).</li>
+          <li>Exponential and trig integrals also reverse the derivative formulas.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">기본 부정적분 (\(C\)는 적분상수)</span><span class="def-label" data-lang="en">Basic integrals (\(C\) is a constant)</span>
+          $$\int x^r\,dx=\frac{x^{r+1}}{r+1}+C\ (r\ne-1),\qquad \int\frac1x\,dx=\ln|x|+C$$
+          $$\int e^x\,dx=e^x+C,\qquad \int a^x\,dx=\frac{a^x}{\ln a}+C$$
+          $$\int\sin x\,dx=-\cos x+C,\quad \int\cos x\,dx=\sin x+C,\quad \int\sec^2x\,dx=\tan x+C$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\sqrt x\,dx=\int x^{\frac12}dx=\frac23x^{\frac32}+C\), &nbsp; \(\int\left(\frac2x+e^x\right)dx=2\ln|x|+e^x+C\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\sqrt x\,dx=\int x^{\frac12}dx=\frac23x^{\frac32}+C\), &nbsp; \(\int\left(\frac2x+e^x\right)dx=2\ln|x|+e^x+C\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s10-3" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>모르는 함수의 <strong>도함수가 들어 있는 방정식</strong>을 미분방정식이라 하고, 그 식을 만족하는 함수를 해라고 해요.</li>
+          <li>\(\frac{dy}{dx}=f(x)\) 꼴은 양변을 적분하면 해가 \(y=F(x)+C\)로 나와요.</li>
+          <li>\(y(x_0)=y_0\) 같은 <strong>초깃값</strong>이 주어지면 \(C\)가 하나로 정해져요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>An equation involving the <strong>derivative of an unknown function</strong> is a differential equation; a function satisfying it is a solution.</li>
+          <li>For \(\frac{dy}{dx}=f(x)\), integrating both sides gives \(y=F(x)+C\).</li>
+          <li>An <strong>initial value</strong> such as \(y(x_0)=y_0\) pins down \(C\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">초깃값 문제</span><span class="def-label" data-lang="en">Initial value problem</span>
+          $$\frac{dy}{dx}=2x,\ \ y(0)=3\ \Longrightarrow\ y=x^2+C,\ \ 3=0+C\ \Longrightarrow\ y=x^2+3$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 뜨거운 물체가 식는 속도는 주위와의 온도 차에 비례해요: \(\frac{dT}{dt}=-k(T-T_0)\). 해는 \(T=T_0+(T(0)-T_0)e^{-kt}\)이에요 (뉴턴의 냉각 법칙).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> A hot object cools at a rate proportional to the temperature difference: \(\frac{dT}{dt}=-k(T-T_0)\), with solution \(T=T_0+(T(0)-T_0)e^{-kt}\) (Newton's law of cooling).</p>
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#cooling"><span data-lang="ko">🏫 학교 속 미적분: 컵라면이 식는 과정</span><span data-lang="en">🏫 Calculus at School: cup noodles cooling</span></a></div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+</body>
+</html>

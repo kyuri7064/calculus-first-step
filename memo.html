@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>개인 메모장 · 미적분학 첫걸음</title>
+  <script src="js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/curriculum.js"></script>
+  <script defer src="js/profiles.js"></script>
+  <script defer src="js/site.js"></script>
+  <script defer src="js/memo.js"></script>
+</head>
+<body data-root="" data-page="memo" data-title-ko="개인 메모장 · 미적분학 첫걸음" data-title-en="My Notes · First Steps in Calculus">
+
+<main id="main" tabindex="-1">
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" data-i18n-attr="aria-label:breadcrumb">
+        <ol>
+          <li><a href="index.html" data-i18n="nav.home"></a></li>
+          <li><span aria-current="page" data-i18n="nav.memo"></span></li>
+        </ol>
+      </nav>
+      <h1><span aria-hidden="true">📝</span> <span data-i18n="nav.memo"></span></h1>
+      <p class="owner-bar" id="memo-owner" aria-live="polite"></p>
+      <p class="page-lead" data-lang="ko">헷갈렸던 개념, 다시 풀어 볼 문제, 떠오른 질문을 자유롭게 적어 두세요. <strong>관련 단원</strong>을 골라 두면 나중에 그 페이지로 바로 돌아갈 수 있어요. 개념 페이지의 [📝 여기서 메모하기] 버튼을 누르면 단원이 미리 골라진 새 메모가 열려요.</p>
+      <p class="page-lead" data-lang="en">Write down confusing ideas, problems to retry, or questions. Pick a <strong>related chapter</strong> to jump back to that page later. The [📝 Take a note here] button on each concept opens a new note with the chapter already chosen.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="memo-layout">
+      <!-- 메모 목록 -->
+      <aside class="card memo-side" aria-labelledby="memo-list-title">
+        <h2 id="memo-list-title" class="sr-only" data-i18n="memoList"></h2>
+        <div class="memo-tools">
+          <button class="btn btn-primary btn-block" id="memo-new" type="button" data-i18n="memoNew"></button>
+          <label class="sr-only" for="memo-search" data-i18n="memoSearch"></label>
+          <input class="field" id="memo-search" type="search" autocomplete="off" data-i18n-attr="placeholder:memoSearch">
+          <label class="sr-only" for="memo-filter" data-i18n="memoFilter"></label>
+          <select class="field" id="memo-filter"></select>
+        </div>
+        <p class="memo-count" id="memo-count"></p>
+        <ul class="memo-list" id="memo-list"></ul>
+        <div class="memo-tools" style="margin:14px 0 0">
+          <div class="row">
+            <button class="btn btn-outline btn-sm" id="memo-export" type="button" data-i18n="memoExport"></button>
+            <button class="btn btn-outline btn-sm" id="memo-import-btn" type="button" data-i18n="memoImport"></button>
+          </div>
+          <input type="file" id="memo-import" accept=".json,application/json" hidden>
+        </div>
+        <p class="memo-status" id="memo-msg" role="status" style="margin-top:10px"></p>
+      </aside>
+
+      <!-- 편집기 -->
+      <section class="card" id="memo-pane" aria-labelledby="memo-title-label">
+        <p class="memo-placeholder" id="memo-placeholder" data-i18n="memoSelectHint"></p>
+        <div class="memo-editor" id="memo-editor" hidden>
+          <div><button class="btn btn-outline btn-sm memo-back" id="memo-back" type="button" data-i18n="memoBack"></button></div>
+          <label class="sr-only" for="memo-title" id="memo-title-label" data-i18n="memoTitleLabel"></label>
+          <input class="field memo-title-input" id="memo-title" type="text" maxlength="80" autocomplete="off" data-i18n-attr="placeholder:memoTitlePh">
+          <div class="memo-meta-row">
+            <label for="memo-tag" style="font-weight:700" data-i18n="memoTag"></label>
+            <select class="field" id="memo-tag" style="flex:1; min-width:220px"></select>
+          </div>
+          <div class="tex-bar" role="toolbar" data-i18n-attr="aria-label:memoTexBar" id="memo-texbar"></div>
+          <label class="sr-only" for="memo-body" data-i18n="memoBodyLabel"></label>
+          <textarea class="field memo-body" id="memo-body" aria-describedby="memo-tex-help" data-i18n-attr="placeholder:memoBodyPh"></textarea>
+          <p class="note no-math" id="memo-tex-help" style="margin:0" data-i18n="memoTexHelp"></p>
+          <section class="memo-preview-wrap" aria-labelledby="memo-preview-title">
+            <h3 id="memo-preview-title" class="memo-preview-title" data-i18n="memoPreview"></h3>
+            <div class="memo-preview" id="memo-preview"></div>
+          </section>
+          <div class="memo-actions">
+            <div class="left"><a class="btn btn-outline btn-sm" id="memo-go" hidden></a></div>
+            <p class="memo-status" id="memo-status" role="status"></p>
+            <button class="btn btn-delete btn-sm" id="memo-delete" type="button" data-i18n="memoDelete"></button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <p class="memo-note" data-lang="ko">🔒 메모는 인터넷으로 보내지지 않고 <strong>이 기기의 이 브라우저에만</strong> 저장돼요. 다른 컴퓨터에서 이어 쓰려면 [⬇ 내보내기]로 파일을 저장한 뒤, 그 컴퓨터에서 [⬆ 불러오기]를 누르세요. 브라우저 방문 기록을 지우면 메모도 지워질 수 있어요.</p>
+    <p class="memo-note" data-lang="en">🔒 Notes are never sent over the internet; they are saved <strong>only in this browser on this device</strong>. To continue on another computer, use [⬇ Export] and then [⬆ Import] there. Clearing browser data may delete your notes.</p>
+  </section>
+</main>
+
+</body>
+</html>

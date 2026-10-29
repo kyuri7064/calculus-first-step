@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit2" data-chapter="06">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s06-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s06-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>함수 안에 함수가 들어 있는 <strong>합성함수</strong>는 "바깥 함수의 미분 × 안쪽 함수의 미분"으로 미분해요.</li>
+          <li>이것을 <strong>합성함수의 미분법</strong> 또는 <strong>연쇄법칙(chain rule)</strong>이라고 해요.</li>
+          <li>\(\frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}\)처럼 분수가 약분되는 모양으로 기억하면 쉬워요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Differentiate a <strong>composite function</strong> as "derivative of the outside × derivative of the inside".</li>
+          <li>This is the <strong>chain rule</strong>.</li>
+          <li>Remember it as \(\frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}\), as if the \(du\)'s cancel.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">합성함수의 미분법</span><span class="def-label" data-lang="en">Chain rule</span>
+          $$\big(f(g(x))\big)'=f'\big(g(x)\big)\,g'(x),\qquad \frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\left((2x+1)^5\right)'=5(2x+1)^4\cdot2=10(2x+1)^4\). 안쪽 함수의 미분 \(\times2\)를 빠뜨리지 않도록 주의!</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\left((2x+1)^5\right)'=5(2x+1)^4\cdot2=10(2x+1)^4\). Don't forget the inner derivative \(\times2\)!</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 작은 길이가 x → u → y 를 거치며 두 번 늘어난다 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">합성함수 고르기</span><span data-lang="en">Choose a composition</span></legend>
+            <div class="seg" id="cn-pick">
+              <label><input type="radio" name="cn-pick" value="a" checked><span>\((2x+1)^2\)</span></label>
+              <label><input type="radio" name="cn-pick" value="b"><span>\((x^2-1)^3\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="cn-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="cn-canvas" role="img" data-i18n-attr="aria-label:cn.canvas"></canvas>
+          </div>
+          <p class="note" style="margin:6px 0 0"><span data-lang="ko">🔍 세 수직선은 모두 <strong>같은 배율</strong>로 확대한 모습이라 길이를 그대로 비교할 수 있어요.</span><span data-lang="en">🔍 All three number lines are zoomed to the <strong>same scale</strong>, so lengths compare directly.</span></p>
+          <ul class="legend" id="cn-legend"></ul>
+          <table class="readout-table"><tbody id="cn-table"></tbody></table>
+          <p class="verdict" id="cn-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="cn-x"><span data-lang="ko">시작점</span><span data-lang="en">Start point</span> \(x\)</label>
+              <input id="cn-x" type="range" min="-1" max="1" step="0.01" value="0.5">
+              <output id="cn-x-out" for="cn-x">0.50</output>
+            </div>
+            <div class="slider-row">
+              <label for="cn-h"><span data-lang="ko">작은 길이</span><span data-lang="en">Small length</span> \(\Delta x\)</label>
+              <input id="cn-h" type="range" min="0.01" max="0.4" step="0.01" value="0.3">
+              <output id="cn-h-out" for="cn-h">0.30</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="cn-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="cn-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(y=(x^2+3)^4\)을 미분하시오.</p>
+            <p data-lang="en">Differentiate \(y=(x^2+3)^4\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-1-a" hidden>
+              <p data-lang="ko">\(u=x^2+3\)으로 두면 \(y=u^4\)이에요. \(\frac{dy}{du}=4u^3\), \(\frac{du}{dx}=2x\)이므로</p>
+              <p data-lang="en">Let \(u=x^2+3\), so \(y=u^4\). With \(\frac{dy}{du}=4u^3\) and \(\frac{du}{dx}=2x\),</p>
+              $$\frac{dy}{dx}=4u^3\cdot2x=8x(x^2+3)^3$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(y=\dfrac{1}{(3x-1)^2}\)을 미분하시오.</p>
+            <p data-lang="en">Differentiate \(y=\dfrac{1}{(3x-1)^2}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-1-b" hidden>
+              <p data-lang="ko">\(y=(3x-1)^{-2}\)으로 보면 바깥은 \(u^{-2}\), 안쪽은 \(u=3x-1\)이에요.</p>
+              <p data-lang="en">Write \(y=(3x-1)^{-2}\): the outside is \(u^{-2}\), the inside is \(u=3x-1\).</p>
+              $$\frac{dy}{dx}=-2(3x-1)^{-3}\cdot3=-\frac{6}{(3x-1)^3}\quad\left(x\ne\tfrac13\right)$$
+              <p data-lang="ko">몫의 미분법으로 풀어도 같지만, 연쇄법칙이 훨씬 짧아요.</p>
+              <p data-lang="en">The quotient rule gives the same answer, but the chain rule is much shorter.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\left((2x+1)^5\right)'=5(2x+1)^4\)</p>
+              <p data-lang="en">\(\left((2x+1)^5\right)'=5(2x+1)^4\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">안쪽 함수의 미분 \((2x+1)'=2\)를 곱해야 해요: \(10(2x+1)^4\). 그림에서 \(x\to u\) 단계에서 길이가 2배로 늘어나는 것이 바로 이 \(\times2\)예요.</p>
+              <p data-lang="en">Multiply by the inner derivative \((2x+1)'=2\): \(10(2x+1)^4\). In the picture, the doubling from \(x\) to \(u\) is exactly this \(\times2\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\big(f(g(x))\big)'=f'(x)\,g'(x)\)</p>
+              <p data-lang="en">\(\big(f(g(x))\big)'=f'(x)\,g'(x)\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">바깥 함수의 미분은 \(x\)가 아니라 <strong>\(u=g(x)\)</strong>에서 계산해요: \(f'(g(x))\,g'(x)\). \(y=(x^2)^3\)이면 \(f'(x)g'(x)=3x^2\cdot2x=6x^3\)이지만 실제로는 \(3(x^2)^2\cdot2x=6x^5\)이에요.</p>
+              <p data-lang="en">Evaluate the outer derivative at <strong>\(u=g(x)\)</strong>, not at \(x\): \(f'(g(x))\,g'(x)\). For \(y=(x^2)^3\), \(f'(x)g'(x)=6x^3\), but the truth is \(3(x^2)^2\cdot2x=6x^5\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s06-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li><strong>역함수의 미분</strong>: 역함수의 그래프는 \(y=x\)에 대칭이라, 접선의 기울기가 역수가 돼요.</li>
+          <li><strong>음함수의 미분</strong>: \(x^2+y^2=25\)처럼 \(y\)를 \(x\)의 식으로 풀기 어려울 때, \(y\)를 \(x\)의 함수로 보고 양변을 \(x\)로 미분해요.</li>
+          <li>음함수를 미분할 때 \(y\)가 들어간 항에는 합성함수의 미분법으로 \(\frac{dy}{dx}\)가 붙어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li><strong>Inverse functions</strong>: the inverse's graph is the reflection over \(y=x\), so tangent slopes become reciprocals.</li>
+          <li><strong>Implicit differentiation</strong>: when \(y\) is hard to isolate (e.g. \(x^2+y^2=25\)), treat \(y\) as a function of \(x\) and differentiate both sides.</li>
+          <li>By the chain rule, every term containing \(y\) picks up a factor \(\frac{dy}{dx}\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">역함수 정리 (\(b=f(a),\ f'(a)\ne0\))</span><span class="def-label" data-lang="en">Inverse function theorem (\(b=f(a),\ f'(a)\ne0\))</span>
+          $$\left(f^{-1}\right)'(b)=\frac{1}{f'(a)},\qquad \frac{dx}{dy}=\frac{1}{\ \frac{dy}{dx}\ }$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(x^2+y^2=25\)를 \(x\)로 미분하면 \(2x+2y\frac{dy}{dx}=0\), 즉 \(\frac{dy}{dx}=-\frac xy\). 점 \((3,4)\)에서 접선의 기울기는 \(-\frac34\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Differentiating \(x^2+y^2=25\): \(2x+2y\frac{dy}{dx}=0\), so \(\frac{dy}{dx}=-\frac xy\). At \((3,4)\) the slope is \(-\frac34\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 역함수의 기울기는 역수 / 원 위의 음함수 접선 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">살펴볼 것</span><span data-lang="en">Explore</span></legend>
+            <div class="seg" id="ii-pick">
+              <label><input type="radio" name="ii-pick" value="inv" checked><span><span data-lang="ko">역함수 \(y=x^3\)</span><span data-lang="en">Inverse of \(y=x^3\)</span></span></label>
+              <label><input type="radio" name="ii-pick" value="imp"><span><span data-lang="ko">음함수 \(x^2+y^2=25\)</span><span data-lang="en">Implicit \(x^2+y^2=25\)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="ii-canvas" role="img" data-i18n-attr="aria-label:ii.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ii-legend"></ul>
+          <table class="readout-table"><tbody id="ii-table"></tbody></table>
+          <p class="verdict" id="ii-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="ii-a-row">
+              <label for="ii-a"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span> \(a\)</label>
+              <input id="ii-a" type="range" min="-1.5" max="1.5" step="0.01" value="1.2">
+              <output id="ii-a-out" for="ii-a">1.20</output>
+            </div>
+            <div class="slider-row" id="ii-t-row" hidden>
+              <label for="ii-t"><span data-lang="ko">점 P의 위치 (각도)</span><span data-lang="en">Position of P (angle)</span></label>
+              <input id="ii-t" type="range" min="0" max="360" step="1" value="53">
+              <output id="ii-t-out" for="ii-t">53°</output>
+            </div>
+            <div class="control-buttons" id="ii-play-a-row">
+              <button class="play-btn" id="ii-play-a" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+            <div class="control-buttons" id="ii-play-t-row" hidden>
+              <button class="play-btn" id="ii-play-t" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ii-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=x^3+x\)의 역함수를 \(g\)라 할 때, \(g'(2)\)의 값을 구하시오.</p>
+            <p data-lang="en">Let \(g\) be the inverse of \(f(x)=x^3+x\). Find \(g'(2)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-2-a" hidden>
+              <p data-lang="ko">먼저 \(f(a)=2\)인 \(a\)를 찾아요: \(a^3+a=2\)에서 \(a=1\). \(f'(x)=3x^2+1\)이므로 \(f'(1)=4\)이고, \(g'(2)=\dfrac{1}{f'(1)}=\dfrac14\)이에요.</p>
+              <p data-lang="en">First find \(a\) with \(f(a)=2\): \(a^3+a=2\) gives \(a=1\). Since \(f'(x)=3x^2+1\), \(f'(1)=4\), so \(g'(2)=\dfrac{1}{f'(1)}=\dfrac14\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">곡선 \(x^2+xy+y^2=7\) 위의 점 \((1,2)\)에서의 접선의 기울기를 구하시오.</p>
+            <p data-lang="en">Find the slope of the tangent to \(x^2+xy+y^2=7\) at \((1,2)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-2-b" hidden>
+              <p data-lang="ko">양변을 \(x\)로 미분해요. \(xy\)는 곱의 미분법, \(y^2\)은 합성함수의 미분법을 써요.</p>
+              <p data-lang="en">Differentiate both sides in \(x\): use the product rule for \(xy\) and the chain rule for \(y^2\).</p>
+              $$2x+\Big(y+x\frac{dy}{dx}\Big)+2y\frac{dy}{dx}=0\ \Rightarrow\ \frac{dy}{dx}=-\frac{2x+y}{x+2y}$$
+              <p data-lang="ko">\((1,2)\)을 넣으면 \(\dfrac{dy}{dx}=-\dfrac{4}{5}\)이에요.</p>
+              <p data-lang="en">At \((1,2)\): \(\dfrac{dy}{dx}=-\dfrac{4}{5}\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\left(f^{-1}\right)'(b)=\dfrac{1}{f'(b)}\)</p>
+              <p data-lang="en">\(\left(f^{-1}\right)'(b)=\dfrac{1}{f'(b)}\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">분모의 \(f'\)은 \(b\)가 아니라 \(f(a)=b\)인 <strong>\(a\)</strong>에서 계산해요. \(f(x)=x^3,\ b=8\)이면 \(a=2\)라서 \(\frac{1}{f'(2)}=\frac1{12}\)이 맞고, \(\frac{1}{f'(8)}=\frac1{192}\)은 틀려요. 그림에서 P와 Q의 좌표가 서로 바뀌는 것을 보세요.</p>
+              <p data-lang="en">Evaluate \(f'\) at <strong>\(a\)</strong>, where \(f(a)=b\), not at \(b\). For \(f(x)=x^3,\ b=8\): \(a=2\), so \(\frac{1}{f'(2)}=\frac1{12}\) is right and \(\frac{1}{f'(8)}=\frac1{192}\) is wrong. Watch P and Q swap coordinates in the picture.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(x^2+y^2=25\)을 \(x\)로 미분하면 \(2x+2y=0\)이다.</p>
+              <p data-lang="en">Differentiating \(x^2+y^2=25\) in \(x\) gives \(2x+2y=0\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(y\)는 \(x\)의 함수라서 \(y^2\)을 \(x\)로 미분하면 합성함수의 미분법에 의해 \(2y\dfrac{dy}{dx}\)가 돼요. 그래서 \(2x+2y\dfrac{dy}{dx}=0\)이에요.</p>
+              <p data-lang="en">\(y\) depends on \(x\), so by the chain rule \(y^2\) differentiates to \(2y\dfrac{dy}{dx}\): \(2x+2y\dfrac{dy}{dx}=0\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s06-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(x=f(t),\ y=g(t)\)처럼 두 변수를 제3의 변수 \(t\)(<strong>매개변수</strong>)로 나타낸 곡선도 미분할 수 있어요.</li>
+          <li>\(y\)를 \(t\)로 미분한 것을 \(x\)를 \(t\)로 미분한 것으로 나누면 \(\frac{dy}{dx}\)가 돼요.</li>
+          <li>움직이는 점의 자취(원, 포물선 운동 등)의 접선 기울기를 구할 때 써요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>A curve given by a <strong>parameter</strong> \(t\), as \(x=f(t),\ y=g(t)\), can also be differentiated.</li>
+          <li>Divide \(\frac{dy}{dt}\) by \(\frac{dx}{dt}\) to get \(\frac{dy}{dx}\).</li>
+          <li>Useful for tangent slopes of paths such as circles or projectile motion.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">매개변수로 나타낸 함수의 미분법</span><span class="def-label" data-lang="en">Parametric differentiation</span>
+          $$\frac{dy}{dx}=\frac{\ \frac{dy}{dt}\ }{\ \frac{dx}{dt}\ }=\frac{g'(t)}{f'(t)}\qquad\left(f'(t)\ne0\right)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 원 \(x=\cos t,\ y=\sin t\): \(\frac{dy}{dx}=\frac{\cos t}{-\sin t}=-\frac xy\) (\(\sin t\ne0\)). 음함수로 구한 결과와 같아요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Circle \(x=\cos t,\ y=\sin t\): \(\frac{dy}{dx}=\frac{\cos t}{-\sin t}=-\frac xy\) (\(\sin t\ne0\)) — the same as implicit differentiation.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 움직이는 점의 가로 속도·세로 속도와 접선 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">곡선 고르기</span><span data-lang="en">Choose a curve</span></legend>
+            <div class="seg" id="pm-pick">
+              <label><input type="radio" name="pm-pick" value="proj" checked><span><span data-lang="ko">포물선 운동</span><span data-lang="en">Projectile</span></span></label>
+              <label><input type="radio" name="pm-pick" value="circ"><span><span data-lang="ko">원</span><span data-lang="en">Circle</span></span></label>
+              <label><input type="radio" name="pm-pick" value="cusp"><span><span data-lang="ko">뾰족한 곡선</span><span data-lang="en">Cusp</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="pm-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="pm-canvas" role="img" data-i18n-attr="aria-label:pm.canvas"></canvas>
+          </div>
+          <ul class="legend" id="pm-legend"></ul>
+          <table class="readout-table"><tbody id="pm-table"></tbody></table>
+          <p class="verdict" id="pm-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="pm-t"><span data-lang="ko">매개변수 (시각)</span><span data-lang="en">Parameter (time)</span> \(t\)</label>
+              <input id="pm-t" type="range" min="0" max="4" step="0.01" value="1">
+              <output id="pm-t-out" for="pm-t">1.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="pm-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="pm-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(x=t^2+1,\ y=2t^3\)으로 나타낸 곡선에서 \(t=2\)일 때 \(\frac{dy}{dx}\)의 값을 구하시오.</p>
+            <p data-lang="en">For the curve \(x=t^2+1,\ y=2t^3\), find \(\frac{dy}{dx}\) at \(t=2\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-3-a" hidden>
+              <p data-lang="ko">\(\frac{dx}{dt}=2t\), \(\frac{dy}{dt}=6t^2\)이므로 \(\frac{dy}{dx}=\frac{6t^2}{2t}=3t\ (t\ne0)\). \(t=2\)이면 \(6\)이에요.</p>
+              <p data-lang="en">\(\frac{dx}{dt}=2t\) and \(\frac{dy}{dt}=6t^2\), so \(\frac{dy}{dx}=\frac{6t^2}{2t}=3t\ (t\ne0)\). At \(t=2\) it is \(6\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">곡선 \(x=t^3-3t,\ y=t^2\) 위에서 접선이 \(y\)축에 평행(수직)한 점을 모두 구하시오.</p>
+            <p data-lang="en">Find every point on \(x=t^3-3t,\ y=t^2\) where the tangent is vertical.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-06-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-06-3-b" hidden>
+              <p data-lang="ko">접선이 수직이려면 가로 속도가 0이고 세로 속도는 0이 아니어야 해요. \(\frac{dx}{dt}=3t^2-3=0\)에서 \(t=\pm1\)이고, 이때 \(\frac{dy}{dt}=2t=\pm2\ne0\)이에요. 따라서 점은 \(t=1\)일 때 \((-2,\,1)\), \(t=-1\)일 때 \((2,\,1)\)이에요.</p>
+              <p data-lang="en">A vertical tangent needs zero horizontal speed with nonzero vertical speed. \(\frac{dx}{dt}=3t^2-3=0\) gives \(t=\pm1\), where \(\frac{dy}{dt}=2t=\pm2\ne0\). The points are \((-2,\,1)\) at \(t=1\) and \((2,\,1)\) at \(t=-1\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\dfrac{dy}{dx}=\dfrac{\ dx/dt\ }{\ dy/dt\ }\)</p>
+              <p data-lang="en">\(\dfrac{dy}{dx}=\dfrac{\ dx/dt\ }{\ dy/dt\ }\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">기울기는 "세로 변화 ÷ 가로 변화"예요. 그래서 <strong>\(y\)의 속도가 분자</strong>: \(\dfrac{dy/dt}{dx/dt}\). 그림에서 세로 화살표 길이를 가로 화살표 길이로 나눠 보세요.</p>
+              <p data-lang="en">Slope is "rise ÷ run", so the <strong>\(y\)-speed goes on top</strong>: \(\dfrac{dy/dt}{dx/dt}\). In the picture, divide the vertical arrow by the horizontal arrow.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\frac{dx}{dt}=0\)인 점에서도 공식으로 기울기를 구할 수 있다.</p>
+              <p data-lang="en">The formula works even where \(\frac{dx}{dt}=0\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">분모가 0이라 공식을 쓸 수 없어요. 세로 속도만 있으면 접선이 수직이고, 둘 다 0이면 그림의 "뾰족한 곡선" \(t=0\)처럼 점이 멈춰서 뾰족한 점이 생길 수도 있어요.</p>
+              <p data-lang="en">The denominator is 0, so the formula fails. With only vertical speed the tangent is vertical; with both speeds 0 the point stops, and a sharp point can appear, like "Cusp" at \(t=0\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 06-③ 매개변수로 나타낸 함수의 미분법: 가로 속도와 세로 속도의 비가 기울기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var T = $('pm-t');
+
+  // x, y, dx, dy: t의 함수. view: [가운데 x, 가운데 y, 세로 반폭], k: 속도 화살표 축척
+  var FN = {
+    proj: { x: function (t) { return 2 * t; }, y: function (t) { return 4 * t - t * t; },
+            dx: function () { return 2; }, dy: function (t) { return 4 - 2 * t; },
+            range: [0, 4], start: 1, view: [4, 1.6], k: 0.8,
+            def: '\\(x=2t,\\ \\ y=4t-t^2\\ \\ (0\\le t\\le4)\\)' },
+    circ: { x: function (t) { return 3 * Math.cos(t); }, y: function (t) { return 3 * Math.sin(t); },
+            dx: function (t) { return -3 * Math.sin(t); }, dy: function (t) { return 3 * Math.cos(t); },
+            range: [0, 6.28], start: 0.9, view: [0, 0], k: 0.65,
+            def: '\\(x=3\\cos t,\\ \\ y=3\\sin t\\ \\ (0\\le t\\le2\\pi)\\)' },
+    cusp: { x: function (t) { return t * t; }, y: function (t) { return t * t * t; },
+            dx: function (t) { return 2 * t; }, dy: function (t) { return 3 * t * t; },
+            range: [-1.5, 1.5], start: -0.8, view: [1.1, 0], k: 0.55,
+            def: '\\(x=t^2,\\ \\ y=t^3\\ \\ (-1.5\\le t\\le1.5)\\)' }
+  };
+  var HALF = { proj: 3.2, circ: 4.4, cusp: 3.8 };
+  var K = document.querySelector('input[name="pm-pick"]:checked').value;
+  var g = Graph.create($('pm-canvas'), { xMin: -4, xMax: 4, yMin: -4, yMax: 4, aspect: 0.8, maxHeight: 380 });
+
+  function arrow(x0, y0, x1, y1, col, dash, w) {
+    var L = Math.hypot(g.X(x1) - g.X(x0), g.Y(y1) - g.Y(y0));
+    if (L < 2) return;
+    g.line(x0, y0, x1, y1, { color: col, width: w || 3, dash: dash });
+    // 화살촉은 화면 좌표에서 그린다
+    var ctx = g.ctx, px = g.X(x1), py = g.Y(y1), ang = Math.atan2(py - g.Y(y0), px - g.X(x0)), s = 10;
+    ctx.save(); ctx.fillStyle = col; ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px - s * Math.cos(ang - 0.4), py - s * Math.sin(ang - 0.4));
+    ctx.lineTo(px - s * Math.cos(ang + 0.4), py - s * Math.sin(ang + 0.4));
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+
+  g.render = function () {
+    var F = FN[K], t = +T.value, c = g.c, h = HALF[K];
+    var span = 2 * h * (g.w && g.h ? g.w / g.h : 1);
+    g.setView({ xMin: F.view[0] - span / 2, xMax: F.view[0] + span / 2, yMin: F.view[1] - h, yMax: F.view[1] + h });
+    g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 2, yStep: 2 });
+    var pts = [];
+    for (var i = 0; i <= 400; i++) { var s = F.range[0] + (F.range[1] - F.range[0]) * i / 400; pts.push([F.x(s), F.y(s)]); }
+    g.polygon(pts, { close: false, stroke: c.main, width: 3.5 });
+    var x = F.x(t), y = F.y(t), vx = F.dx(t), vy = F.dy(t), k = F.k;
+    // 접선
+    if (Math.abs(vx) > 1e-3) g.lineThrough(x, y, vy / vx, { color: c.text2, width: 1.5 });
+    else if (Math.abs(vy) > 1e-3) g.vline(x, { color: c.text2, width: 1.5 });
+    // 가로 속도 → 그 끝에서 세로 속도 → 합친 속도
+    arrow(x, y, x + vx * k, y, c.accent, [8, 4]);
+    arrow(x + vx * k, y, x + vx * k, y + vy * k, c.third, [2, 4]);
+    arrow(x, y, x + vx * k, y + vy * k, c.text, [], 2.5);
+    g.point(x, y, { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10, dy: 16 } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:3;stroke-dasharray:8 4"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', text: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--text);stroke-width:2.5"/>' };
+  var LEG = {
+    ko: [['main', '점 P가 지나간 곡선 (실선)'], ['accent', '가로 속도 dx/dt (긴 점선 화살표)'], ['third', '세로 속도 dy/dt (짧은 점선 화살표)'], ['text', '실제로 움직이는 방향 = 접선 방향 (검은 화살표)']],
+    en: [['main', 'path of P (solid)'], ['accent', 'horizontal speed dx/dt (dashed arrow)'], ['third', 'vertical speed dy/dt (dotted arrow)'], ['text', 'actual direction = tangent direction (dark arrow)']]
+  };
+
+  function update() {
+    var F = FN[K], t = +T.value, vx = F.dx(t), vy = F.dy(t), v;
+    var zx = Math.abs(vx) < 1e-3, zy = Math.abs(vy) < 1e-3;
+    var rows = [['t', fmt(t)], ['P = (x, y)', '(' + fmt(F.x(t)) + ', ' + fmt(F.y(t)) + ')'],
+                ['dx/dt', fmt(vx, 3)], ['dy/dt', fmt(vy, 3)],
+                ['dy/dx = (dy/dt) ÷ (dx/dt)', zx ? (ko() ? '없음 (분모 0)' : 'none (denominator 0)') : fmt(vy / vx, 3)]];
+    $('pm-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 4 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (zx && zy) v = { ok: false, text: ko() ? '가로·세로 속도가 모두 0이라 점이 한순간 멈춰요. 공식의 분모가 0이라 쓸 수 없고, 이 곡선은 여기서 뾰족해져요.'
+                                             : 'Both speeds are 0, so the point stops for an instant. The formula\'s denominator is 0, and the curve forms a sharp point here.' };
+    else if (zx) v = { ok: false, text: ko() ? '가로 속도 dx/dt = 0이라 점이 위아래로만 움직여요. 접선은 수직이고 기울기는 없어요.'
+                                             : 'dx/dt = 0, so the point moves straight up or down. The tangent is vertical, with no slope.' };
+    else if (zy) v = { ok: true, text: ko() ? '세로 속도 dy/dt = 0이라 점이 옆으로만 움직여요. 접선이 수평이고 기울기는 0이에요.'
+                                            : 'dy/dt = 0, so the point moves sideways only. The tangent is horizontal, slope 0.' };
+    else v = { ok: true, text: ko() ? '세로 화살표 ÷ 가로 화살표 = ' + fmt(vy, 3) + ' ÷ ' + fmt(vx, 3) + ' = ' + fmt(vy / vx, 3) + ': 이것이 접선의 기울기 dy/dx예요.'
+                                    : 'vertical arrow ÷ horizontal arrow = ' + fmt(vy, 3) + ' ÷ ' + fmt(vx, 3) + ' = ' + fmt(vy / vx, 3) + ': the tangent slope dy/dx.' };
+    var el = $('pm-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k], d = $('pm-def');
+    T.min = F.range[0]; T.max = F.range[1]; T.value = F.start;
+    d.innerHTML = F.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    T.dispatchEvent(new Event('input'));
+  }
+  function setLegend() {
+    $('pm-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(T, $('pm-t-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('pm-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  T.addEventListener('change', function () { $('pm-live').textContent = $('pm-verdict').textContent; });
+  Graph.player({ button: $('pm-play'), input: T, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  setFn(K);
+});
+
+/* 06-② 역함수와 음함수의 미분법: y = x 대칭이면 기울기는 역수 / 원 위의 접선 −x/y */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var A = $('ii-a'), T = $('ii-t'), R = 5;
+  var mode = document.querySelector('input[name="ii-pick"]:checked').value;
+  var cube = function (x) { return x * x * x; };
+
+  var g = Graph.create($('ii-canvas'), { xMin: -4, xMax: 4, yMin: -4, yMax: 4, aspect: 0.85, maxHeight: 380 });
+  /* 가로·세로 눈금 간격을 같게 (대칭과 직각이 그대로 보이도록) */
+  function square(half) {
+    var span = 2 * half * (g.w && g.h ? g.w / g.h : 1);
+    g.setView({ xMin: -span / 2, xMax: span / 2, yMin: -half, yMax: half });
+  }
+  function circlePt() { var t = +T.value * Math.PI / 180; return { x: R * Math.cos(t), y: R * Math.sin(t) }; }
+
+  g.render = function () {
+    var c = g.c;
+    if (mode === 'inv') {
+      var a = +A.value, b = cube(a), m = 3 * a * a;
+      square(3.8);
+      g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 1, yStep: 1 });
+      g.plot(function (x) { return x; }, { color: c.axis, width: 1.5, dash: [4, 4] });
+      g.label(g.o.yMax - 0.3, g.o.yMax - 0.3, 'y = x', { color: c.axis, align: 'right', dx: -8, dy: 4 });
+      g.plot(cube, { color: c.main, width: 3.5 });
+      g.plot(Math.cbrt, { color: c.main, width: 2.5, dash: [11, 6] });
+      g.line(a, b, b, a, { color: c.text2, width: 1.2, dash: [2, 4] });
+      g.lineThrough(a, b, m, { color: c.accent, width: 2.5 });
+      if (Math.abs(a) < 0.005) g.vline(b, { color: c.third, width: 2.5, dash: [2, 5] });
+      else g.lineThrough(b, a, 1 / m, { color: c.third, width: 2.5, dash: [2, 5] });
+      g.point(a, b, { color: c.accent, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10 } });
+      g.point(b, a, { color: c.third, r: 6.5, label: 'Q', labelStyle: { bold: true, dy: 18 } });
+    } else {
+      var P = circlePt();
+      square(6.6);
+      g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 2, yStep: 2 });
+      g.plot(function (x) { return Math.sqrt(R * R - x * x); }, { color: c.main, width: 3.5, from: -R, to: R, samples: 600 });
+      g.plot(function (x) { return -Math.sqrt(R * R - x * x); }, { color: c.main, width: 3.5, from: -R, to: R, samples: 600 });
+      g.line(0, 0, P.x, P.y, { color: c.third, width: 2.5, dash: [2, 5] });
+      if (Math.abs(P.y) < 0.01) g.vline(P.x, { color: c.accent, width: 2.5, dash: [11, 6] });
+      else g.lineThrough(P.x, P.y, -P.x / P.y, { color: c.accent, width: 2.5, dash: [11, 6] });
+      // 직각 표시: 반지름 방향과 접선 방향으로 0.5 씩
+      var ux = -P.x / R, uy = -P.y / R, vx = -uy, vy = ux, s = 0.55;
+      g.polygon([[P.x + ux * s, P.y + uy * s], [P.x + (ux + vx) * s, P.y + (uy + vy) * s], [P.x + vx * s, P.y + vy * s]], { close: false, stroke: c.text, width: 1.5 });
+      g.point(0, 0, { color: c.text, r: 3.5 });
+      g.point(P.x, P.y, { color: c.accent, r: 6.5, label: 'P', labelStyle: { bold: true, dx: P.x >= 0 ? 10 : -22, dy: P.y >= 0 ? -12 : 20 } });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+             mainDash: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-main);stroke-width:2.5;stroke-dasharray:11 6"/>',
+             accentSolid: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:2.5"/>',
+             accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  var LEG = {
+    inv: { ko: [['main', 'y = x³ (실선)'], ['mainDash', 'y = ∛x: y = x에 대해 뒤집은 그래프 (점선)'], ['accentSolid', 'P에서의 접선 (주황 실선)'], ['third', 'Q에서의 접선 (짧은 점선)']],
+           en: [['main', 'y = x³ (solid)'], ['mainDash', 'y = ∛x: reflection across y = x (dashed)'], ['accentSolid', 'tangent at P (orange solid)'], ['third', 'tangent at Q (dotted)']] },
+    imp: { ko: [['main', '원 x² + y² = 25 (실선)'], ['accent', 'P에서의 접선 (긴 점선)'], ['third', '반지름 OP (짧은 점선)']],
+           en: [['main', 'circle x² + y² = 25 (solid)'], ['accent', 'tangent at P (long dashes)'], ['third', 'radius OP (dotted)']] }
+  };
+
+  function update() {
+    var rows, v;
+    if (mode === 'inv') {
+      var a = +A.value, b = cube(a), m = 3 * a * a, flat = Math.abs(a) < 0.005;
+      rows = [['P = (a, a³)', '(' + fmt(a) + ', ' + fmt(b, 3) + ')'], ['Q = (a³, a)', '(' + fmt(b, 3) + ', ' + fmt(a) + ')'],
+              [ko() ? "P의 기울기 f′(a) = 3a²" : "slope at P: f′(a) = 3a²", fmt(m, 3)],
+              [ko() ? "Q의 기울기 (f⁻¹)′(b)" : "slope at Q: (f⁻¹)′(b)", flat ? (ko() ? '없음 (수직)' : 'none (vertical)') : fmt(1 / m, 3)]];
+      v = flat
+        ? { ok: false, text: ko() ? 'f′(0) = 0이라 P의 접선이 수평이에요. 뒤집으면 Q의 접선은 수직이 되어 기울기가 없어요. 그래서 ∛x는 x = 0에서 미분가능하지 않아요 (정리의 조건 f′(a) ≠ 0).'
+                                    : 'f′(0) = 0, so the tangent at P is horizontal. Reflected, the tangent at Q is vertical with no slope, so ∛x is not differentiable at 0 (the theorem needs f′(a) ≠ 0).' }
+        : { ok: true, text: ko() ? 'y = x로 뒤집으면 가로 변화와 세로 변화가 서로 바뀌어요. 그래서 Q의 기울기는 P의 기울기의 역수: ' + fmt(m, 3) + ' × ' + fmt(1 / m, 3) + ' = 1.'
+                                 : 'Reflecting across y = x swaps run and rise, so the slope at Q is the reciprocal of the slope at P: ' + fmt(m, 3) + ' × ' + fmt(1 / m, 3) + ' = 1.' };
+    } else {
+      var P = circlePt(), vert = Math.abs(P.y) < 0.01, horiz = Math.abs(P.x) < 0.01;
+      rows = [['P = (x, y)', '(' + fmt(P.x) + ', ' + fmt(P.y) + ')'],
+              [ko() ? '접선의 기울기 −x/y' : 'tangent slope −x/y', vert ? (ko() ? '없음 (수직)' : 'none (vertical)') : fmt(-P.x / P.y, 3)],
+              [ko() ? '반지름 OP의 기울기 y/x' : 'slope of OP: y/x', horiz ? (ko() ? '없음 (수직)' : 'none (vertical)') : fmt(P.y / P.x, 3)]];
+      if (vert) v = { ok: false, text: ko() ? 'y = 0이라 −x/y의 분모가 0이에요. 접선이 수직이라 기울기가 없어요.' : 'y = 0 makes the denominator of −x/y zero: the tangent is vertical, with no slope.' };
+      else if (horiz) v = { ok: true, text: ko() ? 'x = 0이라 기울기 −x/y = 0: 원의 꼭대기(바닥)에서 접선은 수평이에요.' : 'x = 0, so −x/y = 0: at the top (bottom) of the circle the tangent is horizontal.' };
+      else v = { ok: true, text: ko() ? '(−x/y) × (y/x) = −1: 음함수 미분으로 구한 접선이 반지름과 수직이에요. 원의 접선 성질과 딱 맞아요.'
+                                      : '(−x/y) × (y/x) = −1: the tangent from implicit differentiation is perpendicular to the radius, just as circle geometry says.' };
+    }
+    $('ii-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === (mode === 'inv' ? 3 : 1) ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('ii-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var inv = m === 'inv';
+    if (playA.isPlaying()) playA.stop();
+    if (playT.isPlaying()) playT.stop();
+    $('ii-a-row').hidden = !inv; $('ii-play-a-row').hidden = !inv;
+    $('ii-t-row').hidden = inv; $('ii-play-t-row').hidden = inv;
+    $('ii-legend').innerHTML = LEG[m][Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    update();
+  }
+
+  Graph.bindSlider(A, $('ii-a-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(T, $('ii-t-out'), { format: function (v) { return Math.round(v) + '°'; }, onInput: function () { update(); } });
+  $('ii-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  [A, T].forEach(function (el) { el.addEventListener('change', function () { $('ii-live').textContent = $('ii-verdict').textContent; }); });
+  var playA = Graph.player({ button: $('ii-play-a'), input: A, duration: 7000 });
+  var playT = Graph.player({ button: $('ii-play-t'), input: T, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+
+/* 06-① 합성함수의 미분법: 작은 길이 Δx 가 x → u → y 를 거치며 두 번 늘어난다 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('cn-x'), H = $('cn-h');
+
+  var FN = {
+    a: { g: function (x) { return 2 * x + 1; }, dg: function () { return 2; }, f: function (u) { return u * u; }, df: function (u) { return 2 * u; },
+         range: [-1, 1], start: 0.5, def: '\\(u=g(x)=2x+1\\), &nbsp; \\(y=f(u)=u^2\\)' },
+    b: { g: function (x) { return x * x - 1; }, dg: function (x) { return 2 * x; }, f: function (u) { return u * u * u; }, df: function (u) { return 3 * u * u; },
+         range: [-1.5, 1.5], start: 0.8, def: '\\(u=g(x)=x^2-1\\), &nbsp; \\(y=f(u)=u^3\\)' }
+  };
+  var K = document.querySelector('input[name="cn-pick"]:checked').value;
+  var LY = [2.45, 1.45, 0.45];          // 세 수직선의 높이 (x, u, y)
+
+  function state() {
+    var F = FN[K], x = +X.value, h = +H.value, u = F.g(x), u2 = F.g(x + h), y = F.f(u), y2 = F.f(u2);
+    return { F: F, x: x, h: h, u: u, du: u2 - u, y: y, dy: y2 - y };
+  }
+
+  var g = Graph.create($('cn-canvas'), { xMin: -1.18, xMax: 1.18, yMin: 0, yMax: 3, aspect: 0.62, minHeight: 230, maxHeight: 320 });
+  g.render = function () {
+    var S = state(), c = g.c;
+    // 같은 배율: 가장 긴 조각이 수직선 반쪽의 80% 쯤 되도록
+    var W = Math.max(Math.abs(S.h), Math.abs(S.du), Math.abs(S.dy), 1e-4) / 0.8;
+    var starts = [S.x, S.u, S.y], lens = [S.h, S.du, S.dy];
+    var cols = [c.main, c.accent, c.third], dashes = [[], [10, 5], [2, 5]];
+    var fills = [c.fillMain, c.fillAccent];
+    var names = ['x', 'u = g(x)', 'y = f(u)'], dn = ['Δx', 'Δu', 'Δy'];
+    g.clear();
+    // 위 조각이 아래 조각으로 옮겨 가는 모습 (깔때기)
+    for (var k = 0; k < 2; k++) {
+      g.polygon([[0, LY[k]], [lens[k] / W, LY[k]], [lens[k + 1] / W, LY[k + 1]], [0, LY[k + 1]]], { fill: fills[k] });
+      g.line(0, LY[k], 0, LY[k + 1], { color: c.text2, width: 1, dash: [3, 4] });
+      g.line(lens[k] / W, LY[k], lens[k + 1] / W, LY[k + 1], { color: c.text2, width: 1, dash: [3, 4] });
+      g.label(g.o.xMax, (LY[k] + LY[k + 1]) / 2, '× ' + fmt(lens[k + 1] / lens[k], 2), { color: c.text, align: 'right', dx: -4, bold: true });
+    }
+    for (var i = 0; i < 3; i++) {
+      var y0 = LY[i], e = lens[i] / W, right = e >= 0;
+      g.line(-1.05, y0, 1.05, y0, { color: c.axis, width: 1.5 });
+      g.label(g.o.xMin, y0, names[i], { color: c.text, align: 'left', dx: 4, dy: -16, bold: true });
+      g.line(0, y0, e, y0, { color: cols[i], width: 7, dash: dashes[i] });
+      g.point(0, y0, { color: cols[i], r: 4.5 });
+      g.point(e, y0, { color: cols[i], r: 4.5 });
+      g.label(0, y0, fmt(starts[i], 2), { color: c.text2, align: right ? 'right' : 'left', dx: right ? -6 : 6, dy: 16 });
+      g.label(e / 2, y0, dn[i] + ' = ' + fmt(lens[i], 3), { color: cols[i], dy: -16, bold: true });
+    }
+  };
+
+  var SW = { main: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-main);stroke-width:6"/>',
+             accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:6;stroke-dasharray:10 5"/>',
+             third: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-third);stroke-width:6;stroke-dasharray:2 5;stroke-linecap:round"/>' };
+  var LEG = {
+    ko: [['main', 'x의 작은 조각 Δx (실선)'], ['accent', 'u로 옮겨 간 조각 Δu (긴 점선)'], ['third', 'y로 옮겨 간 조각 Δy (짧은 점선)']],
+    en: [['main', 'small piece Δx (solid)'], ['accent', 'its image Δu on the u-line (long dashes)'], ['third', 'its image Δy on the y-line (dotted)']]
+  };
+
+  function update() {
+    var S = state(), F = S.F, A = F.dg(S.x), B = F.df(S.u), v;
+    var rows = [['Δu / Δx  →  g′(x)', fmt(S.du / S.h, 3) + '  →  ' + fmt(A, 3)],
+                ['Δy / Δu  →  f′(u)', fmt(S.dy / S.du, 3) + '  →  ' + fmt(B, 3)],
+                ['Δy / Δx  →  f′(u)·g′(x)', fmt(S.dy / S.h, 3) + '  →  ' + fmt(A * B, 3)]];
+    $('cn-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (Math.abs(A) < 0.005) v = { ok: null, text: ko() ? 'g′(x) = 0: 안쪽 단계에서 길이가 거의 0으로 줄어들어요. 바깥에서 몇 배로 늘려도 0에 가까우니 전체 기울기도 0이에요.'
+                                                       : 'g′(x) = 0: the inner step shrinks the length to almost 0. Whatever the outer step multiplies, the total slope is 0.' };
+    else {
+      var txt = ko() ? 'Δx를 줄일수록 두 배율이 g′(x) = ' + fmt(A) + ', f′(u) = ' + fmt(B) + '에 다가가고, 전체 배율 Δy/Δx는 그 곱 ' + fmt(A * B) + '에 다가가요. 이것이 연쇄법칙이에요.'
+                     : 'As Δx shrinks, the two factors approach g′(x) = ' + fmt(A) + ' and f′(u) = ' + fmt(B) + ', and the total Δy/Δx approaches their product ' + fmt(A * B) + '. That is the chain rule.';
+      v = { ok: S.h <= 0.02 ? true : null, text: txt };
+    }
+    var el = $('cn-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k], d = $('cn-def');
+    X.min = F.range[0]; X.max = F.range[1]; X.value = F.start;
+    d.innerHTML = F.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    X.dispatchEvent(new Event('input'));
+  }
+  function setLegend() {
+    $('cn-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(X, $('cn-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(H, $('cn-h-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('cn-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  [X, H].forEach(function (el) { el.addEventListener('change', function () { $('cn-live').textContent = $('cn-verdict').textContent; }); });
+  // ▶ Δx → 0
+  Graph.player({ button: $('cn-play'), input: H, duration: 6000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  setFn(K);
+});
+</script>
+</body>
+</html>

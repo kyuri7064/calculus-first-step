@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit3" data-chapter="13">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s13-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s13-1" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(e^x\)는 적분해도 \(e^x\)예요. 안쪽이 일차식이면 그 계수로 나눠 줘요.</li>
+          <li>분자가 분모의 도함수인 꼴 \(\frac{f'(x)}{f(x)}\)는 \(\ln|f(x)|\)로 적분돼요.</li>
+          <li>\(\ln x\) 자체는 부분적분으로 적분해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>\(e^x\) integrates to itself; with a linear inside, divide by its coefficient.</li>
+          <li>When the numerator is the derivative of the denominator, \(\frac{f'(x)}{f(x)}\) integrates to \(\ln|f(x)|\).</li>
+          <li>\(\ln x\) itself is integrated by parts.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">공식 (\(a\ne0\))</span><span class="def-label" data-lang="en">Formulas (\(a\ne0\))</span>
+          $$\int e^{ax+b}\,dx=\frac1ae^{ax+b}+C,\qquad \int\frac{f'(x)}{f(x)}\,dx=\ln|f(x)|+C,\qquad \int\ln x\,dx=x\ln x-x+C$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\frac{2x}{x^2+1}\,dx=\ln(x^2+1)+C\), &nbsp; \(\int_0^1e^{2x}\,dx=\left[\frac12e^{2x}\right]_0^1=\frac{e^2-1}{2}\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\frac{2x}{x^2+1}\,dx=\ln(x^2+1)+C\), &nbsp; \(\int_0^1e^{2x}\,dx=\left[\frac12e^{2x}\right]_0^1=\frac{e^2-1}{2}\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s13-2" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(\sin x,\ \cos x,\ \sec^2x\)는 도함수 공식을 거꾸로 써서 바로 적분해요.</li>
+          <li>\(\tan x=\frac{\sin x}{\cos x}\)는 \(\frac{f'}{f}\) 꼴로 바꾸면 \(-\ln|\cos x|\)가 돼요.</li>
+          <li>\(\sin^2x,\ \cos^2x\)는 <strong>반각 공식</strong>으로 차수를 낮춘 뒤 적분해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>\(\sin x,\ \cos x,\ \sec^2x\) integrate directly by reversing derivative formulas.</li>
+          <li>\(\tan x=\frac{\sin x}{\cos x}\) is of the form \(\frac{f'}{f}\) (up to sign), giving \(-\ln|\cos x|\).</li>
+          <li>Lower the power of \(\sin^2x,\ \cos^2x\) with the <strong>half-angle formulas</strong> first.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">삼각함수의 적분</span><span class="def-label" data-lang="en">Trigonometric integrals</span>
+          $$\int\tan x\,dx=-\ln|\cos x|+C,\qquad \int\sec x\,dx=\ln|\sec x+\tan x|+C$$
+          $$\int\sin^2x\,dx=\int\frac{1-\cos2x}{2}\,dx=\frac x2-\frac{\sin2x}{4}+C$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_0^{\pi}\sin x\,dx=\Big[-\cos x\Big]_0^{\pi}=2\), &nbsp; \(\int_0^{\pi}\sin^2x\,dx=\frac{\pi}{2}\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_0^{\pi}\sin x\,dx=\Big[-\cos x\Big]_0^{\pi}=2\), &nbsp; \(\int_0^{\pi}\sin^2x\,dx=\frac{\pi}{2}\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s13-3" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(\sin mx\cos nx\)처럼 삼각함수의 <strong>곱</strong>은 바로 적분하기 어려워요.</li>
+          <li>곱을 <strong>합(차)으로 바꾸는 공식</strong>으로 바꾼 뒤 하나씩 적분해요.</li>
+          <li>그 결과 \([0,2\pi]\)에서 서로 다른 진동수의 사인·코사인을 곱해 적분하면 0이 돼요 (소리·신호 분석의 기초).</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li><strong>Products</strong> like \(\sin mx\cos nx\) are hard to integrate directly.</li>
+          <li>Use the <strong>product-to-sum formulas</strong>, then integrate term by term.</li>
+          <li>As a result, over \([0,2\pi]\) the product of sines/cosines with different frequencies integrates to 0 (the basis of sound and signal analysis).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">곱을 합으로 바꾸는 공식</span><span class="def-label" data-lang="en">Product-to-sum formulas</span>
+          $$\sin A\cos B=\tfrac12\{\sin(A+B)+\sin(A-B)\},\qquad \cos A\cos B=\tfrac12\{\cos(A+B)+\cos(A-B)\}$$
+          $$\sin A\sin B=-\tfrac12\{\cos(A+B)-\cos(A-B)\}$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\sin3x\cos x\,dx=\frac12\int(\sin4x+\sin2x)\,dx=-\frac{\cos4x}{8}-\frac{\cos2x}{4}+C\). &nbsp; 자연수 \(m\ne n\)이면 \(\int_0^{2\pi}\sin mx\sin nx\,dx=0\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\sin3x\cos x\,dx=\frac12\int(\sin4x+\sin2x)\,dx=-\frac{\cos4x}{8}-\frac{\cos2x}{4}+C\). &nbsp; For natural numbers \(m\ne n\), \(\int_0^{2\pi}\sin mx\sin nx\,dx=0\).</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s13-4" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>유리함수(다항식 ÷ 다항식)는 분자의 차수가 크거나 같으면 먼저 <strong>나눗셈</strong>으로 차수를 낮춰요.</li>
+          <li>분모가 일차식들의 곱으로 인수분해되면 <strong>부분분수</strong>로 쪼개 \(\ln\)으로 적분해요.</li>
+          <li>\(\frac{1}{x^2+1}\) 꼴은 역탄젠트 \(\tan^{-1}x\)로 적분돼요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>For a rational function, if the numerator's degree is at least the denominator's, <strong>divide</strong> first.</li>
+          <li>If the denominator factors into linear factors, split into <strong>partial fractions</strong> and integrate to logs.</li>
+          <li>\(\frac{1}{x^2+1}\) integrates to the inverse tangent \(\tan^{-1}x\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">부분분수</span><span class="def-label" data-lang="en">Partial fractions</span>
+          $$\int\frac{1}{x(x+1)}\,dx=\int\left(\frac1x-\frac1{x+1}\right)dx=\ln\left|\frac{x}{x+1}\right|+C,\qquad \int\frac{1}{x^2+1}\,dx=\tan^{-1}x+C$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\frac{x^2}{x+1}=x-1+\frac1{x+1}\)이므로 \(\int\frac{x^2}{x+1}\,dx=\frac{x^2}{2}-x+\ln|x+1|+C\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\frac{x^2}{x+1}=x-1+\frac1{x+1}\), so \(\int\frac{x^2}{x+1}\,dx=\frac{x^2}{2}-x+\ln|x+1|+C\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s13-5" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>적분 구간이 무한하거나, 구간 안에서 함수가 무한대로 커지면 보통의 정적분으로 계산할 수 없어요.</li>
+          <li>이때는 유한한 구간에서 적분한 뒤 <strong>극한</strong>을 취해요. 이것이 <strong>이상적분</strong>이에요.</li>
+          <li>극한값이 있으면 수렴, 없으면 발산이에요. 끝없이 긴 영역도 넓이가 유한할 수 있어요!</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>If the interval is infinite or the function blows up inside it, an ordinary definite integral doesn't apply.</li>
+          <li>Integrate over a finite interval, then take a <strong>limit</strong>: an <strong>improper integral</strong>.</li>
+          <li>If the limit exists it converges; otherwise it diverges. An endless region can have finite area!</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">이상적분</span><span class="def-label" data-lang="en">Improper integrals</span>
+          $$\int_a^{\infty}f(x)\,dx=\lim_{b\to\infty}\int_a^bf(x)\,dx,\qquad \int_0^1\frac{dx}{\sqrt x}=\lim_{t\to0+}\int_t^1\frac{dx}{\sqrt x}=\lim_{t\to0+}\left(2-2\sqrt t\right)=2$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_1^{\infty}\frac1{x^2}\,dx=\lim_{b\to\infty}\left(1-\frac1b\right)=1\) (수렴). \(\int_1^{\infty}\frac1x\,dx=\lim_{b\to\infty}\ln b=\infty\) (발산). 일반적으로 \(\int_1^\infty\frac{dx}{x^p}\)는 \(p>1\)일 때만 수렴해요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_1^{\infty}\frac1{x^2}\,dx=\lim_{b\to\infty}\left(1-\frac1b\right)=1\) (converges); \(\int_1^{\infty}\frac1x\,dx=\lim_{b\to\infty}\ln b=\infty\) (diverges). In general \(\int_1^\infty\frac{dx}{x^p}\) converges only when \(p>1\).</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+</body>
+</html>

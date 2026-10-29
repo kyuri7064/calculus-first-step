@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit1" data-chapter="01">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s01-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s01-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(n\)이 한없이 커질 때 \(a_n\)이 일정한 실수 \(L\)에 한없이 가까워지면 "수열이 \(L\)에 <strong>수렴</strong>한다"고 해요.</li>
+          <li>수렴하지 않으면 <strong>발산</strong>해요. 발산에는 양의 무한대, 음의 무한대, <strong>진동</strong>이 있어요.</li>
+          <li>'진동'은 두 값을 오간다는 뜻이 아니라, 수렴도 ±∞로 발산도 아닌 경우를 모두 가리켜요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>If \(a_n\) gets arbitrarily close to a real number \(L\) as \(n\) grows, the sequence <strong>converges</strong> to \(L\).</li>
+          <li>Otherwise it <strong>diverges</strong>: to \(+\infty\), to \(-\infty\), or it <strong>oscillates</strong>.</li>
+          <li>"Oscillates" doesn't mean bouncing between two values — it covers every case that is neither convergent nor ±∞.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">기호</span><span class="def-label" data-lang="en">Notation</span>
+          $$\lim_{n\to\infty}a_n=L,\qquad \lim_{n\to\infty}a_n=\infty,\qquad \lim_{n\to\infty}a_n=-\infty$$
+          <p class="read-aloud" data-lang="ko">🔊 "리미트 n이 무한대로 갈 때 a n은 L"</p>
+          <p class="read-aloud" data-lang="en">🔊 "the limit of a n as n goes to infinity is L"</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\frac1n\to0\) (수렴), \(n^2\to\infty\) (발산), \((-1)^n\): \(-1,1,-1,1,\cdots\) (진동), \(\sin n\) (진동)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\frac1n\to0\) (converges), \(n^2\to\infty\) (diverges), \((-1)^n\) and \(\sin n\) (oscillate)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 항을 하나씩 찍어 보며 수렴·발산·진동 구별 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">수열 고르기</span><span data-lang="en">Choose a sequence</span></legend>
+            <div class="seg" id="sq-pick">
+              <label><input type="radio" name="sq-pick" value="a" checked><span>\(1+\frac1n\)</span></label>
+              <label><input type="radio" name="sq-pick" value="b"><span>\(\frac{(-1)^n}{n}\)</span></label>
+              <label><input type="radio" name="sq-pick" value="c"><span>\(\frac{n^2}{20}\)</span></label>
+              <label><input type="radio" name="sq-pick" value="d"><span>\(-\sqrt n\)</span></label>
+              <label><input type="radio" name="sq-pick" value="e"><span>\((-1)^n\)</span></label>
+              <label><input type="radio" name="sq-pick" value="f"><span>\(\sin n\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="sq-canvas" role="img" data-i18n-attr="aria-label:sq.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4.5" style="fill:var(--g-main)"/></svg>
+              <span data-lang="ko">● 항 \(a_1, a_2, \cdots\)</span><span data-lang="en">● terms \(a_1, a_2, \cdots\)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="5.5" style="fill:var(--g-accent)"/></svg>
+              <span data-lang="ko">● 지금 보고 있는 항 \(a_n\) (큰 점)</span><span data-lang="en">● current term \(a_n\) (big dot)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">극한값 \(L\) (긴 점선, 수렴할 때만)</span><span data-lang="en">limit \(L\) (long dashes, if convergent)</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th><span data-lang="ko">항 번호</span><span data-lang="en">Index</span> \(n\)</th><td id="sq-n">—</td></tr>
+            <tr><th><span data-lang="ko">항의 값</span><span data-lang="en">Value</span> \(a_n\)</th><td id="sq-a">—</td></tr>
+            <tr id="sq-dist-row"><th><span data-lang="ko">극한값과의 거리</span><span data-lang="en">Distance to the limit</span> \(|a_n-L|\)</th><td id="sq-dist">—</td></tr>
+          </tbody></table>
+          <p class="verdict" id="sq-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="sq-n-in"><span data-lang="ko">항의 개수</span><span data-lang="en">Number of terms</span> \(n\)</label>
+              <input id="sq-n-in" type="range" min="1" max="60" step="1" value="8">
+              <output id="sq-n-out" for="sq-n-in">8</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="sq-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="sq-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" data-lang="ko">▶을 누르고 점이 어디로 모이는지 보세요. 한 값 근처에 모이면 수렴, 끝없이 위(아래)로 가면 ±∞로 발산, 어느 쪽도 아니면 진동이에요.</p>
+          <p class="note" style="margin:12px 2px 0" data-lang="en">Press ▶ and watch where the dots gather. Near one value: converges. Up (down) forever: diverges to ±∞. Neither: oscillates.</p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">수열 \(a_n=\dfrac{2n+1}{n}\)의 수렴, 발산을 조사하시오.</p>
+            <p data-lang="en">Does \(a_n=\dfrac{2n+1}{n}\) converge or diverge?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-1-a" hidden>
+              <p data-lang="ko">\(a_n=2+\frac1n\)이고 \(n\)이 한없이 커지면 \(\frac1n\)은 0에 한없이 가까워지므로 \(a_n\)은 2에 한없이 가까워져요. 따라서 \(\displaystyle\lim_{n\to\infty}a_n=2\) (수렴).</p>
+              <p data-lang="en">\(a_n=2+\frac1n\), and \(\frac1n\to0\) as \(n\) grows, so \(a_n\) gets arbitrarily close to 2. Hence \(\displaystyle\lim_{n\to\infty}a_n=2\) (converges).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\sin n\)은 두 값을 번갈아 오가지 않으니까 진동이 아니다.</p>
+              <p data-lang="en">\(\sin n\) doesn't bounce between two values, so it doesn't oscillate.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">진동은 "수렴하지 않고, \(+\infty\)나 \(-\infty\)로 발산하지도 않는 것"을 모두 뜻해요. \(\sin n\)은 \(-1\)과 \(1\) 사이를 불규칙하게 오가므로 진동해요. 그림에서 \(\sin n\)을 골라 확인해 보세요.</p>
+              <p data-lang="en">"Oscillates" means anything that neither converges nor diverges to \(\pm\infty\). \(\sin n\) wanders irregularly between \(-1\) and \(1\), so it oscillates. Pick \(\sin n\) in the picture to see.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\frac{(-1)^n}{n}\)은 부호가 계속 바뀌니까 진동한다.</p>
+              <p data-lang="en">\(\frac{(-1)^n}{n}\) keeps changing sign, so it oscillates.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">부호가 바뀌어도 0과의 거리 \(\frac1n\)이 0에 한없이 가까워지므로 0에 <strong>수렴</strong>해요.</p>
+              <p data-lang="en">Even though the sign flips, the distance \(\frac1n\) to 0 shrinks to 0, so it <strong>converges</strong> to 0.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s01-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>두 수열이 <strong>각각 수렴할 때</strong> 합·차·실수배·곱·몫의 극한은 극한값끼리 계산하면 돼요.</li>
+          <li>\(\frac{\infty}{\infty}\) 꼴은 분모의 최고차항으로 분자·분모를 나누고, \(\infty-\infty\) 꼴은 유리화해요.</li>
+          <li>직접 구하기 어려우면 위아래에서 같은 값으로 가는 수열로 감싸는 <strong>조임 정리</strong>를 써요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>When both sequences <strong>converge</strong>, limits of sums, differences, multiples, products and quotients follow the limits.</li>
+          <li>For \(\frac{\infty}{\infty}\), divide by the highest power in the denominator; for \(\infty-\infty\), rationalize.</li>
+          <li>If it's hard to compute directly, trap it between two sequences with the same limit: the <strong>squeeze theorem</strong>.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">극한의 성질 (\(\lim a_n=\alpha,\ \lim b_n=\beta\))</span><span class="def-label" data-lang="en">Limit laws (\(\lim a_n=\alpha,\ \lim b_n=\beta\))</span>
+          $$\lim(a_n\pm b_n)=\alpha\pm\beta,\quad \lim ka_n=k\alpha,\quad \lim a_nb_n=\alpha\beta,\quad \lim\frac{a_n}{b_n}=\frac{\alpha}{\beta}\ (b_n\ne0,\ \beta\ne0)$$
+          <span class="def-label" data-lang="ko">조임 정리</span><span class="def-label" data-lang="en">Squeeze theorem</span>
+          $$a_n\le c_n\le b_n,\quad \lim a_n=\lim b_n=L\ \Longrightarrow\ \lim c_n=L$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\displaystyle\lim\frac{2n^2+1}{n^2+3n}=\lim\frac{2+\frac1{n^2}}{1+\frac3n}=2\), &nbsp; \(\displaystyle\lim\left(\sqrt{n^2+n}-n\right)=\lim\frac{n}{\sqrt{n^2+n}+n}=\frac12\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\displaystyle\lim\frac{2n^2+1}{n^2+3n}=\lim\frac{2+\frac1{n^2}}{1+\frac3n}=2\), &nbsp; \(\displaystyle\lim\left(\sqrt{n^2+n}-n\right)=\lim\frac{n}{\sqrt{n^2+n}+n}=\frac12\)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 세 가지 계산 요령 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">계산 요령 고르기</span><span data-lang="en">Choose a technique</span></legend>
+            <div class="seg" id="lc-pick">
+              <label><input type="radio" name="lc-pick" value="A" checked><span>\(\frac{\infty}{\infty}\)</span></label>
+              <label><input type="radio" name="lc-pick" value="B"><span>\(\infty-\infty\)</span></label>
+              <label><input type="radio" name="lc-pick" value="C"><span><span data-lang="ko">조임 정리</span><span data-lang="en">Squeeze</span></span></label>
+            </div>
+          </fieldset>
+          <div class="def-box" style="margin-bottom:10px">
+            <p data-lc="A">$$a_n=\frac{2n^2+1}{n^2+3n}=\frac{2+\frac{1}{n^2}}{1+\frac{3}{n}}\ \longrightarrow\ \frac{2+0}{1+0}=2$$</p>
+            <p data-lc="B" hidden>$$a_n=\sqrt{n^2+n}-n=\frac{n}{\sqrt{n^2+n}+n}=\frac{1}{\sqrt{1+\frac1n}+1}\ \longrightarrow\ \frac{1}{1+1}=\frac12$$</p>
+            <p data-lc="C" hidden>$$-\frac1n\ \le\ \frac{\sin n}{n}\ \le\ \frac1n,\qquad \pm\frac1n\to0\ \ \Longrightarrow\ \ \frac{\sin n}{n}\to0$$</p>
+          </div>
+          <div class="viz-canvas-wrap">
+            <canvas id="lc-canvas" role="img" data-i18n-attr="aria-label:lc.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4.5" style="fill:var(--g-main)"/></svg>
+              <span data-lang="ko">● 수열 \(a_n\)</span><span data-lang="en">● sequence \(a_n\)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">극한값 (긴 점선)</span><span data-lang="en">limit (long dashes)</span></li>
+            <li id="lc-legend-bound" hidden><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4" style="fill:none;stroke:var(--g-third);stroke-width:2"/></svg>
+              <span data-lang="ko">○ 위·아래 경계 \(\pm\frac1n\) (빈 점)</span><span data-lang="en">○ bounds \(\pm\frac1n\) (open dots)</span></li>
+          </ul>
+          <table class="readout-table"><tbody id="lc-table"></tbody></table>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="lc-n"><span data-lang="ko">항 번호</span><span data-lang="en">Index</span> \(n\)</label>
+              <input id="lc-n" type="range" min="1" max="80" step="1" value="5">
+              <output id="lc-n-out" for="lc-n">5</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="lc-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="lc-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" id="lc-note"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{n\to\infty}\frac{3n-1}{n+2}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{n\to\infty}\frac{3n-1}{n+2}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-2-a" hidden>
+              <p data-lang="ko">분모의 최고차항 \(n\)으로 분자와 분모를 나누면</p>
+              <p data-lang="en">Divide the numerator and denominator by \(n\), the highest power in the denominator:</p>
+              $$\lim_{n\to\infty}\frac{3-\frac1n}{1+\frac2n}=\frac{3-0}{1+0}=3$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\lim_{n\to\infty}\left(\sqrt{n^2+2n}-n\right)\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{n\to\infty}\left(\sqrt{n^2+2n}-n\right)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-2-b" hidden>
+              <p data-lang="ko">\(\infty-\infty\) 꼴이므로 분자를 유리화해요.</p>
+              <p data-lang="en">It's an \(\infty-\infty\) form, so rationalize:</p>
+              $$\sqrt{n^2+2n}-n=\frac{(n^2+2n)-n^2}{\sqrt{n^2+2n}+n}=\frac{2n}{\sqrt{n^2+2n}+n}=\frac{2}{\sqrt{1+\frac2n}+1}\ \longrightarrow\ \frac{2}{2}=1$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\infty-\infty=0\)이고 \(\frac{\infty}{\infty}=1\)이다.</p>
+              <p data-lang="en">\(\infty-\infty=0\) and \(\frac{\infty}{\infty}=1\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\infty\)는 수가 아니라서 이렇게 계산할 수 없어요. 그림의 \(\infty-\infty\) 모드에서는 차가 \(\frac12\)로, \(\frac\infty\infty\) 모드에서는 2로 가요. 꼴을 바꿔서 계산해야 해요.</p>
+              <p data-lang="en">\(\infty\) isn't a number, so you can't compute like this. In the picture, \(\infty-\infty\) tends to \(\frac12\) and \(\frac\infty\infty\) to 2. Rewrite the form first.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\lim(a_nb_n)=\lim a_n\times\lim b_n\)은 언제나 쓸 수 있다.</p>
+              <p data-lang="en">\(\lim(a_nb_n)=\lim a_n\times\lim b_n\) always works.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">두 수열이 <strong>각각 수렴할 때만</strong> 쓸 수 있어요. \(a_n=n\), \(b_n=\frac1n\)이면 \(a_nb_n=1\)인데, \(\lim a_n\)은 존재하지 않아요.</p>
+              <p data-lang="en">Only when <strong>both converge</strong>. With \(a_n=n\), \(b_n=\frac1n\), \(a_nb_n=1\), yet \(\lim a_n\) doesn't exist.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s01-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>등비수열 \(\{r^n\}\)의 극한은 공비 \(r\)의 크기에 따라 정해져요.</li>
+          <li>\(\{r^n\}\)이 수렴하기 위한 필요충분조건은 \(-1\lt r\le1\)이에요.</li>
+          <li>여러 거듭제곱이 섞여 있으면 <strong>밑이 가장 큰 항</strong>으로 분자·분모를 나눠요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The limit of the geometric sequence \(\{r^n\}\) depends on the ratio \(r\).</li>
+          <li>\(\{r^n\}\) converges if and only if \(-1\lt r\le1\).</li>
+          <li>With mixed powers, divide by the term with the <strong>largest base</strong>.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">등비수열의 극한</span><span class="def-label" data-lang="en">Limit of a geometric sequence</span>
+          $$\lim_{n\to\infty}r^n=\begin{cases}\infty & (r>1)\\ 1 & (r=1)\\ 0 & (-1\lt r\lt 1)\\ \text{(oscillates)} & (r\le-1)\end{cases}$$
+          <p class="note" data-lang="ko">\(r\le-1\)이면 진동(oscillate)해요.</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\displaystyle\lim\frac{3^{n+1}+2^n}{3^n-2^n}=\lim\frac{3+\left(\frac23\right)^n}{1-\left(\frac23\right)^n}=3\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\displaystyle\lim\frac{3^{n+1}+2^n}{3^n-2^n}=\lim\frac{3+\left(\frac23\right)^n}{1-\left(\frac23\right)^n}=3\)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 공비 r에 따라 r^n이 어떻게 되는지 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <div class="viz-canvas-wrap">
+            <canvas id="gr-canvas" role="img" data-i18n-attr="aria-label:gr.canvas"></canvas>
+          </div>
+          <p class="mini-chart-title"><span data-lang="ko">📏 공비 \(r\)의 위치 — 구간마다 극한이 달라요</span><span data-lang="en">📏 Where \(r\) is — the limit depends on the interval</span></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="gr-line" role="img" data-i18n-attr="aria-label:gr.line"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">\(-1\lt r\lt1\): 0에 수렴 (굵은 실선)</span><span data-lang="en">\(-1\lt r\lt1\): converges to 0 (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">\(r>1\): ∞로 발산 (긴 점선)</span><span data-lang="en">\(r>1\): diverges to ∞ (long dashes)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-third" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">\(r\le-1\): 진동 (짧은 점선)</span><span data-lang="en">\(r\le-1\): oscillates (dotted)</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th>\(r^{5}\)</th><td id="gr-r5">—</td></tr>
+            <tr><th>\(r^{10}\)</th><td id="gr-r10">—</td></tr>
+            <tr><th>\(r^{20}\)</th><td id="gr-r20">—</td></tr>
+          </tbody></table>
+          <p class="verdict" id="gr-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="gr-r"><span data-lang="ko">공비</span><span data-lang="en">Ratio</span> \(r\)</label>
+              <input id="gr-r" type="range" min="-1.5" max="1.5" step="0.01" value="0.8">
+              <output id="gr-r-out" for="gr-r">0.80</output>
+            </div>
+            <div class="control-buttons" id="gr-quick">
+              <button class="play-btn" id="gr-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+              <button class="btn btn-outline btn-sm" type="button" data-r="-1">r = −1</button>
+              <button class="btn btn-outline btn-sm" type="button" data-r="1">r = 1</button>
+              <button class="btn btn-outline btn-sm" type="button" data-r="-0.8">r = −0.8</button>
+              <button class="btn btn-outline btn-sm" type="button" data-r="1.1">r = 1.1</button>
+            </div>
+          </div>
+          <p class="sr-only" id="gr-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" data-lang="ko">▶을 누르면 \(r\)이 −1.5에서 1.5까지 움직여요. 경계인 \(r=-1\)과 \(r=1\)에서 무슨 일이 일어나는지 버튼으로 꼭 확인해 보세요.</p>
+          <p class="note" style="margin:12px 2px 0" data-lang="en">Press ▶ to sweep \(r\) from −1.5 to 1.5. Use the buttons to check what happens exactly at the boundaries \(r=-1\) and \(r=1\).</p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{n\to\infty}\frac{2^n-5^n}{5^{n+1}+3^n}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{n\to\infty}\frac{2^n-5^n}{5^{n+1}+3^n}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-3-a" hidden>
+              <p data-lang="ko">밑이 가장 큰 \(5^n\)으로 분자·분모를 나누면, \(\left(\frac25\right)^n\to0\), \(\left(\frac35\right)^n\to0\)이므로</p>
+              <p data-lang="en">Divide by \(5^n\), the largest base. Since \(\left(\frac25\right)^n\to0\) and \(\left(\frac35\right)^n\to0\),</p>
+              $$\lim_{n\to\infty}\frac{\left(\frac25\right)^n-1}{5+\left(\frac35\right)^n}=\frac{0-1}{5+0}=-\frac15$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">수열 \(\left\{\left(\frac{x-1}{2}\right)^n\right\}\)이 수렴하도록 하는 실수 \(x\)의 값의 범위를 구하시오.</p>
+            <p data-lang="en">For which real \(x\) does \(\left\{\left(\frac{x-1}{2}\right)^n\right\}\) converge?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-3-b" hidden>
+              <p data-lang="ko">공비가 \(\frac{x-1}{2}\)이므로 수렴 조건 \(-1\lt r\le1\)에 넣으면</p>
+              <p data-lang="en">The ratio is \(\frac{x-1}{2}\); apply the condition \(-1\lt r\le1\):</p>
+              $$-1\lt\frac{x-1}{2}\le1\iff -2\lt x-1\le2\iff -1\lt x\le3$$
+              <p data-lang="ko">등호는 오른쪽(\(r=1\))에만 붙어요. \(x=3\)이면 \(r=1\)이라 1에 수렴하고, \(x=-1\)이면 \(r=-1\)이라 진동해요.</p>
+              <p data-lang="en">The equality is only on the right (\(r=1\)): at \(x=3\), \(r=1\) and it converges to 1; at \(x=-1\), \(r=-1\) and it oscillates.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(|r|\le1\)이면 \(\{r^n\}\)은 수렴한다.</p>
+              <p data-lang="en">If \(|r|\le1\), then \(\{r^n\}\) converges.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(r=-1\)이면 \(-1, 1, -1, 1, \cdots\)로 진동해요. 수렴 조건은 \(-1\lt r\le1\)이에요. 그림의 [r = −1] 버튼으로 확인해 보세요.</p>
+              <p data-lang="en">With \(r=-1\) it goes \(-1, 1, -1, 1, \cdots\) and oscillates. The condition is \(-1\lt r\le1\). Try the [r = −1] button.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\{r^n\}\)이 수렴하면 극한값은 항상 0이다.</p>
+              <p data-lang="en">If \(\{r^n\}\) converges, the limit is always 0.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(r=1\)이면 모든 항이 1이라 극한값은 1이에요.</p>
+              <p data-lang="en">With \(r=1\) every term is 1, so the limit is 1.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s01-4">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>"한없이 가까워진다"를 정확히 말하려면 <strong>얼마나</strong> 가까이 가는지, 그 상태를 <strong>유지</strong>하는지 따져야 해요.</li>
+          <li>A가 허용 오차 \(\varepsilon\)을 내밀면, B는 "\(N\)번째보다 뒤의 항은 모두 오차 안"인 번호 \(N\)을 찾아야 해요.</li>
+          <li>어떤 \(\varepsilon\)에도 \(N\)을 찾을 수 있으면 수렴해요. 이것을 \(\varepsilon\)-\(N\) 논법이라고 해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>To make "gets arbitrarily close" precise, we must ask <strong>how</strong> close and whether it <strong>stays</strong> close.</li>
+          <li>A offers a tolerance \(\varepsilon\); B must find an index \(N\) such that every term after the \(N\)-th is within it.</li>
+          <li>If an \(N\) exists for every \(\varepsilon\), the sequence converges — the \(\varepsilon\)-\(N\) argument.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">수열의 극한의 엄밀한 정의</span><span class="def-label" data-lang="en">Rigorous definition</span>
+          $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-x}{N}\in\mathbb N\;\;\forall n\in\mathbb N\;\big(\,n>\htmlClass{k-x}{N}\;\rightarrow\;|a_n-L|\lt\htmlClass{k-eps}{\varepsilon}\,\big)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\lim\frac1n=0\): 양수 \(\varepsilon\)이 주어지면 아르키메데스 성질에 의해 \(N>\frac1\varepsilon\)인 자연수 \(N\)이 있어요. \(n>N\)이면 \(\left|\frac1n-0\right|=\frac1n\lt\frac1N\lt\varepsilon\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\lim\frac1n=0\): given \(\varepsilon>0\), the Archimedean property gives a natural number \(N>\frac1\varepsilon\). For \(n>N\), \(\left|\frac1n-0\right|=\frac1n\lt\frac1N\lt\varepsilon\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: a_n = 1/n 에 대한 ε-N 게임 (진짜 극한 / 가짜 극한) -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">\(a_n=\frac1n\)의 극한 후보</span><span data-lang="en">Candidate limit of \(a_n=\frac1n\)</span></legend>
+            <div class="seg" id="en-pick">
+              <label><input type="radio" name="en-pick" value="0" checked><span><span data-lang="ko">\(L=0\) (진짜)</span><span data-lang="en">\(L=0\) (true)</span></span></label>
+              <label><input type="radio" name="en-pick" value="-0.1"><span><span data-lang="ko">\(L=-0.1\) (가짜)</span><span data-lang="en">\(L=-0.1\) (fake)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="en-canvas" role="img" data-i18n-attr="aria-label:en.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="en-h" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H5" style="stroke:var(--g-accent);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#en-h);stroke:var(--g-accent);stroke-width:1.5"/></svg>
+              <span data-lang="ko">ε-띠 \(L\pm\varepsilon\) (가로 빗금)</span><span data-lang="en">ε-band \(L\pm\varepsilon\) (horizontal hatch)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4.5" style="fill:var(--g-main)"/></svg>
+              <span data-lang="ko">● \(N\)번째보다 뒤의 항</span><span data-lang="en">● terms after the \(N\)-th</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4" style="fill:none;stroke:var(--g-axis);stroke-width:2"/></svg>
+              <span data-lang="ko">○ \(N\)번째까지의 항</span><span data-lang="en">○ terms up to the \(N\)-th</span></li>
+          </ul>
+          <table class="readout-table"><tbody>
+            <tr><th><span data-lang="ko">A가 낸 오차</span><span data-lang="en">A's tolerance</span> \(\varepsilon\)</th><td id="en-eps">—</td></tr>
+            <tr><th>\(\frac1\varepsilon\)</th><td id="en-inv">—</td></tr>
+            <tr class="hl"><th><span data-lang="ko">B가 찾은 가장 작은 \(N\)</span><span data-lang="en">Smallest \(N\) B can give</span></th><td id="en-nmin">—</td></tr>
+            <tr><th><span data-lang="ko">증명에서 고른 \(N\) \(\left(N>\frac1\varepsilon\right)\)</span><span data-lang="en">\(N\) chosen in the proof \(\left(N>\frac1\varepsilon\right)\)</span></th><td id="en-nproof">—</td></tr>
+            <tr><th><span data-lang="ko">\(L\)과의 거리가 넘지 못하는 값</span><span data-lang="en">Distance to \(L\) never drops below</span></th><td id="en-gap">—</td></tr>
+          </tbody></table>
+          <p class="verdict" id="en-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="en-e"><span data-lang="ko">오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</label>
+              <input id="en-e" type="range" min="0.03" max="0.6" step="0.01" value="0.3">
+              <output id="en-e-out" for="en-e">0.30</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="en-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="en-live" aria-live="polite"></p>
+          <p class="note" style="margin:12px 2px 0" data-lang="ko">▶을 누르면 A가 ε을 점점 줄여요. \(L=0\)이면 \(N\)이 커지기만 할 뿐 언제나 찾아져요. \(L=-0.1\)로 바꾸면 거리는 계속 줄어드는데도 0.1보다 작아지지 않아서, ε이 0.1 이하가 되는 순간 \(N\)을 찾을 수 없어요.</p>
+          <p class="note" style="margin:12px 2px 0" data-lang="en">Press ▶ and A keeps shrinking ε. With \(L=0\), \(N\) only grows but always exists. Switch to \(L=-0.1\): the distance keeps shrinking but never drops below 0.1, so once ε ≤ 0.1 no \(N\) exists.</p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">엄밀한 정의를 이용하여 \(\displaystyle\lim_{n\to\infty}\frac{2n+1}{n}=2\)임을 증명하시오.</p>
+            <p data-lang="en">Prove \(\displaystyle\lim_{n\to\infty}\frac{2n+1}{n}=2\) using the rigorous definition.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-4-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-4-a" hidden>
+              <p data-lang="ko">양수 \(\varepsilon\)이 임의로 주어졌다고 하자. 아르키메데스 성질에 의해 \(N>\frac1\varepsilon\)인 자연수 \(N\)이 존재해요. \(n>N\)인 임의의 자연수 \(n\)에 대하여</p>
+              <p data-lang="en">Let any \(\varepsilon>0\) be given. By the Archimedean property there is a natural number \(N>\frac1\varepsilon\). For every natural number \(n>N\),</p>
+              $$\left|\frac{2n+1}{n}-2\right|=\frac1n\lt\frac1N\lt\varepsilon$$
+              <p data-lang="ko">따라서 \(\displaystyle\lim_{n\to\infty}\frac{2n+1}{n}=2\).</p>
+              <p data-lang="en">Hence \(\displaystyle\lim_{n\to\infty}\frac{2n+1}{n}=2\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">엄밀한 정의를 이용하여 \(\displaystyle\lim_{n\to\infty}\frac{1}{\sqrt n}=0\)임을 증명하시오.</p>
+            <p data-lang="en">Prove \(\displaystyle\lim_{n\to\infty}\frac{1}{\sqrt n}=0\) using the rigorous definition.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-01-4-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-01-4-b" hidden>
+              <p data-lang="ko">\(\frac1{\sqrt n}\lt\varepsilon\)이 되려면 \(n>\frac1{\varepsilon^2}\)이면 돼요. 그래서 이번에는 \(N\)을 \(\frac1\varepsilon\)이 아니라 \(\frac1{\varepsilon^2}\)보다 크게 잡아요.</p>
+              <p data-lang="en">We need \(\frac1{\sqrt n}\lt\varepsilon\), i.e. \(n>\frac1{\varepsilon^2}\). So this time choose \(N\) larger than \(\frac1{\varepsilon^2}\), not \(\frac1\varepsilon\).</p>
+              <p data-lang="ko">양수 \(\varepsilon\)이 주어지면 \(N>\frac1{\varepsilon^2}\)인 자연수 \(N\)을 잡아요. \(n>N\)이면</p>
+              <p data-lang="en">Given \(\varepsilon>0\), take a natural number \(N>\frac1{\varepsilon^2}\). For \(n>N\),</p>
+              $$\left|\frac1{\sqrt n}-0\right|=\frac1{\sqrt n}\lt\frac1{\sqrt N}\lt\varepsilon$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(L\)과의 거리가 계속 줄어들면 \(L\)에 수렴한다.</p>
+              <p data-lang="en">If the distance to \(L\) keeps shrinking, the sequence converges to \(L\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">거리가 줄어도 어떤 양수보다 작아지지 않으면 수렴하지 않아요. \(\frac1n\)과 \(-0.1\)의 거리는 줄어들지만 항상 0.1보다 커요. 그림에서 \(L=-0.1\)을 골라 확인해 보세요.</p>
+              <p data-lang="en">If the distance never gets below some positive number, it doesn't converge. The distance from \(\frac1n\) to \(-0.1\) shrinks but stays above 0.1. Pick \(L=-0.1\) to see.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(N\)은 딱 하나로 정해진 값을 찾아야 한다.</p>
+              <p data-lang="en">There is exactly one correct \(N\) to find.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">조건을 만족하는 \(N\)보다 <strong>더 큰 \(N\)도 모두</strong> 괜찮아요. 그래서 증명에서는 가장 작은 \(N\)을 구할 필요 없이 "\(N>\frac1\varepsilon\)"처럼 넉넉하게 잡으면 돼요. 그림의 표에서 두 \(N\)을 비교해 보세요.</p>
+              <p data-lang="en">Any <strong>larger \(N\) also works</strong>. So a proof doesn't need the smallest \(N\); a generous choice like "\(N>\frac1\varepsilon\)" is fine. Compare the two \(N\)'s in the table.</p></div>
+          </div>
+        </div>
+        <div class="rigor-cta">
+          <p data-lang="ko">🔍 다른 수열과 발산하는 수열로도 ε-N 게임을 해 보세요.</p>
+          <p data-lang="en">🔍 Play the ε-N game with other sequences, including divergent ones.</p>
+          <a class="btn btn-outline btn-sm" href="../rigor.html#seq-limit" data-i18n="rigorCta"></a>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 01-① 수열의 수렴과 발산: 항을 하나씩 찍어 보기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+
+  // type: conv(수렴) / pinf(+∞) / ninf(−∞) / osc(진동)
+  var SEQ = {
+    a: { f: function (n) { return 1 + 1 / n; },                type: 'conv', L: 1 },
+    b: { f: function (n) { return (n % 2 ? -1 : 1) / n; },     type: 'conv', L: 0 },
+    c: { f: function (n) { return n * n / 20; },               type: 'pinf' },
+    d: { f: function (n) { return -Math.sqrt(n); },            type: 'ninf' },
+    e: { f: function (n) { return n % 2 ? -1 : 1; },           type: 'osc' },
+    f: { f: function (n) { return Math.sin(n); },              type: 'osc' }
+  };
+  var N = $('sq-n-in');
+  var S = SEQ[document.querySelector('input[name="sq-pick"]:checked').value];
+
+  var g = Graph.create($('sq-canvas'), { xMin: 0, xMax: 10, yMin: -1, yMax: 2, aspect: 0.75, maxHeight: 360 });
+
+  function view(n) {
+    var xMax = Math.max(10, n + 2), lo = 0, hi = 0;
+    for (var k = 1; k <= n; k++) { var v = S.f(k); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+    if (S.type === 'conv') { lo = Math.min(lo, S.L); hi = Math.max(hi, S.L); }
+    if (S.type === 'osc') { lo = Math.min(lo, -1); hi = Math.max(hi, 1); }
+    var pad = Math.max(0.3, (hi - lo) * 0.12);
+    return { xMin: -xMax * 0.06, xMax: xMax, yMin: lo - pad, yMax: hi + pad };
+  }
+
+  g.render = function () {
+    var n = +N.value, c = g.c;
+    g.setView(view(n));
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'aₙ' });
+    if (S.type === 'conv') {
+      g.hline(S.L, { color: c.accent, width: 2.5, dash: [11, 6] });
+      // 라벨은 왼쪽에 (오른쪽 끝의 aₙ 라벨과 겹치지 않게)
+      g.label(g.o.xMin, S.L, 'L = ' + S.L, { color: c.accent, align: 'left', dx: 36, dy: -14, bold: true });
+    }
+    // 항끼리 잇는 가는 선 (움직임을 따라가기 쉽게)
+    for (var k = 1; k < n; k++) g.line(k, S.f(k), k + 1, S.f(k + 1), { color: c.text2, width: 1, dash: [2, 4] });
+    var r = n > 40 ? 3.5 : 4.5;
+    for (k = 1; k < n; k++) g.point(k, S.f(k), { color: c.main, r: r });
+    g.point(n, S.f(n), { color: c.accent, r: 7, label: 'a' + sub(n) + ' = ' + fmt(S.f(n), 3), labelStyle: { bold: true } });
+    if (S.type === 'pinf') g.label(n, g.o.yMax, ko() ? '↑ 한없이 커짐' : '↑ grows without bound', { color: c.text, align: 'right', dy: 14, bold: true });
+    if (S.type === 'ninf') g.label(n, g.o.yMin, ko() ? '↓ 한없이 작아짐' : '↓ decreases without bound', { color: c.text, align: 'right', dy: -14, bold: true });
+  };
+  function sub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  function verdictText() {
+    var L = Site.lang();
+    var T = {
+      conv: { ko: '수렴: 항이 ' + S.L + '에 한없이 가까워져요. lim aₙ = ' + S.L, en: 'Converges: the terms get arbitrarily close to ' + S.L + '. lim aₙ = ' + S.L },
+      pinf: { ko: '양의 무한대로 발산: 항이 한없이 커져요. lim aₙ = ∞', en: 'Diverges to +∞: the terms grow without bound.' },
+      ninf: { ko: '음의 무한대로 발산: 항이 한없이 작아져요. lim aₙ = −∞', en: 'Diverges to −∞: the terms decrease without bound.' },
+      osc:  { ko: '진동: 한 값에 가까워지지도, ±∞로 가지도 않아요.', en: 'Oscillates: approaches no single value and doesn\'t go to ±∞.' }
+    };
+    return T[S.type][L];
+  }
+
+  function update() {
+    var n = +N.value, v = S.f(n);
+    $('sq-n').textContent = String(n);
+    $('sq-a').textContent = fmt(v, 4);
+    var conv = S.type === 'conv';
+    $('sq-dist-row').hidden = !conv;
+    if (conv) $('sq-dist').textContent = fmt(Math.abs(v - S.L), 4);
+    var el = $('sq-verdict');
+    el.className = 'verdict ' + (conv ? 'ok' : 'no');
+    el.textContent = (conv ? '✓ ' : '→ ') + verdictText();
+    g.draw();
+  }
+
+  Graph.bindSlider(N, $('sq-n-out'), { format: function (v) { return String(v); }, onInput: update });
+  $('sq-pick').addEventListener('change', function (e) { S = SEQ[e.target.value]; update(); });
+  N.addEventListener('change', function () {
+    $('sq-live').textContent = 'n = ' + N.value + ', aₙ = ' + fmt(S.f(+N.value), 4) + '. ' + verdictText();
+  });
+  Graph.player({ button: $('sq-play'), input: N, duration: 8000 });
+  document.addEventListener('settingschange', function () { update(); });
+});
+
+/* 01-② 수열의 극한값 계산: ∞/∞, ∞−∞, 조임 정리 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var NN = $('lc-n');
+
+  var MODES = {
+    A: { f: function (n) { return (2 * n * n + 1) / (n * n + 3 * n); }, L: 2, Ltext: '2',
+         rows: function (n) { return [
+           ['\\(\\frac1{n^2}\\)', fmt(1 / (n * n), 5)],
+           ['\\(\\frac3n\\)', fmt(3 / n, 4)],
+           ['\\(a_n\\)', fmt(this.f(n), 4)],
+           [ko() ? '\\(|a_n-2|\\)' : '\\(|a_n-2|\\)', fmt(Math.abs(this.f(n) - 2), 4)]]; },
+         note: { ko: '분자·분모를 \\(n^2\\)으로 나누면 \\(\\frac1{n^2}\\)과 \\(\\frac3n\\)이 0으로 사라지고 \\(\\frac21=2\\)만 남아요. 처음 몇 항은 2보다 한참 작지만 결국 2로 모여요.',
+                 en: 'Dividing by \\(n^2\\), the terms \\(\\frac1{n^2}\\) and \\(\\frac3n\\) vanish, leaving \\(\\frac21=2\\). The first terms are well below 2, but they gather at 2.' } },
+    B: { f: function (n) { return Math.sqrt(n * n + n) - n; }, L: 0.5, Ltext: '½',
+         rows: function (n) { return [
+           ['\\(\\sqrt{n^2+n}\\)', fmt(Math.sqrt(n * n + n), 3)],
+           ['\\(n\\)', String(n)],
+           ['\\(a_n=\\sqrt{n^2+n}-n\\)', fmt(this.f(n), 4)],
+           ['\\(|a_n-\\frac12|\\)', fmt(Math.abs(this.f(n) - 0.5), 4)]]; },
+         note: { ko: '\\(\\sqrt{n^2+n}\\)과 \\(n\\)은 둘 다 한없이 커지지만, 차는 0이 아니라 \\(\\frac12\\)에 가까워져요. 그래서 \\(\\infty-\\infty\\)는 바로 0이라고 할 수 없어요.',
+                 en: 'Both \\(\\sqrt{n^2+n}\\) and \\(n\\) grow without bound, yet their difference approaches \\(\\frac12\\), not 0. So \\(\\infty-\\infty\\) is not simply 0.' } },
+    C: { f: function (n) { return Math.sin(n) / n; }, L: 0, Ltext: '0', bound: true,
+         rows: function (n) { return [
+           ['\\(-\\frac1n\\)', fmt(-1 / n, 4)],
+           ['\\(a_n=\\frac{\\sin n}{n}\\)', fmt(this.f(n), 4)],
+           ['\\(\\frac1n\\)', fmt(1 / n, 4)],
+           [ko() ? '틈의 폭 \\(\\frac2n\\)' : 'gap \\(\\frac2n\\)', fmt(2 / n, 4)]]; },
+         note: { ko: '\\(\\sin n\\)은 불규칙하게 움직여서 직접 극한을 구하기 어려워요. 하지만 \\(\\pm\\frac1n\\) 사이에 갇혀 있고 그 틈이 0으로 좁아지니, 가운데 수열도 0으로 조여져요.',
+                 en: '\\(\\sin n\\) jumps around, so the limit is hard to compute directly. But it is trapped between \\(\\pm\\frac1n\\), and that gap closes to 0, squeezing the sequence to 0.' } }
+  };
+  var mode = document.querySelector('input[name="lc-pick"]:checked').value;
+  var g = Graph.create($('lc-canvas'), { xMin: 0, xMax: 10, yMin: -1, yMax: 2, aspect: 0.72, maxHeight: 340 });
+
+  g.render = function () {
+    var M = MODES[mode], n = +NN.value, c = g.c, xMax = Math.max(12, n + 3);
+    var lo = M.L, hi = M.L;
+    for (var k = 1; k <= n; k++) { var v = M.f(k); lo = Math.min(lo, v); hi = Math.max(hi, v); if (M.bound) { lo = Math.min(lo, -1 / k); hi = Math.max(hi, 1 / k); } }
+    var pad = Math.max(0.15, (hi - lo) * 0.12);
+    g.setView({ xMin: -xMax * 0.06, xMax: xMax, yMin: lo - pad, yMax: hi + pad });
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'aₙ' });
+    g.hline(M.L, { color: c.accent, width: 2.5, dash: [11, 6] });
+    g.label(g.o.xMin, M.L, (ko() ? '극한값 ' : 'limit ') + M.Ltext, { color: c.accent, align: 'left', dx: 36, dy: -14, bold: true });
+    if (M.bound) {
+      g.plot(function (x) { return 1 / x; }, { color: c.third, width: 1.5, dash: [2, 4], from: 0.9, to: xMax });
+      g.plot(function (x) { return -1 / x; }, { color: c.third, width: 1.5, dash: [2, 4], from: 0.9, to: xMax });
+      for (k = 1; k <= n; k++) { g.point(k, 1 / k, { color: c.third, filled: false, r: 3.5 }); g.point(k, -1 / k, { color: c.third, filled: false, r: 3.5 }); }
+    }
+    var r = n > 50 ? 3.2 : 4.5;
+    for (k = 1; k < n; k++) g.point(k, M.f(k), { color: c.main, r: r });
+    g.point(n, M.f(n), { color: c.accent, r: 7, label: 'a' + sub(n) + ' = ' + fmt(M.f(n), 4), labelStyle: { bold: true } });
+  };
+  function sub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  function renderTex(el) {
+    if (window.renderMathInElement) renderMathInElement(el, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+  }
+
+  function update() {
+    var M = MODES[mode], n = +NN.value;
+    var tb = $('lc-table');
+    tb.innerHTML = M.rows(n).map(function (r, i) {
+      return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>';
+    }).join('');
+    renderTex(tb);
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    document.querySelectorAll('[data-lc]').forEach(function (p) { p.hidden = p.getAttribute('data-lc') !== m; });
+    $('lc-legend-bound').hidden = !MODES[m].bound;
+    var note = $('lc-note');
+    note.innerHTML = MODES[m].note[Site.lang()];
+    renderTex(note);
+    update();
+  }
+
+  Graph.bindSlider(NN, $('lc-n-out'), { format: function (v) { return String(v); }, onInput: function () { update(); } });
+  $('lc-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  NN.addEventListener('change', function () {
+    var M = MODES[mode], n = +NN.value;
+    $('lc-live').textContent = 'n = ' + n + ', aₙ = ' + fmt(M.f(n), 4) + (ko() ? ', 극한값 ' : ', limit ') + M.Ltext;
+  });
+  Graph.player({ button: $('lc-play'), input: NN, duration: 8000 });
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw();
+  });
+  setMode(mode);
+});
+
+/* 01-③ 등비수열의 극한: 공비 r에 따른 r^n */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var R = $('gr-r'), TERMS = 20;
+
+  function kind(r) {
+    if (Math.abs(r - 1) < 1e-9) return 'one';
+    if (r > 1) return 'inf';
+    if (r <= -1 + 1e-9) return 'osc';
+    return 'zero';
+  }
+
+  var g = Graph.create($('gr-canvas'), { xMin: -1, xMax: 21.5, yMin: -1.4, yMax: 1.4, aspect: 0.62, maxHeight: 300 });
+  g.render = function () {
+    var r = +R.value, c = g.c, big = Math.abs(r) > 1 + 1e-9;
+    var Y = big ? 4.2 : 1.4;
+    g.setView({ yMin: -Y, yMax: Y });
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'rⁿ' });
+    var k = kind(r);
+    if (k === 'zero' || k === 'one') {
+      var L = k === 'one' ? 1 : 0;
+      g.hline(L, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMax, L, (ko() ? '극한값 ' : 'limit ') + L, { color: c.accent, align: 'right', dx: -6, dy: -14, bold: true });
+    }
+    var out = false;
+    for (var n = 1; n <= TERMS; n++) {
+      var v = Math.pow(r, n);
+      if (Math.abs(v) > Y) {   // 그림 밖으로 나간 항: 가장자리에 빈 점
+        out = true;
+        g.point(n, v > 0 ? Y * 0.97 : -Y * 0.97, { color: c.text2, filled: false, r: 4 });
+        continue;
+      }
+      if (n > 1) {
+        var pv = Math.pow(r, n - 1);
+        if (Math.abs(pv) <= Y) g.line(n - 1, pv, n, v, { color: c.text2, width: 1, dash: [2, 4] });
+      }
+      g.point(n, v, { color: c.main, r: 4.5 });
+    }
+    if (out) g.label(TERMS, Y, ko() ? '○ 그림 밖으로 계속 커짐' : '○ keeps growing off the chart', { color: c.text, align: 'right', dy: 14, bold: true });
+  };
+
+  // 수직선: 구간마다 선 모양을 다르게
+  var line = Graph.create($('gr-line'), { xMin: -1.7, xMax: 1.7, yMin: -1, yMax: 1, aspect: 0.2, minHeight: 96, maxHeight: 120 });
+  line.render = function () {
+    var c = line.c, r = +R.value;
+    line.clear();
+    line.line(-1.7, 0, 1.7, 0, { color: c.axis, width: 1.5 });
+    line.line(-1.6, 0, -1, 0, { color: c.third, width: 7, dash: [2, 6] });
+    line.line(-1, 0, 1, 0, { color: c.main, width: 7 });
+    line.line(1, 0, 1.6, 0, { color: c.accent, width: 7, dash: [11, 6] });
+    line.point(-1, 0, { color: c.third, r: 7 });                 // −1 은 진동 쪽 (채운 점)
+    line.point(1, 0, { color: c.main, r: 7 });                   // 1 은 수렴 (채운 점)
+    [[-1, '−1'], [0, '0'], [1, '1']].forEach(function (p) { line.label(p[0], 0, p[1], { color: c.text2, dy: 20 }); });
+    line.label(-1.35, 0, ko() ? '진동' : 'osc.', { color: c.text, dy: -18, bold: true });
+    line.label(0, 0, '→ 0', { color: c.text, dy: -18, bold: true });
+    line.label(1, 0, '→ 1', { color: c.text, dy: -18, bold: true });
+    line.label(1.35, 0, '→ ∞', { color: c.text, dy: -18, bold: true });
+    // 지금 r
+    line.line(r, -0.75, r, 0.75, { color: c.text, width: 2 });
+    line.point(r, 0, { color: c.accent, r: 5 });
+  };
+
+  function verdict() {
+    var r = +R.value, k = kind(r), L = Site.lang();
+    var T = {
+      zero: { ko: '−1 < r < 1 이므로 rⁿ → 0 (수렴)', en: 'Since −1 < r < 1, rⁿ → 0 (converges)' },
+      one:  { ko: 'r = 1 이므로 모든 항이 1, 극한값 1 (수렴)', en: 'r = 1, every term is 1: limit 1 (converges)' },
+      inf:  { ko: 'r > 1 이므로 rⁿ → ∞ (발산)', en: 'Since r > 1, rⁿ → ∞ (diverges)' },
+      osc:  { ko: r === -1 ? 'r = −1 이므로 −1, 1, −1, 1, … (진동)' : 'r < −1 이므로 부호가 바뀌며 크기가 커져요 (진동)',
+              en: r === -1 ? 'r = −1: −1, 1, −1, 1, … (oscillates)' : 'r < −1: the sign flips and the size grows (oscillates)' }
+    };
+    return { ok: k === 'zero' || k === 'one', text: T[k][L] };
+  }
+
+  function update() {
+    var r = +R.value;
+    $('gr-r5').textContent = fmt(Math.pow(r, 5), 4);
+    $('gr-r10').textContent = fmt(Math.pow(r, 10), 4);
+    $('gr-r20').textContent = fmt(Math.pow(r, 20), 4);
+    var v = verdict(), el = $('gr-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw(); line.draw();
+  }
+
+  Graph.bindSlider(R, $('gr-r-out'), { format: function (v) { return fmt(v); }, onInput: update });
+  R.addEventListener('change', function () { $('gr-live').textContent = 'r = ' + fmt(+R.value) + '. ' + verdict().text; });
+  $('gr-quick').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-r]');
+    if (!b) return;
+    R.value = b.getAttribute('data-r');
+    R.dispatchEvent(new Event('input'));
+    R.dispatchEvent(new Event('change'));
+  });
+  Graph.player({ button: $('gr-play'), input: R, duration: 9000 });
+  document.addEventListener('settingschange', function () { update(); });
+});
+
+/* 01-④ 수열의 극한의 엄밀한 정의: a_n = 1/n 의 ε-N 게임 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var E = $('en-e');
+  var a = function (n) { return 1 / n; };
+  var L = +document.querySelector('input[name="en-pick"]:checked').value;
+
+  /* n > N 인 모든 항이 띠 안에 있는 가장 작은 N (없으면 null) */
+  function smallestN(e) {
+    var M = 5000, last = 0;
+    for (var n = 1; n <= M; n++) if (Math.abs(a(n) - L) >= e) last = n;
+    return last > M - 10 ? null : Math.max(1, last);
+  }
+
+  var g = Graph.create($('en-canvas'), { xMin: -1, xMax: 16, yMin: -0.8, yMax: 1.15, aspect: 0.7, maxHeight: 330 });
+  g.render = function () {
+    var e = +E.value, c = g.c, N = smallestN(e);
+    var show = N ? Math.min(Math.max(15, N + 8), 70) : 25;
+    g.setView({ xMin: -show * 0.05, xMax: show + 1, yMin: Math.min(L - e, -0.05) - 0.12, yMax: 1.15 });
+    g.clear(); g.grid(); g.axes({ xLabel: 'n', yLabel: 'aₙ' });
+    if (N) g.band('x', N + 0.5, show + 1, { fill: c.fillMain });
+    g.band('y', L - e, L + e, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent, stroke: c.accent });
+    g.hline(L, { color: c.accent, width: 2 });
+    g.label(g.o.xMax, L + e, 'L + ε', { color: c.accent, align: 'right', dx: -4, dy: -11, bold: true });
+    g.label(g.o.xMax, L - e, 'L − ε', { color: c.accent, align: 'right', dx: -4, dy: 11, bold: true });
+    var r = show > 40 ? 3.2 : 4.5;
+    for (var n = 1; n <= show; n++) {
+      var after = N && n > N;
+      g.point(n, a(n), { color: after ? c.main : c.axis, filled: !!after, r: after ? r : r - 0.5 });
+    }
+    if (N) {
+      g.vline(N + 0.5, { color: c.third, width: 2, dash: [8, 5] });
+      g.label(N + 0.5, g.o.yMax, 'N = ' + N, { color: c.third, align: 'left', dx: 6, dy: 14, bold: true });
+    } else {
+      g.label(show / 2, g.o.yMax, ko() ? '어떤 N을 골라도 띠 밖의 항이 있어요' : 'Every N leaves terms outside the band', { color: c.text, dy: 14, bold: true });
+    }
+  };
+
+  function verdict() {
+    var e = +E.value, N = smallestN(e);
+    if (N && L !== 0) return { ok: false, text: ko()
+      ? '이 ε에서는 ' + N + '번째 뒤의 항이 모두 띠 안이지만, ε을 0.1 이하로 줄이면 실패해요. 모든 ε에서 되어야 하므로 −0.1은 극한이 아니에요.'
+      : 'For this ε, every term after the ' + N + '-th fits, but it fails once ε ≤ 0.1. It must work for every ε, so −0.1 is not the limit.' };
+    if (N) return { ok: true, text: ko()
+      ? N + '번째보다 뒤의 항은 모두 띠 안에 있어요. B가 답할 수 있어요!'
+      : 'Every term after the ' + N + '-th is inside the band. B has an answer!' };
+    return { ok: false, text: ko()
+      ? '거리가 항상 0.1보다 커서, ε ≤ 0.1이면 N을 찾을 수 없어요. 그러니 −0.1은 극한이 아니에요.'
+      : 'The distance always exceeds 0.1, so for ε ≤ 0.1 no N exists. −0.1 is not the limit.' };
+  }
+
+  function update() {
+    var e = +E.value, N = smallestN(e);
+    $('en-eps').textContent = fmt(e);
+    $('en-inv').textContent = fmt(1 / e, 3);
+    $('en-nmin').textContent = N ? String(N) : (ko() ? '없음' : 'none');
+    $('en-nproof').textContent = L === 0 ? String(Math.floor(1 / e) + 1) : '—';
+    $('en-gap').textContent = L === 0 ? (ko() ? '없음 (얼마든지 작아짐)' : 'none (gets as small as you like)') : '0.1';
+    var v = verdict(), el = $('en-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+
+  Graph.bindSlider(E, $('en-e-out'), { format: function (v) { return fmt(v); }, onInput: update });
+  $('en-pick').addEventListener('change', function (e) { L = +e.target.value; update(); });
+  E.addEventListener('change', function () { $('en-live').textContent = 'ε = ' + fmt(+E.value) + '. ' + verdict().text; });
+  Graph.player({ button: $('en-play'), input: E, duration: 8000, reverse: true });
+  document.addEventListener('settingschange', function () { update(); });
+});
+</script>
+</body>
+</html>

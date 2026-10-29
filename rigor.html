@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>엄밀한 정의 놀이터 · 미적분학 첫걸음</title>
+  <script src="js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/curriculum.js"></script>
+  <script defer src="js/graph.js"></script>
+  <script defer src="js/profiles.js"></script>
+  <script defer src="js/site.js"></script>
+</head>
+<body data-root="" data-page="rigor" data-title-ko="엄밀한 정의 놀이터 · 미적분학 첫걸음" data-title-en="Rigor Playground · First Steps in Calculus">
+
+<main id="main" tabindex="-1">
+
+  <!-- 머리 -->
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" data-i18n-attr="aria-label:breadcrumb">
+        <ol>
+          <li><a href="index.html" data-i18n="nav.home"></a></li>
+          <li><span aria-current="page" data-i18n="nav.rigor"></span></li>
+        </ol>
+      </nav>
+      <h1><span aria-hidden="true">🔍</span> <span data-i18n="nav.rigor"></span></h1>
+      <p class="title-en" data-lang="ko">Rigor Playground — ε-N · ε-δ</p>
+      <p class="title-en" data-lang="en">엄밀한 정의 놀이터 — ε-N · ε-δ</p>
+      <p class="page-lead" data-lang="ko">"한없이 가까워진다"는 말은 편하지만, <strong>얼마나</strong> 가까워져야 하는지, 가까운 상태를 <strong>계속 유지</strong>하는지는 알려 주지 않아요. 수학자들은 이것을 두 사람의 <strong>게임</strong>으로 정확하게 바꿨어요. 띠를 직접 줄여 보며 그 규칙을 익혀 봐요.</p>
+      <p class="page-lead" data-lang="en">"Gets arbitrarily close" is handy, but it doesn't say <strong>how</strong> close, or whether it <strong>stays</strong> close. Mathematicians turned it into a precise two-player <strong>game</strong>. Shrink the bands yourself and learn the rules.</p>
+
+      <div class="game-card" role="group" data-i18n-attr="aria-label:aria.game">
+        <div class="p-a">
+          <strong data-lang="ko">🧑‍🏫 A: 도전하는 사람</strong><strong data-lang="en">🧑‍🏫 A: the challenger</strong>
+          <span data-lang="ko">허용 오차 <span class="k-eps">ε</span>을 아무리 작게든 하나 정해서 내민다.</span>
+          <span data-lang="en">names a tolerance <span class="k-eps">ε</span>, as tiny as they like.</span>
+        </div>
+        <span class="vs" aria-hidden="true">⇄</span>
+        <div class="p-b">
+          <strong data-lang="ko">🧑‍🎓 B: 답하는 사람</strong><strong data-lang="en">🧑‍🎓 B: the responder</strong>
+          <span data-lang="ko">그 <span class="k-eps">ε</span>에 맞는 <span class="k-x">N</span>(수열) 또는 <span class="k-delta">δ</span>(함수)를 찾아 "여기서부터는 항상 오차 안!"이라고 답한다.</span>
+          <span data-lang="en">finds an <span class="k-x">N</span> (sequences) or <span class="k-delta">δ</span> (functions) for that <span class="k-eps">ε</span>: "from here on, always within tolerance!"</span>
+        </div>
+      </div>
+      <p class="note" style="margin-top:12px" data-lang="ko"><strong>B가 어떤 ε에도 언제나 답할 수 있으면</strong> 극한이 존재해요. 한 번이라도 답할 수 없는 ε이 있으면 존재하지 않아요.</p>
+      <p class="note" style="margin-top:12px" data-lang="en">If <strong>B can always answer, whatever ε is</strong>, the limit exists. If even one ε has no answer, it doesn't.</p>
+
+      <nav class="anchor-chips" data-i18n-attr="aria-label:aria.rigorToc">
+        <a class="chip" href="#symbols"><span data-lang="ko">📖 기호 사전</span><span data-lang="en">📖 Symbols</span></a>
+        <a class="chip" href="#seq-limit"><span data-lang="ko">B-1 수열의 극한 (ε-N)</span><span data-lang="en">B-1 Sequence limit (ε-N)</span></a>
+        <a class="chip" href="#func-limit"><span data-lang="ko">B-2 함수의 극한 (ε-δ)</span><span data-lang="en">B-2 Function limit (ε-δ)</span></a>
+        <a class="chip" href="#continuity"><span data-lang="ko">B-3 연속의 정의</span><span data-lang="en">B-3 Continuity</span></a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 기호 사전 -->
+  <section class="container rigor-sec" id="symbols" aria-labelledby="symbols-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">📖</span>
+        <div>
+          <h2 id="symbols-title"><span data-lang="ko">기호 사전</span><span data-lang="en">Symbol Dictionary</span></h2>
+          <p class="title-en" data-lang="ko">기호를 말로 바꿔 읽어요</p>
+          <p class="title-en" data-lang="en">Read each symbol as words</p>
+        </div>
+      </div>
+      <table class="symbol-table">
+        <thead><tr>
+          <th><span data-lang="ko">기호</span><span data-lang="en">Symbol</span></th>
+          <th><span data-lang="ko">읽는 법</span><span data-lang="en">Say it</span></th>
+          <th><span data-lang="ko">문장 속에서의 뜻</span><span data-lang="en">Meaning in a sentence</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>\(\forall\)</td><td data-lang="ko">모든, 임의의</td><td data-lang="en">for all, for every</td>
+            <td><span data-lang="ko">"어떤 것을 골라 오더라도" — 예외 없이 전부</span><span data-lang="en">"whichever one you pick" — no exceptions</span></td></tr>
+          <tr><td>\(\exists\)</td><td data-lang="ko">존재한다</td><td data-lang="en">there exists</td>
+            <td><span data-lang="ko">"적어도 하나는 찾을 수 있다"</span><span data-lang="en">"at least one can be found"</span></td></tr>
+          <tr><td>\(\htmlClass{k-eps}{\varepsilon}\)</td><td data-lang="ko">엡실론</td><td data-lang="en">epsilon</td>
+            <td><span data-lang="ko"><span class="k-eps">값(세로) 쪽 허용 오차</span>. 주황색 + 실선 밑줄 + 가로 빗금 띠</span><span data-lang="en"><span class="k-eps">tolerance on the value (vertical) side</span>. Orange, solid underline, horizontal hatch</span></td></tr>
+          <tr><td>\(\htmlClass{k-delta}{\delta}\)</td><td data-lang="ko">델타</td><td data-lang="en">delta</td>
+            <td><span data-lang="ko"><span class="k-delta">입력(가로) 쪽 거리</span>. <span data-color-name="third"></span> + 점선 밑줄 + 세로 빗금 띠</span><span data-lang="en"><span class="k-delta">distance on the input (horizontal) side</span>. <span data-color-name="third"></span>, dashed underline, vertical hatch</span></td></tr>
+          <tr><td>\(\htmlClass{k-x}{N}\)</td><td data-lang="ko">엔 (자연수)</td><td data-lang="en">N (a natural number)</td>
+            <td><span data-lang="ko"><span class="k-x">"이 번호보다 뒤의 항은 모두"</span>. <span data-color-name="main"></span> + 점점이 밑줄</span><span data-lang="en"><span class="k-x">"every term after this index"</span>. <span data-color-name="main"></span>, dotted underline</span></td></tr>
+          <tr><td>\(|p-q|\)</td><td data-lang="ko">p 빼기 q의 절댓값</td><td data-lang="en">absolute value of p minus q</td>
+            <td><span data-lang="ko">수직선에서 두 수 \(p\), \(q\) 사이의 <strong>거리</strong></span><span data-lang="en">the <strong>distance</strong> between \(p\) and \(q\) on the number line</span></td></tr>
+          <tr><td>\(\rightarrow\)</td><td data-lang="ko">~이면</td><td data-lang="en">implies, then</td>
+            <td><span data-lang="ko">"앞의 조건이 맞으면 뒤도 맞는다"</span><span data-lang="en">"if the first part holds, so does the second"</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- B-1 수열의 극한 -->
+  <section class="container rigor-sec" id="seq-limit" aria-labelledby="seq-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">B-1</span>
+        <div>
+          <h2 id="seq-title"><span data-lang="ko">수열의 극한 (ε-N 논법)</span><span data-lang="en">Limit of a Sequence (ε-N)</span></h2>
+          <p class="title-en" data-lang="ko">Rigorous limit of a sequence</p>
+          <p class="title-en" data-lang="en">수열의 극한의 엄밀한 정의</p>
+        </div>
+      </div>
+
+      <div class="concept-body">
+        <div class="concept-core">
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">정의</span><span class="def-label" data-lang="en">Definition</span>
+            <p data-lang="ko">임의의 양수 \(\htmlClass{k-eps}{\varepsilon}\)에 대하여 자연수 \(\htmlClass{k-x}{N}\)이 존재하여, \(n>\htmlClass{k-x}{N}\)인 임의의 자연수 \(n\)에 대하여 \(|a_n-L|<\htmlClass{k-eps}{\varepsilon}\)이 성립하면 "수열 \(\{a_n\}\)이 \(L\)에 수렴한다"고 해요.</p>
+            <p data-lang="en">If for every positive \(\htmlClass{k-eps}{\varepsilon}\) there is a natural number \(\htmlClass{k-x}{N}\) such that \(|a_n-L|<\htmlClass{k-eps}{\varepsilon}\) for every natural number \(n>\htmlClass{k-x}{N}\), we say \(\{a_n\}\) converges to \(L\).</p>
+            $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-x}{N}\in\mathbb N\;\;\forall n\in\mathbb N\;\big(\,n>\htmlClass{k-x}{N}\;\rightarrow\;|a_n-L|<\htmlClass{k-eps}{\varepsilon}\,\big)$$
+          </div>
+          <table class="phrase-table">
+            <caption class="sr-only"><span data-lang="ko">기호와 뜻 짝짓기</span><span data-lang="en">Symbols and meanings</span></caption>
+            <tbody>
+              <tr><th>\(\forall\,\htmlClass{k-eps}{\varepsilon}>0\)</th><td><span data-lang="ko">A가 어떤 오차 <span class="k-eps">ε</span>을 내밀더라도</span><span data-lang="en">whatever tolerance <span class="k-eps">ε</span> A offers,</span></td></tr>
+              <tr><th>\(\exists\,\htmlClass{k-x}{N}\)</th><td><span data-lang="ko">B는 번호 <span class="k-x">N</span>을 찾을 수 있어서</span><span data-lang="en">B can find an index <span class="k-x">N</span> so that</span></td></tr>
+              <tr><th>\(n>\htmlClass{k-x}{N}\)</th><td><span data-lang="ko"><span class="k-x">N</span>번째보다 <strong>뒤에 있는 모든</strong> 항은</span><span data-lang="en"><strong>every</strong> term <strong>after</strong> the <span class="k-x">N</span>-th</span></td></tr>
+              <tr><th>\(|a_n-L|<\htmlClass{k-eps}{\varepsilon}\)</th><td><span data-lang="ko">\(L\)과의 거리가 <span class="k-eps">ε</span>보다 작다 (띠 안에 머문다)</span><span data-lang="en">is within <span class="k-eps">ε</span> of \(L\) (stays inside the band)</span></td></tr>
+            </tbody>
+          </table>
+          <p class="note" data-lang="ko"><strong>핵심:</strong> 몇 개의 항이 띠 안에 "들어오는" 것으로는 부족해요. 어떤 번호 뒤로는 <strong>한 번도 빠져나가지 않아야</strong> 해요.</p>
+          <p class="note" data-lang="en"><strong>Key point:</strong> a few terms "entering" the band is not enough. After some index, terms must <strong>never leave</strong> it.</p>
+        </div>
+
+        <div class="concept-viz">
+          <div class="viz-panel">
+            <fieldset class="setting" style="margin-bottom:10px">
+              <legend><span data-lang="ko">수열 고르기</span><span data-lang="en">Choose a sequence</span></legend>
+              <div class="seg" id="s-pick">
+                <label><input type="radio" name="s-pick" value="S1" checked><span>\(a_n=1+\dfrac{2(-1)^n}{n}\)</span></label>
+                <label><input type="radio" name="s-pick" value="S2"><span>\(a_n=(-1)^n\)</span></label>
+              </div>
+            </fieldset>
+            <div class="viz-canvas-wrap"><canvas id="s-canvas" role="img" data-i18n-attr="aria-label:b.seq"></canvas></div>
+            <ul class="legend">
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="5" style="fill:var(--g-main)"/></svg>
+                <span data-lang="ko">● N 뒤의 항 (채운 점)</span><span data-lang="en">● terms after N (filled)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><circle cx="18" cy="6" r="4.5" style="fill:none;stroke:var(--g-axis);stroke-width:2"/></svg>
+                <span data-lang="ko">○ N까지의 항 (빈 점)</span><span data-lang="en">○ terms up to N (open)</span></li>
+            </ul>
+            <table class="readout-table"><tbody>
+              <tr><th><span data-lang="ko">A가 낸 오차</span><span data-lang="en">A's tolerance</span> \(\varepsilon\)</th><td id="s-eps">—</td></tr>
+              <tr class="hl"><th><span data-lang="ko">B가 찾은 번호</span><span data-lang="en">B's index</span> \(N\)</th><td id="s-N">—</td></tr>
+            </tbody></table>
+            <p class="verdict" id="s-verdict"></p>
+            <div class="controls">
+              <div class="slider-row">
+                <label for="s-e"><span data-lang="ko">오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</label>
+                <input id="s-e" type="range" min="0.05" max="1.5" step="0.01" value="0.6">
+                <output id="s-e-out" for="s-e">0.60</output>
+              </div>
+              <div class="slider-row">
+                <label for="s-L"><span data-lang="ko">극한 후보</span><span data-lang="en">Candidate</span> \(L\)</label>
+                <input id="s-L" type="range" min="-1" max="2" step="0.05" value="1">
+                <output id="s-L-out" for="s-L">1.00</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="s-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+              </div>
+            </div>
+            <p class="sr-only" id="s-live" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="concept-more">
+          <h3><span class="h-ico" aria-hidden="true">🧪</span><span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h3>
+          <ul class="usage-list" data-lang="ko">
+            <li>▶을 눌러 <span class="k-eps">ε</span>을 줄여 보세요. 띠가 좁아질수록 <span class="k-x">N</span>이 커지지만, <strong>언제나</strong> 찾을 수 있어요. → 수렴!</li>
+            <li>\(L\)을 1이 아닌 값으로 바꿔 보세요. ε이 작아지면 \(N\)을 찾을 수 없게 돼요. → 그 \(L\)은 극한이 아니에요.</li>
+            <li>\(a_n=(-1)^n\)을 골라 보세요. \(\varepsilon\le1\)이면 어떤 \(L\)로도 \(N\)을 찾을 수 없어요. 1과 −1 <strong>둘 다</strong> 띠 안에 넣으려면 띠의 폭 \(2\varepsilon\)이 2보다 커야 하거든요. → 발산(진동)!</li>
+          </ul>
+          <ul class="usage-list" data-lang="en">
+            <li>Press ▶ to shrink <span class="k-eps">ε</span>. As the band narrows, <span class="k-x">N</span> grows — but it can <strong>always</strong> be found. → Converges!</li>
+            <li>Move \(L\) away from 1. Once ε is small, no \(N\) works. → That \(L\) is not the limit.</li>
+            <li>Choose \(a_n=(-1)^n\). For \(\varepsilon\le1\), no \(L\) has an \(N\): to keep <strong>both</strong> 1 and −1 inside, the band width \(2\varepsilon\) must exceed 2. → Diverges (oscillates)!</li>
+          </ul>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-lang="ko">증명 맛보기</span><span data-lang="en">Proof sketch</span></div>
+            <p data-lang="ko">왼쪽 수열 \(a_n=1+\dfrac{2(-1)^n}{n}\)이 1에 수렴함을 보이시오.</p>
+            <p data-lang="en">Show that \(a_n=1+\dfrac{2(-1)^n}{n}\) converges to 1.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-b1"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-b1" hidden>
+              <p data-lang="ko">양수 \(\varepsilon\)이 임의로 주어졌다고 하자. 아르키메데스 성질에 의해 \(N\ge\dfrac2\varepsilon\)인 자연수 \(N\)이 있어요. 그러면 \(n>N\)인 모든 자연수 \(n\)에 대하여</p>
+              <p data-lang="en">Let any \(\varepsilon>0\) be given. By the Archimedean property there is a natural number \(N\ge\dfrac2\varepsilon\). Then for every natural number \(n>N\),</p>
+              $$|a_n-1|=\frac{2}{n}<\frac{2}{N}\le\varepsilon$$
+              <p data-lang="ko">따라서 \(\displaystyle\lim_{n\to\infty}a_n=1\). 그림의 \(N\)은 이런 \(N\) 가운데 가장 작은 값이에요.</p>
+              <p data-lang="en">Hence \(\displaystyle\lim_{n\to\infty}a_n=1\). The \(N\) shown in the picture is the smallest such \(N\).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="back-links">
+        <a class="btn btn-outline btn-sm" href="chapters/ch01.html#s01-4"><span data-lang="ko">← 01-④ 수열의 극한의 엄밀한 정의</span><span data-lang="en">← 01-④ Rigorous sequence limit</span></a>
+        <a class="btn btn-outline btn-sm" href="chapters/ch01.html#s01-1"><span data-lang="ko">01-① 수열의 수렴과 발산</span><span data-lang="en">01-① Convergence of sequences</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- B-2 함수의 극한 -->
+  <section class="container rigor-sec" id="func-limit" aria-labelledby="func-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">B-2</span>
+        <div>
+          <h2 id="func-title"><span data-lang="ko">함수의 극한 (ε-δ 논법)</span><span data-lang="en">Limit of a Function (ε-δ)</span></h2>
+          <p class="title-en" data-lang="ko">Rigorous limit of a function</p>
+          <p class="title-en" data-lang="en">함수의 극한의 엄밀한 정의</p>
+        </div>
+      </div>
+
+      <div class="concept-body">
+        <div class="concept-core">
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">정의</span><span class="def-label" data-lang="en">Definition</span>
+            <p data-lang="ko">임의의 양수 \(\htmlClass{k-eps}{\varepsilon}\)에 대하여 양수 \(\htmlClass{k-delta}{\delta}\)가 존재하여, \(0<|x-a|<\htmlClass{k-delta}{\delta}\)인 임의의 \(x\)에 대하여 \(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\)이면 \(\displaystyle\lim_{x\to a}f(x)=L\)이에요.</p>
+            <p data-lang="en">If for every positive \(\htmlClass{k-eps}{\varepsilon}\) there is a positive \(\htmlClass{k-delta}{\delta}\) such that \(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\) whenever \(0<|x-a|<\htmlClass{k-delta}{\delta}\), then \(\displaystyle\lim_{x\to a}f(x)=L\).</p>
+            $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-delta}{\delta}>0\;\;\forall x\;\big(\,0<|x-a|<\htmlClass{k-delta}{\delta}\;\rightarrow\;|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\,\big)$$
+          </div>
+          <table class="phrase-table">
+            <caption class="sr-only"><span data-lang="ko">기호와 뜻 짝짓기</span><span data-lang="en">Symbols and meanings</span></caption>
+            <tbody>
+              <tr><th>\(\forall\,\htmlClass{k-eps}{\varepsilon}>0\)</th><td><span data-lang="ko">A가 세로 띠의 반폭 <span class="k-eps">ε</span>을 아무리 작게 정해도</span><span data-lang="en">however thin A makes the vertical half-width <span class="k-eps">ε</span>,</span></td></tr>
+              <tr><th>\(\exists\,\htmlClass{k-delta}{\delta}>0\)</th><td><span data-lang="ko">B는 가로 띠의 반폭 <span class="k-delta">δ</span>를 찾아서</span><span data-lang="en">B finds a horizontal half-width <span class="k-delta">δ</span> so that</span></td></tr>
+              <tr><th>\(0<|x-a|<\htmlClass{k-delta}{\delta}\)</th><td><span data-lang="ko"><span class="k-delta">δ-띠</span> 안의 \(x\) (단, \(x=a\)는 <strong>빼고</strong>)에서는</span><span data-lang="en">for \(x\) in the <span class="k-delta">δ-band</span> (<strong>except</strong> \(x=a\)),</span></td></tr>
+              <tr><th>\(|f(x)-L|<\htmlClass{k-eps}{\varepsilon}\)</th><td><span data-lang="ko">그래프가 <span class="k-eps">ε-띠</span>를 벗어나지 않는다</span><span data-lang="en">the graph never leaves the <span class="k-eps">ε-band</span></span></td></tr>
+            </tbody>
+          </table>
+          <p class="note" data-lang="ko"><strong>점프가 있으면?</strong> \(x=1\)의 왼쪽은 값이 1, 오른쪽은 값이 2예요. δ를 아무리 작게 잡아도 δ-띠 안에 1과 2가 <strong>둘 다</strong> 들어와요. 그러니 \(\varepsilon\le0.5\)이면 어떤 \(L\)을 골라도 둘을 한 ε-띠에 넣을 수 없어요. → 극한이 존재하지 않아요.</p>
+          <p class="note" data-lang="en"><strong>What about a jump?</strong> Left of \(x=1\) the value is 1; right of it, 2. However small δ is, the δ-band contains <strong>both</strong> values. So for \(\varepsilon\le0.5\), no \(L\) fits both in one ε-band. → The limit does not exist.</p>
+        </div>
+
+        <div class="concept-viz">
+          <div class="viz-panel">
+            <fieldset class="setting" style="margin-bottom:10px">
+              <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+              <div class="seg" id="f-pick">
+                <label><input type="radio" name="f-pick" value="F1" checked><span><span data-lang="ko">매끄러운 곡선</span><span data-lang="en">Smooth curve</span></span></label>
+                <label><input type="radio" name="f-pick" value="F2"><span><span data-lang="ko">점프 불연속</span><span data-lang="en">Jump</span></span></label>
+              </div>
+            </fieldset>
+            <div class="viz-canvas-wrap"><canvas id="f-canvas" role="img" data-i18n-attr="aria-label:b.func"></canvas></div>
+            <ul class="legend">
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="bh" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H5" style="stroke:var(--g-accent);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#bh);stroke:var(--g-accent);stroke-width:1.5"/></svg>
+                <span data-lang="ko">ε-띠 (가로 빗금)</span><span data-lang="en">ε-band (horizontal hatch)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="bv" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M2.5 0V5" style="stroke:var(--g-third);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#bv);stroke:var(--g-third);stroke-width:1.5"/></svg>
+                <span data-lang="ko">δ-띠 (세로 빗금)</span><span data-lang="en">δ-band (vertical hatch)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><text x="18" y="10" text-anchor="middle" style="fill:var(--text);font-size:12px;font-weight:800">✕</text></svg>
+                <span data-lang="ko">✕ ε-띠를 벗어난 곳</span><span data-lang="en">✕ points outside the ε-band</span></li>
+            </ul>
+            <table class="readout-table"><tbody>
+              <tr><th><span data-lang="ko">A가 낸 오차</span><span data-lang="en">A's tolerance</span> \(\varepsilon\)</th><td id="f-eps">—</td></tr>
+              <tr class="hl"><th>\(\delta\)</th><td id="f-delta">—</td></tr>
+            </tbody></table>
+            <p class="verdict" id="f-verdict"></p>
+            <div class="controls">
+              <div class="slider-row">
+                <label for="f-e"><span data-lang="ko">오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</label>
+                <input id="f-e" type="range" min="0.05" max="1.2" step="0.01" value="0.6">
+                <output id="f-e-out" for="f-e">0.60</output>
+              </div>
+              <div class="slider-row">
+                <label for="f-L"><span data-lang="ko">극한 후보</span><span data-lang="en">Candidate</span> \(L\)</label>
+                <input id="f-L" type="range" min="0.5" max="2.5" step="0.05" value="1.5">
+                <output id="f-L-out" for="f-L">1.50</output>
+              </div>
+              <label class="check-row"><input type="checkbox" id="f-manual"><span data-lang="ko">δ를 내가 직접 골라 볼래요</span><span data-lang="en">Let me pick δ myself</span></label>
+              <div class="slider-row" id="f-d-row" hidden>
+                <label for="f-d">\(\delta\)</label>
+                <input id="f-d" type="range" min="0.02" max="1" step="0.01" value="0.4">
+                <output id="f-d-out" for="f-d">0.40</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="f-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+              </div>
+            </div>
+            <p class="sr-only" id="f-live" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="concept-more">
+          <h3><span class="h-ico" aria-hidden="true">🧪</span><span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h3>
+          <ul class="usage-list" data-lang="ko">
+            <li><strong>매끄러운 곡선</strong> \(f(x)=\frac12x^2+1\), \(a=1\): ε을 줄여도 δ가 언제나 나와요. 그래서 \(\displaystyle\lim_{x\to1}f(x)=1.5\)예요.</li>
+            <li>"δ를 내가 직접 골라 볼래요"를 켜고 δ를 크게 해 보세요. 띠를 벗어나는 곳(✕)이 생겨요. δ는 <strong>충분히 작게</strong> 골라야 해요.</li>
+            <li><strong>점프 불연속</strong>을 고르고 ε을 0.5 아래로 줄여 보세요. \(L\)을 1, 1.5, 2로 바꿔 봐도 δ를 찾을 수 없어요.</li>
+          </ul>
+          <ul class="usage-list" data-lang="en">
+            <li><strong>Smooth curve</strong> \(f(x)=\frac12x^2+1\), \(a=1\): however small ε is, a δ appears. So \(\displaystyle\lim_{x\to1}f(x)=1.5\).</li>
+            <li>Turn on "Let me pick δ myself" and make δ large: points escape the band (✕). δ must be <strong>small enough</strong>.</li>
+            <li>Choose the <strong>jump</strong> and shrink ε below 0.5. Whether \(L\) is 1, 1.5 or 2, no δ works.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="back-links">
+        <a class="btn btn-outline btn-sm" href="chapters/ch03.html#s03-3"><span data-lang="ko">← 03-③ 함수의 극한의 엄밀한 정의</span><span data-lang="en">← 03-③ Rigorous function limit</span></a>
+        <a class="btn btn-outline btn-sm" href="chapters/ch05.html#s05-1"><span data-lang="ko">05-① 미분계수 (극한의 활용)</span><span data-lang="en">05-① The derivative (a limit)</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- B-3 연속 -->
+  <section class="container rigor-sec" id="continuity" aria-labelledby="cont-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">B-3</span>
+        <div>
+          <h2 id="cont-title"><span data-lang="ko">연속의 엄밀한 정의</span><span data-lang="en">Rigorous Definition of Continuity</span></h2>
+          <p class="title-en" data-lang="ko">Continuity with ε and δ</p>
+          <p class="title-en" data-lang="en">ε-δ로 보는 연속</p>
+        </div>
+      </div>
+
+      <div class="def-box">
+        <span class="def-label" data-lang="ko">정의</span><span class="def-label" data-lang="en">Definition</span>
+        <p data-lang="ko">임의의 양수 \(\htmlClass{k-eps}{\varepsilon}\)에 대하여 양수 \(\htmlClass{k-delta}{\delta}\)가 존재하여, \(|x-a|<\htmlClass{k-delta}{\delta}\)인 임의의 \(x\)에 대하여 \(|f(x)-f(a)|<\htmlClass{k-eps}{\varepsilon}\)이면 "\(f\)는 \(x=a\)에서 연속이다"라고 해요.</p>
+        <p data-lang="en">\(f\) is continuous at \(x=a\) if for every positive \(\htmlClass{k-eps}{\varepsilon}\) there is a positive \(\htmlClass{k-delta}{\delta}\) such that \(|f(x)-f(a)|<\htmlClass{k-eps}{\varepsilon}\) whenever \(|x-a|<\htmlClass{k-delta}{\delta}\).</p>
+        $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-delta}{\delta}>0\;\;\forall x\;\big(\,|x-a|<\htmlClass{k-delta}{\delta}\;\rightarrow\;|f(x)-f(a)|<\htmlClass{k-eps}{\varepsilon}\,\big)$$
+      </div>
+      <p class="note" data-lang="ko"><strong>극한의 정의와 다른 점 두 가지:</strong> ① 목표값이 \(L\)이 아니라 <strong>함숫값 \(f(a)\)</strong>예요. ② \(0<\)이 빠져서 \(x=a\)도 <strong>포함</strong>해요. 그래서 이 정의는 교과서의 세 조건 "(ⅰ) \(f(a)\)가 정의됨, (ⅱ) 극한값이 존재함, (ⅲ) 극한값 \(=f(a)\)"를 한 문장으로 담고 있어요.</p>
+      <p class="note" data-lang="en"><strong>Two differences from the limit definition:</strong> ① the target is the <strong>function value \(f(a)\)</strong>, not \(L\). ② the "\(0<\)" is gone, so \(x=a\) is <strong>included</strong>. This one sentence packs the textbook's three conditions: (i) \(f(a)\) is defined, (ii) the limit exists, (iii) the limit equals \(f(a)\).</p>
+
+      <div class="viz-panel" style="margin-top:16px">
+        <div class="slider-row">
+          <label for="c-e"><span data-lang="ko">두 그림에 같은 오차</span><span data-lang="en">Same tolerance for both</span> \(\varepsilon\)</label>
+          <input id="c-e" type="range" min="0.1" max="1.5" step="0.01" value="0.8">
+          <output id="c-e-out" for="c-e">0.80</output>
+        </div>
+        <div class="control-buttons" style="margin-top:6px">
+          <button class="play-btn" id="c-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+        </div>
+      </div>
+
+      <div class="compare-grid">
+        <div class="viz-panel">
+          <h3><span aria-hidden="true">✓</span> <span data-lang="ko">연속인 함수</span><span data-lang="en">Continuous</span></h3>
+          <p class="note" style="margin:0 0 8px">\(f(x)=\frac12x^2+1,\;a=1,\;f(1)=1.5\)</p>
+          <div class="viz-canvas-wrap"><canvas id="c1-canvas" role="img" data-i18n-attr="aria-label:b.c1"></canvas></div>
+          <table class="readout-table"><tbody><tr class="hl"><th>\(\delta\)</th><td id="c1-delta">—</td></tr></tbody></table>
+          <p class="verdict" id="c1-verdict"></p>
+        </div>
+        <div class="viz-panel">
+          <h3><span aria-hidden="true">✕</span> <span data-lang="ko">불연속인 함수 (점프)</span><span data-lang="en">Discontinuous (jump)</span></h3>
+          <p class="note" style="margin:0 0 8px">\(g(x)=\begin{cases}\frac12x+1 & (x<1)\\ \frac12x+2 & (x\ge1)\end{cases},\;g(1)=2.5\)</p>
+          <div class="viz-canvas-wrap"><canvas id="c2-canvas" role="img" data-i18n-attr="aria-label:b.c2"></canvas></div>
+          <table class="readout-table"><tbody><tr class="hl"><th>\(\delta\)</th><td id="c2-delta">—</td></tr></tbody></table>
+          <p class="verdict" id="c2-verdict"></p>
+        </div>
+      </div>
+      <p class="note" data-lang="ko">오른쪽 함수는 \(x\)가 1의 왼쪽에서 다가갈 때 값이 1.5 근처예요. 그래서 \(\varepsilon\le1\)이면 \(g(1)=2.5\) 주변의 ε-띠에 들어갈 수 없어요. ε이 클 때 δ가 보이더라도 <strong>모든</strong> ε에서 되어야 연속이므로, \(g\)는 \(x=1\)에서 불연속이에요.</p>
+      <p class="note" data-lang="en">For the right function, values just left of 1 are near 1.5, so for \(\varepsilon\le1\) they can't fit in the ε-band around \(g(1)=2.5\). Even if a δ appears for large ε, continuity needs <strong>every</strong> ε — so \(g\) is discontinuous at \(x=1\).</p>
+
+      <div class="back-links">
+        <a class="btn btn-outline btn-sm" href="chapters/ch04.html#s04-4"><span data-lang="ko">← 04-④ 연속성의 엄밀한 정의</span><span data-lang="en">← 04-④ Rigorous continuity</span></a>
+        <a class="btn btn-outline btn-sm" href="chapters/ch04.html#s04-1"><span data-lang="ko">04-① 함수의 연속</span><span data-lang="en">04-① Continuity of functions</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+
+  function verdict(el, ok, text) {
+    el.className = 'verdict ' + (ok ? 'ok' : 'no');
+    el.innerHTML = '<span class="v-ico" aria-hidden="true">' + (ok ? '✓' : '✕') + '</span><span></span>';
+    el.lastChild.textContent = text;
+  }
+
+  /* ================= B-1 수열 (ε-N) ================= */
+  var SEQ = {
+    S1: function (n) { return 1 + (n % 2 === 0 ? 2 : -2) / n; },
+    S2: function (n) { return n % 2 === 0 ? 1 : -1; }
+  };
+  // 새로고침하면 브라우저가 이전 선택을 되살리므로, 화면에 체크된 값에서 시작한다
+  var seq = SEQ[document.querySelector('input[name="s-pick"]:checked').value];
+  var sE = $('s-e'), sL = $('s-L');
+
+  /* n > N 인 모든 항이 띠 안에 있게 하는 가장 작은 N. 없으면 null */
+  function findN(e, L) {
+    var M = 4000, last = 0;
+    for (var n = 1; n <= M; n++) if (Math.abs(seq(n) - L) >= e) last = n;
+    if (last > M - 10) return null;
+    return Math.max(1, last);
+  }
+
+  var gs = Graph.create($('s-canvas'), { xMin: -1, xMax: 31, yMin: -1.6, yMax: 2.6, aspect: 0.7, maxHeight: 340 });
+  gs.render = function () {
+    var e = +sE.value, L = +sL.value, c = gs.c, N = findN(e, L);
+    var show = N ? Math.min(Math.max(30, N + 10), 160) : 30;
+    gs.setView({ xMin: -show * 0.04, xMax: show + 1 });
+    gs.clear(); gs.grid({ yStep: 0.5 }); gs.axes({ xLabel: 'n', yLabel: 'aₙ', yStep: 0.5 });
+    if (N) gs.band('x', N + 0.5, show + 1, { fill: c.fillMain });
+    gs.band('y', L - e, L + e, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent, stroke: c.accent });
+    gs.hline(L, { color: c.accent, width: 1.5 });
+    var r = show > 80 ? 2.5 : show > 45 ? 3.5 : 5;
+    for (var n = 1; n <= show; n++) {
+      var after = N && n > N;
+      gs.point(n, seq(n), { color: after ? c.main : c.axis, filled: !!after, r: after ? r : r - 0.5 });
+    }
+    if (N) {
+      gs.vline(N + 0.5, { color: c.third, width: 2, dash: [8, 5] });
+      gs.label(N + 0.5, gs.o.yMax, 'N = ' + N, { color: c.third, align: 'left', dx: 6, dy: 14, bold: true });
+    }
+    gs.label(gs.o.xMax, L + e, 'L + ε', { color: c.accent, align: 'right', dx: -4, dy: -11, bold: true });
+    gs.label(gs.o.xMax, L - e, 'L − ε', { color: c.accent, align: 'right', dx: -4, dy: 11, bold: true });
+  };
+  function sUpdate() {
+    var e = +sE.value, L = +sL.value, N = findN(e, L);
+    $('s-eps').textContent = fmt(e);
+    $('s-N').textContent = N ? String(N) : (ko() ? '없음' : 'none');
+    if (N) verdict($('s-verdict'), true, ko()
+      ? N + '번째보다 뒤의 항은 모두 띠 안에 머물러요. B의 승리!'
+      : 'Every term after the ' + N + 'th stays in the band. B wins!');
+    else verdict($('s-verdict'), false, ko()
+      ? '번호를 아무리 뒤로 잡아도 띠 밖으로 나가는 항이 계속 나와요. N을 찾을 수 없어요.'
+      : 'However far out you go, terms keep leaving the band. No N exists.');
+    gs.draw();
+  }
+  Graph.bindSlider(sE, $('s-e-out'), { format: function (v) { return fmt(v); }, onInput: sUpdate });
+  Graph.bindSlider(sL, $('s-L-out'), { format: function (v) { return fmt(v); }, onInput: sUpdate });
+  $('s-pick').addEventListener('change', function (e) {
+    seq = SEQ[e.target.value];
+    sL.value = e.target.value === 'S1' ? 1 : 0;
+    sL.dispatchEvent(new Event('input'));
+  });
+  function sSpeak() { $('s-live').textContent = $('s-verdict').lastChild.textContent; }
+  sE.addEventListener('change', sSpeak); sL.addEventListener('change', sSpeak);
+  Graph.player({ button: $('s-play'), input: sE, duration: 8000, reverse: true });
+
+  /* ============ B-2, B-3 공통: 띠 검사 ============ */
+  /* x ∈ (a−δ, a+δ) 에서 |f(x) − target| ≥ ε 인 점들. includeA=false 이면 x = a 는 뺀다 */
+  function failures(F, target, e, d, includeA) {
+    var out = [], n = 200;
+    [-1, 1].forEach(function (side) {
+      for (var i = 0; i < n; i++) {
+        // 띠의 끝(열린 구간이라 끝점 자체는 제외) 바로 안쪽까지 검사
+        var x = F.a + side * d * ((i + 1) / n) * (1 - 1e-9);
+        var y = F.f(x);
+        if (Math.abs(y - target) >= e) out.push([x, y]);
+      }
+    });
+    if (includeA && Math.abs(F.f(F.a) - target) >= e) out.push([F.a, F.f(F.a)]);
+    return out;
+  }
+  /* 통과하는 가장 큰 δ (최대 1). 아주 작은 δ도 실패하면 null */
+  function bestDelta(F, target, e, includeA) {
+    if (failures(F, target, e, 0.001, includeA).length) return null;
+    if (!failures(F, target, e, 1, includeA).length) return 1;
+    var lo = 0.001, hi = 1;
+    for (var k = 0; k < 30; k++) {
+      var mid = (lo + hi) / 2;
+      if (failures(F, target, e, mid, includeA).length) hi = mid; else lo = mid;
+    }
+    return lo;
+  }
+  function drawFunc(g, F, target, e, d, fails, ok) {
+    var c = g.c;
+    g.clear(); g.grid({ xStep: 0.5, yStep: 0.5 }); g.axes({ xStep: 0.5, yStep: 0.5 });
+    g.band('y', target - e, target + e, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent, stroke: c.accent });
+    if (d) g.band('x', F.a - d, F.a + d, { fill: c.fillThird, hatch: 'v', hatchColor: c.third, stroke: c.third });
+    F.draw(g, c);
+    if (d && ok) F.pieces.forEach(function (p) {
+      var from = Math.max(p[0], F.a - d), to = Math.min(p[1], F.a + d);
+      if (to > from) g.plot(F.f, { color: c.main, width: 6.5, from: from, to: to });
+    });
+    // 띠를 벗어난 점: ✕ 표시 (색 + 모양)
+    var step = Math.max(1, Math.floor(fails.length / 14));
+    for (var i = 0; i < fails.length; i += step) g.label(fails[i][0], fails[i][1], '✕', { color: c.text, bold: true });
+    g.label(g.o.xMin, target + e, (F.cont ? 'f(a) + ε' : 'L + ε'), { color: c.accent, align: 'left', dx: 6, dy: -11, bold: true });
+    g.label(g.o.xMin, target - e, (F.cont ? 'f(a) − ε' : 'L − ε'), { color: c.accent, align: 'left', dx: 6, dy: 11, bold: true });
+    if (d) {
+      g.label(F.a - d, g.o.yMin, 'a − δ', { color: c.third, align: 'right', dx: -4, dy: -14, bold: true });
+      g.label(F.a + d, g.o.yMin, 'a + δ', { color: c.third, align: 'left', dx: 4, dy: -14, bold: true });
+    }
+  }
+
+  /* ================= B-2 함수의 극한 ================= */
+  var FN = {
+    F1: { f: function (x) { return x * x / 2 + 1; }, a: 1, L: 1.5, pieces: [[-9, 9]],
+          draw: function (g, c) { g.plot(this.f, { color: c.main, width: 3 }); g.point(1, 1.5, { color: c.main, r: 5 }); } },
+    F2: { f: function (x) { return x < 1 ? 1 : 2; }, a: 1, L: 1.5, pieces: [[-9, 1 - 1e-9], [1, 9]],
+          draw: function (g, c) {
+            g.line(-1, 1, 1, 1, { color: c.main, width: 3 }); g.line(1, 2, 3, 2, { color: c.main, width: 3 });
+            g.point(1, 1, { filled: false, color: c.main }); g.point(1, 2, { color: c.main });
+          } }
+  };
+  var Fcur = FN[document.querySelector('input[name="f-pick"]:checked').value];
+  $('f-d-row').hidden = !$('f-manual').checked;
+  var fE = $('f-e'), fL = $('f-L'), fD = $('f-d'), manual = $('f-manual');
+  var gf = Graph.create($('f-canvas'), { xMin: -0.2, xMax: 2.2, yMin: 0.2, yMax: 3.2, aspect: 0.8, maxHeight: 340 });
+  var fState = {};
+  gf.render = function () { drawFunc(gf, Fcur, fState.L, fState.e, fState.d, fState.fails, fState.ok); };
+
+  function fUpdate() {
+    var e = +fE.value, L = +fL.value, d, fails, ok, auto = !manual.checked;
+    if (auto) {
+      d = bestDelta(Fcur, L, e, false);
+      if (d) { fails = []; ok = true; }
+      else { d = 0.03; fails = failures(Fcur, L, e, d, false); ok = false; }   // 아주 작은 δ로 해 봐도 실패
+    } else {
+      d = +fD.value; fails = failures(Fcur, L, e, d, false); ok = !fails.length;
+    }
+    fState = { e: e, L: L, d: d, fails: fails, ok: ok };
+    $('f-eps').textContent = fmt(e);
+    $('f-delta').textContent = auto ? (ok ? fmt(d, 3) + (d >= 1 ? '+' : '') : (ko() ? '없음' : 'none')) : fmt(d, 2);
+    var msg;
+    if (auto && ok) msg = ko() ? 'δ = ' + fmt(d, 3) + ' 이하로 잡으면 δ-띠 안(x = a 제외)의 그래프가 모두 ε-띠 안에 있어요.'
+                               : 'With δ ≤ ' + fmt(d, 3) + ', the graph inside the δ-band (except x = a) stays in the ε-band.';
+    else if (auto) msg = ko() ? 'δ를 0.03처럼 아주 작게 잡아도 ε-띠를 벗어나는 곳(✕)이 있어요. 이 ε에 대해서는 δ가 없어요.'
+                              : 'Even a tiny δ like 0.03 leaves points outside the ε-band (✕). No δ exists for this ε.';
+    else if (ok) msg = ko() ? '성공! 이 δ는 쓸 수 있어요. 더 작은 δ도 모두 쓸 수 있어요.' : 'Success! This δ works — and so does any smaller δ.';
+    else msg = ko() ? '실패! ✕ 표시된 곳이 ε-띠를 벗어났어요. δ를 줄여 보세요.' : 'Fail! The ✕ points leave the ε-band. Try a smaller δ.';
+    verdict($('f-verdict'), ok, msg);
+    gf.draw();
+  }
+  Graph.bindSlider(fE, $('f-e-out'), { format: function (v) { return fmt(v); }, onInput: fUpdate });
+  Graph.bindSlider(fL, $('f-L-out'), { format: function (v) { return fmt(v); }, onInput: fUpdate });
+  Graph.bindSlider(fD, $('f-d-out'), { format: function (v) { return fmt(v); }, onInput: fUpdate });
+  manual.addEventListener('change', function () { $('f-d-row').hidden = !manual.checked; fUpdate(); });
+  $('f-pick').addEventListener('change', function (e) { Fcur = FN[e.target.value]; fL.value = 1.5; fL.dispatchEvent(new Event('input')); });
+  function fSpeak() { $('f-live').textContent = $('f-verdict').lastChild.textContent; }
+  [fE, fL, fD].forEach(function (el) { el.addEventListener('change', fSpeak); });
+  Graph.player({ button: $('f-play'), input: fE, duration: 7000, reverse: true });
+
+  /* ================= B-3 연속 ================= */
+  var C1 = { f: FN.F1.f, a: 1, pieces: [[-9, 9]], cont: true,
+             draw: function (g, c) { g.plot(this.f, { color: c.main, width: 3 }); g.point(1, 1.5, { color: c.main, label: 'f(a)', labelStyle: { bold: true } }); } };
+  var C2 = { f: function (x) { return x < 1 ? x / 2 + 1 : x / 2 + 2; }, a: 1, pieces: [[-9, 1 - 1e-9], [1, 9]], cont: true,
+             draw: function (g, c) {
+               g.plot(this.f, { color: c.main, width: 3, to: 1 - 1e-6 }); g.plot(this.f, { color: c.main, width: 3, from: 1 });
+               g.point(1, 1.5, { filled: false, color: c.main }); g.point(1, 2.5, { color: c.main, label: 'g(a)', labelStyle: { bold: true } });
+             } };
+  var cE = $('c-e');
+  var opts = { xMin: -0.2, xMax: 2.2, yMin: 0.4, yMax: 3.6, aspect: 0.85, maxHeight: 300 };
+  var g1 = Graph.create($('c1-canvas'), opts), g2 = Graph.create($('c2-canvas'), Object.assign({}, opts));
+  var cState = {};
+  g1.render = function () { var s = cState.c1; drawFunc(g1, C1, 1.5, s.e, s.d, s.fails, s.ok); };
+  g2.render = function () { var s = cState.c2; drawFunc(g2, C2, 2.5, s.e, s.d, s.fails, s.ok); };
+
+  function contState(F, target, e) {
+    var d = bestDelta(F, target, e, true);
+    if (d) return { e: e, d: d, fails: [], ok: true };
+    return { e: e, d: 0.03, fails: failures(F, target, e, 0.03, true), ok: false };
+  }
+  function cUpdate() {
+    var e = +cE.value;
+    cState = { c1: contState(C1, 1.5, e), c2: contState(C2, 2.5, e) };
+    [['c1', cState.c1], ['c2', cState.c2]].forEach(function (p) {
+      var s = p[1];
+      $(p[0] + '-delta').textContent = s.ok ? fmt(s.d, 3) + (s.d >= 1 ? '+' : '') : (ko() ? '없음' : 'none');
+      verdict($(p[0] + '-verdict'), s.ok, s.ok
+        ? (ko() ? '이 ε에 맞는 δ가 있어요.' : 'A δ exists for this ε.')
+        : (ko() ? '이 ε에 맞는 δ가 없어요 → 연속이 아니에요.' : 'No δ for this ε → not continuous.'));
+    });
+    g1.draw(); g2.draw();
+  }
+  Graph.bindSlider(cE, $('c-e-out'), { format: function (v) { return fmt(v); }, onInput: cUpdate });
+  Graph.player({ button: $('c-play'), input: cE, duration: 7000, reverse: true });
+
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { sUpdate(); fUpdate(); cUpdate(); }
+    else { gs.draw(); gf.draw(); g1.draw(); g2.draw(); }
+  });
+});
+</script>
+</body>
+</html>

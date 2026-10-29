@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>학교 속 미적분 · 미적분학 첫걸음</title>
+  <script src="js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/curriculum.js"></script>
+  <script defer src="js/graph.js"></script>
+  <script defer src="js/profiles.js"></script>
+  <script defer src="js/site.js"></script>
+</head>
+<body data-root="" data-page="apps" data-title-ko="학교 속 미적분 · 미적분학 첫걸음" data-title-en="Calculus at School · First Steps in Calculus">
+
+<main id="main" tabindex="-1">
+
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" data-i18n-attr="aria-label:breadcrumb">
+        <ol>
+          <li><a href="index.html" data-i18n="nav.home"></a></li>
+          <li><span aria-current="page" data-i18n="nav.apps"></span></li>
+        </ol>
+      </nav>
+      <h1><span aria-hidden="true">🏫</span> <span data-i18n="nav.apps"></span></h1>
+      <p class="title-en" data-lang="ko">Calculus at School — 실생활 응용</p>
+      <p class="title-en" data-lang="en">학교 속 미적분 — Real-life applications</p>
+      <p class="page-lead" data-lang="ko">급식실 컵, 학교 화단, 매점 컵라면… 미적분은 교과서 밖, 우리 학교 안에도 있어요. 사례마다 슬라이더를 움직이며 "변화"를 직접 확인해 보세요.</p>
+      <p class="page-lead" data-lang="en">Paper cups, the school garden, cup noodles at the snack bar… calculus lives inside our school too. Move the sliders in each case and see the change for yourself.</p>
+      <nav class="anchor-chips" data-i18n-attr="aria-label:aria.appsToc">
+        <a class="chip" href="#related-rates"><span data-lang="ko">🥤 원뿔 컵에 물 붓기</span><span data-lang="en">🥤 Filling a cone cup</span></a>
+        <a class="chip" href="#optimization"><span data-lang="ko">🌷 가장 넓은 화단 만들기</span><span data-lang="en">🌷 The largest garden</span></a>
+        <a class="chip" href="#more"><span data-lang="ko">🔒 준비 중인 사례</span><span data-lang="en">🔒 Coming soon</span></a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ===== 연계변화율 ===== -->
+  <section class="container rigor-sec" id="related-rates" aria-labelledby="rr-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">🥤</span>
+        <div>
+          <h2 id="rr-title"><span data-lang="ko">원뿔 컵에 물 붓기 — 연계변화율</span><span data-lang="en">Filling a Cone Cup — Related Rates</span></h2>
+          <p class="title-en" data-lang="ko">Related rates (연계변화율)</p>
+          <p class="title-en" data-lang="en">연계변화율 (related rates)</p>
+        </div>
+      </div>
+
+      <div class="app-story">
+        <span class="story-ico" aria-hidden="true">💧</span>
+        <p data-lang="ko">정수기 옆 원뿔 모양 종이컵(윗면 반지름 4 cm, 높이 8 cm)에 물을 <strong>1초에 10 cm³씩 일정하게</strong> 붓고 있어요. 물을 똑같이 붓는데, 수면도 똑같은 속도로 올라갈까요?</p>
+        <p data-lang="en">At the water cooler, a cone-shaped paper cup (top radius 4 cm, height 8 cm) is being filled at a <strong>steady 10 cm³ per second</strong>. The water pours in evenly — does the surface rise evenly too?</p>
+      </div>
+
+      <div class="compare-grid" style="margin-top:0">
+        <div class="viz-panel">
+          <h3><span data-lang="ko">컵 옆에서 본 모습</span><span data-lang="en">Side view of the cup</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="rr-cup" role="img" data-i18n-attr="aria-label:c.cup"></canvas></div>
+        </div>
+        <div class="viz-panel">
+          <h3><span data-lang="ko">시간 \(t\)에 따른 수면 높이 \(h\)</span><span data-lang="en">Water height \(h\) over time \(t\)</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="rr-graph" role="img" data-i18n-attr="aria-label:c.ht"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">\(h(t)\) (굵은 실선)</span><span data-lang="en">\(h(t)\) (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">접선: 기울기 = 수면이 오르는 속도</span><span data-lang="en">Tangent: slope = rising speed</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="viz-panel app-controls">
+        <table class="readout-table"><tbody>
+          <tr><th><span data-lang="ko">부은 물의 양</span><span data-lang="en">Water poured</span> \(V=10t\)</th><td id="rr-v">—</td></tr>
+          <tr><th><span data-lang="ko">수면의 높이</span><span data-lang="en">Water height</span> \(h\)</th><td id="rr-h">—</td></tr>
+          <tr><th><span data-lang="ko">수면의 반지름</span><span data-lang="en">Surface radius</span> \(r=\frac h2\)</th><td id="rr-r">—</td></tr>
+          <tr class="hl"><th><span data-lang="ko">수면이 오르는 속도</span><span data-lang="en">Rising speed</span> \(\frac{dh}{dt}\)</th><td id="rr-dh">—</td></tr>
+        </tbody></table>
+        <p class="verdict ok" id="rr-msg"></p>
+        <div class="controls">
+          <div class="slider-row">
+            <label for="rr-t"><span data-lang="ko">시간</span><span data-lang="en">Time</span> \(t\) (s)</label>
+            <input id="rr-t" type="range" min="0.2" max="13.4" step="0.01" value="3">
+            <output id="rr-t-out" for="rr-t">3.00 s</output>
+          </div>
+          <div class="control-buttons">
+            <button class="play-btn" id="rr-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+          </div>
+        </div>
+        <p class="sr-only" id="rr-live" aria-live="polite"></p>
+      </div>
+
+      <div class="app-text">
+        <div>
+          <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
+          <p data-lang="ko">닮음에서 \(r:h=4:8\), 즉 \(r=\frac h2\)예요. 그래서 물의 부피는</p>
+          <p data-lang="en">By similar triangles \(r:h=4:8\), so \(r=\frac h2\). The volume of water is</p>
+          $$V=\frac13\pi r^2h=\frac13\pi\left(\frac h2\right)^2h=\frac{\pi}{12}h^3$$
+          <p data-lang="ko">\(V\)와 \(h\)는 모두 시간 \(t\)에 따라 변해요. 양변을 \(t\)로 미분하면 (합성함수의 미분법)</p>
+          <p data-lang="en">Both \(V\) and \(h\) change with time \(t\). Differentiating both sides with respect to \(t\) (chain rule):</p>
+          $$\frac{dV}{dt}=\frac{\pi}{4}h^2\,\frac{dh}{dt}\quad\Longrightarrow\quad\frac{dh}{dt}=\frac{4}{\pi h^2}\cdot\frac{dV}{dt}=\frac{40}{\pi h^2}$$
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-lang="ko">문제</span><span data-lang="en">Problem</span></div>
+            <p data-lang="ko">수면의 높이가 4 cm일 때, 수면이 올라가는 속도를 구하시오.</p>
+            <p data-lang="en">How fast is the water rising when it is 4 cm deep?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-rr"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-rr" hidden>
+              $$\frac{dh}{dt}=\frac{40}{\pi\cdot4^2}=\frac{5}{2\pi}\approx0.80\ \text{cm/s}$$
+              <p data-lang="ko">같은 식에 \(h=2\)를 넣으면 약 3.18 cm/s, \(h=8\)이면 약 0.20 cm/s예요. 수면이 높아질수록 느려져요.</p>
+              <p data-lang="en">With \(h=2\) it is about 3.18 cm/s; with \(h=8\), about 0.20 cm/s. The higher the water, the slower it rises.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3><span aria-hidden="true">⚠️</span> <span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">물을 일정한 속도로 부으면 수면도 일정한 속도로 올라간다.</p>
+              <p data-lang="en">If water pours in at a steady rate, the surface rises at a steady rate.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">원뿔 컵은 위로 갈수록 넓어져서, 같은 10 cm³가 더 넓게 퍼져요. 그래서 \(\frac{dh}{dt}=\frac{40}{\pi h^2}\)은 \(h\)가 커질수록 작아져요. 그래프가 점점 눕는 것도 같은 이유예요.</p>
+              <p data-lang="en">The cone widens toward the top, so the same 10 cm³ spreads over a larger area. Thus \(\frac{dh}{dt}=\frac{40}{\pi h^2}\) shrinks as \(h\) grows — which is why the graph flattens.</p></div>
+          </div>
+          <h3 style="margin-top:20px"><span aria-hidden="true">🔗</span> <span data-lang="ko">관련 개념</span><span data-lang="en">Related concepts</span></h3>
+          <div class="link-row">
+            <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-6"><span data-lang="ko">09-⑥ 연계변화율</span><span data-lang="en">09-⑥ Related rates</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch06.html#s06-1"><span data-lang="ko">06-① 합성함수의 미분법</span><span data-lang="en">06-① Chain rule</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch05.html#s05-1"><span data-lang="ko">05-① 미분계수</span><span data-lang="en">05-① The derivative</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 최적화 ===== -->
+  <section class="container rigor-sec" id="optimization" aria-labelledby="op-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">🌷</span>
+        <div>
+          <h2 id="op-title"><span data-lang="ko">가장 넓은 화단 만들기 — 최적화</span><span data-lang="en">The Largest Garden — Optimization</span></h2>
+          <p class="title-en" data-lang="ko">Optimization (최적화 문제)</p>
+          <p class="title-en" data-lang="en">최적화 문제 (optimization)</p>
+        </div>
+      </div>
+
+      <div class="app-story">
+        <span class="story-ico" aria-hidden="true">🪴</span>
+        <p data-lang="ko">원예 동아리가 <strong>울타리 40 m</strong>로 직사각형 화단을 만들려고 해요. 넓이를 가장 크게 하려면 가로를 몇 m로 해야 할까요? 학교 건물 벽을 한 변으로 쓰면 결과가 어떻게 달라질까요?</p>
+        <p data-lang="en">The gardening club has <strong>40 m of fence</strong> for a rectangular flower bed. What width gives the largest area? And what changes if the school wall serves as one side?</p>
+      </div>
+
+      <fieldset class="setting">
+        <legend><span data-lang="ko">화단 만드는 방법</span><span data-lang="en">How to build it</span></legend>
+        <div class="seg" id="op-mode">
+          <label><input type="radio" name="op-mode" value="four" checked><span><span data-lang="ko">네 변 모두 울타리</span><span data-lang="en">Fence on all 4 sides</span></span></label>
+          <label><input type="radio" name="op-mode" value="wall"><span><span data-lang="ko">한 변은 학교 건물 벽</span><span data-lang="en">One side is the school wall</span></span></label>
+        </div>
+      </fieldset>
+
+      <div class="compare-grid" style="margin-top:0">
+        <div class="viz-panel">
+          <h3><span data-lang="ko">위에서 본 화단</span><span data-lang="en">Garden from above</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="op-field" role="img" data-i18n-attr="aria-label:c.fence"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">울타리 (긴 점선)</span><span data-lang="en">Fence (long dashes)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="wl" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 5L5 0" style="stroke:var(--text-2);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#wl);stroke:var(--text-2);stroke-width:1.5"/></svg><span data-lang="ko">건물 벽 (빗금)</span><span data-lang="en">Building wall (hatched)</span></li>
+          </ul>
+        </div>
+        <div class="viz-panel">
+          <h3><span data-lang="ko">가로 \(x\)에 따른 넓이 \(A(x)\)</span><span data-lang="en">Area \(A(x)\) for width \(x\)</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="op-graph" role="img" data-i18n-attr="aria-label:c.area"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">\(A(x)\) (굵은 실선)</span><span data-lang="en">\(A(x)\) (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">접선: 기울기 \(A'(x)\)</span><span data-lang="en">Tangent: slope \(A'(x)\)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="viz-panel app-controls">
+        <table class="readout-table"><tbody>
+          <tr><th><span data-lang="ko">가로</span><span data-lang="en">Width</span> \(x\)</th><td id="op-x">—</td></tr>
+          <tr><th><span data-lang="ko">세로</span><span data-lang="en">Length</span></th><td id="op-y">—</td></tr>
+          <tr class="hl"><th><span data-lang="ko">넓이</span><span data-lang="en">Area</span> \(A(x)\)</th><td id="op-a">—</td></tr>
+          <tr><th><span data-lang="ko">넓이의 변화율</span><span data-lang="en">Rate of change</span> \(A'(x)\)</th><td id="op-da">—</td></tr>
+        </tbody></table>
+        <p class="verdict" id="op-msg"></p>
+        <div class="controls">
+          <div class="slider-row">
+            <label for="op-xs"><span data-lang="ko">가로 길이</span><span data-lang="en">Width</span> \(x\) (m)</label>
+            <input id="op-xs" type="range" min="0.5" max="19.5" step="0.1" value="4">
+            <output id="op-xs-out" for="op-xs">4.0 m</output>
+          </div>
+          <div class="control-buttons">
+            <button class="play-btn" id="op-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+          </div>
+        </div>
+        <p class="sr-only" id="op-live" aria-live="polite"></p>
+      </div>
+
+      <div class="app-text">
+        <div>
+          <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
+          <p data-lang="ko"><strong>네 변 모두 울타리:</strong> 가로가 \(x\)이면 세로는 \(\frac{40-2x}{2}=20-x\)예요.</p>
+          <p data-lang="en"><strong>All four sides fenced:</strong> with width \(x\), the length is \(\frac{40-2x}{2}=20-x\).</p>
+          $$A(x)=x(20-x),\qquad A'(x)=20-2x\quad(0<x<20)$$
+          <p data-lang="ko">\(A'(x)=0\)에서 \(x=10\). \(x<10\)이면 \(A'>0\)(증가), \(x>10\)이면 \(A'<0\)(감소)이므로 \(x=10\)에서 최대, 넓이는 \(100\ \text{m}^2\)예요.</p>
+          <p data-lang="en">\(A'(x)=0\) gives \(x=10\). \(A'>0\) for \(x<10\) (increasing) and \(A'<0\) for \(x>10\) (decreasing), so the maximum is at \(x=10\): \(100\ \text{m}^2\).</p>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-lang="ko">문제</span><span data-lang="en">Problem</span></div>
+            <p data-lang="ko">건물 벽을 한 변으로 쓰고 나머지 세 변에만 울타리 40 m를 쓸 때, 넓이의 최댓값을 구하시오. (벽에 수직인 변의 길이를 \(x\)라 하자.)</p>
+            <p data-lang="en">Using the wall as one side and 40 m of fence for the other three, find the maximum area. (Let \(x\) be each side perpendicular to the wall.)</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-op"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-op" hidden>
+              <p data-lang="ko">벽과 평행한 변은 \(40-2x\)이므로</p>
+              <p data-lang="en">The side parallel to the wall is \(40-2x\), so</p>
+              $$A(x)=x(40-2x),\qquad A'(x)=40-4x=0\;\Rightarrow\;x=10$$
+              <p data-lang="ko">\(x=10\) 좌우에서 \(A'\)의 부호가 \(+\)에서 \(-\)로 바뀌므로 최대예요. 이때 화단은 \(10\times20\), 넓이는 \(200\ \text{m}^2\)로 네 변 울타리일 때의 두 배예요.</p>
+              <p data-lang="en">\(A'\) changes sign from \(+\) to \(-\) at \(x=10\), so it is a maximum: a \(10\times20\) bed with area \(200\ \text{m}^2\) — twice the four-sided case.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3><span aria-hidden="true">⚠️</span> <span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">둘레가 정해진 직사각형은 언제나 정사각형일 때 넓이가 가장 크다.</p>
+              <p data-lang="en">A rectangle with fixed fencing always has the largest area as a square.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">네 변 모두 울타리일 때만 그래요. 벽을 쓰면 최대일 때 \(10\times20\) 직사각형이에요. 조건이 바뀌면 함수 \(A(x)\)를 새로 세우고 \(A'(x)=0\)을 다시 풀어야 해요.</p>
+              <p data-lang="en">Only when all four sides are fenced. With the wall, the best shape is \(10\times20\). When the conditions change, set up a new \(A(x)\) and solve \(A'(x)=0\) again.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(A'(x)=0\)인 점은 무조건 최댓값이다.</p>
+              <p data-lang="en">Any point where \(A'(x)=0\) is a maximum.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">최솟값이나 둘 다 아닌 점일 수도 있어요. \(A'\)의 부호가 \(+\to-\)로 바뀌는지 확인하고, 구간의 양 끝값과도 비교해야 해요.</p>
+              <p data-lang="en">It could be a minimum or neither. Check that \(A'\) changes from \(+\) to \(-\), and compare with the endpoints of the interval.</p></div>
+          </div>
+          <h3 style="margin-top:20px"><span aria-hidden="true">🔗</span> <span data-lang="ko">관련 개념</span><span data-lang="en">Related concepts</span></h3>
+          <div class="link-row">
+            <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-5"><span data-lang="ko">09-⑤ 최적화 문제</span><span data-lang="en">09-⑤ Optimization</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch08.html#s08-2"><span data-lang="ko">08-② 함수의 극값</span><span data-lang="en">08-② Local extrema</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch05.html#s05-1"><span data-lang="ko">05-① 미분계수</span><span data-lang="en">05-① The derivative</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 준비 중 ===== -->
+  <section class="container rigor-sec" id="more" aria-labelledby="more-title">
+    <h2 id="more-title"><span data-lang="ko">🔒 준비 중인 사례</span><span data-lang="en">🔒 Coming Soon</span></h2>
+    <div class="soon-grid">
+      <article class="card soon-card" id="linear-approx">
+        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
+        <h3><span data-lang="ko">🔍 확대하면 곡선이 접선처럼 — 일차 근사</span><span data-lang="en">🔍 Zoom in and the curve looks straight — Linear approximation</span></h3>
+        <p data-lang="ko">계산기 없이 \(\sqrt{4.1}\)을 어림하는 방법. 확대 슬라이더를 키우면 곡선이 접선과 구별되지 않게 돼요.</p>
+        <p data-lang="en">Estimate \(\sqrt{4.1}\) without a calculator. Zoom in and the curve becomes indistinguishable from its tangent.</p>
+        <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-3"><span data-lang="ko">09-③ 일차근사함수</span><span data-lang="en">09-③ Linear approximation</span></a>
+      </article>
+      <article class="card soon-card" id="cooling">
+        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
+        <h3><span data-lang="ko">🍜 매점 컵라면이 식는 과정 — 미분방정식</span><span data-lang="en">🍜 Cup noodles cooling down — Differential equations</span></h3>
+        <p data-lang="ko">뜨거울수록 빨리 식는다는 뉴턴의 냉각 법칙 \(\frac{dT}{dt}=-k(T-T_{\text{실내}})\)을 그래프로 확인해요.</p>
+        <p data-lang="en">Newton's law of cooling, \(\frac{dT}{dt}=-k(T-T_{\text{room}})\): the hotter it is, the faster it cools.</p>
+        <a class="btn btn-outline btn-sm" href="chapters/ch10.html#s10-3"><span data-lang="ko">10-③ 미분방정식과 초깃값 문제</span><span data-lang="en">10-③ Differential equations</span></a>
+      </article>
+      <article class="card soon-card" id="velocity">
+        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
+        <h3><span data-lang="ko">🏃 체육 시간 달리기 — 속도와 거리</span><span data-lang="en">🏃 Running in P.E. — Velocity and distance</span></h3>
+        <p data-lang="ko">속도 그래프 아래의 넓이가 이동 거리라는 것을, 100 m 달리기 기록으로 확인해요.</p>
+        <p data-lang="en">See that the area under a velocity graph is the distance, using a 100 m sprint.</p>
+        <a class="btn btn-outline btn-sm" href="chapters/ch14.html#s14-3"><span data-lang="ko">14-③ 속도와 거리</span><span data-lang="en">14-③ Velocity and distance</span></a>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+
+  function verdict(el, ok, text) {
+    el.className = 'verdict ' + (ok ? 'ok' : 'no');
+    el.innerHTML = '<span class="v-ico" aria-hidden="true">' + (ok ? '✓' : '→') + '</span><span></span>';
+    el.lastChild.textContent = text;
+  }
+
+  /* ================= 연계변화율: 원뿔 컵 =================
+     r = h/2, V = πh³/12, dV/dt = 10  →  h(t) = (120t/π)^(1/3),  dh/dt = 40/(πh²) */
+  var Q = 10, R = 4, H = 8;
+  var hOf = function (t) { return Math.cbrt(12 * Q * t / Math.PI); };
+  var rate = function (h) { return 4 * Q / (Math.PI * h * h); };
+  var T = $('rr-t');
+
+  var cup = Graph.create($('rr-cup'), { xMin: -6.5, xMax: 6.5, yMin: -1, yMax: 10.2, aspect: 0.86, maxHeight: 320 });
+  cup.render = function () {
+    var c = cup.c, t = +T.value, h = hOf(t), r = h * R / H;
+    cup.clear();
+    // 물 (채움 + 가로 빗금)
+    cup.polygon([[0, 0], [-r, h], [r, h]], { fill: c.fillMain, hatch: 'h', hatchColor: c.main });
+    cup.line(-r, h, r, h, { color: c.main, width: 3 });
+    // 컵
+    cup.polygon([[-R, H], [0, 0], [R, H]], { close: false, stroke: c.text, width: 3 });
+    cup.line(-R, H, R, H, { color: c.text2, width: 1.5, dash: [5, 4] });
+    // 붓는 물줄기
+    cup.line(0, 10, 0, h, { color: c.main, width: 2.5, dash: [2, 5] });
+    cup.label(0, 10, (ko() ? '1초에 10 cm³' : '10 cm³ per s'), { color: c.main, align: 'left', dx: 8, dy: 4, bold: true });
+    // 치수: h (오른쪽), r (수면 위)
+    cup.line(5.2, 0, 5.2, h, { color: c.accent, width: 2.5 });
+    cup.line(5.0, 0, 5.4, 0, { color: c.accent, width: 2.5 });
+    cup.line(5.0, h, 5.4, h, { color: c.accent, width: 2.5 });
+    cup.label(5.2, h / 2, 'h = ' + fmt(h) + ' cm', { color: c.accent, align: 'right', dx: -8, bold: true });
+    cup.line(0, h + 0.35, r, h + 0.35, { color: c.third, width: 2.5, dash: [2, 4] });
+    cup.label(r / 2, h + 0.35, 'r', { color: c.third, dy: -12, bold: true });
+    cup.label(-R, H, '4 cm', { color: c.text2, align: 'right', dx: -6 });
+    cup.label(-5.2, H / 2, (ko() ? '높이 8 cm' : 'height 8 cm'), { color: c.text2, align: 'left' });
+  };
+
+  var hg = Graph.create($('rr-graph'), { xMin: -1, xMax: 14.5, yMin: -0.8, yMax: 9.2, aspect: 0.86, maxHeight: 320 });
+  hg.render = function () {
+    var c = hg.c, t = +T.value, h = hOf(t), m = rate(h);
+    hg.clear(); hg.grid(); hg.axes({ xLabel: 't (s)', yLabel: 'h (cm)' });
+    hg.plot(hOf, { color: c.main, width: 3.5, from: 0, to: 13.404 });
+    hg.lineThrough(t, h, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+    hg.point(t, h, { color: c.accent, label: (ko() ? '기울기 ' : 'slope ') + fmt(m) + ' cm/s', labelStyle: { bold: true, dy: 18 } });
+  };
+
+  function rrUpdate() {
+    var t = +T.value, h = hOf(t), m = rate(h);
+    $('rr-v').textContent = fmt(Q * t, 1) + ' cm³';
+    $('rr-h').textContent = fmt(h) + ' cm';
+    $('rr-r').textContent = fmt(h / 2) + ' cm';
+    $('rr-dh').textContent = fmt(m) + ' cm/s';
+    verdict($('rr-msg'), true, ko()
+      ? '지금 수면은 1초에 약 ' + fmt(m) + ' cm씩 올라가요. 물이 차오를수록 수면이 넓어져서 점점 느려져요.'
+      : 'Right now the surface rises about ' + fmt(m) + ' cm per second. As the water spreads wider, it slows down.');
+    cup.draw(); hg.draw();
+  }
+  Graph.bindSlider(T, $('rr-t-out'), { format: function (v) { return fmt(v) + ' s'; }, onInput: rrUpdate });
+  T.addEventListener('change', function () { $('rr-live').textContent = $('rr-msg').lastChild.textContent; });
+  Graph.player({ button: $('rr-play'), input: T, duration: 9000 });
+
+  /* ================= 최적화: 울타리 40 m ================= */
+  var MODES = {
+    four: { A: function (x) { return x * (20 - x); }, dA: function (x) { return 20 - 2 * x; }, other: function (x) { return 20 - x; }, best: 100 },
+    wall: { A: function (x) { return x * (40 - 2 * x); }, dA: function (x) { return 40 - 4 * x; }, other: function (x) { return 40 - 2 * x; }, best: 200 }
+  };
+  var mode = document.querySelector('input[name="op-mode"]:checked').value;
+  var X = $('op-xs');
+
+  var field = Graph.create($('op-field'), { xMin: -3, xMax: 43, yMin: -5, yMax: 27, aspect: 0.7, maxHeight: 320 });
+  field.render = function () {
+    var c = field.c, x = +X.value, M = MODES[mode], o = M.other(x);
+    field.clear(); field.grid({ xStep: 5, yStep: 5 });
+    var top = 22;   // 화단 윗변 (벽 쪽)
+    var w, hgt;
+    if (mode === 'four') { w = x; hgt = o; } else { w = o; hgt = x; }
+    var x0 = 20 - w / 2;
+    field.rect(x0, top - hgt, x0 + w, top, { fill: c.fillMain });
+    if (mode === 'wall') {
+      field.rect(-3, top, 43, top + 2.5, { fill: c.grid, hatch: 'd', hatchColor: c.text2, stroke: c.text2 });
+      field.label(20, top + 1.25, ko() ? '학교 건물 벽 (울타리 필요 없음)' : 'School wall (no fence needed)', { color: c.text, bold: true });
+      field.polygon([[x0, top], [x0, top - hgt], [x0 + w, top - hgt], [x0 + w, top]], { close: false, stroke: c.accent, width: 3.5, dash: [11, 6] });
+    } else {
+      field.polygon([[x0, top], [x0, top - hgt], [x0 + w, top - hgt], [x0 + w, top]], { stroke: c.accent, width: 3.5, dash: [11, 6] });
+    }
+    field.label(x0 + w / 2, top - hgt, (mode === 'four' ? 'x = ' : '40 − 2x = ') + fmt(w, 1) + ' m', { color: c.text, dy: 16, bold: true });
+    field.label(x0, top - hgt / 2, (mode === 'four' ? '20 − x = ' : 'x = ') + fmt(hgt, 1) + ' m', { color: c.text, align: 'right', dx: -8, bold: true });
+    field.label(x0 + w / 2, top - hgt / 2, (ko() ? '넓이 ' : 'Area ') + fmt(M.A(x), 1) + ' m²', { color: c.main, bold: true });
+  };
+
+  var ag = Graph.create($('op-graph'), { xMin: -1.5, xMax: 21, yMin: -20, yMax: 230, aspect: 0.7, maxHeight: 320 });
+  ag.render = function () {
+    var c = ag.c, x = +X.value, M = MODES[mode];
+    ag.clear(); ag.grid({ xStep: 5, yStep: 50 }); ag.axes({ xLabel: 'x (m)', yLabel: 'A (m²)', xStep: 5, yStep: 50 });
+    ag.plot(M.A, { color: c.main, width: 3.5, from: 0, to: 20 });
+    ag.line(10, 0, 10, M.best, { color: c.text2, width: 1.5, dash: [3, 4] });
+    ag.label(10, M.best, (ko() ? '최대 ' : 'max ') + M.best, { color: c.text2, dy: -14, bold: true });
+    ag.lineThrough(x, M.A(x), M.dA(x), { color: c.accent, width: 2.5, dash: [11, 6] });
+    ag.point(x, M.A(x), { color: c.accent, label: "A'(x) = " + fmt(M.dA(x), 1), labelStyle: { bold: true, dy: 18 } });
+  };
+
+  function opUpdate() {
+    var x = +X.value, M = MODES[mode], d = M.dA(x);
+    $('op-x').textContent = fmt(x, 1) + ' m';
+    $('op-y').textContent = fmt(M.other(x), 1) + ' m';
+    $('op-a').textContent = fmt(M.A(x), 1) + ' m²';
+    $('op-da').textContent = fmt(d, 1);
+    var top = Math.abs(d) < 0.25;
+    verdict($('op-msg'), top, top
+      ? (ko() ? "A'(x) = 0 근처! 접선이 수평이 되는 지금이 넓이가 가장 큰 순간이에요." : "A'(x) ≈ 0! The tangent is flat — this is the largest area.")
+      : d > 0
+        ? (ko() ? "A'(x) > 0: x를 늘리면 넓이가 커져요. 오른쪽으로 더 가 보세요." : "A'(x) > 0: increasing x makes the area bigger. Keep going right.")
+        : (ko() ? "A'(x) < 0: x를 늘리면 넓이가 줄어요. 지나쳤어요!" : "A'(x) < 0: increasing x shrinks the area. You passed the top!"));
+    field.draw(); ag.draw();
+  }
+  Graph.bindSlider(X, $('op-xs-out'), { format: function (v) { return fmt(v, 1) + ' m'; }, onInput: opUpdate });
+  $('op-mode').addEventListener('change', function (e) { mode = e.target.value; opUpdate(); });
+  X.addEventListener('change', function () { $('op-live').textContent = $('op-msg').lastChild.textContent; });
+  Graph.player({ button: $('op-play'), input: X, duration: 9000 });
+
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { rrUpdate(); opUpdate(); }
+    else { cup.draw(); hg.draw(); field.draw(); ag.draw(); }
+  });
+});
+</script>
+</body>
+</html>

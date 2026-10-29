@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit2" data-chapter="09">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s09-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s09-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>방정식 \(f(x)=k\)의 실근의 개수는 \(y=f(x)\)와 직선 \(y=k\)의 <strong>교점의 개수</strong>와 같아요.</li>
+          <li>그래서 미분으로 그래프의 극값을 찾으면 \(k\)에 따른 실근의 개수를 알 수 있어요.</li>
+          <li>부등식 \(f(x)\ge g(x)\)는 \(h=f-g\)의 <strong>최솟값이 0 이상</strong>임을 보이면 증명돼요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The number of real roots of \(f(x)=k\) equals the number of <strong>intersections</strong> of \(y=f(x)\) and \(y=k\).</li>
+          <li>Finding the extrema with derivatives tells how many roots there are for each \(k\).</li>
+          <li>To prove \(f(x)\ge g(x)\), show that \(h=f-g\) has a <strong>minimum ≥ 0</strong>.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">예: \(e^x\ge x+1\) (모든 실수 \(x\))</span><span class="def-label" data-lang="en">Example: \(e^x\ge x+1\) for all real \(x\)</span>
+          <p data-lang="ko">\(h(x)=e^x-x-1\)이라 하면 \(h'(x)=e^x-1\). \(x\lt0\)에서 감소, \(x>0\)에서 증가하므로 최솟값은 \(h(0)=0\). 따라서 \(h(x)\ge0\).</p>
+          <p data-lang="en">Let \(h(x)=e^x-x-1\); \(h'(x)=e^x-1\). \(h\) decreases for \(x\lt0\) and increases for \(x>0\), so its minimum is \(h(0)=0\). Hence \(h(x)\ge0\).</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(x^3-3x=k\): 극댓값 2, 극솟값 \(-2\)이므로 \(-2\lt k\lt2\)이면 실근 3개, \(k=\pm2\)이면 2개, \(|k|>2\)이면 1개.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(x^3-3x=k\): local max 2, local min \(-2\), so 3 real roots if \(-2\lt k\lt2\), 2 if \(k=\pm2\), 1 if \(|k|>2\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 가로선 y = k 와의 교점 개수 / h = f − g 의 최솟값 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">살펴볼 것</span><span data-lang="en">Explore</span></legend>
+            <div class="seg" id="eq-pick">
+              <label><input type="radio" name="eq-pick" value="cubic" checked><span><span data-lang="ko">\(x^3-3x=k\)의 실근</span><span data-lang="en">Roots of \(x^3-3x=k\)</span></span></label>
+              <label><input type="radio" name="eq-pick" value="quartic"><span><span data-lang="ko">\(x^4-2x^2=k\)의 실근</span><span data-lang="en">Roots of \(x^4-2x^2=k\)</span></span></label>
+              <label><input type="radio" name="eq-pick" value="ineq"><span><span data-lang="ko">부등식 \(e^x\ge x+1\)</span><span data-lang="en">Inequality \(e^x\ge x+1\)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="eq-canvas" role="img" data-i18n-attr="aria-label:eq.canvas"></canvas>
+          </div>
+          <ul class="legend" id="eq-legend"></ul>
+          <table class="readout-table"><tbody id="eq-table"></tbody></table>
+          <p class="verdict" id="eq-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="eq-k-row">
+              <label for="eq-k"><span data-lang="ko">가로선의 높이</span><span data-lang="en">Height of the line</span> \(k\)</label>
+              <input id="eq-k" type="range" min="-3" max="3" step="0.01" value="1">
+              <output id="eq-k-out" for="eq-k">1.00</output>
+            </div>
+            <div class="slider-row" id="eq-x-row" hidden>
+              <label for="eq-x"><span data-lang="ko">살펴볼 점</span><span data-lang="en">Point to check</span> \(x\)</label>
+              <input id="eq-x" type="range" min="-2.5" max="1.6" step="0.01" value="-1.5">
+              <output id="eq-x-out" for="eq-x">−1.50</output>
+            </div>
+            <div class="control-buttons" id="eq-play-k-row">
+              <button class="play-btn" id="eq-play-k" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+            <div class="control-buttons" id="eq-play-x-row" hidden>
+              <button class="play-btn" id="eq-play-x" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="eq-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">방정식 \(x^3-3x^2-9x=k\)가 서로 다른 세 실근을 갖도록 하는 \(k\)의 범위를 구하시오.</p>
+            <p data-lang="en">Find the values of \(k\) for which \(x^3-3x^2-9x=k\) has three distinct real roots.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-1-a" hidden>
+              <p data-lang="ko">\(f(x)=x^3-3x^2-9x\)라 하면 \(f'(x)=3(x+1)(x-3)\)이라 극댓값 \(f(-1)=5\), 극솟값 \(f(3)=-27\)이에요. 직선 \(y=k\)가 그래프와 세 점에서 만나려면 두 극값 사이에 있어야 하므로 \(-27\lt k\lt5\)예요.</p>
+              <p data-lang="en">With \(f(x)=x^3-3x^2-9x\), \(f'(x)=3(x+1)(x-3)\): local max \(f(-1)=5\), local min \(f(3)=-27\). The line \(y=k\) meets the graph three times exactly when it lies strictly between them: \(-27\lt k\lt5\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(x>0\)일 때 \(\ln x\le x-1\)임을 보이시오.</p>
+            <p data-lang="en">Show that \(\ln x\le x-1\) for \(x>0\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-1-b" hidden>
+              <p data-lang="ko">\(h(x)=x-1-\ln x\)라 하면 \(h'(x)=1-\frac1x\)이에요. \(0\lt x\lt1\)에서 \(h'\lt0\), \(x>1\)에서 \(h'>0\)이라 \(h\)의 최솟값은 \(h(1)=0\)이에요. 따라서 \(h(x)\ge0\), 즉 \(\ln x\le x-1\)이고 등호는 \(x=1\)일 때예요.</p>
+              <p data-lang="en">Let \(h(x)=x-1-\ln x\); \(h'(x)=1-\frac1x\). \(h'\lt0\) on \((0,1)\) and \(h'>0\) for \(x>1\), so the minimum is \(h(1)=0\). Hence \(h(x)\ge0\), i.e. \(\ln x\le x-1\), with equality at \(x=1\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(k\)가 극댓값과 같아도 \(x^3-3x=k\)의 실근은 3개다.</p>
+              <p data-lang="en">If \(k\) equals the local max, \(x^3-3x=k\) still has 3 real roots.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">가로선이 꼭대기에 <strong>접하면</strong> 두 교점이 하나로 합쳐져(중근) 서로 다른 실근은 2개예요. 그림에서 \(k=2\)로 맞춰 보세요.</p>
+              <p data-lang="en">When the line <strong>touches</strong> the peak, two intersections merge (a double root), leaving 2 distinct real roots. Set \(k=2\) in the picture.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f\ge g\)를 보이려면 \(h=f-g\)가 증가함수임을 보이면 된다.</p>
+              <p data-lang="en">To show \(f\ge g\), it is enough to show \(h=f-g\) is increasing.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">증가해도 음수일 수 있어요(\(h(x)=x\)). 핵심은 \(h\)의 <strong>최솟값이 0 이상</strong>인지예요. 그림에서 \(h=e^x-x-1\)의 가장 낮은 점이 \((0,0)\)인 것을 확인해 보세요.</p>
+              <p data-lang="en">An increasing function can still be negative (\(h(x)=x\)). What matters is that the <strong>minimum of \(h\) is ≥ 0</strong>. In the picture, the lowest point of \(h=e^x-x-1\) is \((0,0)\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s09-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>수직선 위를 움직이는 점의 위치가 \(x(t)\)이면, <strong>속도</strong>는 \(v=x'(t)\), <strong>가속도</strong>는 \(a=v'(t)=x''(t)\)예요.</li>
+          <li>속도의 부호는 방향을, 절댓값 \(|v|\)는 <strong>속력</strong>을 나타내요. 속도의 부호가 바뀌는 순간 운동 방향이 바뀌어요.</li>
+          <li>평면 위의 점 \((x(t),y(t))\)은 속도가 \((x'(t),y'(t))\), 속력이 \(\sqrt{x'(t)^2+y'(t)^2}\)이에요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>If a point on a line has position \(x(t)\), its <strong>velocity</strong> is \(v=x'(t)\) and <strong>acceleration</strong> \(a=v'(t)=x''(t)\).</li>
+          <li>The sign of \(v\) gives the direction; \(|v|\) is the <strong>speed</strong>. When \(v\) changes sign, the motion reverses.</li>
+          <li>In the plane, \((x(t),y(t))\) has velocity \((x'(t),y'(t))\) and speed \(\sqrt{x'(t)^2+y'(t)^2}\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">위치 → 속도 → 가속도</span><span class="def-label" data-lang="en">Position → velocity → acceleration</span>
+          $$v=\frac{dx}{dt},\qquad a=\frac{dv}{dt}=\frac{d^2x}{dt^2}$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(x=t^3-6t^2\) \((t\ge0)\): \(v=3t^2-12t=3t(t-4)\), \(a=6t-12\). \(t=4\)에서 운동 방향이 바뀌어요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(x=t^3-6t^2\) \((t\ge0)\): \(v=3t^2-12t=3t(t-4)\), \(a=6t-12\). The direction reverses at \(t=4\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 움직이는 점과 속도·가속도 화살표 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">운동 고르기</span><span data-lang="en">Choose a motion</span></legend>
+            <div class="seg" id="mo-pick">
+              <label><input type="radio" name="mo-pick" value="line" checked><span><span data-lang="ko">수직선 \(x=t^3-6t^2\)</span><span data-lang="en">Line \(x=t^3-6t^2\)</span></span></label>
+              <label><input type="radio" name="mo-pick" value="plane"><span><span data-lang="ko">평면 (타원)</span><span data-lang="en">Plane (ellipse)</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="mo-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="mo-canvas" role="img" data-i18n-attr="aria-label:mo.canvas"></canvas>
+          </div>
+          <ul class="legend" id="mo-legend"></ul>
+          <table class="readout-table"><tbody id="mo-table"></tbody></table>
+          <p class="verdict" id="mo-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="mo-t"><span data-lang="ko">시각</span><span data-lang="en">Time</span> \(t\)</label>
+              <input id="mo-t" type="range" min="0" max="6" step="0.01" value="1">
+              <output id="mo-t-out" for="mo-t">1.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="mo-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="mo-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">수직선 위를 움직이는 점의 위치가 \(x=t^3-6t^2\ (t\ge0)\)일 때, 점이 운동 방향을 바꾸는 시각과 그때의 위치·가속도를 구하시오.</p>
+            <p data-lang="en">A point moves with \(x=t^3-6t^2\ (t\ge0)\). When does it reverse direction, and what are its position and acceleration then?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-2-a" hidden>
+              <p data-lang="ko">\(v=3t(t-4)\)은 \(0\lt t\lt4\)에서 음수, \(t>4\)에서 양수라 \(t=4\)에서 방향이 바뀌어요. 이때 위치는 \(x(4)=64-96=-32\), 가속도는 \(a=6t-12=12\)예요.</p>
+              <p data-lang="en">\(v=3t(t-4)\) is negative on \(0\lt t\lt4\) and positive for \(t>4\), so it reverses at \(t=4\). There \(x(4)=64-96=-32\) and \(a=6t-12=12\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">평면 위의 점 \((2t,\ t^2-4t)\)의 속력이 가장 작은 시각과 그때의 속력을 구하시오.</p>
+            <p data-lang="en">For the point \((2t,\ t^2-4t)\) in the plane, when is the speed smallest, and what is it?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-2-b" hidden>
+              <p data-lang="ko">속도는 \((2,\ 2t-4)\)이므로 속력은 \(\sqrt{4+(2t-4)^2}\)이에요. \((2t-4)^2\ge0\)이라 \(t=2\)일 때 가장 작고, 그 값은 \(\sqrt4=2\)예요.</p>
+              <p data-lang="en">The velocity is \((2,\ 2t-4)\), so the speed is \(\sqrt{4+(2t-4)^2}\). Since \((2t-4)^2\ge0\), it is smallest at \(t=2\), with value \(\sqrt4=2\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">속도와 속력은 같은 말이다.</p>
+              <p data-lang="en">Velocity and speed mean the same thing.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">속도 \(v\)는 방향(부호)까지 담고, 속력은 크기 \(|v|\)예요. 그림에서 \(0\lt t\lt4\)이면 \(v\lt0\)이지만 속력은 양수예요.</p>
+              <p data-lang="en">Velocity \(v\) carries direction (its sign); speed is the size \(|v|\). In the picture, for \(0\lt t\lt4\), \(v\lt0\) while the speed is positive.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(v=0\)인 순간에는 항상 운동 방향이 바뀐다.</p>
+              <p data-lang="en">Whenever \(v=0\), the direction reverses.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(v\)의 <strong>부호가 바뀌어야</strong> 방향이 바뀌어요. \(x=(t-1)^3\)은 \(v=3(t-1)^2\)이라 \(t=1\)에서 잠깐 멈추지만 계속 같은 방향으로 가요.</p>
+              <p data-lang="en">The direction reverses only if \(v\) <strong>changes sign</strong>. \(x=(t-1)^3\) has \(v=3(t-1)^2\): it pauses at \(t=1\) but keeps going the same way.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s09-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>미분가능한 곡선을 한 점 근처에서 크게 확대하면 거의 <strong>직선(접선)</strong>처럼 보여요.</li>
+          <li>그래서 \(x=a\) 근처에서는 \(f(x)\)를 접선의 식으로 바꿔 어림할 수 있어요. 이것이 <strong>일차근사</strong>예요.</li>
+          <li>\(x\)가 \(a\)에서 멀어질수록 오차가 커져요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Zoom in far enough on a differentiable curve and it looks like a <strong>straight line (its tangent)</strong>.</li>
+          <li>So near \(x=a\), \(f(x)\) can be estimated by the tangent line: the <strong>linear approximation</strong>.</li>
+          <li>The error grows as \(x\) moves away from \(a\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">일차근사함수</span><span class="def-label" data-lang="en">Linear approximation</span>
+          $$f(x)\approx f(a)+f'(a)(x-a)\qquad(x\approx a)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=\sqrt x\), \(a=4\): \(f'(4)=\frac14\)이므로 \(\sqrt{4.1}\approx2+\frac14(0.1)=2.025\). (실제 값 2.02485…)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=\sqrt x\), \(a=4\): \(f'(4)=\frac14\), so \(\sqrt{4.1}\approx2+\frac14(0.1)=2.025\). (Actual: 2.02485…)</p>
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#linear-approx"><span data-lang="ko">🏫 학교 속 미적분: 일차 근사</span><span data-lang="en">🏫 Calculus at School: linear approximation</span></a></div>
+      </div>
+
+      <!-- 직관 그림: 확대할수록 곡선이 접선처럼 보인다 / 근삿값과 오차 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수와 기준점 고르기</span><span data-lang="en">Choose a function and base point</span></legend>
+            <div class="seg" id="la-pick">
+              <label><input type="radio" name="la-pick" value="sqrt" checked><span>\(\sqrt x,\ a=4\)</span></label>
+              <label><input type="radio" name="la-pick" value="exp"><span>\(e^x,\ a=0\)</span></label>
+              <label><input type="radio" name="la-pick" value="ln"><span>\(\ln x,\ a=1\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="la-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="la-canvas" role="img" data-i18n-attr="aria-label:la.canvas"></canvas>
+          </div>
+          <ul class="legend" id="la-legend"></ul>
+          <table class="readout-table"><tbody id="la-table"></tbody></table>
+          <p class="verdict" id="la-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="la-z"><span data-lang="ko">확대 배율</span><span data-lang="en">Zoom</span></label>
+              <input id="la-z" type="range" min="0" max="3" step="0.01" value="0">
+              <output id="la-z-out" for="la-z">×1</output>
+            </div>
+            <div class="slider-row">
+              <label for="la-d"><span data-lang="ko">기준점에서 떨어진 거리</span><span data-lang="en">Distance from the base point</span> \(x-a\)</label>
+              <input id="la-d" type="range" min="-2" max="2" step="0.01" value="1">
+              <output id="la-d-out" for="la-d">1.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="la-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="la-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">일차근사를 이용하여 \(\sqrt[3]{8.06}\)의 근삿값을 구하시오.</p>
+            <p data-lang="en">Use a linear approximation to estimate \(\sqrt[3]{8.06}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-3-a" hidden>
+              <p data-lang="ko">\(f(x)=\sqrt[3]{x}=x^{1/3}\), \(a=8\)로 두면 \(f(8)=2\), \(f'(x)=\frac13x^{-2/3}\)에서 \(f'(8)=\frac1{12}\)이에요. 따라서 \(\sqrt[3]{8.06}\approx2+\frac1{12}(0.06)=2.005\)예요. (실제 값 2.004988…)</p>
+              <p data-lang="en">Take \(f(x)=x^{1/3}\), \(a=8\): \(f(8)=2\), \(f'(x)=\frac13x^{-2/3}\), \(f'(8)=\frac1{12}\). So \(\sqrt[3]{8.06}\approx2+\frac1{12}(0.06)=2.005\). (Actual: 2.004988…)</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\((1.02)^{10}\)의 근삿값을 일차근사로 구하고, 실제 값과 비교하시오.</p>
+            <p data-lang="en">Estimate \((1.02)^{10}\) with a linear approximation and compare with the actual value.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-3-b" hidden>
+              <p data-lang="ko">\(f(x)=x^{10}\), \(a=1\)이면 \(f(1)=1\), \(f'(1)=10\)이라 \((1.02)^{10}\approx1+10(0.02)=1.2\)예요. 실제 값은 약 1.219라서 오차가 0.019 정도예요. 지수가 커서 곡선이 많이 휘기 때문에, 같은 거리라도 오차가 커져요.</p>
+              <p data-lang="en">With \(f(x)=x^{10}\), \(a=1\): \(f(1)=1\), \(f'(1)=10\), so \((1.02)^{10}\approx1+10(0.02)=1.2\). The actual value is about 1.219, an error of about 0.019. The curve bends a lot, so the error is larger for the same distance.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">일차근사는 어디에서나 잘 맞는다.</p>
+              <p data-lang="en">A linear approximation works well everywhere.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">기준점 \(a\) <strong>근처</strong>에서만 잘 맞아요. \(a=4\)에서 \(\sqrt9\approx2+\frac14\cdot5=3.25\)이지만 실제는 3이에요. 그림에서 거리를 키우면 오차가 빠르게 커지는 것을 보세요.</p>
+              <p data-lang="en">It works only <strong>near</strong> \(a\). From \(a=4\), \(\sqrt9\approx2+\frac14\cdot5=3.25\), but the truth is 3. Increase the distance in the picture and watch the error grow quickly.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f(x)\approx f(a)+f'(x)(x-a)\)</p>
+              <p data-lang="en">\(f(x)\approx f(a)+f'(x)(x-a)\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">기울기는 <strong>기준점 \(a\)에서</strong> 구한 \(f'(a)\)예요. 접선은 점 \((a,f(a))\)에서 그은 직선이라, 기울기도 그 점에서 정해져요.</p>
+              <p data-lang="en">The slope is \(f'(a)\), taken <strong>at the base point \(a\)</strong>. The tangent line is drawn at \((a,f(a))\), so its slope is fixed there.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s09-4">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(\frac00\) 또는 \(\frac{\infty}{\infty}\) 꼴의 극한은 분자·분모를 <strong>각각</strong> 미분해서 극한을 구할 수 있어요.</li>
+          <li>이것을 <strong>로피탈의 법칙</strong>이라고 하고, 코시의 평균값 정리로 증명해요.</li>
+          <li>몫의 미분법이 아니에요! 그리고 반드시 부정형(\(\frac00,\frac\infty\infty\))일 때만 쓸 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>For limits of the form \(\frac00\) or \(\frac{\infty}{\infty}\), differentiate the numerator and denominator <strong>separately</strong>.</li>
+          <li>This is <strong>L'Hôpital's rule</strong>, proved with Cauchy's mean value theorem.</li>
+          <li>It is NOT the quotient rule, and it works only for indeterminate forms (\(\frac00,\frac\infty\infty\)).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">로피탈의 법칙</span><span class="def-label" data-lang="en">L'Hôpital's rule</span>
+          $$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$$
+          <p class="note" data-lang="ko">(\(\frac00\) 또는 \(\frac\infty\infty\) 꼴이고, 오른쪽 극한이 존재할 때)</p>
+          <p class="note" data-lang="en">(for \(\frac00\) or \(\frac\infty\infty\) forms, when the right-hand limit exists)</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\displaystyle\lim_{x\to0}\frac{e^x-1}{x}=\lim_{x\to0}\frac{e^x}{1}=1\), &nbsp; \(\displaystyle\lim_{x\to\infty}\frac{x}{e^x}=\lim_{x\to\infty}\frac1{e^x}=0\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\displaystyle\lim_{x\to0}\frac{e^x-1}{x}=\lim_{x\to0}\frac{e^x}{1}=1\), &nbsp; \(\displaystyle\lim_{x\to\infty}\frac{x}{e^x}=\lim_{x\to\infty}\frac1{e^x}=0\)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 0/0 근처에서 f, g 는 접선처럼 → 비는 기울기의 비 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">극한 고르기 (\(x\to0\))</span><span data-lang="en">Choose a limit (\(x\to0\))</span></legend>
+            <div class="seg" id="lh-pick">
+              <label><input type="radio" name="lh-pick" value="exp" checked><span>\(\frac{e^x-1}{x}\)</span></label>
+              <label><input type="radio" name="lh-pick" value="sin"><span>\(\frac{\sin3x}{x}\)</span></label>
+              <label><input type="radio" name="lh-pick" value="bad"><span>\(\frac{x+1}{x+2}\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="lh-canvas" role="img" data-i18n-attr="aria-label:lh.canvas"></canvas>
+          </div>
+          <ul class="legend" id="lh-legend"></ul>
+          <table class="readout-table"><tbody id="lh-table"></tbody></table>
+          <p class="verdict" id="lh-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="lh-h"><span data-lang="ko">\(a\)까지의 거리</span><span data-lang="en">Distance to \(a\)</span> \(h\)</label>
+              <input id="lh-h" type="range" min="0.01" max="1" step="0.01" value="0.8">
+              <output id="lh-h-out" for="lh-h">0.80</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="lh-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="lh-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\frac{e^{2x}-1}{x}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to0}\frac{e^{2x}-1}{x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-4-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-4-a" hidden>
+              <p data-lang="ko">\(x\to0\)이면 분자·분모가 모두 0으로 가는 \(\frac00\) 꼴이에요. 각각 미분하면</p>
+              <p data-lang="en">As \(x\to0\), both go to 0: a \(\frac00\) form. Differentiate each:</p>
+              $$\lim_{x\to0}\frac{e^{2x}-1}{x}=\lim_{x\to0}\frac{2e^{2x}}{1}=2$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^2}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^2}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-4-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-4-b" hidden>
+              <p data-lang="ko">\(\frac00\) 꼴이라 한 번 쓰면 \(\frac{\sin x}{2x}\)인데, 이것도 \(\frac00\) 꼴이라 한 번 더 써요.</p>
+              <p data-lang="en">It is \(\frac00\); one step gives \(\frac{\sin x}{2x}\), still \(\frac00\), so apply it once more.</p>
+              $$\lim_{x\to0}\frac{1-\cos x}{x^2}=\lim_{x\to0}\frac{\sin x}{2x}=\lim_{x\to0}\frac{\cos x}{2}=\frac12$$
+              <p data-lang="ko">쓸 때마다 부정형인지 다시 확인하는 것이 중요해요.</p>
+              <p data-lang="en">Check for an indeterminate form before every step.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">로피탈의 법칙은 \(\left(\frac fg\right)'\)을 구하는 것이다.</p>
+              <p data-lang="en">L'Hôpital's rule computes \(\left(\frac fg\right)'\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">몫의 미분법이 아니라, 분자 \(f'\)과 분모 \(g'\)을 <strong>따로</strong> 구해서 \(\frac{f'}{g'}\)의 극한을 보는 거예요.</p>
+              <p data-lang="en">It is not the quotient rule: differentiate the top and bottom <strong>separately</strong> and take the limit of \(\frac{f'}{g'}\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">분수 꼴의 극한이면 언제나 로피탈의 법칙을 쓸 수 있다.</p>
+              <p data-lang="en">Any limit of a fraction can use L'Hôpital's rule.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\frac00\)이나 \(\frac\infty\infty\) 꼴일 때만이에요. \(\displaystyle\lim_{x\to0}\frac{x+1}{x+2}\)은 대입하면 \(\frac12\)인데, 법칙을 잘못 쓰면 \(\frac11=1\)이 나와요. 그림의 세 번째 극한에서 확인해 보세요.</p>
+              <p data-lang="en">Only for \(\frac00\) or \(\frac\infty\infty\). \(\displaystyle\lim_{x\to0}\frac{x+1}{x+2}\) is just \(\frac12\) by substitution; misusing the rule gives \(\frac11=1\). See the third limit in the picture.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s09-5">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>"가장 크게, 가장 작게"를 묻는 문제는 구하려는 양을 <strong>한 변수의 함수</strong>로 나타내는 것에서 시작해요.</li>
+          <li>변수가 움직일 수 있는 <strong>범위</strong>를 정하고, \(f'=0\)인 점과 구간의 양 끝값을 비교해요.</li>
+          <li>\(f'=0\)인 점이 최대인지 최소인지는 \(f'\)의 부호 변화로 꼭 확인해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>"Largest" or "smallest" problems start by writing the quantity as a <strong>function of one variable</strong>.</li>
+          <li>Fix the <strong>range</strong> of the variable, then compare points where \(f'=0\) with the endpoints.</li>
+          <li>Always check the sign change of \(f'\) to tell a maximum from a minimum.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">예: 둘레 40 m 직사각형의 최대 넓이</span><span class="def-label" data-lang="en">Example: largest rectangle with perimeter 40 m</span>
+          $$A(x)=x(20-x),\quad A'(x)=20-2x=0\ \Rightarrow\ x=10,\quad A(10)=100\ \text{m}^2$$
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#optimization"><span data-lang="ko">🏫 슬라이더로 해 보기: 가장 넓은 화단</span><span data-lang="en">🏫 Try it with a slider: the largest garden</span></a></div>
+      </div>
+
+      <!-- 직관 그림: 모양이 바뀌면 양이 바뀐다 → 그래프의 꼭대기/바닥 찾기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">문제 고르기</span><span data-lang="en">Choose a problem</span></legend>
+            <div class="seg" id="op-pick">
+              <label><input type="radio" name="op-pick" value="box" checked><span><span data-lang="ko">뚜껑 없는 상자 (부피 최대)</span><span data-lang="en">Open box (max volume)</span></span></label>
+              <label><input type="radio" name="op-pick" value="can"><span><span data-lang="ko">원기둥 캔 (겉넓이 최소)</span><span data-lang="en">Can (min surface)</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="op-def"></p>
+          <div class="viz-canvas-wrap"><canvas id="op-shape" role="img" data-i18n-attr="aria-label:op.shape"></canvas></div>
+          <p class="mini-chart-title" id="op-cap"></p>
+          <div class="viz-canvas-wrap"><canvas id="op-graph" role="img" data-i18n-attr="aria-label:op.graph"></canvas></div>
+          <ul class="legend" id="op-legend"></ul>
+          <table class="readout-table"><tbody id="op-table"></tbody></table>
+          <p class="verdict" id="op-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="op-x" id="op-x-label"></label>
+              <input id="op-x" type="range" min="0.1" max="5.9" step="0.01" value="0.8">
+              <output id="op-x-out" for="op-x">0.80</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="op-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="op-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(x>0\)일 때 \(x+\dfrac9x\)의 최솟값을 구하시오.</p>
+            <p data-lang="en">Find the minimum of \(x+\dfrac9x\) for \(x>0\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-5-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-5-a" hidden>
+              <p data-lang="ko">\(f(x)=x+\frac9x\), \(f'(x)=1-\frac9{x^2}=0\)에서 \(x=3\ (x>0)\). \(0\lt x\lt3\)에서 \(f'\lt0\), \(x>3\)에서 \(f'>0\)이라 \(x=3\)에서 최소이고, 최솟값은 \(f(3)=6\)이에요.</p>
+              <p data-lang="en">\(f(x)=x+\frac9x\), \(f'(x)=1-\frac9{x^2}=0\) gives \(x=3\ (x>0)\). \(f'\lt0\) on \((0,3)\) and \(f'>0\) for \(x>3\), so the minimum is \(f(3)=6\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">곡선 \(y=x^2\) 위의 점 중에서 점 \((0,2)\)에 가장 가까운 점과 그 거리를 구하시오.</p>
+            <p data-lang="en">Find the point on \(y=x^2\) closest to \((0,2)\), and the distance.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-5-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-5-b" hidden>
+              <p data-lang="ko">점 \((x,x^2)\)까지 거리의 제곱을 \(D(x)=x^2+(x^2-2)^2=x^4-3x^2+4\)로 두면 (제곱이 최소인 곳에서 거리도 최소), \(D'(x)=4x^3-6x=2x(2x^2-3)=0\)에서 \(x=0,\ \pm\sqrt{\tfrac32}\). \(D(0)=4\), \(D\!\left(\pm\sqrt{\tfrac32}\right)=\frac94-\frac92+4=\frac74\)이므로 가장 가까운 점은 \(\left(\pm\sqrt{\tfrac32},\ \tfrac32\right)\), 거리는 \(\frac{\sqrt7}{2}\)이에요.</p>
+              <p data-lang="en">Minimize the squared distance \(D(x)=x^2+(x^2-2)^2=x^4-3x^2+4\) (same minimizer). \(D'(x)=4x^3-6x=2x(2x^2-3)=0\) gives \(x=0,\ \pm\sqrt{\tfrac32}\). \(D(0)=4\) and \(D\!\left(\pm\sqrt{\tfrac32}\right)=\frac74\), so the closest points are \(\left(\pm\sqrt{\tfrac32},\ \tfrac32\right)\) at distance \(\frac{\sqrt7}{2}\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f'=0\)인 점에서 항상 최댓값이 나온다.</p>
+              <p data-lang="en">Where \(f'=0\), you always get the maximum.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">최소일 수도 있어요. 그림의 원기둥 캔은 \(S'=0\)인 \(r=2\)에서 겉넓이가 <strong>최소</strong>예요. \(f'\)의 부호가 \(+\to-\)인지 \(-\to+\)인지 꼭 확인하세요.</p>
+              <p data-lang="en">It could be a minimum. For the can in the picture, \(S'=0\) at \(r=2\) gives the <strong>minimum</strong> surface. Always check whether \(f'\) goes \(+\to-\) or \(-\to+\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">변수의 범위는 생각하지 않아도 된다.</p>
+              <p data-lang="en">The range of the variable doesn't matter.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">상자에서 \(x\)는 \(0\lt x\lt6\)이어야 해요(잘라낼 수 있는 만큼). 범위 밖의 \(f'=0\)인 점(\(x=6\))은 답이 될 수 없고, 닫힌구간이면 <strong>양 끝값</strong>도 함께 비교해야 해요.</p>
+              <p data-lang="en">For the box, \(0\lt x\lt6\) (you can only cut so much). A critical point outside it (\(x=6\)) can't be the answer, and on a closed interval you must also compare the <strong>endpoints</strong>.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s09-6" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>서로 관계가 있는 여러 양이 <strong>시간에 따라 함께</strong> 변할 때, 그 변화율들 사이의 관계를 <strong>연계변화율</strong>이라고 해요.</li>
+          <li>양들 사이의 관계식을 세우고, 양변을 시간 \(t\)로 미분해요 (합성함수의 미분법).</li>
+          <li>모르는 변화율을 알고 있는 변화율로 나타낸 뒤, 주어진 순간의 값을 대입해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>When related quantities change <strong>together over time</strong>, the relation between their rates is called <strong>related rates</strong>.</li>
+          <li>Write the equation linking the quantities, then differentiate both sides with respect to \(t\) (chain rule).</li>
+          <li>Express the unknown rate with the known ones, then plug in the values at the given moment.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">예: 원뿔 컵 (\(r=\frac h2\), 1초에 10 cm³)</span><span class="def-label" data-lang="en">Example: cone cup (\(r=\frac h2\), 10 cm³/s)</span>
+          $$V=\frac{\pi}{12}h^3\ \Rightarrow\ \frac{dV}{dt}=\frac{\pi}{4}h^2\frac{dh}{dt}\ \Rightarrow\ \frac{dh}{dt}=\frac{40}{\pi h^2}$$
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#related-rates"><span data-lang="ko">🏫 슬라이더로 해 보기: 원뿔 컵에 물 붓기</span><span data-lang="en">🏫 Try it with a slider: filling a cone cup</span></a></div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 09-⑤ 최적화 문제: 모양을 바꾸면 양이 바뀐다 → 그래프의 꼭대기·바닥 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('op-x'), PI = Math.PI;
+  var P = {
+    box: { f: function (x) { return x * (12 - 2 * x) * (12 - 2 * x); }, df: function (x) { return (12 - 2 * x) * (12 - 6 * x); },
+           range: [0.1, 5.9], start: 0.8, best: 2, kind: 'max', view: [0, 6.2, -10, 150],
+           def: '\\(V(x)=x(12-2x)^2\\quad(0\\lt x\\lt6)\\)' },
+    can: { f: function (r) { return 2 * PI * r * r + 32 * PI / r; }, df: function (r) { return 4 * PI * r - 32 * PI / (r * r); },
+           range: [1, 4.5], start: 1.2, best: 2, kind: 'min', view: [0.7, 4.7, 0, 190],
+           def: '\\(V=16\\pi\\ \\Rightarrow\\ h=\\dfrac{16}{r^2},\\quad S(r)=2\\pi r^2+\\dfrac{32\\pi}{r}\\)' }
+  };
+  var K = document.querySelector('input[name="op-pick"]:checked').value;
+
+  var shape = Graph.create($('op-shape'), { xMin: -1, xMax: 13, yMin: -1, yMax: 13, aspect: 0.6, minHeight: 200, maxHeight: 260 });
+  var gr = Graph.create($('op-graph'), { xMin: 0, xMax: 6, yMin: 0, yMax: 150, aspect: 0.5, minHeight: 170, maxHeight: 230 });
+
+  shape.render = function () {
+    var c = shape.c, x = +X.value;
+    // 가로·세로 같은 배율
+    var hc = 16 / (x * x);                                  // 캔의 높이
+    var half = K === 'box' ? 7.2 : Math.max(6, hc / 2 + 1.6), span = 2 * half * (shape.w && shape.h ? shape.w / shape.h : 1);
+    var cx = K === 'box' ? 6 : 0, cy = K === 'box' ? 6 : hc / 2;
+    shape.setView({ xMin: cx - span / 2, xMax: cx + span / 2, yMin: cy - half, yMax: cy + half });
+    shape.clear();
+    if (K === 'box') {
+      // 12 × 12 종이에서 네 귀퉁이 x × x 를 잘라 내고 접는다
+      shape.rect(0, 0, 12, 12, { fill: c.fillMain, stroke: c.main, width: 2.5 });
+      [[0, 0], [12 - x, 0], [0, 12 - x], [12 - x, 12 - x]].forEach(function (p) {
+        shape.rect(p[0], p[1], p[0] + x, p[1] + x, { fill: c.bg, hatch: 'd', hatchColor: c.third, stroke: c.third, width: 2 });
+      });
+      shape.polygon([[x, x], [12 - x, x], [12 - x, 12 - x], [x, 12 - x]], { stroke: c.accent, width: 2, dash: [8, 5] });
+      shape.label(x / 2, 12, 'x', { color: c.third, dy: -12, bold: true });
+      shape.label(6, x, '12 − 2x', { color: c.accent, dy: -12, bold: true });
+      shape.label(6, 6, ko() ? '바닥' : 'base', { color: c.text, bold: true });
+    } else {
+      var r = x, h = 16 / (r * r), e = 0.35 * r;
+      var top = [], bot = [];
+      for (var i = 0; i <= 80; i++) { var t = 2 * PI * i / 80; top.push([r * Math.cos(t), h + e * Math.sin(t)]); bot.push([r * Math.cos(t), e * Math.sin(t)]); }
+      shape.polygon([[-r, 0], [-r, h], [r, h], [r, 0]], { fill: c.fillMain, stroke: c.main, width: 2.5, close: false });
+      shape.polygon(bot.slice(40), { stroke: c.main, width: 2.5, close: false });
+      shape.polygon(bot.slice(0, 41), { stroke: c.main, width: 1.5, dash: [4, 4], close: false });
+      shape.polygon(top, { fill: c.fillAccent, stroke: c.main, width: 2.5 });
+      shape.line(0, h, r, h, { color: c.accent, width: 2.5 });
+      shape.label(r / 2, h, 'r = ' + fmt(r), { color: c.accent, dy: -10, bold: true });
+      shape.label(r, h / 2, 'h = ' + fmt(h), { color: c.third, align: 'left', dx: 8, bold: true });
+    }
+  };
+  gr.render = function () {
+    var F = P[K], c = gr.c, x = +X.value, V = F.view;
+    gr.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    gr.clear(); gr.grid(); gr.axes({ xLabel: K === 'box' ? 'x' : 'r', yLabel: K === 'box' ? 'V' : 'S' });
+    gr.plot(F.f, { color: c.main, width: 3.5, from: F.range[0], to: F.range[1] });
+    gr.point(F.best, F.f(F.best), { color: c.third, r: 6, filled: false, label: (F.kind === 'max' ? (ko() ? '최대 ' : 'max ') : (ko() ? '최소 ' : 'min ')) + fmt(F.f(F.best), 1), labelStyle: { bold: true, dy: F.kind === 'max' ? -14 : 22 } });
+    gr.lineThrough(x, F.f(x), F.df(x), { color: c.accent, width: 2, dash: [11, 6] });
+    gr.point(x, F.f(x), { color: c.main, r: 6.5 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             ring: '<circle cx="18" cy="6" r="4.5" style="fill:none;stroke:var(--g-third);stroke-width:2"/>',
+             cut: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function legend() {
+    var L = Site.lang(), box = K === 'box';
+    var items = L === 'ko'
+      ? [box ? ['cut', '잘라 내는 귀퉁이 x × x (빗금)'] : ['main', '원기둥 캔'], ['main', (box ? '부피 V(x)' : '겉넓이 S(r)') + ' 그래프 (실선)'], ['accent', '지금 점에서의 접선 (긴 점선)'], ['ring', '답이 되는 점 (○)']]
+      : [box ? ['cut', 'cut-out corners x × x (hatched)'] : ['main', 'cylindrical can'], ['main', (box ? 'volume V(x)' : 'surface S(r)') + ' graph (solid)'], ['accent', 'tangent at the current point (long dashes)'], ['ring', 'the optimum (○)']];
+    $('op-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('op-cap').textContent = box ? (L === 'ko' ? '⬇️ 잘라 낸 길이 x에 따른 부피 V(x)' : '⬇️ Volume V(x) against the cut x')
+                                  : (L === 'ko' ? '⬇️ 반지름 r에 따른 겉넓이 S(r) (부피는 16π로 고정)' : '⬇️ Surface S(r) against the radius r (volume fixed at 16π)');
+    $('op-x-label').textContent = box ? (L === 'ko' ? '잘라 낼 길이 x' : 'cut length x') : (L === 'ko' ? '반지름 r' : 'radius r');
+  }
+
+  function update() {
+    var F = P[K], x = +X.value, d = F.df(x), v, box = K === 'box';
+    var rows = box
+      ? [['x', fmt(x)], [ko() ? '바닥 한 변 12 − 2x' : 'base side 12 − 2x', fmt(12 - 2 * x)], [ko() ? '부피 V(x)' : 'volume V(x)', fmt(F.f(x), 2)], ["V′(x)", fmt(d, 2)]]
+      : [['r', fmt(x)], ['h = 16/r²', fmt(16 / (x * x))], [ko() ? '겉넓이 S(r)' : 'surface S(r)', fmt(F.f(x), 2)], ["S′(r)", fmt(d, 2)]];
+    $('op-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (Math.abs(x - F.best) < 0.015) v = { ok: true, text: box
+      ? (ko() ? 'x = 2에서 V′ = 0이고 부호가 + → −로 바뀌어요: 부피가 최대 128이에요. 바닥은 8 × 8, 높이는 2예요.' : 'At x = 2, V′ = 0 and changes + → −: the volume is maximal, 128. Base 8 × 8, height 2.')
+      : (ko() ? 'r = 2에서 S′ = 0이고 부호가 − → +로 바뀌어요: 겉넓이가 최소 24π ≈ 75.4예요. 이때 h = 4 = 2r, 높이가 지름과 같아요.' : 'At r = 2, S′ = 0 and changes − → +: the surface is minimal, 24π ≈ 75.4. Then h = 4 = 2r: height equals diameter.') };
+    else v = { ok: null, text: d > 0
+      ? (ko() ? (box ? 'V′ > 0: x를 조금 늘리면 부피가 커져요. 오른쪽으로 가 보세요.' : 'S′ > 0: r을 조금 줄이면 겉넓이가 작아져요. 왼쪽으로 가 보세요.')
+              : (box ? 'V′ > 0: increasing x enlarges the volume. Move right.' : 'S′ > 0: decreasing r shrinks the surface. Move left.'))
+      : (ko() ? (box ? 'V′ < 0: x를 조금 줄이면 부피가 커져요. 왼쪽으로 가 보세요.' : 'S′ < 0: r을 조금 늘리면 겉넓이가 작아져요. 오른쪽으로 가 보세요.')
+              : (box ? 'V′ < 0: decreasing x enlarges the volume. Move left.' : 'S′ < 0: increasing r shrinks the surface. Move right.')) };
+    var el = $('op-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    shape.draw(); gr.draw();
+  }
+  function setProblem(k) {
+    K = k;
+    var F = P[k], d = $('op-def');
+    X.min = F.range[0]; X.max = F.range[1]; X.value = F.start;
+    d.innerHTML = F.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(X, $('op-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('op-pick').addEventListener('change', function (e) { setProblem(e.target.value); });
+  X.addEventListener('change', function () { $('op-live').textContent = $('op-verdict').textContent; });
+  Graph.player({ button: $('op-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else { shape.draw(); gr.draw(); } });
+  setProblem(K);
+});
+
+/* 09-④ 로피탈의 법칙: 0/0 근처에서 f, g 는 접선과 거의 같아서 f/g ≈ f′/g′ */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var H = $('lh-h'), A = 0;
+  var FN = {
+    exp: { f: function (x) { return Math.exp(x) - 1; }, df: Math.exp, g: function (x) { return x; }, dg: function () { return 1; }, L: 1, fn: 'eˣ − 1', gn: 'x' },
+    sin: { f: function (x) { return Math.sin(3 * x); }, df: function (x) { return 3 * Math.cos(3 * x); }, g: function (x) { return x; }, dg: function () { return 1; }, L: 3, fn: 'sin 3x', gn: 'x' },
+    bad: { f: function (x) { return x + 1; }, df: function () { return 1; }, g: function (x) { return x + 2; }, dg: function () { return 1; }, L: 0.5, fn: 'x + 1', gn: 'x + 2' }
+  };
+  var K = document.querySelector('input[name="lh-pick"]:checked').value;
+
+  var g = Graph.create($('lh-canvas'), { xMin: -1.5, xMax: 1.5, yMin: -2, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], c = g.c, x = A + +H.value;
+    g.setView({ xMin: -1.3, xMax: 1.3, yMin: K === 'sin' ? -1.6 : -1.4, yMax: K === 'bad' ? 3.6 : 2.6 });
+    g.clear(); g.grid(); g.axes();
+    // 각자의 접선 (가는 선): 0/0 이면 둘 다 원점을 지난다
+    g.lineThrough(A, F.f(A), F.df(A), { color: c.main, width: 1.2 });
+    g.lineThrough(A, F.g(A), F.dg(A), { color: c.accent, width: 1.2 });
+    g.plot(F.f, { color: c.main, width: 3.5 });
+    g.plot(F.g, { color: c.accent, width: 3, dash: [11, 6] });
+    g.line(x, 0, x, F.f(x), { color: c.main, width: 1.5, dash: [2, 4] });
+    g.point(x, F.f(x), { color: c.main, r: 6, label: 'f', labelStyle: { bold: true } });
+    g.point(x, F.g(x), { color: c.accent, r: 6, label: 'g', labelStyle: { bold: true, dy: 18 } });
+    g.point(A, F.f(A), { color: c.text, r: 4 });
+    if (F.g(A) !== F.f(A)) g.point(A, F.g(A), { color: c.text, r: 4 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             thin: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1.2"/>' };
+  function legend() {
+    var F = FN[K], L = Site.lang();
+    var items = L === 'ko' ? [['main', '분자 y = ' + F.fn + ' (실선)'], ['accent', '분모 y = ' + F.gn + ' (긴 점선)'], ['thin', 'x = 0에서 각각의 접선 (가는 선)']]
+                           : [['main', 'numerator y = ' + F.fn + ' (solid)'], ['accent', 'denominator y = ' + F.gn + ' (long dashes)'], ['thin', 'their tangents at x = 0 (thin)']];
+    $('lh-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var F = FN[K], h = +H.value, x = A + h, v;
+    var zero = Math.abs(F.f(A)) < 1e-12 && Math.abs(F.g(A)) < 1e-12;
+    var rows = [['x = a + h', fmt(x, 2)], ['f(x) / g(x)', fmt(F.f(x) / F.g(x), 4)],
+                ["f′(0) / g′(0)", fmt(F.df(A) / F.dg(A), 4)], [ko() ? '실제 극한값' : 'true limit', fmt(F.L, 4)]];
+    $('lh-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 1 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (!zero) v = { ok: false, text: ko() ? 'x = 0에서 분자 1, 분모 2라 0/0 꼴이 아니에요. 바로 대입해서 1/2이에요. 로피탈을 쓰면 f′/g′ = 1/1 = 1로 틀린 답이 나와요.'
+                                            : 'At x = 0 the top is 1 and the bottom 2: not 0/0. Just substitute: 1/2. Applying the rule would give f′/g′ = 1/1 = 1, which is wrong.' };
+    else v = { ok: h <= 0.05 ? true : null, text: ko()
+      ? '두 그래프가 모두 원점을 지나는 0/0 꼴이에요. 원점 근처에서 각 그래프는 자기 접선과 거의 같아서, 높이의 비 f/g가 기울기의 비 f′(0)/g′(0) = ' + fmt(F.L, 0) + '에 다가가요.'
+      : 'Both graphs pass through the origin: a 0/0 form. Near it each graph is almost its tangent, so the height ratio f/g approaches the slope ratio f′(0)/g′(0) = ' + fmt(F.L, 0) + '.' };
+    var el = $('lh-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+
+  Graph.bindSlider(H, $('lh-h-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('lh-pick').addEventListener('change', function (e) { K = e.target.value; legend(); update(); });
+  H.addEventListener('change', function () { $('lh-live').textContent = $('lh-verdict').textContent; });
+  // ▶ h → 0
+  Graph.player({ button: $('lh-play'), input: H, duration: 6000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  legend();
+  update();
+});
+
+/* 09-③ 일차근사함수: 확대할수록 곡선이 접선처럼 보이고, 가까울수록 오차가 작다 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Z = $('la-z'), D = $('la-d');
+  var FN = {
+    sqrt: { f: Math.sqrt, df: function (x) { return 0.5 / Math.sqrt(x); }, a: 4, def: '\\(L(x)=2+\\tfrac14(x-4)\\)' },
+    exp:  { f: Math.exp, df: Math.exp, a: 0, def: '\\(L(x)=1+x\\)' },
+    ln:   { f: Math.log, df: function (x) { return 1 / x; }, a: 1, def: '\\(L(x)=x-1\\)' }
+  };
+  var K = document.querySelector('input[name="la-pick"]:checked').value;
+  function zoom() { return Math.pow(10, +Z.value); }
+  function lin(F, x) { return F.f(F.a) + F.df(F.a) * (x - F.a); }
+
+  var g = Graph.create($('la-canvas'), { xMin: -3, xMax: 3, yMin: -3, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], c = g.c, w = 3 / zoom(), x = F.a + +D.value, fa = F.f(F.a);
+    var hh = w * (g.w && g.h ? g.h / g.w : 0.8);
+    g.setView({ xMin: F.a - w, xMax: F.a + w, yMin: fa - hh, yMax: fa + hh });
+    g.clear(); g.grid(); g.axes();
+    g.plot(F.f, { color: c.main, width: 3.5, samples: 600 });
+    g.lineThrough(F.a, fa, F.df(F.a), { color: c.accent, width: 2.5, dash: [11, 6] });
+    if (isFinite(F.f(x))) {
+      g.line(x, lin(F, x), x, F.f(x), { color: c.third, width: 3.5 });
+      g.point(x, F.f(x), { color: c.main, r: 5 });
+      g.point(x, lin(F, x), { color: c.accent, r: 5 });
+    }
+    g.point(F.a, fa, { color: c.text, r: 6, label: '(a, f(a))', labelStyle: { bold: true, dy: 18 } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-third);stroke-width:3.5"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선)'], ['accent', '접선 = 일차근사 y = L(x) (긴 점선)'], ['third', '오차 f(x) − L(x) (보라 선분)']],
+    en: [['main', 'y = f(x) (solid)'], ['accent', 'tangent = linear approximation y = L(x) (long dashes)'], ['third', 'error f(x) − L(x) (purple segment)']]
+  };
+
+  function update() {
+    var F = FN[K], d = +D.value, x = F.a + d, fx = F.f(x), Lx = lin(F, x), err = fx - Lx, v;
+    var ok = isFinite(fx);
+    var rows = [['x', fmt(x, 2)], [ko() ? '실제 값 f(x)' : 'actual f(x)', ok ? fmt(fx, 5) : '—'], [ko() ? '근삿값 L(x)' : 'estimate L(x)', fmt(Lx, 5)],
+                [ko() ? '오차 |f(x) − L(x)|' : 'error |f(x) − L(x)|', ok ? fmt(Math.abs(err), 5) : '—']];
+    $('la-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 3 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (!ok) v = { ok: false, text: ko() ? '이 x에서는 함수가 정의되지 않아요. 기준점 쪽으로 돌아오세요.' : 'The function is undefined at this x. Move back toward the base point.' };
+    else if (Math.abs(d) < 0.005) v = { ok: true, text: ko() ? '기준점에서는 곡선과 접선이 딱 만나서 오차가 0이에요.' : 'At the base point the curve and tangent meet: zero error.' };
+    else v = { ok: Math.abs(err) < 0.01 ? true : null, text: ko()
+      ? '기준점에서 ' + fmt(Math.abs(d), 2) + '만큼 떨어지면 오차는 ' + fmt(Math.abs(err), 5) + ' 정도예요. 거리를 반으로 줄이면 오차는 대략 4분의 1로 줄어요(오차 ≈ 거리²에 비례). 확대 배율을 올리면 곡선과 접선이 거의 겹쳐 보여요.'
+      : 'At distance ' + fmt(Math.abs(d), 2) + ' from the base point the error is ' + fmt(Math.abs(err), 5) + '. Halving the distance cuts the error to about a quarter (error ≈ proportional to distance²). Zoom in and the curve and tangent nearly coincide.' };
+    var el = $('la-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var d = $('la-def');
+    d.innerHTML = FN[k].def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+  function setLegend() {
+    $('la-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(Z, $('la-z-out'), { format: function () { var z = zoom(); return '×' + (z < 10 ? fmt(z, 1) : Math.round(z)); }, onInput: function () { update(); } });
+  Graph.bindSlider(D, $('la-d-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('la-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  [Z, D].forEach(function (el) { el.addEventListener('change', function () { $('la-live').textContent = $('la-verdict').textContent; }); });
+  // ▶ 확대해 들어가기
+  Graph.player({ button: $('la-play'), input: Z, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  setFn(K);
+});
+
+/* 09-② 속도와 가속도: 움직이는 점과 속도·가속도 화살표 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var T = $('mo-t');
+  var mode = document.querySelector('input[name="mo-pick"]:checked').value;
+  var LN = { x: function (t) { return t * t * t - 6 * t * t; }, v: function (t) { return 3 * t * t - 12 * t; }, a: function (t) { return 6 * t - 12; } };
+  var PL = { x: function (t) { return 3 * Math.cos(t); }, y: function (t) { return 2 * Math.sin(t); },
+             vx: function (t) { return -3 * Math.sin(t); }, vy: function (t) { return 2 * Math.cos(t); } };
+  var DEF = { line: '\\(x=t^3-6t^2,\\ \\ v=3t^2-12t,\\ \\ a=6t-12\\ \\ (0\\le t\\le6)\\)',
+              plane: '\\((x,y)=(3\\cos t,\\ 2\\sin t)\\)' };
+
+  var g = Graph.create($('mo-canvas'), { xMin: -36, xMax: 6, yMin: -6.5, yMax: 1.2, aspect: 0.8, maxHeight: 380 });
+  function arrow(x0, y0, x1, y1, col, dash) {
+    if (Math.hypot(g.X(x1) - g.X(x0), g.Y(y1) - g.Y(y0)) < 3) return;
+    g.line(x0, y0, x1, y1, { color: col, width: 3.5, dash: dash });
+    var ctx = g.ctx, px = g.X(x1), py = g.Y(y1), ang = Math.atan2(py - g.Y(y0), px - g.X(x0)), s = 11;
+    ctx.save(); ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(px, py);
+    ctx.lineTo(px - s * Math.cos(ang - 0.4), py - s * Math.sin(ang - 0.4));
+    ctx.lineTo(px - s * Math.cos(ang + 0.4), py - s * Math.sin(ang + 0.4));
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+
+  g.render = function () {
+    var t = +T.value, c = g.c;
+    if (mode === 'line') {
+      // 위: 수직선 (y = 0). 아래로 갈수록 시간이 흐른 자취 (x(s), −s)
+      g.setView({ xMin: -37, xMax: 7, yMin: -6.6, yMax: 1.6 });
+      g.clear(); g.grid({ xStep: 5, yStep: 1 });
+      g.line(-37, 0, 7, 0, { color: c.axis, width: 2 });
+      for (var k = -35; k <= 5; k += 5) { g.line(k, -0.12, k, 0.12, { color: c.axis, width: 1.5 }); g.label(k, 0, fmt(k, 0), { color: c.text2, dy: -14 }); }
+      g.label(-37, -3, ko() ? '시간 ↓' : 'time ↓', { color: c.text2, align: 'left', dx: 4 });
+      var pts = [];
+      for (var i = 0; i <= 300; i++) { var s = t * i / 300; pts.push([LN.x(s), -s]); }
+      g.polygon(pts, { close: false, stroke: c.main, width: 3 });
+      g.line(LN.x(t), 0, LN.x(t), -t, { color: c.text2, width: 1, dash: [2, 4] });
+      var x = LN.x(t), v = LN.v(t), a = LN.a(t);
+      arrow(x, 0.55, x + v * 0.35, 0.55, c.accent, [8, 4]);
+      arrow(x, -0.55, x + a * 0.35, -0.55, c.third, [2, 4]);
+      g.point(x, 0, { color: c.main, r: 7.5 });
+      g.point(x, -t, { color: c.main, r: 4 });
+    } else {
+      var hh = 3.4, span = 2 * hh * (g.w && g.h ? g.w / g.h : 1);
+      g.setView({ xMin: -span / 2, xMax: span / 2, yMin: -hh, yMax: hh });
+      g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 1, yStep: 1 });
+      var ell = [];
+      for (var j = 0; j <= 240; j++) { var u = 2 * Math.PI * j / 240; ell.push([PL.x(u), PL.y(u)]); }
+      g.polygon(ell, { stroke: c.main, width: 3 });
+      var px = PL.x(t), py = PL.y(t);
+      arrow(px, py, px + PL.vx(t) * 0.5, py + PL.vy(t) * 0.5, c.accent, [8, 4]);
+      arrow(px, py, px - px * 0.35, py - py * 0.35, c.third, [2, 4]);      // 가속도 = −(위치)
+      g.point(0, 0, { color: c.text, r: 3 });
+      g.point(px, py, { color: c.main, r: 7, label: 'P', labelStyle: { bold: true, dy: 18 } });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+             accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:3.5;stroke-dasharray:8 4"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = mode === 'line'
+      ? (L === 'ko' ? [['main', '점의 위치와, 시간에 따라 아래로 내려가며 그린 자취 (실선)'], ['accent', '속도 v 화살표 (긴 점선)'], ['third', '가속도 a 화살표 (짧은 점선)']]
+                    : [['main', 'position, with its path drawn downward as time passes (solid)'], ['accent', 'velocity v arrow (dashed)'], ['third', 'acceleration a arrow (dotted)']])
+      : (L === 'ko' ? [['main', '점 P가 도는 타원 (실선)'], ['accent', '속도 벡터: 접선 방향 (긴 점선)'], ['third', '가속도 벡터: 중심을 향함 (짧은 점선)']]
+                    : [['main', 'ellipse traced by P (solid)'], ['accent', 'velocity: along the tangent (dashed)'], ['third', 'acceleration: toward the center (dotted)']]);
+    $('mo-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var t = +T.value, rows, v, hl;
+    if (mode === 'line') {
+      var x = LN.x(t), vv = LN.v(t), a = LN.a(t);
+      rows = [['t', fmt(t)], [ko() ? '위치 x' : 'position x', fmt(x, 2)], [ko() ? '속도 v' : 'velocity v', fmt(vv, 2)], [ko() ? '속력 |v|' : 'speed |v|', fmt(Math.abs(vv), 2)], [ko() ? '가속도 a' : 'acceleration a', fmt(a, 2)]];
+      hl = 2;
+      if (Math.abs(vv) < 0.05) v = t < 0.05
+        ? { ok: null, text: ko() ? '출발하는 순간이에요: 아직 속도가 0이에요.' : 'The start: the velocity is still 0.' }
+        : { ok: true, text: ko() ? 'v = 0: 한순간 멈추고, v의 부호가 − → +로 바뀌어 방향을 바꿔요. 자취가 여기서 꺾여요.' : 'v = 0: the point stops for an instant and v changes from − to +, so it turns around. The path bends here.' };
+      else {
+        var dir = vv > 0 ? (ko() ? '오른쪽(+)' : 'right (+)') : (ko() ? '왼쪽(−)' : 'left (−)');
+        var faster = vv * a > 0;
+        v = { ok: null, text: ko() ? dir + '으로 움직이는 중이고, v와 a의 부호가 ' + (faster ? '같아서 점점 빨라져요.' : '달라서 점점 느려져요.')
+                                   : 'Moving ' + dir + '; v and a have ' + (faster ? 'the same sign, so it speeds up.' : 'opposite signs, so it slows down.') };
+      }
+    } else {
+      var vx = PL.vx(t), vy = PL.vy(t), sp = Math.hypot(vx, vy);
+      rows = [['t', fmt(t)], ['P = (x, y)', '(' + fmt(PL.x(t)) + ', ' + fmt(PL.y(t)) + ')'], [ko() ? '속도 (x′, y′)' : 'velocity (x′, y′)', '(' + fmt(vx) + ', ' + fmt(vy) + ')'],
+              [ko() ? '속력 √(x′² + y′²)' : 'speed √(x′² + y′²)', fmt(sp, 3)], [ko() ? '가속도 (x″, y″)' : 'acceleration (x″, y″)', '(' + fmt(-PL.x(t)) + ', ' + fmt(-PL.y(t)) + ')']];
+      hl = 3;
+      v = { ok: null, text: ko() ? '속도는 곡선의 접선 방향, 가속도는 (−x, −y)라 늘 중심을 향해요. 속력은 긴 쪽 끝(x = ±3)에서 2로 가장 느리고, 짧은 쪽 끝(y = ±2)에서 3으로 가장 빨라요.'
+                                 : 'Velocity points along the tangent; acceleration is (−x, −y), always toward the center. The speed is slowest (2) at the long ends (x = ±3) and fastest (3) at the short ends (y = ±2).' };
+    }
+    $('mo-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('mo-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    T.max = m === 'line' ? 6 : 6.28;
+    var d = $('mo-def');
+    d.innerHTML = DEF[m];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); T.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(T, $('mo-t-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('mo-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  T.addEventListener('change', function () { $('mo-live').textContent = $('mo-verdict').textContent; });
+  Graph.player({ button: $('mo-play'), input: T, duration: 10000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
+/* 09-① 방정식과 부등식: 가로선 y = k 와의 교점 개수 / h = f − g 의 최솟값 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Kk = $('eq-k'), Xx = $('eq-x');
+  var mode = document.querySelector('input[name="eq-pick"]:checked').value;
+
+  // crit: 극값을 갖는 점 (가로선이 접하는 곳)
+  var FN = {
+    cubic:   { f: function (x) { return x * x * x - 3 * x; }, crit: [-1, 1], range: [-3, 3], view: [-2.8, 2.8, -3.6, 3.6] },
+    quartic: { f: function (x) { return x * x * x * x - 2 * x * x; }, crit: [-1, 0, 1], range: [-3, 3], view: [-2.2, 2.2, -1.8, 3.2] }
+  };
+  var ex = Math.exp, line = function (x) { return x + 1; }, h = function (x) { return Math.exp(x) - x - 1; };
+
+  /* f(x) = k 의 서로 다른 실근 (부호 변화 + 접하는 극값) */
+  function roots(F, k) {
+    var out = [], N = 3000, a = F.range[0], b = F.range[1], x0 = a, y0 = F.f(a) - k;
+    for (var i = 1; i <= N; i++) {
+      var x1 = a + (b - a) * i / N, y1 = F.f(x1) - k;
+      if (Math.abs(y1) < 1e-12) out.push(x1);          // 격자점에 딱 걸린 근
+      else if (y0 * y1 < 0) {
+        var lo = x0, hi = x1;
+        for (var j = 0; j < 40; j++) { var m = (lo + hi) / 2; if ((F.f(lo) - k) * (F.f(m) - k) <= 0) hi = m; else lo = m; }
+        out.push((lo + hi) / 2);
+      }
+      x0 = x1; y0 = y1;
+    }
+    F.crit.forEach(function (c) { if (Math.abs(F.f(c) - k) < 0.006) out.push(c); });
+    out.sort(function (p, q) { return p - q; });
+    return out.filter(function (r, i) { return i === 0 || r - out[i - 1] > 0.02; });
+  }
+
+  var g = Graph.create($('eq-canvas'), { xMin: -3, xMax: 3, yMin: -3, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var c = g.c;
+    if (mode !== 'ineq') {
+      var F = FN[mode], k = +Kk.value, V = F.view, rs = roots(F, k);
+      g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+      g.clear(); g.grid(); g.axes();
+      // 극값 높이 (경계가 되는 k)
+      F.crit.forEach(function (x) { g.hline(F.f(x), { color: c.text2, width: 1, dash: [3, 4] }); });
+      g.plot(F.f, { color: c.main, width: 3.5 });
+      g.hline(k, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(V[0], k, 'y = k', { color: c.accent, align: 'left', dx: 6, dy: -12, bold: true });
+      rs.forEach(function (r) { g.point(r, k, { color: c.third, r: 6.5 }); g.line(r, 0, r, k, { color: c.third, width: 1.2, dash: [2, 4] }); });
+    } else {
+      var x = +Xx.value;
+      g.setView({ xMin: -2.7, xMax: 1.9, yMin: -1.3, yMax: 5.2 });
+      g.clear(); g.grid(); g.axes();
+      g.plot(h, { color: c.third, width: 3, dash: [2, 5] });
+      g.plot(line, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.plot(ex, { color: c.main, width: 3.5 });
+      g.line(x, line(x), x, ex(x), { color: c.third, width: 3.5 });
+      g.point(x, ex(x), { color: c.main, r: 5 });
+      g.point(x, line(x), { color: c.accent, r: 5 });
+      g.point(0, 0, { color: c.third, r: 6, label: ko() ? 'h의 최솟값 0' : 'min of h = 0', labelStyle: { bold: true, dy: 18 } });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', dot: '<circle cx="18" cy="6" r="4.5" style="fill:var(--g-third)"/>',
+             gray: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1;stroke-dasharray:3 4"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = mode !== 'ineq'
+      ? (L === 'ko' ? [['main', 'y = f(x) (실선)'], ['accent', 'y = k (긴 점선)'], ['dot', '교점 = 실근'], ['gray', '극값의 높이 (경계)']]
+                    : [['main', 'y = f(x) (solid)'], ['accent', 'y = k (long dashes)'], ['dot', 'intersections = real roots'], ['gray', 'heights of the extrema (boundaries)']])
+      : (L === 'ko' ? [['main', 'y = eˣ (실선)'], ['accent', 'y = x + 1 (긴 점선)'], ['third', 'y = h(x) = eˣ − x − 1 (짧은 점선)']]
+                    : [['main', 'y = eˣ (solid)'], ['accent', 'y = x + 1 (long dashes)'], ['third', 'y = h(x) = eˣ − x − 1 (dotted)']]);
+    $('eq-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var rows, v, hl;
+    if (mode !== 'ineq') {
+      var F = FN[mode], k = +Kk.value, rs = roots(F, k);
+      var touch = F.crit.some(function (c) { return Math.abs(F.f(c) - k) < 0.006; });
+      rows = [['k', fmt(k)], [ko() ? '서로 다른 실근의 개수' : 'number of distinct real roots', String(rs.length)],
+              [ko() ? '실근' : 'roots', rs.length ? rs.map(function (r) { return fmt(r, 2); }).join(', ') : (ko() ? '없음' : 'none')]];
+      hl = 1;
+      v = touch
+        ? { ok: false, text: ko() ? 'k가 극값과 같아서 가로선이 그래프에 접해요. 두 교점이 하나로 합쳐져(중근) 실근이 ' + rs.length + '개예요.'
+                                  : 'k equals an extreme value, so the line touches the graph. Two intersections merge (a double root): ' + rs.length + ' distinct root(s).' }
+        : { ok: true, text: ko() ? '가로선 y = k가 그래프와 ' + rs.length + '번 만나요. 그래서 실근이 ' + rs.length + '개예요. 극값의 높이(회색 점선)를 지날 때 개수가 바뀌어요.'
+                                 : 'The line y = k meets the graph ' + rs.length + ' time(s), so there are ' + rs.length + ' real root(s). The count changes as k passes an extreme value (gray dashes).' };
+    } else {
+      var x = +Xx.value;
+      rows = [['x', fmt(x)], ['eˣ', fmt(ex(x), 3)], ['x + 1', fmt(line(x), 3)], ['h(x) = eˣ − x − 1', fmt(h(x), 3)]];
+      hl = 3;
+      v = Math.abs(x) < 0.005
+        ? { ok: true, text: ko() ? 'x = 0에서 h = 0: 두 그래프가 만나는 유일한 점이고, 여기가 h의 최솟값이에요. 등호가 성립해요.' : 'At x = 0, h = 0: the only meeting point, and the minimum of h. Equality holds here.' }
+        : { ok: true, text: ko() ? 'h(x) = ' + fmt(h(x), 3) + ' > 0: eˣ가 x + 1보다 위에 있어요. h의 가장 낮은 점이 (0, 0)이라 어디서나 h ≥ 0이에요.'
+                                 : 'h(x) = ' + fmt(h(x), 3) + ' > 0: eˣ lies above x + 1. The lowest point of h is (0, 0), so h ≥ 0 everywhere.' };
+    }
+    $('eq-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('eq-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var ineq = m === 'ineq';
+    if (playK.isPlaying()) playK.stop();
+    if (playX.isPlaying()) playX.stop();
+    $('eq-k-row').hidden = ineq; $('eq-play-k-row').hidden = ineq;
+    $('eq-x-row').hidden = !ineq; $('eq-play-x-row').hidden = !ineq;
+    legend(); update();
+  }
+
+  Graph.bindSlider(Kk, $('eq-k-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(Xx, $('eq-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('eq-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  [Kk, Xx].forEach(function (el) { el.addEventListener('change', function () { $('eq-live').textContent = $('eq-verdict').textContent; }); });
+  var playK = Graph.player({ button: $('eq-play-k'), input: Kk, duration: 9000 });
+  var playX = Graph.player({ button: $('eq-play-x'), input: Xx, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+</script>
+</body>
+</html>

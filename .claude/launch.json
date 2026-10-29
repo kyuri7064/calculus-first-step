@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "C:\\Users\\김규리\\Desktop\\미적분학-첫걸음"],
+      "port": 8766
+    }
+  ]
+}

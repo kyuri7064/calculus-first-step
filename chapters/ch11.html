@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit3" data-chapter="11">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s11-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s11-2" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>정적분도 합의 극한이라서, 상수배와 합·차를 따로 적분할 수 있어요.</li>
+          <li>적분 구간은 나누어 더할 수 있고, 위끝과 아래끝을 바꾸면 부호가 바뀌어요.</li>
+          <li>구간에서 \(f\le g\)이면 정적분도 \(\int f\le\int g\)예요 (크기 비교).</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>A definite integral is a limit of sums, so constants and sums can be integrated separately.</li>
+          <li>Intervals can be split and added; swapping the limits flips the sign.</li>
+          <li>If \(f\le g\) on the interval, then \(\int f\le\int g\) (comparison).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">정적분의 성질</span><span class="def-label" data-lang="en">Properties</span>
+          $$\int_a^b\{kf(x)\pm g(x)\}\,dx=k\int_a^bf(x)\,dx\pm\int_a^bg(x)\,dx$$
+          $$\int_a^bf(x)\,dx=\int_a^cf(x)\,dx+\int_c^bf(x)\,dx,\qquad \int_a^af(x)\,dx=0,\qquad \int_b^af(x)\,dx=-\int_a^bf(x)\,dx$$
+          <p class="note" data-lang="ko"><strong>적분 가능성:</strong> 닫힌구간에서 연속인 함수는 적분 가능해요. 유계이고 불연속점이 유한 개인 함수도 적분 가능해요.</p>
+          <p class="note" data-lang="en"><strong>Integrability:</strong> a function continuous on a closed interval is integrable; so is a bounded function with finitely many discontinuities.</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_0^2x^2\,dx=\frac83\)이므로 \(\int_0^2(3x^2+1)\,dx=3\cdot\frac83+2=10\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Since \(\int_0^2x^2\,dx=\frac83\), \(\int_0^2(3x^2+1)\,dx=3\cdot\frac83+2=10\).</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <!-- ① 정적분의 정의 -->
+    <section id="s11-1">
+      <div class="concept-body">
+
+        <div class="concept-core">
+          <p class="prereq">
+            <strong data-i18n="prereq"></strong>
+            <a href="ch01.html#s01-1"><span data-lang="ko">01-① 수열의 수렴과 발산</span><span data-lang="en">01-① Convergence of sequences</span></a>
+            <a href="ch02.html#s02-1"><span data-lang="ko">02-① 무한급수의 뜻 (Σ 기호)</span><span data-lang="en">02-① Infinite series (Σ notation)</span></a>
+          </p>
+
+          <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+          <ol class="core-summary" data-lang="ko">
+            <li>구간 \([a,b]\)를 \(n\)개로 나누고 각 조각 위에 직사각형을 세워 넓이를 더한 것이 <strong>리만 합</strong>이에요.</li>
+            <li>\(n\)을 한없이 크게 하면(조각의 폭 \(\Delta x\to0\)) 리만 합이 한 값에 수렴하고, 그 극한값이 <strong>정적분</strong>이에요.</li>
+            <li>\(f(x)\ge0\)이면 정적분은 넓이와 같아요. \(x\)축 아래 부분은 <strong>음수</strong>로 더해져요 (부호 있는 넓이).</li>
+          </ol>
+          <ol class="core-summary" data-lang="en">
+            <li>Split \([a,b]\) into \(n\) pieces, stand a rectangle on each, and add the areas: that is a <strong>Riemann sum</strong>.</li>
+            <li>As \(n\) grows without bound (width \(\Delta x\to0\)), the sums approach one value — the <strong>definite integral</strong>.</li>
+            <li>If \(f(x)\ge0\), the integral equals the area. Parts below the \(x\)-axis count as <strong>negative</strong> (signed area).</li>
+          </ol>
+
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">리만 합 <span class="en">(Riemann sum)</span></span>
+            <span class="def-label" data-lang="en">Riemann sum <span class="en">(리만 합)</span></span>
+            <p data-lang="ko">\([a,b]\)를 길이가 같은 \(n\)개의 소구간으로 나누면</p>
+            <p data-lang="en">Split \([a,b]\) into \(n\) sub-intervals of equal length:</p>
+            $$\Delta x=\frac{b-a}{n},\qquad x_k=a+k\,\Delta x\quad(k=0,1,\cdots,n)$$
+            <p data-lang="ko">\(k\)번째 소구간 \([x_{k-1},x_k]\)의 오른쪽 끝점 높이로 만든 직사각형들의 합은</p>
+            <p data-lang="en">Using the right endpoint of the \(k\)-th sub-interval \([x_{k-1},x_k]\) as the height:</p>
+            $$S_n=\sum_{k=1}^{n} f(x_k)\,\Delta x$$
+          </div>
+          <div class="def-box">
+            <span class="def-label" data-lang="ko">정적분 <span class="en">(definite integral)</span></span>
+            <span class="def-label" data-lang="en">Definite integral <span class="en">(정적분)</span></span>
+            $$\int_a^b f(x)\,dx=\lim_{n\to\infty}\sum_{k=1}^{n} f\!\left(a+\frac{b-a}{n}k\right)\frac{b-a}{n}$$
+            <p class="note" data-lang="ko"><strong>교과서의 정의:</strong> 각 소구간의 최솟값으로 만든 <strong>하합</strong>과 최댓값으로 만든 <strong>상합</strong>이 같은 값으로 수렴할 때 "적분 가능하다"고 하고, 그 값이 정적분이에요. 연속함수는 항상 적분 가능하므로 왼쪽·오른쪽·중점 어느 높이를 써도 극한값은 같아요.</p>
+            <p class="note" data-lang="en"><strong>Textbook definition:</strong> \(f\) is integrable when the <strong>lower sum</strong> (minimum heights) and <strong>upper sum</strong> (maximum heights) approach the same value; that value is the integral. Continuous functions are always integrable, so left, right or midpoint heights all give the same limit.</p>
+          </div>
+          <p class="read-aloud" data-lang="ko"><span aria-hidden="true">🔊</span> <strong>읽는 법:</strong> \(\int_a^b f(x)\,dx\)는 "인테그랄 a에서 b까지 에프 엑스 디 엑스". \(a\)는 아래끝, \(b\)는 위끝이에요.</p>
+          <p class="read-aloud" data-lang="en"><span aria-hidden="true">🔊</span> <strong>Read as:</strong> \(\int_a^b f(x)\,dx\) is "the integral from a to b of f of x, d x". \(a\) is the lower limit and \(b\) the upper limit.</p>
+        </div>
+
+        <div class="concept-viz">
+          <div class="viz-panel">
+            <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+
+            <fieldset class="setting" style="margin-bottom:10px">
+              <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+              <div class="seg" id="r-func">
+                <label><input type="radio" name="r-func" value="A" checked><span>\(x^2\), \([0,2]\)</span></label>
+                <label><input type="radio" name="r-func" value="B"><span>\(2-(x-1)^2\), \([0,3]\)</span></label>
+              </div>
+            </fieldset>
+
+            <div class="viz-canvas-wrap">
+              <canvas id="r-canvas" role="img" data-i18n-attr="aria-label:r.canvas"></canvas>
+            </div>
+            <ul class="legend">
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+                <span data-lang="ko">곡선 (굵은 실선)</span><span data-lang="en">Curve (thick solid)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main);stroke:var(--g-main);stroke-width:1.5"/></svg>
+                <span data-lang="ko">+ 직사각형 (\(x\)축 위)</span><span data-lang="en">+ rectangle (above axis)</span></li>
+              <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="lg-hatch" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 5L5 0" style="stroke:var(--g-third);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#lg-hatch);stroke:var(--g-third);stroke-width:1.5"/></svg>
+                <span data-lang="ko">− 직사각형 (\(x\)축 아래, 빗금)</span><span data-lang="en">− rectangle (below axis, hatched)</span></li>
+            </ul>
+
+            <table class="readout-table">
+              <tbody>
+                <tr><th><span data-lang="ko">조각의 폭</span><span data-lang="en">Width</span> \(\Delta x\)</th><td id="r-dx">—</td></tr>
+                <tr><th><span data-lang="ko">리만 합 (근삿값)</span><span data-lang="en">Riemann sum (estimate)</span> \(S_n\)</th><td id="r-sum">—</td></tr>
+                <tr class="hl"><th><span data-lang="ko">실제 정적분 값</span><span data-lang="en">Exact integral</span></th><td id="r-exact">—</td></tr>
+                <tr><th><span data-lang="ko">오차</span><span data-lang="en">Error</span> \(|S_n-\int|\)</th><td id="r-err">—</td></tr>
+              </tbody>
+            </table>
+
+            <div class="controls">
+              <fieldset class="setting" style="margin:0">
+                <legend><span data-lang="ko">직사각형 높이를 정하는 점</span><span data-lang="en">Height taken at</span></legend>
+                <div class="seg" id="r-method">
+                  <label><input type="radio" name="r-method" value="left"><span><span data-lang="ko">왼쪽</span><span data-lang="en">Left</span></span></label>
+                  <label><input type="radio" name="r-method" value="right" checked><span><span data-lang="ko">오른쪽</span><span data-lang="en">Right</span></span></label>
+                  <label><input type="radio" name="r-method" value="mid"><span><span data-lang="ko">중점</span><span data-lang="en">Midpoint</span></span></label>
+                  <label><input type="radio" name="r-method" value="lower"><span><span data-lang="ko">하합(최소)</span><span data-lang="en">Lower (min)</span></span></label>
+                  <label><input type="radio" name="r-method" value="upper"><span><span data-lang="ko">상합(최대)</span><span data-lang="en">Upper (max)</span></span></label>
+                </div>
+              </fieldset>
+              <div class="slider-row">
+                <label for="r-n"><span data-lang="ko">조각의 개수</span><span data-lang="en">Number of pieces</span> \(n\)</label>
+                <input id="r-n" type="range" min="1" max="60" step="1" value="4">
+                <output id="r-n-out" for="r-n">4</output>
+              </div>
+              <div class="control-buttons">
+                <button class="play-btn" id="r-play" type="button" aria-pressed="false">
+                  <span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span>
+                </button>
+              </div>
+            </div>
+
+            <p class="mini-chart-title"><span data-lang="ko">📈 \(n\)에 따른 근삿값 \(S_n\) — 가로 점선이 실제 값</span><span data-lang="en">📈 \(S_n\) as \(n\) grows — the dashed line is the exact value</span></p>
+            <div class="viz-canvas-wrap">
+              <canvas id="r-chart" role="img" data-i18n-attr="aria-label:r.chart"></canvas>
+            </div>
+            <p class="sr-only" id="r-live" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="concept-more">
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+              <p data-lang="ko">오른쪽 끝점을 이용한 리만 합의 극한으로 \(\displaystyle\int_0^1 x\,dx\)를 구하시오.</p>
+              <p data-lang="en">Find \(\displaystyle\int_0^1 x\,dx\) as the limit of right-endpoint Riemann sums.</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-11-1-a"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-11-1-a" hidden>
+                <p data-lang="ko">\(\Delta x=\frac1n\), \(x_k=\frac kn\)이므로</p>
+                <p data-lang="en">\(\Delta x=\frac1n\) and \(x_k=\frac kn\), so</p>
+                $$S_n=\sum_{k=1}^{n}\frac kn\cdot\frac1n=\frac1{n^2}\cdot\frac{n(n+1)}2=\frac{n+1}{2n}\;\xrightarrow{\;n\to\infty\;}\;\frac12$$
+                <p data-lang="ko">따라서 \(\int_0^1 x\,dx=\frac12\). 밑변과 높이가 1인 직각삼각형의 넓이와 같아요.</p>
+                <p data-lang="en">So \(\int_0^1 x\,dx=\frac12\) — the area of a right triangle with legs 1.</p>
+              </div>
+            </div>
+
+            <div class="example-card">
+              <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+              <p data-lang="ko">오른쪽 끝점을 이용한 리만 합의 극한으로 \(\displaystyle\int_0^2 x^2\,dx\)를 구하시오. (그림에서 첫 번째 함수와 비교해 보세요.)</p>
+              <p data-lang="en">Find \(\displaystyle\int_0^2 x^2\,dx\) as the limit of right-endpoint Riemann sums. (Compare with the first function in the picture.)</p>
+              <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-11-1-b"><span data-i18n="solShow"></span></button>
+              <div class="solution" id="sol-11-1-b" hidden>
+                <p data-lang="ko">\(\Delta x=\frac2n\), \(x_k=\frac{2k}n\)이고 \(\sum_{k=1}^{n}k^2=\frac{n(n+1)(2n+1)}6\)이므로</p>
+                <p data-lang="en">\(\Delta x=\frac2n\), \(x_k=\frac{2k}n\), and \(\sum_{k=1}^{n}k^2=\frac{n(n+1)(2n+1)}6\), so</p>
+                $$S_n=\sum_{k=1}^{n}\frac{4k^2}{n^2}\cdot\frac2n=\frac8{n^3}\cdot\frac{n(n+1)(2n+1)}6=\frac43\left(1+\frac1n\right)\left(2+\frac1n\right)$$
+                <p data-lang="ko">\(n\to\infty\)이면 \(S_n\to\frac43\cdot1\cdot2=\frac83\). 따라서 \(\int_0^2x^2\,dx=\frac83\approx2.667\).</p>
+                <p data-lang="en">As \(n\to\infty\), \(S_n\to\frac43\cdot1\cdot2=\frac83\). So \(\int_0^2x^2\,dx=\frac83\approx2.667\).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">정적분은 항상 곡선과 \(x\)축 사이의 넓이이다.</p>
+                <p data-lang="en">A definite integral is always the area between the curve and the \(x\)-axis.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">\(x\)축 아래에서는 \(f(x)<0\)이라 직사각형 넓이가 음수로 더해져요. 그림의 두 번째 함수는 \(\int_0^3 f(x)\,dx=3\)이지만 실제로 둘러싸인 넓이는 약 \(4.10\)이에요.</p>
+                <p data-lang="en">Below the axis \(f(x)<0\), so those rectangles add negative amounts. For the second function, \(\int_0^3 f(x)\,dx=3\), but the enclosed area is about \(4.10\).</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">왼쪽 끝점으로 만든 합은 항상 실제 값보다 작다.</p>
+                <p data-lang="en">The left-endpoint sum is always smaller than the true value.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">그건 <strong>증가함수</strong>일 때만이에요. 감소하는 부분에서는 왼쪽 끝점이 더 높아요. 항상 실제 값 이하인 것은 <strong>하합</strong>, 이상인 것은 <strong>상합</strong>이에요.</p>
+                <p data-lang="en">Only for an <strong>increasing</strong> function. Where \(f\) decreases, the left endpoint is higher. The sum that is always ≤ the true value is the <strong>lower sum</strong>; always ≥ is the <strong>upper sum</strong>.</p></div>
+            </div>
+            <div class="mistake">
+              <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+                <p data-lang="ko">\(\int_a^b f(x)\,dx\)의 \(dx\)는 그냥 붙이는 장식이다.</p>
+                <p data-lang="en">The \(dx\) in \(\int_a^b f(x)\,dx\) is just decoration.</p></div>
+              <div class="right"><span class="tag" data-i18n="right"></span>
+                <p data-lang="ko">\(dx\)는 리만 합의 \(\Delta x\)(조각의 폭)에서 왔고, 어떤 변수로 적분하는지 알려 줘요. 변수 이름만 바꾼 \(\int_a^b f(t)\,dt\)는 같은 값이에요.</p>
+                <p data-lang="en">\(dx\) comes from \(\Delta x\) (the width) in the Riemann sum and tells which variable we integrate. Renaming it, \(\int_a^b f(t)\,dt\), gives the same value.</p></div>
+            </div>
+          </div>
+
+          <div class="concept-block">
+            <h3><span class="h-ico" aria-hidden="true">🌏</span><span data-i18n="usageTitle"></span></h3>
+            <ul class="usage-list" data-lang="ko">
+              <li><strong>넓이와 부피:</strong> 곡선으로 둘러싸인 도형의 넓이, 입체의 부피를 잘게 나눠 더해서 구해요.</li>
+              <li><strong>움직임:</strong> 속도 그래프 아래의 (부호 있는) 넓이가 위치의 변화량이에요.</li>
+              <li><strong>과학:</strong> 변하는 힘이 한 일, 물탱크에 들어간 물의 양처럼 "변하는 양을 모두 더하기"에 쓰여요.</li>
+            </ul>
+            <ul class="usage-list" data-lang="en">
+              <li><strong>Area and volume:</strong> slice a curved region or solid into thin pieces and add them up.</li>
+              <li><strong>Motion:</strong> the (signed) area under a velocity graph is the change in position.</li>
+              <li><strong>Science:</strong> work done by a changing force, water poured into a tank — any "adding up a changing amount".</li>
+            </ul>
+            <div class="link-row">
+              <a class="btn btn-outline btn-sm" href="../applications.html#velocity"><span data-lang="ko">🏫 속도 그래프 아래 넓이 = 이동 거리</span><span data-lang="en">🏫 Area under velocity = distance</span></a>
+              <a class="btn btn-outline btn-sm" href="ch14.html"><span data-lang="ko">14 정적분의 활용 →</span><span data-lang="en">14 Applications of integrals →</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 11-① 정적분의 정의: 리만 합 직사각형 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+
+  var FUNCS = {
+    A: { f: function (x) { return x * x; }, a: 0, b: 2, crit: [], exact: 8 / 3, exactText: '8/3 ≈ 2.667',
+         label: 'y = x²', lx: 1.9, view: { xMin: -0.3, xMax: 2.4, yMin: -0.6, yMax: 4.6 } },
+    B: { f: function (x) { return 2 - (x - 1) * (x - 1); }, a: 0, b: 3, crit: [1], exact: 3, exactText: '3',
+         label: 'y = 2 − (x − 1)²', lx: 1.6, view: { xMin: -0.3, xMax: 3.3, yMin: -2.6, yMax: 2.7 } }
+  };
+  var N = $('r-n');
+  // 새로고침하면 브라우저가 이전 선택을 되살리므로, 화면에 체크된 값에서 시작한다
+  var F = FUNCS[document.querySelector('input[name="r-func"]:checked').value];
+  var method = document.querySelector('input[name="r-method"]:checked').value;
+
+  /* 각 직사각형의 [왼쪽 x, 높이, 높이를 잰 x] 목록 */
+  function rects(n) {
+    var dx = (F.b - F.a) / n, out = [];
+    for (var k = 0; k < n; k++) {
+      var x0 = F.a + k * dx, x1 = x0 + dx, xs, h;
+      if (method === 'left') xs = x0;
+      else if (method === 'right') xs = x1;
+      else if (method === 'mid') xs = (x0 + x1) / 2;
+      else {
+        // 하합·상합: 소구간 안 최솟값·최댓값 (끝점 또는 꼭짓점에서 생긴다)
+        var cands = [x0, x1].concat(F.crit.filter(function (c) { return c > x0 && c < x1; }));
+        xs = cands.reduce(function (best, x) {
+          return (method === 'lower' ? F.f(x) < F.f(best) : F.f(x) > F.f(best)) ? x : best;
+        });
+      }
+      h = F.f(xs);
+      out.push([x0, h, xs]);
+    }
+    return { dx: dx, list: out };
+  }
+  function sum(n) {
+    var r = rects(n), s = 0;
+    r.list.forEach(function (it) { s += it[1] * r.dx; });
+    return s;
+  }
+
+  var g = Graph.create($('r-canvas'), Object.assign({ aspect: 0.8, maxHeight: 360 }, F.view));
+  g.render = function () {
+    var n = +N.value, c = g.c, r = rects(n);
+    g.clear(); g.grid(); g.axes();
+    r.list.forEach(function (it) {
+      var neg = it[1] < 0;
+      g.rect(it[0], 0, it[0] + r.dx, it[1], neg
+        ? { fill: c.fillThird, hatch: 'd', hatchColor: c.third, stroke: c.third, width: 1.5 }
+        : { fill: c.fillMain, stroke: c.main, width: 1.5 });
+      if (n <= 24) g.point(it[2], it[1], { color: c.accent, r: 4 });
+    });
+    g.plot(F.f, { color: c.main, width: 3.5 });
+    g.label(F.lx, F.f(F.lx), F.label, { color: c.main, align: 'left', dx: 10, dy: -6, bold: true });
+    g.label(F.a, 0, 'a', { color: c.text, dy: 30, bold: true });
+    g.label(F.b, 0, 'b', { color: c.text, dy: 30, bold: true });
+  };
+
+  // 아래 작은 그래프: n = 1 ~ 60 일 때의 S_n
+  var g2 = Graph.create($('r-chart'), { xMin: -3, xMax: 63, yMin: 0, yMax: 1, aspect: 0.42, maxHeight: 200, minHeight: 150 });
+  g2.render = function () {
+    var c = g2.c, n = +N.value, vals = [];
+    for (var k = 1; k <= 60; k++) vals.push(sum(k));
+    var lo = Math.min.apply(null, vals.concat(F.exact)), hi = Math.max.apply(null, vals.concat(F.exact));
+    var pad = (hi - lo) * 0.15 || 0.5;
+    g2.setView({ yMin: lo - pad, yMax: hi + pad });
+    g2.clear(); g2.grid({ xStep: 10 }); g2.axes({ xLabel: 'n', yLabel: 'Sₙ', xStep: 10 });
+    g2.hline(F.exact, { color: c.accent, width: 2, dash: [8, 5] });
+    g2.label(62, F.exact, (ko() ? '실제 값 ' : 'exact ') + F.exactText, { color: c.accent, align: 'right', dy: -12, bold: true });
+    vals.forEach(function (v, i) {
+      var k = i + 1;
+      if (k === n) return;
+      g2.point(k, v, { color: k < n ? c.main : c.text2, r: k < n ? 3.5 : 2.5, filled: k < n });
+    });
+    g2.point(n, vals[n - 1], { color: c.main, r: 7, label: 'S' + toSub(n) + ' = ' + fmt(vals[n - 1], 3), labelStyle: { bold: true } });
+  };
+  function toSub(n) { return String(n).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }
+
+  function update() {
+    var n = +N.value, s = sum(n);
+    $('r-dx').textContent = fmt((F.b - F.a) / n, 4);
+    $('r-sum').textContent = fmt(s, 4);
+    $('r-exact').textContent = F.exactText;
+    $('r-err').textContent = fmt(Math.abs(s - F.exact), 4);
+    g.draw(); g2.draw();
+  }
+
+  Graph.bindSlider(N, $('r-n-out'), { format: function (v) { return String(v); }, onInput: update });
+  $('r-func').addEventListener('change', function (e) {
+    F = FUNCS[e.target.value];
+    g.setView(F.view);
+    update();
+  });
+  $('r-method').addEventListener('change', function (e) { method = e.target.value; update(); });
+  N.addEventListener('change', function () {
+    var n = +N.value;
+    $('r-live').textContent = ko()
+      ? 'n이 ' + n + '일 때 리만 합은 ' + fmt(sum(n), 3) + ', 실제 값은 ' + F.exactText + '입니다.'
+      : 'With n = ' + n + ', the Riemann sum is ' + fmt(sum(n), 3) + '; the exact value is ' + F.exactText + '.';
+  });
+
+  Graph.player({ button: $('r-play'), input: N, duration: 9000 });
+  document.addEventListener('settingschange', function () { g.draw(); g2.draw(); });
+});
+</script>
+</body>
+</html>

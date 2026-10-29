@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit1" data-chapter="04">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s04-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s04-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>직관적으로 \(x=c\)에서 연속이란 그래프가 그 점에서 <strong>끊어지지 않았다</strong>는 뜻이에요.</li>
+          <li>정확히는 아래 <strong>세 조건을 모두</strong> 만족할 때 연속이고, 하나라도 어기면 불연속이에요.</li>
+          <li>닫힌구간 \([a,b]\)에서 연속이려면 안쪽에서 연속이고, 양 끝에서 각각 우극한·좌극한이 함숫값과 같아야 해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Intuitively, continuity at \(x=c\) means the graph has <strong>no break</strong> there.</li>
+          <li>Precisely, \(f\) is continuous when <strong>all three</strong> conditions below hold; failing any one makes it discontinuous.</li>
+          <li>On a closed interval \([a,b]\): continuous inside, with the right-hand limit at \(a\) and left-hand limit at \(b\) equal to the values.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">\(x=c\)에서 연속일 조건</span><span class="def-label" data-lang="en">Continuity at \(x=c\)</span>
+          <p data-lang="ko">(ⅰ) \(f(c)\)가 정의되어 있다 &nbsp; (ⅱ) \(\lim_{x\to c}f(x)\)가 존재한다 &nbsp; (ⅲ) \(\lim_{x\to c}f(x)=f(c)\)</p>
+          <p data-lang="en">(i) \(f(c)\) is defined &nbsp; (ii) \(\lim_{x\to c}f(x)\) exists &nbsp; (iii) \(\lim_{x\to c}f(x)=f(c)\)</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=\frac{x^2-1}{x-1}\)는 \(x=1\)에서 (ⅰ)을 어겨 불연속. \([x]\)는 정수에서 (ⅱ)를 어겨 불연속. 다항함수는 모든 실수에서 연속이에요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=\frac{x^2-1}{x-1}\) fails (i) at \(x=1\). \([x]\) fails (ii) at integers. Polynomials are continuous everywhere.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 펜을 떼지 않고 그리기 + 세 조건 체크리스트 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기 (\(c=1\))</span><span data-lang="en">Choose a function (\(c=1\))</span></legend>
+            <div class="seg" id="ct1-pick">
+              <label><input type="radio" name="ct1-pick" value="cont" checked><span><span data-lang="ko">연속</span><span data-lang="en">Continuous</span></span></label>
+              <label><input type="radio" name="ct1-pick" value="hole"><span><span data-lang="ko">구멍</span><span data-lang="en">Hole</span></span></label>
+              <label><input type="radio" name="ct1-pick" value="jump"><span><span data-lang="ko">점프</span><span data-lang="en">Jump</span></span></label>
+              <label><input type="radio" name="ct1-pick" value="diff"><span><span data-lang="ko">함숫값이 다름</span><span data-lang="en">Different value</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="ct1-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="ct1-canvas" role="img" data-i18n-attr="aria-label:ct1.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">그래프 (실선)</span><span data-lang="en">graph (solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:7;opacity:.55"/></svg>
+              <span data-lang="ko">펜으로 따라 그린 부분 (굵은 띠)</span><span data-lang="en">traced with the pen (thick band)</span></li>
+          </ul>
+          <ol class="cond-list" id="ct1-conds"></ol>
+          <p class="verdict" id="ct1-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ct1-x"><span data-lang="ko">펜의 위치</span><span data-lang="en">Pen position</span> \(x\)</label>
+              <input id="ct1-x" type="range" min="-0.4" max="2.4" step="0.01" value="0.3">
+              <output id="ct1-x-out" for="ct1-x">0.30</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ct1-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ct1-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=\begin{cases}\dfrac{x^2-4}{x-2} & (x\ne2)\\ k & (x=2)\end{cases}\)가 \(x=2\)에서 연속이 되도록 하는 상수 \(k\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(k\) so that \(f(x)=\begin{cases}\dfrac{x^2-4}{x-2} & (x\ne2)\\ k & (x=2)\end{cases}\) is continuous at \(x=2\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-1-a" hidden>
+              <p data-lang="ko">(ⅲ) 극한값과 함숫값이 같아야 하므로</p>
+              <p data-lang="en">By (iii) the limit must equal the value:</p>
+              $$k=f(2)=\lim_{x\to2}\frac{x^2-4}{x-2}=\lim_{x\to2}(x+2)=4$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=\begin{cases}x^2+a & (x\lt1)\\ 2x+1 & (x\ge1)\end{cases}\)가 모든 실수에서 연속이 되도록 하는 상수 \(a\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(a\) so that \(f(x)=\begin{cases}x^2+a & (x\lt1)\\ 2x+1 & (x\ge1)\end{cases}\) is continuous for all real \(x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-1-b" hidden>
+              <p data-lang="ko">두 식은 각각 다항함수라 연속이므로 이어지는 점 \(x=1\)만 확인하면 돼요. \(f(1)=3\), 우극한 \(=3\), 좌극한 \(=\lim_{x\to1-}(x^2+a)=1+a\)이므로 \(1+a=3\), 즉 \(a=2\).</p>
+              <p data-lang="en">Each piece is a polynomial, so only the joining point \(x=1\) matters. \(f(1)=3\), the right-hand limit is 3, and the left-hand limit is \(\lim_{x\to1-}(x^2+a)=1+a\). So \(1+a=3\), i.e. \(a=2\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(x=c\)에서 극한이 존재하면 \(c\)에서 연속이다.</p>
+              <p data-lang="en">If the limit exists at \(x=c\), then \(f\) is continuous at \(c\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">극한값이 함숫값과 <strong>같아야</strong> 해요 (ⅲ). 그림의 "함숫값이 다름"은 극한이 1로 존재하지만 \(f(1)=3\)이라 불연속이에요.</p>
+              <p data-lang="en">The limit must <strong>equal</strong> the value (iii). In "Different value" the limit is 1, but \(f(1)=3\), so it is discontinuous.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(y=\frac1x\)은 그래프가 끊어져 있으니 연속함수가 아니다.</p>
+              <p data-lang="en">\(y=\frac1x\) has a broken graph, so it is not a continuous function.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(x=0\)은 정의역에 들어 있지 않은 점이에요. \(\frac1x\)은 정의역(\(x\ne0\))의 모든 점에서 연속이라 <strong>연속함수</strong>라고 해요. (교과서 각주처럼, 정의되지 않은 점에서는 연속성을 따지지 않기도 해요.)</p>
+              <p data-lang="en">\(x=0\) is not in the domain. \(\frac1x\) is continuous at every point of its domain (\(x\ne0\)), so it is a <strong>continuous function</strong>. (As the textbook notes, continuity is sometimes not discussed at points where \(f\) is undefined.)</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s04-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>연속함수끼리 더하고, 빼고, 곱하고, (분모가 0이 아닐 때) 나누어도 연속이에요.</li>
+          <li><strong>최대·최소 정리:</strong> 닫힌구간에서 연속인 함수는 반드시 최댓값과 최솟값을 가져요.</li>
+          <li><strong>사잇값 정리:</strong> \(f(a)\)와 \(f(b)\) 사이의 값 \(k\)는 \((a,b)\)의 어딘가에서 반드시 함숫값이 돼요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Sums, differences, products and quotients (nonzero denominator) of continuous functions are continuous.</li>
+          <li><strong>Extreme value theorem:</strong> a continuous function on a closed interval has a maximum and a minimum.</li>
+          <li><strong>Intermediate value theorem:</strong> every value \(k\) between \(f(a)\) and \(f(b)\) is taken somewhere in \((a,b)\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">사잇값 정리</span><span class="def-label" data-lang="en">Intermediate value theorem</span>
+          <p data-lang="ko">\(f\)가 \([a,b]\)에서 연속이고 \(f(a)\ne f(b)\)일 때, \(f(a)\)와 \(f(b)\) 사이의 임의의 \(k\)에 대하여 \(f(c)=k\)인 \(c\)가 \((a,b)\)에 적어도 하나 존재해요.</p>
+          <p data-lang="en">If \(f\) is continuous on \([a,b]\) and \(f(a)\ne f(b)\), then for any \(k\) between \(f(a)\) and \(f(b)\) there is at least one \(c\in(a,b)\) with \(f(c)=k\).</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=x^3+x-1\)은 연속이고 \(f(0)=-1\lt0\), \(f(1)=1>0\)이므로 방정식 \(x^3+x-1=0\)은 \((0,1)\)에 실근을 가져요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=x^3+x-1\) is continuous with \(f(0)=-1\lt0\) and \(f(1)=1>0\), so \(x^3+x-1=0\) has a real root in \((0,1)\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 사잇값 정리 / 최대·최소 정리 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">정리 고르기</span><span data-lang="en">Choose a theorem</span></legend>
+            <div class="seg" id="th-pick">
+              <label><input type="radio" name="th-pick" value="ivt" checked><span><span data-lang="ko">사잇값 정리</span><span data-lang="en">Intermediate value</span></span></label>
+              <label><input type="radio" name="th-pick" value="evt"><span><span data-lang="ko">최대·최소 정리</span><span data-lang="en">Extreme value</span></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="setting" style="margin-bottom:10px" id="iv-fn-row">
+            <legend><span data-lang="ko">\([0,1]\)에서의 함수</span><span data-lang="en">Function on \([0,1]\)</span></legend>
+            <div class="seg" id="iv-pick">
+              <label><input type="radio" name="iv-pick" value="mono" checked><span>\(x^3+x-1\)</span></label>
+              <label><input type="radio" name="iv-pick" value="wave"><span><span data-lang="ko">구불구불 (연속)</span><span data-lang="en">Wavy (continuous)</span></span></label>
+              <label><input type="radio" name="iv-pick" value="jump"><span><span data-lang="ko">점프 (불연속)</span><span data-lang="en">Jump (discontinuous)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="th-canvas" role="img" data-i18n-attr="aria-label:th.canvas"></canvas>
+          </div>
+          <ul class="legend" id="th-legend"></ul>
+          <table class="readout-table"><tbody id="th-table"></tbody></table>
+          <p class="verdict" id="th-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="iv-k-row">
+              <label for="iv-k"><span data-lang="ko">찾을 값</span><span data-lang="en">Target value</span> \(k\)</label>
+              <input id="iv-k" type="range" min="-1.5" max="2.5" step="0.01" value="0.3">
+              <output id="iv-k-out" for="iv-k">0.30</output>
+            </div>
+            <div class="slider-row" id="ev-a-row" hidden>
+              <label for="ev-a"><span data-lang="ko">구간의 왼쪽 끝</span><span data-lang="en">Left end</span> \(a\)</label>
+              <input id="ev-a" type="range" min="-2.2" max="2.2" step="0.05" value="0">
+              <output id="ev-a-out" for="ev-a">0.00</output>
+            </div>
+            <div class="slider-row" id="ev-b-row" hidden>
+              <label for="ev-b"><span data-lang="ko">구간의 오른쪽 끝</span><span data-lang="en">Right end</span> \(b\)</label>
+              <input id="ev-b" type="range" min="-2.2" max="2.2" step="0.05" value="2">
+              <output id="ev-b-out" for="ev-b">2.00</output>
+            </div>
+            <label class="check-row" id="ev-open-row" hidden><input type="checkbox" id="ev-open"><span><span data-lang="ko">열린구간 \((a,b)\)로 바꾸기 (끝점 빼기)</span><span data-lang="en">Switch to the open interval \((a,b)\) (drop the endpoints)</span></span></label>
+            <div class="control-buttons" id="iv-play-row">
+              <button class="play-btn" id="iv-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="th-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">방정식 \(x^4-x-1=0\)이 열린구간 \((1,2)\)에서 적어도 하나의 실근을 가짐을 보이시오.</p>
+            <p data-lang="en">Show that \(x^4-x-1=0\) has at least one real root in \((1,2)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-2-a" hidden>
+              <p data-lang="ko">\(f(x)=x^4-x-1\)은 다항함수라 \([1,2]\)에서 연속이고, \(f(1)=-1\lt0\), \(f(2)=13>0\)이에요. 0은 \(-1\)과 13 사이의 값이므로 사잇값 정리에 의해 \(f(c)=0\)인 \(c\)가 \((1,2)\)에 존재해요.</p>
+              <p data-lang="en">\(f(x)=x^4-x-1\) is a polynomial, hence continuous on \([1,2]\), with \(f(1)=-1\lt0\) and \(f(2)=13>0\). Since 0 lies between them, the IVT gives \(c\in(1,2)\) with \(f(c)=0\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">방정식 \(\cos x=x\)가 실근을 가짐을 보이시오.</p>
+            <p data-lang="en">Show that \(\cos x=x\) has a real solution.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-2-b" hidden>
+              <p data-lang="ko">\(g(x)=\cos x-x\)로 두면 \(g\)는 연속이고 \(g(0)=1>0\), \(g\!\left(\frac\pi2\right)=-\frac\pi2\lt0\)이에요. 사잇값 정리에 의해 \(g(c)=0\), 즉 \(\cos c=c\)인 \(c\)가 \(\left(0,\frac\pi2\right)\)에 존재해요. 양변을 한쪽으로 모아 새 함수를 만드는 것이 요령이에요.</p>
+              <p data-lang="en">Let \(g(x)=\cos x-x\), continuous with \(g(0)=1>0\) and \(g\!\left(\frac\pi2\right)=-\frac\pi2\lt0\). By the IVT some \(c\in\left(0,\frac\pi2\right)\) has \(g(c)=0\), i.e. \(\cos c=c\). Tip: move everything to one side to make a new function.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f(a)\)와 \(f(b)\)의 부호가 다르면 \(f(x)=0\)인 \(x\)가 반드시 있다.</p>
+              <p data-lang="en">If \(f(a)\) and \(f(b)\) have opposite signs, \(f(x)=0\) must have a solution.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(f\)가 \([a,b]\)에서 <strong>연속</strong>이어야 해요. 그림의 "점프 (불연속)"에서는 \(f(0)\lt0\lt f(1)\)인데도 0을 지나지 않고 건너뛰어요.</p>
+              <p data-lang="en">\(f\) must be <strong>continuous</strong> on \([a,b]\). In "Jump (discontinuous)", \(f(0)\lt0\lt f(1)\), yet the graph jumps over 0.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">사잇값 정리의 \(c\)는 하나뿐이다.</p>
+              <p data-lang="en">The \(c\) in the IVT is unique.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">"<strong>적어도</strong> 하나"예요. "구불구불" 함수에서 \(k\)를 바꿔 보면 \(c\)가 여러 개인 경우가 보여요.</p>
+              <p data-lang="en">It says "<strong>at least</strong> one". Try different \(k\) with the "Wavy" function to see several \(c\)'s.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">연속함수는 어떤 구간에서든 최댓값과 최솟값을 가진다.</p>
+              <p data-lang="en">A continuous function has a max and a min on any interval.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko"><strong>닫힌구간</strong>이어야 해요. 열린구간 \((0,1)\)에서 \(f(x)=x\)는 1에 한없이 가까워지지만 1이 되지 않아 최댓값이 없어요. 그림에서 "열린구간으로 바꾸기"를 켜 보세요.</p>
+              <p data-lang="en">It must be a <strong>closed</strong> interval. On \((0,1)\), \(f(x)=x\) gets arbitrarily close to 1 but never reaches it, so there is no maximum. Turn on "open interval" in the picture.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s04-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>연속함수를 합성한 함수도 연속이에요. 그래서 극한을 함수 안으로 넣을 수 있어요.</li>
+          <li>구간에서 연속이고 <strong>순증가(또는 순감소)</strong>하는 함수는 역함수를 가지며, 그 역함수도 연속이에요.</li>
+          <li>이 성질 덕분에 \(\sqrt[n]{x}\), 로그함수처럼 역함수로 정의한 함수도 연속이에요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>A composition of continuous functions is continuous, so a limit can move inside a continuous function.</li>
+          <li>A function continuous and <strong>strictly increasing (or decreasing)</strong> on an interval has an inverse, which is also continuous.</li>
+          <li>That's why functions defined as inverses, like \(\sqrt[n]{x}\) and logarithms, are continuous.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">합성함수의 극한</span><span class="def-label" data-lang="en">Limit of a composition</span>
+          <p data-lang="ko">\(\lim_{x\to a}f(x)=b\)이고 \(g\)가 \(b\)에서 연속이면</p>
+          <p data-lang="en">If \(\lim_{x\to a}f(x)=b\) and \(g\) is continuous at \(b\), then</p>
+          $$\lim_{x\to a}g\big(f(x)\big)=g\Big(\lim_{x\to a}f(x)\Big)=g(b)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\displaystyle\lim_{x\to2}\sqrt{x^2+5}=\sqrt{\lim_{x\to2}(x^2+5)}=\sqrt9=3\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\displaystyle\lim_{x\to2}\sqrt{x^2+5}=\sqrt{\lim_{x\to2}(x^2+5)}=\sqrt9=3\)</p>
+        </div>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">역함수의 그래프</span><span class="def-label" data-lang="en">Graph of an inverse</span>
+          <p data-lang="ko">\(y=f^{-1}(x)\)의 그래프는 \(y=f(x)\)의 그래프를 직선 \(y=x\)에 대하여 대칭이동한 것이에요. 점 \((a,\,f(a))\)가 점 \((f(a),\,a)\)로 옮겨 가요. 원래 그래프에 끊어진 곳이 없으면 뒤집은 그래프에도 끊어진 곳이 없어요.</p>
+          <p data-lang="en">The graph of \(y=f^{-1}(x)\) is the graph of \(y=f(x)\) reflected across \(y=x\): the point \((a,\,f(a))\) goes to \((f(a),\,a)\). If the original graph has no breaks, neither does the reflection.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 역함수 (y = x 대칭) / 합성함수의 극한 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">살펴볼 것</span><span data-lang="en">Explore</span></legend>
+            <div class="seg" id="ic-pick">
+              <label><input type="radio" name="ic-pick" value="inv" checked><span><span data-lang="ko">역함수</span><span data-lang="en">Inverse</span></span></label>
+              <label><input type="radio" name="ic-pick" value="comp"><span><span data-lang="ko">합성함수의 극한</span><span data-lang="en">Limit of a composition</span></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="setting" style="margin-bottom:10px" id="ic-fn-row">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="ic-fn">
+              <label><input type="radio" name="ic-fn" value="exp" checked><span>\(2^x\)</span></label>
+              <label><input type="radio" name="ic-fn" value="half"><span>\(x^2\ (x\ge0)\)</span></label>
+              <label><input type="radio" name="ic-fn" value="full"><span>\(x^2\) <span data-lang="ko">(모든 x)</span><span data-lang="en">(all x)</span></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="setting" style="margin-bottom:10px" id="ic-cc-row" hidden>
+            <legend><span data-lang="ko">바깥 함수 \(g\)</span><span data-lang="en">Outer function \(g\)</span></legend>
+            <div class="seg" id="ic-cc">
+              <label><input type="radio" name="ic-cc" value="sqrt" checked><span><span data-lang="ko">\(\sqrt{u}\) (연속)</span><span data-lang="en">\(\sqrt{u}\) (continuous)</span></span></label>
+              <label><input type="radio" name="ic-cc" value="floor"><span><span data-lang="ko">\([u]\) (가우스 기호)</span><span data-lang="en">\(\lfloor u\rfloor\) (floor)</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="ic-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="ic-canvas" role="img" data-i18n-attr="aria-label:ic.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ic-legend"></ul>
+          <table class="readout-table"><tbody id="ic-table"></tbody></table>
+          <p class="verdict" id="ic-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="ic-a-row">
+              <label for="ic-a"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span> \(a\)</label>
+              <input id="ic-a" type="range" min="-2" max="2" step="0.01" value="1">
+              <output id="ic-a-out" for="ic-a">1.00</output>
+            </div>
+            <div class="slider-row" id="ic-h-row" hidden>
+              <label for="ic-h"><span data-lang="ko">\(a\)까지의 거리</span><span data-lang="en">Distance to \(a\)</span> \(h\)</label>
+              <input id="ic-h" type="range" min="0.01" max="1" step="0.01" value="0.8">
+              <output id="ic-h-out" for="ic-h">0.80</output>
+            </div>
+            <div class="control-buttons" id="ic-play-a-row">
+              <button class="play-btn" id="ic-play-a" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+            <div class="control-buttons" id="ic-play-h-row" hidden>
+              <button class="play-btn" id="ic-play-h" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ic-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\sqrt{\frac{x^2+3x+4}{x+1}}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to0}\sqrt{\frac{x^2+3x+4}{x+1}}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-3-a" hidden>
+              <p data-lang="ko">안쪽 함수의 극한은 \(\displaystyle\lim_{x\to0}\frac{x^2+3x+4}{x+1}=\frac41=4\)이고, \(\sqrt{u}\)는 \(u=4\)에서 연속이에요. 그래서 극한을 루트 안으로 넣을 수 있어요: \(\sqrt4=2\).</p>
+              <p data-lang="en">The inner limit is \(\displaystyle\lim_{x\to0}\frac{x^2+3x+4}{x+1}=\frac41=4\), and \(\sqrt{u}\) is continuous at \(u=4\), so the limit moves inside the root: \(\sqrt4=2\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=x^3+x\)는 역함수를 가짐을 보이고, \(f^{-1}\)이 연속인 이유를 설명하시오. 또 \(f^{-1}(2)\)를 구하시오.</p>
+            <p data-lang="en">Show that \(f(x)=x^3+x\) has an inverse, explain why \(f^{-1}\) is continuous, and find \(f^{-1}(2)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-3-b" hidden>
+              <p data-lang="ko">\(x_1\lt x_2\)이면 \(x_1^3\lt x_2^3\)이고 \(x_1\lt x_2\)이므로 \(f(x_1)\lt f(x_2)\), 즉 \(f\)는 순증가예요. 또 다항함수라 연속이에요. 연속이고 순증가하는 함수는 역함수를 가지며 그 역함수도 연속이에요. \(f(1)=1+1=2\)이므로 \(f^{-1}(2)=1\)이에요.</p>
+              <p data-lang="en">If \(x_1\lt x_2\) then \(x_1^3\lt x_2^3\) and \(x_1\lt x_2\), so \(f(x_1)\lt f(x_2)\): \(f\) is strictly increasing. It is a polynomial, hence continuous. A continuous, strictly increasing function has a continuous inverse. Since \(f(1)=2\), \(f^{-1}(2)=1\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">극한은 언제나 함수 안으로 넣을 수 있다: \(\lim g(f(x))=g(\lim f(x))\).</p>
+              <p data-lang="en">A limit can always move inside a function: \(\lim g(f(x))=g(\lim f(x))\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">바깥 함수 \(g\)가 \(b\)에서 <strong>연속</strong>일 때만 돼요. 그림에서 \([u]\)를 고르면 \(\displaystyle\lim_{x\to0}[1-x^2]=0\)인데 \([\lim_{x\to0}(1-x^2)]=[1]=1\)이에요.</p>
+              <p data-lang="en">Only when the outer \(g\) is <strong>continuous</strong> at \(b\). Choose \(\lfloor u\rfloor\) in the picture: \(\displaystyle\lim_{x\to0}\lfloor1-x^2\rfloor=0\), but \(\lfloor\lim_{x\to0}(1-x^2)\rfloor=\lfloor1\rfloor=1\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(y=x^2\)의 역함수는 \(y=\sqrt{x}\)이다.</p>
+              <p data-lang="en">The inverse of \(y=x^2\) is \(y=\sqrt{x}\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">실수 전체에서 \(x^2\)은 순증가도 순감소도 아니라서 역함수가 없어요 (\(x=1\)과 \(x=-1\)이 같은 값 1을 줘요). 정의역을 \(x\ge0\)으로 <strong>제한해야</strong> 역함수 \(\sqrt{x}\)를 얻어요.</p>
+              <p data-lang="en">On all reals, \(x^2\) is neither strictly increasing nor decreasing, so it has no inverse (\(x=1\) and \(x=-1\) both give 1). You must <strong>restrict</strong> the domain to \(x\ge0\) to get the inverse \(\sqrt{x}\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s04-4">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>함수의 극한의 ε-δ 정의에서 목표값 \(L\)을 <strong>함숫값 \(f(a)\)</strong>로 바꾸면 연속의 정의가 돼요.</li>
+          <li>\(0\lt|x-a|\)가 아니라 \(|x-a|\lt\delta\)라서 \(x=a\)도 <strong>포함</strong>해요.</li>
+          <li>이 한 문장이 "(ⅰ) 정의됨 (ⅱ) 극한 존재 (ⅲ) 극한값 = 함숫값" 세 조건을 모두 담고 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Replace the target \(L\) in the ε-δ limit definition with the <strong>value \(f(a)\)</strong> and you get continuity.</li>
+          <li>It uses \(|x-a|\lt\delta\) instead of \(0\lt|x-a|\lt\delta\), so \(x=a\) is <strong>included</strong>.</li>
+          <li>This single sentence packs all three conditions: defined, limit exists, limit equals value.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">연속의 엄밀한 정의</span><span class="def-label" data-lang="en">Rigorous definition of continuity</span>
+          $$\forall\,\htmlClass{k-eps}{\varepsilon}>0\;\;\exists\,\htmlClass{k-delta}{\delta}>0\;\;\forall x\;\big(\,|x-a|\lt\htmlClass{k-delta}{\delta}\;\rightarrow\;|f(x)-f(a)|\lt\htmlClass{k-eps}{\varepsilon}\,\big)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=2x+1\)은 \(x=a\)에서 연속: \(\delta=\frac\varepsilon2\)로 잡으면 \(|x-a|\lt\delta\)일 때 \(|f(x)-f(a)|=2|x-a|\lt\varepsilon\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=2x+1\) is continuous at \(a\): with \(\delta=\frac\varepsilon2\), \(|x-a|\lt\delta\) gives \(|f(x)-f(a)|=2|x-a|\lt\varepsilon\).</p>
+        </div>
+        <div class="rigor-cta">
+          <p data-lang="ko">🔍 연속인 함수와 불연속인 함수를 같은 ε으로 나란히 비교해 보세요.</p>
+          <p data-lang="en">🔍 Compare a continuous and a discontinuous function with the same ε.</p>
+          <a class="btn btn-outline btn-sm" href="../rigor.html#continuity" data-i18n="rigorCta"></a>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 연속의 ε-δ (목표는 f(a), x = a 포함) -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기 (\(a=1\))</span><span data-lang="en">Choose a function (\(a=1\))</span></legend>
+            <div class="seg" id="cr-pick">
+              <label><input type="radio" name="cr-pick" value="cont" checked><span><span data-lang="ko">연속</span><span data-lang="en">Continuous</span></span></label>
+              <label><input type="radio" name="cr-pick" value="diff"><span><span data-lang="ko">함숫값이 다름</span><span data-lang="en">Value differs</span></span></label>
+              <label><input type="radio" name="cr-pick" value="jump"><span><span data-lang="ko">점프</span><span data-lang="en">Jump</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="cr-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="cr-canvas" role="img" data-i18n-attr="aria-label:cr.canvas"></canvas>
+          </div>
+          <ul class="legend" id="cr-legend"></ul>
+          <table class="readout-table"><tbody id="cr-table"></tbody></table>
+          <p class="verdict" id="cr-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="cr-e"><span data-lang="ko">허용 오차</span><span data-lang="en">Tolerance</span> \(\varepsilon\)</label>
+              <input id="cr-e" type="range" min="0.05" max="1.5" step="0.01" value="0.8">
+              <output id="cr-e-out" for="cr-e">0.80</output>
+            </div>
+            <label class="check-row"><input type="checkbox" id="cr-lim"><span><span data-lang="ko">극한의 정의로 바꾸기 (목표를 극한값 \(L\)로, \(x=a\)는 빼기)</span><span data-lang="en">Switch to the limit definition (target \(L\), leave out \(x=a\))</span></span></label>
+            <div class="control-buttons">
+              <button class="play-btn" id="cr-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="cr-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">ε-δ 정의를 이용하여 \(f(x)=3x-2\)가 \(x=1\)에서 연속임을 보이시오.</p>
+            <p data-lang="en">Use the ε-δ definition to show that \(f(x)=3x-2\) is continuous at \(x=1\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-4-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-4-a" hidden>
+              <p data-lang="ko">\(f(1)=1\)이고 \(|f(x)-f(1)|=|3x-3|=3|x-1|\)이에요. 임의의 \(\varepsilon>0\)에 대하여 \(\delta=\frac\varepsilon3\)으로 잡으면, \(|x-1|\lt\delta\)일 때 \(|f(x)-f(1)|=3|x-1|\lt3\delta=\varepsilon\)이에요. 따라서 \(f\)는 \(x=1\)에서 연속이에요.</p>
+              <p data-lang="en">\(f(1)=1\) and \(|f(x)-f(1)|=|3x-3|=3|x-1|\). For any \(\varepsilon>0\) take \(\delta=\frac\varepsilon3\); then \(|x-1|\lt\delta\) gives \(|f(x)-f(1)|=3|x-1|\lt3\delta=\varepsilon\). So \(f\) is continuous at \(x=1\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">ε-δ 정의를 이용하여 \(f(x)=x^2\)이 \(x=2\)에서 연속임을 보이시오.</p>
+            <p data-lang="en">Use the ε-δ definition to show that \(f(x)=x^2\) is continuous at \(x=2\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-04-4-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-04-4-b" hidden>
+              <p data-lang="ko">\(|x^2-4|=|x-2|\,|x+2|\)이에요. 먼저 \(\delta\le1\)로 정하면 \(|x-2|\lt1\)에서 \(1\lt x\lt3\)이므로 \(|x+2|\lt5\)예요. 그래서 \(\delta=\min\!\left(1,\frac\varepsilon5\right)\)로 잡으면 \(|x-2|\lt\delta\)일 때 \(|x^2-4|\lt5\delta\le\varepsilon\)이에요. 곱해지는 인수 \(|x+2|\)를 먼저 묶어 두는 것이 요령이에요.</p>
+              <p data-lang="en">\(|x^2-4|=|x-2|\,|x+2|\). First require \(\delta\le1\): then \(1\lt x\lt3\), so \(|x+2|\lt5\). Taking \(\delta=\min\!\left(1,\frac\varepsilon5\right)\), \(|x-2|\lt\delta\) gives \(|x^2-4|\lt5\delta\le\varepsilon\). Tip: bound the extra factor \(|x+2|\) first.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">극한의 ε-δ 정의를 만족하면 연속이다.</p>
+              <p data-lang="en">If the ε-δ limit definition holds, the function is continuous.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">목표값이 <strong>\(f(a)\)</strong>여야 해요. 그림에서 "함숫값이 다름"을 고르고 "극한의 정의로 바꾸기"를 켜면 극한값 \(L=1\)로는 δ를 찾을 수 있지만, 끄면 \(f(1)=2\)를 목표로 해서 작은 ε에서는 δ를 찾을 수 없어요.</p>
+              <p data-lang="en">The target must be <strong>\(f(a)\)</strong>. Choose "Value differs": with the limit definition on, δ exists for \(L=1\); with it off, the target is \(f(1)=2\) and no δ works for small ε.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">δ는 하나만 찾으면 된다.</p>
+              <p data-lang="en">One δ is enough.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko"><strong>모든</strong> ε에 대해 각각 δ를 찾아야 해요. 그래서 δ는 보통 \(\frac\varepsilon3\)처럼 ε의 식으로 써요. 그림에서 ε을 줄이면 δ도 따라 줄어들어요.</p>
+              <p data-lang="en">You need a δ for <strong>every</strong> ε, so δ is usually written in terms of ε, like \(\frac\varepsilon3\). Shrink ε in the picture and δ shrinks too.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 04-② 연속함수의 성질: 사잇값 정리 / 최대·최소 정리 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var K = $('iv-k'), A = $('ev-a'), B = $('ev-b'), OPEN = $('ev-open');
+
+  var IV = {
+    mono: { f: function (x) { return x * x * x + x - 1; }, cont: true },
+    wave: { f: function (x) { return 3 * x - 1 + 0.8 * Math.sin(3 * Math.PI * x); }, cont: true },
+    jump: { f: function (x) { return x < 0.5 ? 2 * x - 1 : 2 * x; }, cont: false }
+  };
+  var ev = function (x) { return x * x * x - 3 * x; };
+  var mode = document.querySelector('input[name="th-pick"]:checked').value;
+  var ivK = document.querySelector('input[name="iv-pick"]:checked').value;
+
+  /* f(c) = k 인 c 들 (연속인 조각 안에서 부호가 바뀌는 곳을 이분법으로) */
+  function roots(f, k) {
+    var N = 2000, out = [], x0 = 0, y0 = f(0) - k;
+    if (Math.abs(y0) < 1e-12) out.push(0);
+    for (var i = 1; i <= N; i++) {
+      var x1 = i / N, y1 = f(x1) - k;
+      if (Math.abs(y1) < 1e-12) out.push(x1);
+      else if (y0 * y1 < 0 && Math.abs(y1 - y0) < 0.05) {   // 점프를 건너는 부호 변화는 근이 아님
+        var lo = x0, hi = x1;
+        for (var j = 0; j < 40; j++) { var m = (lo + hi) / 2; if ((f(lo) - k) * (f(m) - k) <= 0) hi = m; else lo = m; }
+        out.push((lo + hi) / 2);
+      }
+      x0 = x1; y0 = y1;
+    }
+    // 격자점에 딱 걸린 근이 두 번 잡히지 않게 정리
+    return out.filter(function (r, i) { return i === 0 || r - out[i - 1] > 1e-4; });
+  }
+
+  /* 최댓값·최솟값: 끝점과 구간 안의 임계점(±1)만 비교하면 된다 */
+  function extremes() {
+    var a = Math.min(+A.value, +B.value), b = Math.max(+A.value, +B.value);
+    var inner = [-1, 1].filter(function (x) { return x > a && x < b; });
+    var all = [a, b].concat(inner);
+    var vals = all.map(ev), mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals);
+    var innerVals = inner.map(ev);
+    var mxIn = innerVals.length ? Math.max.apply(null, innerVals) : -Infinity;
+    var mnIn = innerVals.length ? Math.min.apply(null, innerVals) : Infinity;
+    var open = OPEN.checked;
+    // 같은 값이 끝점과 안쪽에서 함께 나오면 안쪽 점을 보여 준다 (열린구간에서도 남아 있는 점)
+    function where(v) {
+      for (var i = 0; i < inner.length; i++) if (Math.abs(ev(inner[i]) - v) < 1e-12) return inner[i];
+      return all[vals.indexOf(v)];
+    }
+    return {
+      a: a, b: b, open: open,
+      max: (!open || mxIn >= mx - 1e-12) ? { v: mx, x: where(mx) } : null, sup: mx,
+      min: (!open || mnIn <= mn + 1e-12) ? { v: mn, x: where(mn) } : null, inf: mn
+    };
+  }
+
+  var g = Graph.create($('th-canvas'), { xMin: -0.2, xMax: 1.2, yMin: -1.6, yMax: 2.6, aspect: 0.8, maxHeight: 340 });
+  g.render = function () {
+    var c = g.c;
+    if (mode === 'ivt') {
+      var F = IV[ivK], k = +K.value, fa = F.f(0), fb = F.f(1);
+      g.setView({ xMin: -0.15, xMax: 1.15, yMin: -1.7, yMax: 2.7 });
+      g.clear(); g.grid(); g.axes();
+      g.band('y', Math.min(fa, fb), Math.max(fa, fb), { fill: c.fillMain });
+      if (F.cont) g.plot(F.f, { color: c.main, width: 3.5, from: 0, to: 1 });
+      else {
+        g.plot(F.f, { color: c.main, width: 3.5, from: 0, to: 0.5 - 1e-6 });
+        g.plot(F.f, { color: c.main, width: 3.5, from: 0.5, to: 1 });
+        g.point(0.5, 0, { color: c.main, filled: false, r: 6 });
+        g.point(0.5, 1, { color: c.main, r: 6 });
+      }
+      g.point(0, fa, { color: c.main, r: 5, label: 'f(0) = ' + fmt(fa, 1), labelStyle: { dx: 8, dy: 14 } });
+      g.point(1, fb, { color: c.main, r: 5, label: 'f(1) = ' + fmt(fb, 1), labelStyle: { align: 'right', dx: -8, dy: -12 } });
+      g.hline(k, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMin, k, 'y = k', { color: c.accent, align: 'left', dx: 6, dy: -12, bold: true });
+      roots(F.f, k).forEach(function (r) {
+        g.line(r, 0, r, k, { color: c.accent, width: 1.5, dash: [2, 4] });
+        g.point(r, k, { color: c.accent, r: 6.5 });
+        g.label(r, 0, 'c', { color: c.accent, dy: 16, bold: true });
+      });
+    } else {
+      var E = extremes();
+      g.setView({ xMin: -2.5, xMax: 2.5, yMin: -4.6, yMax: 4.6 });
+      g.clear(); g.grid(); g.axes();
+      g.plot(ev, { color: c.text2, width: 1.5, dash: [4, 4] });
+      g.plot(ev, { color: c.main, width: 4, from: E.a, to: E.b });
+      g.point(E.a, ev(E.a), { color: c.main, filled: !E.open, r: 6 });
+      g.point(E.b, ev(E.b), { color: c.main, filled: !E.open, r: 6 });
+      g.hline(E.sup, { color: c.accent, width: 1.5, dash: [8, 5] });
+      g.hline(E.inf, { color: c.third, width: 1.5, dash: [2, 4] });
+      if (E.max) g.point(E.max.x, E.max.v, { color: c.accent, r: 7, label: (ko() ? '최댓값 ' : 'max ') + fmt(E.max.v), labelStyle: { bold: true } });
+      else g.label(E.b, E.sup, ko() ? '최댓값 없음' : 'no max', { color: c.accent, align: 'right', dx: -10, dy: -14, bold: true });
+      if (E.min) g.point(E.min.x, E.min.v, { color: c.third, r: 7, label: (ko() ? '최솟값 ' : 'min ') + fmt(E.min.v), labelStyle: { bold: true, dy: 18 } });
+      else g.label(E.a, E.inf, ko() ? '최솟값 없음' : 'no min', { color: c.third, align: 'left', dx: 10, dy: 16, bold: true });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>', band: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>' };
+  var LEG = {
+    ivt: { ko: [['main', '그래프 (실선)'], ['band', 'f(0)과 f(1) 사이 (색칠한 띠)'], ['accent', 'y = k (긴 점선)와 만나는 점 c']],
+           en: [['main', 'graph (solid)'], ['band', 'between f(0) and f(1) (shaded band)'], ['accent', 'y = k (long dashes) and the points c']] },
+    evt: { ko: [['main', '구간 [a, b] 위의 그래프 (굵은 실선, 끝점 ●/○)'], ['accent', '최댓값 높이 (긴 점선)'], ['third', '최솟값 높이 (짧은 점선)']],
+           en: [['main', 'graph on [a, b] (thick, endpoints ●/○)'], ['accent', 'max height (long dashes)'], ['third', 'min height (dotted)']] }
+  };
+
+  function update() {
+    var L = Site.lang(), rows = [], v;
+    if (mode === 'ivt') {
+      var F = IV[ivK], k = +K.value, fa = F.f(0), fb = F.f(1), cs = roots(F.f, k);
+      var between = k >= Math.min(fa, fb) && k <= Math.max(fa, fb);
+      rows = [['f(0)', fmt(fa, 3)], ['f(1)', fmt(fb, 3)], ['k', fmt(k)],
+              [ko() ? 'f(c) = k 인 c' : 'c with f(c) = k', cs.length ? cs.map(function (x) { return fmt(x, 3); }).join(', ') : (ko() ? '없음' : 'none')]];
+      if (!between) v = { ok: null, text: ko() ? 'k가 f(0)과 f(1) 사이가 아니라서 정리가 c의 존재를 보장하지 않아요.' : 'k is not between f(0) and f(1), so the theorem guarantees nothing.' };
+      else if (cs.length) v = { ok: true, text: ko() ? 'k가 f(0)과 f(1) 사이이고 f가 연속이라 c가 ' + cs.length + '개 있어요.' : 'k is between f(0) and f(1) and f is continuous: ' + cs.length + ' value(s) of c.' };
+      else v = { ok: false, text: ko() ? 'k는 사이의 값인데 c가 없어요! 그래프가 x = 0.5에서 점프해서 건너뛰었기 때문이에요. 연속이라는 조건이 꼭 필요해요.' : 'k is in between, yet there is no c! The graph jumps at x = 0.5. Continuity is essential.' };
+    } else {
+      var E = extremes();
+      var iv = (E.open ? '(' : '[') + fmt(E.a) + ', ' + fmt(E.b) + (E.open ? ')' : ']');
+      rows = [[ko() ? '구간' : 'interval', iv],
+              [ko() ? '최댓값' : 'max', E.max ? fmt(E.max.v) + ' (x = ' + fmt(E.max.x) + ')' : (ko() ? '없음 (' + fmt(E.sup) + '에 가까워지기만 함)' : 'none (only approaches ' + fmt(E.sup) + ')')],
+              [ko() ? '최솟값' : 'min', E.min ? fmt(E.min.v) + ' (x = ' + fmt(E.min.x) + ')' : (ko() ? '없음 (' + fmt(E.inf) + '에 가까워지기만 함)' : 'none (only approaches ' + fmt(E.inf) + ')')]];
+      v = (E.max && E.min)
+        ? { ok: true, text: E.open ? (ko() ? '열린구간이지만 이번에는 최댓값·최솟값이 구간 안쪽에서 생겨서 둘 다 있어요. 하지만 항상 그런 건 아니에요.' : 'Open interval, but here both extremes occur inside, so they exist. Not guaranteed in general.')
+                                    : (ko() ? '닫힌구간에서 연속이므로 최댓값과 최솟값이 반드시 있어요.' : 'Continuous on a closed interval, so a max and min always exist.') }
+        : { ok: false, text: ko() ? '끝점이 빠지면서 최댓값(또는 최솟값)이 될 점이 사라졌어요. 정리에는 닫힌구간이 꼭 필요해요.' : 'Dropping the endpoints removed the point where the max (or min) would occur. The theorem needs a closed interval.' };
+    }
+    $('th-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === rows.length - 1 && mode === 'ivt' ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('th-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var ivt = m === 'ivt';
+    $('iv-fn-row').hidden = !ivt; $('iv-k-row').hidden = !ivt; $('iv-play-row').hidden = !ivt;
+    $('ev-a-row').hidden = ivt; $('ev-b-row').hidden = ivt; $('ev-open-row').hidden = ivt;
+    $('th-legend').innerHTML = LEG[m][Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    update();
+  }
+
+  Graph.bindSlider(K, $('iv-k-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(A, $('ev-a-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(B, $('ev-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  OPEN.addEventListener('change', update);
+  $('th-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  $('iv-pick').addEventListener('change', function (e) { ivK = e.target.value; update(); });
+  [K, A, B].forEach(function (el) { el.addEventListener('change', function () { $('th-live').textContent = $('th-verdict').textContent; }); });
+  Graph.player({ button: $('iv-play'), input: K, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+
+/* 04-① 함수의 연속: 펜을 떼지 않고 그리기 + 세 조건 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('ct1-x'), C = 1;
+
+  // conds: [ (ⅰ), (ⅱ), (ⅲ) ] 각각 'ok' / 'no' / 'skip'
+  var FN = {
+    cont: { left: function (x) { return 0.5 * x * x + 0.5; }, right: function (x) { return 0.5 * x * x + 0.5; }, LL: 1, RL: 1, fc: 1,
+            conds: ['ok', 'ok', 'ok'], def: '\\(f(x)=\\frac12x^2+\\frac12\\)' },
+    hole: { left: function (x) { return x + 1; }, right: function (x) { return x + 1; }, LL: 2, RL: 2, fc: null,
+            conds: ['no', 'ok', 'skip'], def: '\\(f(x)=\\dfrac{x^2-1}{x-1}\\)' },
+    jump: { left: function (x) { return x; }, right: function (x) { return x + 1; }, LL: 1, RL: 2, fc: 2,
+            conds: ['ok', 'no', 'skip'], def: '\\(f(x)=x\\ (x\\lt1),\\ \\ x+1\\ (x\\ge1)\\)' },
+    diff: { left: function (x) { return x * x; }, right: function (x) { return x * x; }, LL: 1, RL: 1, fc: 3,
+            conds: ['ok', 'ok', 'no'], def: '\\(f(x)=x^2\\ (x\\ne1),\\ \\ f(1)=3\\)' }
+  };
+  var K = document.querySelector('input[name="ct1-pick"]:checked').value;
+  var g = Graph.create($('ct1-canvas'), { xMin: -0.5, xMax: 2.5, yMin: -0.5, yMax: 4.3, aspect: 0.78, maxHeight: 340 });
+
+  function broken() { return K !== 'cont'; }
+
+  g.render = function () {
+    var F = FN[K], x = +X.value, c = g.c;
+    g.clear(); g.grid(); g.axes();
+    g.vline(C, { color: c.text2, width: 1.2, dash: [4, 4] });
+    // 펜 자국 (굵고 반투명한 띠)
+    var ctx = g.ctx; ctx.save(); ctx.globalAlpha = 0.45;
+    if (!broken()) g.plot(F.left, { color: c.accent, width: 10, from: g.o.xMin, to: x });
+    else {
+      g.plot(F.left, { color: c.accent, width: 10, from: g.o.xMin, to: Math.min(x, C - 0.02) });
+      if (x > C + 0.02) g.plot(F.right, { color: c.accent, width: 10, from: C + 0.02, to: x });
+    }
+    ctx.restore();
+    // 그래프
+    g.plot(F.left, { color: c.main, width: 3, from: g.o.xMin, to: C - 1e-6 });
+    g.plot(F.right, { color: c.main, width: 3, from: C + 1e-6, to: g.o.xMax });
+    if (F.fc !== F.LL) g.point(C, F.LL, { color: c.main, filled: false, r: 6 });
+    if (F.RL !== F.LL && F.fc !== F.RL) g.point(C, F.RL, { color: c.main, filled: false, r: 6 });
+    if (F.fc !== null) g.point(C, F.fc, { color: c.main, r: 6, label: 'f(1) = ' + F.fc, labelStyle: { bold: true, dx: 12 } });
+    // 펜
+    var y = x < C ? F.left(x) : F.right(x);
+    g.label(x, y, '✏️', { dx: 10, dy: -14, font: '22px sans-serif' });
+    if (broken() && x >= C) g.label(C, 0, ko() ? '✋ x = 1에서 펜을 떼야 해요!' : '✋ You must lift the pen at x = 1!', { color: c.text, dy: 24, bold: true });
+  };
+
+  var TXT = {
+    ko: [['(ⅰ) f(1)이 정의되어 있다', { ok: 'f(1) = ', no: 'f(1)이 정의되지 않아요 (구멍)' }],
+         ['(ⅱ) x → 1일 때 극한이 존재한다', { ok: '좌극한 = 우극한 = ', no: '좌극한과 우극한이 달라요: ' }],
+         ['(ⅲ) 극한값 = f(1)', { ok: '둘 다 ', no: '극한값과 f(1)이 달라요: ', skip: '앞의 조건이 깨져서 비교할 수 없어요' }]],
+    en: [['(i) f(1) is defined', { ok: 'f(1) = ', no: 'f(1) is undefined (a hole)' }],
+         ['(ii) the limit as x → 1 exists', { ok: 'left = right = ', no: 'left and right differ: ' }],
+         ['(iii) limit = f(1)', { ok: 'both are ', no: 'limit and f(1) differ: ', skip: 'cannot compare: an earlier condition fails' }]]
+  };
+
+  function update() {
+    var F = FN[K], L = Site.lang(), T = TXT[L];
+    var detail = [
+      F.conds[0] === 'ok' ? T[0][1].ok + F.fc : T[0][1].no,
+      F.conds[1] === 'ok' ? T[1][1].ok + F.LL : T[1][1].no + F.LL + ' ≠ ' + F.RL,
+      F.conds[2] === 'ok' ? T[2][1].ok + F.fc : F.conds[2] === 'no' ? T[2][1].no + F.LL + ' ≠ ' + F.fc : T[2][1].skip
+    ];
+    var ICON = { ok: '✓', no: '✕', skip: '—' };
+    $('ct1-conds').innerHTML = F.conds.map(function (s, i) {
+      return '<li class="' + s + '"><span class="cond-ico" aria-hidden="true">' + ICON[s] + '</span><span><strong>' + T[i][0] + '</strong><br>' + detail[i] + '</span></li>';
+    }).join('');
+    var ok = !broken(), el = $('ct1-verdict');
+    el.className = 'verdict ' + (ok ? 'ok' : 'no');
+    el.textContent = ok ? (L === 'ko' ? '✓ 세 조건을 모두 만족해요: x = 1에서 연속' : '✓ All three conditions hold: continuous at x = 1')
+                        : (L === 'ko' ? '✕ 조건이 하나라도 깨지면 불연속이에요: x = 1에서 불연속' : '✕ If any condition fails, it is discontinuous at x = 1');
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var d = $('ct1-def');
+    d.innerHTML = FN[k].def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+
+  Graph.bindSlider(X, $('ct1-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { g.draw(); } });
+  $('ct1-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  X.addEventListener('change', function () { $('ct1-live').textContent = $('ct1-verdict').textContent; });
+  Graph.player({ button: $('ct1-play'), input: X, duration: 6000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') update(); else g.draw(); });
+  setFn(K);
+});
+
+/* 04-④ 연속의 엄밀한 정의: 목표는 f(a), x = a 도 포함 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var E = $('cr-e'), LIM = $('cr-lim'), A = 1, DMAX = 1.25;
+
+  // piece: x ≠ 1 에서의 식, fa: f(1), L: 극한값 (없으면 null), LL: 좌극한
+  var FN = {
+    cont: { piece: function (x) { return 0.5 * x * x + 0.5; }, fa: 1, L: 1, LL: 1,
+            def: '\\(f(x)=\\frac12x^2+\\frac12\\)' },
+    diff: { piece: function (x) { return x * x; }, fa: 2, L: 1, LL: 1,
+            def: '\\(f(x)=x^2\\ (x\\ne1),\\ \\ f(1)=2\\)' },
+    jump: { piece: function (x) { return x < A ? x : x + 1; }, fa: 2, L: null, LL: 1,
+            def: '\\(f(x)=x\\ (x\\lt1),\\ \\ x+1\\ (x\\ge1)\\)' }
+  };
+  var K = document.querySelector('input[name="cr-pick"]:checked').value;
+
+  function target() { var F = FN[K]; return LIM.checked && F.L !== null ? F.L : F.fa; }
+  /* |x − 1| < δ 인 모든 x (x ≠ 1) 에서 |f(x) − T| < ε 이 되는 가장 큰 δ. 바로 옆부터 벗어나면 0 */
+  function bestDelta(e) {
+    var F = FN[K], T = target(), N = 5000, step = DMAX / N;
+    for (var i = 1; i <= N; i++) {
+      var t = i * step;
+      if (Math.abs(F.piece(A - t) - T) >= e || Math.abs(F.piece(A + t) - T) >= e) return { d: (i - 1) * step, t: t, left: Math.abs(F.piece(A - t) - T) >= e };
+    }
+    return { d: DMAX, t: null };
+  }
+  // 이 값 이하의 ε 에서는 δ가 없다 (x → 1 일 때 f(x)가 다가가는 값과 목표의 차이)
+  function gap() { var F = FN[K], T = target(); return Math.max(Math.abs(F.LL - T), Math.abs(F.piece(A + 1e-9) - T)); }
+
+  var g = Graph.create($('cr-canvas'), { xMin: -0.3, xMax: 2.4, yMin: -0.4, yMax: 3.6, aspect: 0.85, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], e = +E.value, T = target(), D = bestDelta(e), c = g.c, lim = LIM.checked;
+    var tName = lim && F.L !== null ? 'L' : 'f(a)';
+    g.clear(); g.grid(); g.axes();
+    // ε-띠 (가로 빗금)
+    g.band('y', T - e, T + e, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent, stroke: c.accent });
+    // δ-띠 (세로 빗금). δ가 없으면 아주 좁은 시험용 띠만 흐리게
+    var d = D.d > 0 ? D.d : 0.12;
+    g.band('x', A - d, A + d, D.d > 0 ? { fill: c.fillThird, hatch: 'v', hatchColor: c.third, stroke: c.third } : { fill: c.fillThird, stroke: c.third });
+    g.vline(A, { color: c.text2, width: 1.2, dash: [4, 4] });
+    g.plot(F.piece, { color: c.main, width: 3, to: A - 1e-6 });
+    g.plot(F.piece, { color: c.main, width: 3, from: A + 1e-6 });
+    g.plot(F.piece, { color: c.main, width: 6.5, from: A - d, to: A - 1e-6 });
+    g.plot(F.piece, { color: c.main, width: 6.5, from: A + 1e-6, to: A + d });
+    if (F.LL !== F.fa) g.point(A, F.LL, { color: c.main, filled: false, r: 6 });
+    // 극한의 정의에서는 x = a 를 보지 않으므로 f(a) 점을 흐리게
+    g.point(A, F.fa, lim ? { color: c.text2, filled: false, r: 6 } : { color: c.main, r: 6.5 });
+    g.label(g.o.xMin, T + e, tName + ' + ε', { color: c.accent, align: 'left', dx: 6, dy: -12, bold: true });
+    g.label(g.o.xMin, T - e, tName + ' − ε', { color: c.accent, align: 'left', dx: 6, dy: 12, bold: true });
+    if (D.d > 0) {
+      g.label(A - d, g.o.yMax, 'a − δ', { color: c.third, align: 'right', dx: -4, dy: 14, bold: true });
+      g.label(A + d, g.o.yMax, 'a + δ', { color: c.third, align: 'left', dx: 4, dy: 14, bold: true });
+    } else {
+      var xs = D.left ? A - d : A + d;
+      g.label(xs, F.piece(xs), ko() ? '✕ 띠 밖' : '✕ outside', { color: c.text, align: D.left ? 'right' : 'left', dx: D.left ? -10 : 10, dy: 16, bold: true });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+             eps: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             del: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선, δ-띠 안은 굵게)'], ['eps', '목표 ± ε 띠 (가로 빗금)'], ['del', 'a ± δ 띠 (세로 빗금)']],
+    en: [['main', 'y = f(x) (solid, thick inside the δ-band)'], ['eps', 'target ± ε band (horizontal hatch)'], ['del', 'a ± δ band (vertical hatch)']]
+  };
+
+  function update() {
+    var F = FN[K], e = +E.value, T = target(), D = bestDelta(e), G = gap(), lim = LIM.checked, v;
+    var tLabel = lim && F.L !== null ? 'L = ' + fmt(T, 0) : 'f(1) = ' + fmt(T, 0);
+    var dText = D.d <= 0 ? (ko() ? '없음' : 'none') : D.t === null ? '≥ ' + fmt(DMAX) : fmt(D.d, 3);
+    var rows = [[ko() ? '목표값' : 'target', tLabel], ['ε', fmt(e)], [ko() ? '가장 큰 δ' : 'largest δ', dText]];
+    $('cr-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var where = lim ? (ko() ? '0 < |x − 1| < δ' : '0 < |x − 1| < δ') : (ko() ? '|x − 1| < δ (x = 1 포함)' : '|x − 1| < δ (x = 1 included)');
+    if (lim && F.L === null) {
+      v = D.d > 0
+        ? { ok: null, text: ko() ? '이 ε에서는 δ가 있지만, ε을 1 이하로 줄이면 사라져요. 좌극한 1과 우극한 2가 달라서 어떤 목표를 잡아도 ε이 충분히 작으면 δ가 없어요. 극한부터 없어요.' : 'A δ exists for this ε, but it vanishes once ε ≤ 1. Since the left limit 1 and right limit 2 differ, no target survives a small enough ε. The limit does not exist.' }
+        : { ok: false, text: ko() ? '좌극한 1과 우극한 2가 달라서 어떤 목표를 잡아도 작은 ε에서는 δ가 없어요. 극한부터 없으니 연속일 수 없어요.' : 'Left limit 1 ≠ right limit 2, so no target works for small ε. No limit, so no continuity.' };
+    } else if (D.d > 0) {
+      var base = ko() ? where + '인 모든 x에서 f(x)가 ' + (lim ? 'L' : 'f(1)') + ' ± ε 안에 있어요.' : 'For all x with ' + where + ', f(x) stays within ' + (lim ? 'L' : 'f(1)') + ' ± ε.';
+      if (G > 1e-6) v = { ok: null, text: base + (ko() ? ' 하지만 ε을 ' + fmt(G, 0) + ' 이하로 줄이면 δ가 사라져요. 줄여 보세요.' : ' But shrink ε to ' + fmt(G, 0) + ' or less and δ disappears. Try it.') };
+      else if (lim && F.fa !== F.L) v = { ok: null, text: base + (ko() ? ' 극한값 L = 1은 존재해요. 하지만 f(1) = 2 ≠ L이라 연속은 아니에요. 체크를 끄고 비교해 보세요.' : ' The limit L = 1 exists, but f(1) = 2 ≠ L, so it is not continuous. Uncheck to compare.') };
+      else v = { ok: true, text: base + (ko() ? ' ε을 아무리 줄여도 δ를 찾을 수 있으니 x = 1에서 연속이에요.' : ' However small ε gets, a δ exists: continuous at x = 1.') };
+    } else {
+      v = { ok: false, text: ko() ? 'x가 1에 아무리 가까워도 f(x)는 1 근처라서 f(1) = 2 ± ' + fmt(e) + ' 띠 밖이에요. 이 ε에는 δ가 없으니 x = 1에서 불연속이에요.'
+                                  : 'However close x gets to 1, f(x) stays near 1, outside f(1) = 2 ± ' + fmt(e) + '. No δ for this ε: discontinuous at x = 1.' };
+    }
+    var el = $('cr-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var d = $('cr-def');
+    d.innerHTML = FN[k].def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+  function setLegend() {
+    $('cr-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(E, $('cr-e-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  LIM.addEventListener('change', update);
+  $('cr-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  E.addEventListener('change', function () { $('cr-live').textContent = $('cr-verdict').textContent; });
+  // ▶ ε을 점점 줄이기
+  Graph.player({ button: $('cr-play'), input: E, duration: 7000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  setFn(K);
+});
+
+/* 04-③ 역함수와 합성함수: y = x 대칭 / 합성함수의 극한 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var A = $('ic-a'), H = $('ic-h');
+  var sq = function (x) { return x * x; };
+
+  // from: f를 그리기 시작하는 x (정의역 제한), inv: 뒤집은 그래프의 가지들
+  var INV = {
+    exp:  { f: function (x) { return Math.pow(2, x); }, from: undefined, min: -2,
+            inv: [{ f: function (x) { return Math.log(x) / Math.LN2; }, from: 1e-6 }],
+            def: { ko: '\\(f(x)=2^x\\ \\Rightarrow\\ f^{-1}(x)=\\log_2 x\\)', en: '\\(f(x)=2^x\\ \\Rightarrow\\ f^{-1}(x)=\\log_2 x\\)' }, name: 'log₂ x' },
+    half: { f: sq, from: 0, min: 0,
+            inv: [{ f: Math.sqrt, from: 0 }],
+            def: { ko: '\\(f(x)=x^2\\ (x\\ge0)\\ \\Rightarrow\\ f^{-1}(x)=\\sqrt{x}\\)', en: '\\(f(x)=x^2\\ (x\\ge0)\\ \\Rightarrow\\ f^{-1}(x)=\\sqrt{x}\\)' }, name: '√x' },
+    full: { f: sq, from: undefined, min: -2,
+            inv: [{ f: Math.sqrt, from: 0 }, { f: function (x) { return -Math.sqrt(x); }, from: 0 }],
+            def: { ko: '\\(f(x)=x^2\\) (실수 전체) \\(\\Rightarrow\\) 역함수 없음', en: '\\(f(x)=x^2\\) (all reals) \\(\\Rightarrow\\) no inverse' } }
+  };
+  // lim_{x→a} g(f(x)), b = lim f(x)
+  var COMP = {
+    sqrt:  { f: function (x) { return x * x + 5; }, g: Math.sqrt, a: 2, b: 9, gb: 3, cont: true,
+             view: { xMin: -1, xMax: 12.5, yMin: -0.8, yMax: 4.4 },
+             def: { ko: '\\(\\displaystyle\\lim_{x\\to2}\\sqrt{x^2+5}\\):  \\(f(x)=x^2+5\\), \\(g(u)=\\sqrt{u}\\)', en: '\\(\\displaystyle\\lim_{x\\to2}\\sqrt{x^2+5}\\):  \\(f(x)=x^2+5\\), \\(g(u)=\\sqrt{u}\\)' } },
+    floor: { f: function (x) { return 1 - x * x; }, g: Math.floor, a: 0, b: 1, gb: 1, cont: false,
+             view: { xMin: -0.7, xMax: 2.6, yMin: -1.4, yMax: 2.6 },
+             def: { ko: '\\(\\displaystyle\\lim_{x\\to0}\\,[1-x^2]\\):  \\(f(x)=1-x^2\\), \\(g(u)=[u]\\)', en: '\\(\\displaystyle\\lim_{x\\to0}\\lfloor1-x^2\\rfloor\\):  \\(f(x)=1-x^2\\), \\(g(u)=\\lfloor u\\rfloor\\)' } }
+  };
+  var mode = document.querySelector('input[name="ic-pick"]:checked').value;
+  var fk = document.querySelector('input[name="ic-fn"]:checked').value;
+  var ck = document.querySelector('input[name="ic-cc"]:checked').value;
+
+  var g = Graph.create($('ic-canvas'), { xMin: -2.4, xMax: 4.6, yMin: -2.4, yMax: 4.6, aspect: 0.85, maxHeight: 360 });
+
+  /* 지금 u = f(x) 값들 (양쪽에서 같으면 하나로) */
+  function us() {
+    var C = COMP[ck], h = +H.value, out = [C.f(C.a - h), C.f(C.a + h)];
+    return Math.abs(out[0] - out[1]) < 1e-12 ? [out[0]] : out;
+  }
+
+  g.render = function () {
+    var c = g.c;
+    if (mode === 'inv') {
+      var F = INV[fk], a = +A.value, fa = F.f(a);
+      // y = x 대칭이 제대로 보이도록 가로·세로 눈금 간격을 같게
+      var yMin = -2.4, yMax = 4.6, span = (yMax - yMin) * (g.w && g.h ? g.w / g.h : 1);
+      g.setView({ xMin: 1.1 - span / 2, xMax: 1.1 + span / 2, yMin: yMin, yMax: yMax });
+      g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 1, yStep: 1 });
+      g.plot(function (x) { return x; }, { color: c.axis, width: 1.5, dash: [4, 4] });
+      g.label(g.o.yMax - 0.3, g.o.yMax - 0.3, 'y = x', { color: c.axis, align: 'right', dx: -8, dy: 4 });
+      g.plot(F.f, { color: c.main, width: 3.5, from: F.from });
+      F.inv.forEach(function (b) { g.plot(b.f, { color: c.accent, width: 3, dash: [11, 6], from: b.from }); });
+      if (fk === 'full' && Math.abs(a) > 0.005) {
+        // 가로선 y = f(a)가 f와 두 번, 세로선 x = f(a)가 뒤집은 그래프와 두 번 만난다
+        g.hline(fa, { color: c.third, width: 2, dash: [2, 4] });
+        g.vline(fa, { color: c.third, width: 2, dash: [2, 4] });
+        g.point(-a, fa, { color: c.main, filled: false, r: 6, label: 'P′', labelStyle: { align: 'right', dx: -10 } });
+        g.point(fa, -a, { color: c.accent, filled: false, r: 6, label: 'Q′', labelStyle: { dy: 16 } });
+      }
+      g.line(a, fa, fa, a, { color: c.text2, width: 1.5, dash: [2, 4] });
+      g.point(a, fa, { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10 } });
+      g.point(fa, a, { color: c.accent, r: 6.5, label: 'Q', labelStyle: { bold: true, dy: 16 } });
+    } else {
+      var C = COMP[ck];
+      g.setView(C.view);
+      g.clear(); g.grid(); g.axes({ xLabel: 'u', yLabel: 'y' });
+      g.vline(C.b, { color: c.third, width: 2, dash: [2, 4] });
+      g.label(C.b, C.view.yMax, 'u = b = ' + C.b, { color: c.third, align: 'left', dx: 6, dy: 14, bold: true });
+      if (C.cont) g.plot(C.g, { color: c.main, width: 3.5, from: 0 });
+      else {
+        // 가우스 기호: 계단마다 왼쪽 끝 ●, 오른쪽 끝 ○
+        for (var n = Math.floor(C.view.xMin); n <= C.view.xMax; n++) {
+          g.line(Math.max(n, C.view.xMin), n, Math.min(n + 1, C.view.xMax), n, { color: c.main, width: 3.5 });
+          if (n >= C.view.xMin) g.point(n, n, { color: c.main, r: 5 });
+          if (n + 1 <= C.view.xMax) g.point(n + 1, n, { color: c.main, filled: false, r: 5 });
+        }
+      }
+      g.point(C.b, C.gb, { color: c.main, r: 6.5, label: 'g(b) = ' + C.gb, labelStyle: { bold: true, dy: -14 } });
+      us().forEach(function (u, i) {
+        var y = C.g(u);
+        g.line(u, 0, u, y, { color: c.accent, width: 1.5, dash: [2, 4] });
+        g.point(u, 0, { color: c.accent, filled: false, r: 5 });
+        g.point(u, y, { color: c.accent, r: 6.5 });
+        if (i === 0) g.label(u, y, 'g(u)', C.cont ? { color: c.accent, align: 'right', dx: -10, dy: -12, bold: true }
+                                                  : { color: c.accent, align: 'left', dx: 4, dy: -16, bold: true });
+      });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             axis: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1.5;stroke-dasharray:4 4"/>' };
+  var LEG = {
+    inv: { ko: [['main', 'y = f(x) (실선), 점 P'], ['accent', 'y = x에 대해 뒤집은 그래프 (긴 점선), 점 Q'], ['axis', 'y = x (가는 점선)']],
+           en: [['main', 'y = f(x) (solid), point P'], ['accent', 'reflection across y = x (long dashes), point Q'], ['axis', 'y = x (thin dashes)']] },
+    comp: { ko: [['main', '바깥 함수 y = g(u) (실선)'], ['accent', '지금의 u = f(x)와 g(u) (●)'], ['third', 'u = b (짧은 점선)']],
+            en: [['main', 'outer function y = g(u) (solid)'], ['accent', 'current u = f(x) and g(u) (●)'], ['third', 'u = b (dotted)']] }
+  };
+
+  function update() {
+    var rows = [], v, hl;
+    if (mode === 'inv') {
+      var F = INV[fk], a = +A.value, fa = F.f(a), two = fk === 'full' && Math.abs(a) > 0.005;
+      rows = [['P = (a, f(a))', '(' + fmt(a) + ', ' + fmt(fa) + ')'],
+              ['Q = (f(a), a)', '(' + fmt(fa) + ', ' + fmt(a) + ')'],
+              [ko() ? 'f(x) = ' + fmt(fa) + ' 인 x' : 'x with f(x) = ' + fmt(fa), two ? fmt(-Math.abs(a)) + ', ' + fmt(Math.abs(a)) + (ko() ? ' (2개)' : ' (two)') : fmt(a)]];
+      hl = 2;
+      if (fk !== 'full') v = { ok: true, text: ko() ? '순증가라서 y값 하나에 x가 하나뿐이에요. 뒤집은 그래프도 함수(' + F.name + ')이고, 끊어진 곳이 없으니 연속이에요.'
+                                                  : 'Strictly increasing, so each y comes from exactly one x. The reflection is a function (' + F.name + ') with no breaks: continuous.' };
+      else if (two) v = { ok: false, text: ko() ? '같은 y = ' + fmt(fa) + '에 x가 두 개(P, P′)예요. 그래서 뒤집은 그래프는 세로선 하나와 두 점(Q, Q′)에서 만나 함수가 아니에요. 역함수가 없어요.'
+                                                 : 'Two x values (P, P′) give the same y = ' + fmt(fa) + ', so the reflection meets one vertical line twice (Q, Q′). Not a function: no inverse.' };
+      else v = { ok: false, text: ko() ? 'a = 0에서는 x가 하나지만, 다른 점에서는 x가 두 개예요. a를 움직여 보세요.' : 'At a = 0 there is one x, but elsewhere there are two. Move a.' };
+    } else {
+      var C = COMP[ck], h = +H.value, U = us(), G = U.map(C.g);
+      var xs = U.length === 1 ? (C.a === 0 ? '±' + fmt(h) : fmt(C.a - h) + ', ' + fmt(C.a + h)) : fmt(C.a - h) + ', ' + fmt(C.a + h);
+      rows = [['x', xs],
+              ['u = f(x)', U.map(function (u) { return fmt(u, 4); }).join(', ')],
+              ['g(u) = g(f(x))', G.map(function (y) { return C.cont ? fmt(y, 4) : fmt(y, 0); }).join(', ')],
+              ['g(b) = g(' + C.b + ')', String(C.gb)]];
+      hl = 2;
+      v = C.cont
+        ? { ok: true, text: ko() ? 'u가 b = 9에 다가가면 g(u)도 g(9) = 3에 다가가요. g가 b에서 연속이라 lim g(f(x)) = g(lim f(x)) = 3이에요.'
+                                 : 'As u approaches b = 9, g(u) approaches g(9) = 3. Since g is continuous at b, lim g(f(x)) = g(lim f(x)) = 3.' }
+        : { ok: false, text: ko() ? 'u = 1 − x²는 1보다 작은 쪽에서만 1에 다가가서 [u] = 0이에요. 극한은 0인데 g(1) = 1이라 달라요. g가 u = 1에서 끊어져 있어서 극한을 안으로 넣을 수 없어요.'
+                                  : 'u = 1 − x² approaches 1 only from below, so ⌊u⌋ = 0. The limit is 0 but g(1) = 1. Since g breaks at u = 1, the limit cannot move inside.' };
+    }
+    $('ic-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('ic-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setDef() {
+    var d = $('ic-def'), D = mode === 'inv' ? INV[fk].def : COMP[ck].def;
+    d.innerHTML = D[Site.lang()];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+  }
+  function setFn(k) {
+    fk = k;
+    A.min = INV[k].min;
+    if (+A.value < INV[k].min) A.value = 1;
+    A.dispatchEvent(new Event('input'));
+    setDef(); update();
+  }
+  function setMode(m) {
+    mode = m;
+    var inv = m === 'inv';
+    if (playA.isPlaying()) playA.stop();
+    if (playH.isPlaying()) playH.stop();
+    $('ic-fn-row').hidden = !inv; $('ic-a-row').hidden = !inv; $('ic-play-a-row').hidden = !inv;
+    $('ic-cc-row').hidden = inv; $('ic-h-row').hidden = inv; $('ic-play-h-row').hidden = inv;
+    $('ic-legend').innerHTML = LEG[m][Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    setDef(); update();
+  }
+
+  Graph.bindSlider(A, $('ic-a-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(H, $('ic-h-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('ic-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  $('ic-fn').addEventListener('change', function (e) { setFn(e.target.value); });
+  $('ic-cc').addEventListener('change', function (e) { ck = e.target.value; setDef(); update(); });
+  [A, H].forEach(function (el) { el.addEventListener('change', function () { $('ic-live').textContent = $('ic-verdict').textContent; }); });
+  // 재생: 역함수에서는 P가 그래프를 따라가고, 합성함수에서는 h → 0 (x가 a에 다가감)
+  var playA = Graph.player({ button: $('ic-play-a'), input: A, duration: 7000 });
+  var playH = Graph.player({ button: $('ic-play-h'), input: H, duration: 6000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+</script>
+</body>
+</html>

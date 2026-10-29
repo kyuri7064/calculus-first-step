@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit2" data-chapter="07">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s07-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s07-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>수 \(e\)는 \(\left(1+\frac1n\right)^n\)의 극한으로 정의돼요 (\(e\approx2.718\)). 밑이 \(e\)인 로그가 자연로그 \(\ln\)이에요.</li>
+          <li>\(e^x\)는 미분해도 자기 자신이에요. 이 성질 때문에 미적분에서 \(e\)를 밑으로 많이 써요.</li>
+          <li>\(\ln x\)의 도함수는 \(\frac1x\)이고, 다른 밑은 \(\ln a\)가 곱해지거나 나눠져요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The number \(e\) is the limit of \(\left(1+\frac1n\right)^n\) (\(e\approx2.718\)); the log with base \(e\) is the natural log \(\ln\).</li>
+          <li>\(e^x\) is its own derivative, which is why \(e\) is the favorite base in calculus.</li>
+          <li>The derivative of \(\ln x\) is \(\frac1x\); other bases bring in a factor of \(\ln a\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">핵심 극한</span><span class="def-label" data-lang="en">Key limits</span>
+          $$e=\lim_{n\to\infty}\left(1+\frac1n\right)^n,\qquad \lim_{h\to0}\frac{e^h-1}{h}=1,\qquad \lim_{h\to0}\frac{\ln(1+h)}{h}=1$$
+          <span class="def-label" data-lang="ko">도함수 (\(a>0,\ a\ne1\))</span><span class="def-label" data-lang="en">Derivatives (\(a>0,\ a\ne1\))</span>
+          $$(e^x)'=e^x,\quad (a^x)'=a^x\ln a,\quad (\ln x)'=\frac1x,\quad (\log_a x)'=\frac{1}{x\ln a},\quad (\ln|x|)'=\frac1x$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \((e^{3x})'=3e^{3x}\), &nbsp; \(\left(\ln(x^2+1)\right)'=\frac{2x}{x^2+1}\), &nbsp; \((2^x)'=2^x\ln2\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \((e^{3x})'=3e^{3x}\), &nbsp; \(\left(\ln(x^2+1)\right)'=\frac{2x}{x^2+1}\), &nbsp; \((2^x)'=2^x\ln2\)</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 기울기 = 높이 가 되는 밑 찾기 / (1 + 1/n)^n → e -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">살펴볼 것</span><span data-lang="en">Explore</span></legend>
+            <div class="seg" id="ex-pick">
+              <label><input type="radio" name="ex-pick" value="base" checked><span><span data-lang="ko">기울기 = 높이인 밑 찾기</span><span data-lang="en">Base where slope = height</span></span></label>
+              <label><input type="radio" name="ex-pick" value="seq"><span><span data-lang="ko">\(\left(1+\frac1n\right)^n\to e\)</span><span data-lang="en">\(\left(1+\frac1n\right)^n\to e\)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="ex-canvas" role="img" data-i18n-attr="aria-label:ex.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ex-legend"></ul>
+          <table class="readout-table"><tbody id="ex-table"></tbody></table>
+          <p class="verdict" id="ex-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="ex-a-row">
+              <label for="ex-a"><span data-lang="ko">밑</span><span data-lang="en">Base</span> \(a\)</label>
+              <input id="ex-a" type="range" min="1.5" max="4" step="0.001" value="2">
+              <output id="ex-a-out" for="ex-a">2.000</output>
+            </div>
+            <div class="slider-row" id="ex-x-row">
+              <label for="ex-x"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span></label>
+              <input id="ex-x" type="range" min="-2" max="1.3" step="0.01" value="0.5">
+              <output id="ex-x-out" for="ex-x">0.50</output>
+            </div>
+            <div class="slider-row" id="ex-n-row" hidden>
+              <label for="ex-n">\(n\)</label>
+              <input id="ex-n" type="range" min="1" max="100" step="1" value="5">
+              <output id="ex-n-out" for="ex-n">5</output>
+            </div>
+            <div class="control-buttons" id="ex-snap-row">
+              <button class="btn btn-outline btn-sm" id="ex-snap" type="button"><span data-lang="ko">\(a=e\)로 맞추기</span><span data-lang="en">Set \(a=e\)</span></button>
+            </div>
+            <div class="control-buttons" id="ex-play-row" hidden>
+              <button class="play-btn" id="ex-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ex-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(y=xe^x\)을 미분하시오.</p>
+            <p data-lang="en">Differentiate \(y=xe^x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-07-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-07-1-a" hidden>
+              <p data-lang="ko">곱의 미분법으로 \(y'=1\cdot e^x+x\cdot e^x=(x+1)e^x\)이에요.</p>
+              <p data-lang="en">By the product rule, \(y'=1\cdot e^x+x\cdot e^x=(x+1)e^x\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(y=x^x\ (x>0)\)을 미분하시오.</p>
+            <p data-lang="en">Differentiate \(y=x^x\ (x>0)\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-07-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-07-1-b" hidden>
+              <p data-lang="ko">밑과 지수에 모두 \(x\)가 있어서 \((x^n)'\)도 \((a^x)'\)도 쓸 수 없어요. 양변에 자연로그를 취하면 \(\ln y=x\ln x\)이고, 양변을 \(x\)로 미분하면</p>
+              <p data-lang="en">Both base and exponent contain \(x\), so neither \((x^n)'\) nor \((a^x)'\) applies. Take natural logs: \(\ln y=x\ln x\). Differentiating both sides,</p>
+              $$\frac{y'}{y}=\ln x+1\quad\Rightarrow\quad y'=x^x(\ln x+1)$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\((2^x)'=x\cdot2^{x-1}\)</p>
+              <p data-lang="en">\((2^x)'=x\cdot2^{x-1}\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\((x^n)'=nx^{n-1}\)은 <strong>지수가 고정</strong>된 거듭제곱에만 써요. \(2^x\)은 지수가 변하는 지수함수라 \((2^x)'=2^x\ln2\)예요. 그림에서 \(a=2\)이면 기울기 ÷ 높이가 항상 \(\ln2\approx0.693\)이에요.</p>
+              <p data-lang="en">\((x^n)'=nx^{n-1}\) is only for powers with a <strong>fixed exponent</strong>. \(2^x\) is exponential, so \((2^x)'=2^x\ln2\). In the picture with \(a=2\), slope ÷ height is always \(\ln2\approx0.693\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\((\ln 2x)'=\dfrac{1}{2x}\)</p>
+              <p data-lang="en">\((\ln 2x)'=\dfrac{1}{2x}\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">합성함수의 미분법으로 \(\dfrac{1}{2x}\cdot2=\dfrac1x\)이에요. \(\ln2x=\ln2+\ln x\)이니 상수 \(\ln2\)가 미분되어 사라지는 것과도 맞아요.</p>
+              <p data-lang="en">By the chain rule, \(\dfrac{1}{2x}\cdot2=\dfrac1x\). It agrees with \(\ln2x=\ln2+\ln x\), where the constant \(\ln2\) differentiates to 0.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s07-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>각을 <strong>라디안</strong>으로 잴 때 \(\lim_{x\to0}\frac{\sin x}{x}=1\)이고, 이것이 삼각함수 미분의 출발점이에요.</li>
+          <li>\(\sin x\)를 미분하면 \(\cos x\), \(\cos x\)를 미분하면 \(-\sin x\)예요.</li>
+          <li>나머지 삼각함수와 역삼각함수의 도함수도 몫의 미분법·역함수 미분법으로 구해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>With angles in <strong>radians</strong>, \(\lim_{x\to0}\frac{\sin x}{x}=1\) — the starting point for trig derivatives.</li>
+          <li>The derivative of \(\sin x\) is \(\cos x\), and of \(\cos x\) is \(-\sin x\).</li>
+          <li>The other trig and inverse trig derivatives follow from the quotient and inverse function rules.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">삼각함수의 도함수</span><span class="def-label" data-lang="en">Trigonometric derivatives</span>
+          $$(\sin x)'=\cos x,\quad (\cos x)'=-\sin x,\quad (\tan x)'=\sec^2x$$
+          $$(\sec x)'=\sec x\tan x,\quad (\csc x)'=-\csc x\cot x,\quad (\cot x)'=-\csc^2x$$
+          <span class="def-label" data-lang="ko">역삼각함수의 도함수</span><span class="def-label" data-lang="en">Inverse trigonometric derivatives</span>
+          $$(\sin^{-1}x)'=\frac{1}{\sqrt{1-x^2}},\qquad (\tan^{-1}x)'=\frac{1}{1+x^2}$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \((\sin 2x)'=2\cos2x\), &nbsp; \((x\sin x)'=\sin x+x\cos x\). 도(°)로 잰 각이면 이 공식이 성립하지 않으니 주의!</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \((\sin 2x)'=2\cos2x\), &nbsp; \((x\sin x)'=\sin x+x\cos x\). These formulas fail if angles are in degrees!</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 단위원에서 sin x / x → 1 / sin의 기울기 = cos -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">살펴볼 것</span><span data-lang="en">Explore</span></legend>
+            <div class="seg" id="tg-pick">
+              <label><input type="radio" name="tg-pick" value="lim" checked><span>\(\frac{\sin x}{x}\to1\)</span></label>
+              <label><input type="radio" name="tg-pick" value="der"><span><span data-lang="ko">기울기 그래프</span><span data-lang="en">Slope graph</span></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="setting" style="margin-bottom:10px" id="tg-fn-row" hidden>
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="tg-fn">
+              <label><input type="radio" name="tg-fn" value="sin" checked><span>\(\sin x\)</span></label>
+              <label><input type="radio" name="tg-fn" value="cos"><span>\(\cos x\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="tg-canvas" role="img" data-i18n-attr="aria-label:tg.canvas"></canvas>
+          </div>
+          <ul class="legend" id="tg-legend"></ul>
+          <table class="readout-table"><tbody id="tg-table"></tbody></table>
+          <p class="verdict" id="tg-verdict"></p>
+          <div class="controls">
+            <div class="slider-row" id="tg-x-row">
+              <label for="tg-x"><span data-lang="ko">각</span><span data-lang="en">Angle</span> \(x\) <span data-lang="ko">(라디안)</span><span data-lang="en">(radians)</span></label>
+              <input id="tg-x" type="range" min="0.01" max="1.5" step="0.01" value="1.2">
+              <output id="tg-x-out" for="tg-x">1.20</output>
+            </div>
+            <label class="check-row" id="tg-deg-row"><input type="checkbox" id="tg-deg"><span><span data-lang="ko">각을 도(°)로 재면? (분모를 도 단위 숫자로)</span><span data-lang="en">What if the angle is in degrees? (degree number in the denominator)</span></span></label>
+            <div class="slider-row" id="tg-a-row" hidden>
+              <label for="tg-a"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span></label>
+              <input id="tg-a" type="range" min="0" max="6.28" step="0.01" value="0.6">
+              <output id="tg-a-out" for="tg-a">0.60</output>
+            </div>
+            <div class="control-buttons" id="tg-play-x-row">
+              <button class="play-btn" id="tg-play-x" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+            <div class="control-buttons" id="tg-play-a-row" hidden>
+              <button class="play-btn" id="tg-play-a" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="tg-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\lim_{x\to0}\frac{\sin3x}{x}\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\lim_{x\to0}\frac{\sin3x}{x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-07-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-07-2-a" hidden>
+              <p data-lang="ko">분모를 \(3x\)로 맞춰 줘요. \(x\to0\)이면 \(3x\to0\)이므로</p>
+              <p data-lang="en">Match the denominator to \(3x\). As \(x\to0\), \(3x\to0\), so</p>
+              $$\lim_{x\to0}\frac{\sin3x}{x}=\lim_{x\to0}\frac{\sin3x}{3x}\cdot3=1\cdot3=3$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\tan x=\dfrac{\sin x}{\cos x}\)를 이용하여 \((\tan x)'=\sec^2x\)임을 보이시오.</p>
+            <p data-lang="en">Using \(\tan x=\dfrac{\sin x}{\cos x}\), show that \((\tan x)'=\sec^2x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-07-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-07-2-b" hidden>
+              <p data-lang="ko">몫의 미분법과 \(\sin^2x+\cos^2x=1\)을 써요.</p>
+              <p data-lang="en">Use the quotient rule and \(\sin^2x+\cos^2x=1\).</p>
+              $$(\tan x)'=\frac{\cos x\cdot\cos x-\sin x\cdot(-\sin x)}{\cos^2x}=\frac{1}{\cos^2x}=\sec^2x$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\((\cos x)'=\sin x\)</p>
+              <p data-lang="en">\((\cos x)'=\sin x\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\((\cos x)'=-\sin x\)예요. \(0\lt x\lt\pi\)에서 \(\cos x\)는 내려가니(감소) 기울기가 음수여야 하는데, \(\sin x\)는 양수예요. 그림의 "기울기 그래프"에서 \(\cos x\)를 골라 확인해 보세요.</p>
+              <p data-lang="en">\((\cos x)'=-\sin x\). On \(0\lt x\lt\pi\), \(\cos x\) goes down, so its slope must be negative, while \(\sin x\) is positive there. Choose \(\cos x\) under "Slope graph" to see it.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">각을 도(°)로 재도 \((\sin x)'=\cos x\)이다.</p>
+              <p data-lang="en">\((\sin x)'=\cos x\) holds with degrees too.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">도로 재면 \(\lim\frac{\sin x^\circ}{x}=\frac{\pi}{180}\approx0.01745\)라서 \((\sin x^\circ)'=\frac{\pi}{180}\cos x^\circ\)가 돼요. 그림에서 "도로 재면?"을 켜 보세요. 공식이 깔끔한 것은 <strong>라디안</strong> 덕분이에요.</p>
+              <p data-lang="en">In degrees, \(\lim\frac{\sin x^\circ}{x}=\frac{\pi}{180}\approx0.01745\), so \((\sin x^\circ)'=\frac{\pi}{180}\cos x^\circ\). Turn on "degrees" in the picture. The formulas are clean only thanks to <strong>radians</strong>.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 07-② 삼각함수의 미분: 단위원에서 sin x / x → 1, 그리고 sin의 기울기 = cos */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('tg-x'), A = $('tg-a'), DEG = $('tg-deg');
+  var mode = document.querySelector('input[name="tg-pick"]:checked').value;
+  var FN = {
+    sin: { f: Math.sin, df: Math.cos, name: 'sin x', dname: 'cos x' },
+    cos: { f: Math.cos, df: function (x) { return -Math.sin(x); }, name: 'cos x', dname: '−sin x' }
+  };
+  var K = 'sin';
+
+  var g = Graph.create($('tg-canvas'), { xMin: -0.3, xMax: 1.4, yMin: -0.3, yMax: 1.3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var c = g.c;
+    if (mode === 'lim') {
+      var x = +X.value, px = Math.cos(x), py = Math.sin(x);
+      // 가로·세로 같은 배율
+      var yMin = -0.22, yMax = 1.22, span = (yMax - yMin) * (g.w && g.h ? g.w / g.h : 1);
+      g.setView({ xMin: 0.55 - span / 2, xMax: 0.55 + span / 2, yMin: yMin, yMax: yMax });
+      g.clear(); g.grid({ xStep: 0.5, yStep: 0.5 }); g.axes({ xStep: 0.5, yStep: 0.5 });
+      var circ = [], arc = [];
+      for (var i = 0; i <= 240; i++) { var t = 2 * Math.PI * i / 240; circ.push([Math.cos(t), Math.sin(t)]); }
+      for (var j = 0; j <= 80; j++) { var s = x * j / 80; arc.push([Math.cos(s), Math.sin(s)]); }
+      g.polygon(circ, { stroke: c.main, width: 2.5 });
+      g.line(0, 0, px, py, { color: c.text2, width: 1.5 });
+      g.line(0, 0, 1, 0, { color: c.text2, width: 1.5 });
+      g.polygon(arc, { close: false, stroke: c.accent, width: 5, dash: [11, 6] });
+      g.line(px, 0, px, py, { color: c.third, width: 4, dash: [2, 5] });
+      g.point(px, py, { color: c.main, r: 5.5, label: 'P', labelStyle: { bold: true } });
+      g.point(0, 0, { color: c.text, r: 3.5 });
+      var m = x / 2;
+      g.label(1.06 * Math.cos(m), 1.06 * Math.sin(m), (ko() ? '호 ' : 'arc ') + 'x', { color: c.accent, align: 'left', dx: 6, bold: true });
+      g.label(px, py / 2, 'sin x', { color: c.third, align: 'right', dx: -8, bold: true });
+    } else {
+      var F = FN[K], a = +A.value, fa = F.f(a), ma = F.df(a);
+      g.setView({ xMin: -0.3, xMax: 6.7, yMin: -1.6, yMax: 1.6 });
+      g.clear(); g.grid({ xStep: 1, yStep: 0.5 }); g.axes({ xStep: 1, yStep: 1 });
+      g.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+      g.plot(F.df, { color: c.third, width: 3, dash: [2, 5] });
+      g.plot(F.f, { color: c.main, width: 3.5 });
+      g.lineThrough(a, fa, ma, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.line(a, 0, a, ma, { color: c.accent, width: 3 });
+      g.point(a, ma, { color: c.third, r: 6 });
+      g.point(a, fa, { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true } });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  function legend() {
+    var L = Site.lang(), F = FN[K];
+    var items = mode === 'lim'
+      ? (L === 'ko' ? [['main', '단위원 (실선)'], ['accent', '호의 길이 = x (긴 점선)'], ['third', '세로 선분의 길이 = sin x (짧은 점선)']]
+                    : [['main', 'unit circle (solid)'], ['accent', 'arc length = x (long dashes)'], ['third', 'vertical segment = sin x (dotted)']])
+      : (L === 'ko' ? [['main', 'y = ' + F.name + ' (실선)'], ['accent', 'P에서의 접선과 그 기울기 (긴 점선)'], ['third', 'y = ' + F.dname + ' = 기울기 그래프 (짧은 점선)']]
+                    : [['main', 'y = ' + F.name + ' (solid)'], ['accent', 'tangent at P and its slope (long dashes)'], ['third', 'y = ' + F.dname + ' = slope graph (dotted)']]);
+    $('tg-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var rows, v, hl;
+    if (mode === 'lim') {
+      var x = +X.value, s = Math.sin(x), deg = DEG.checked, d = x * 180 / Math.PI;
+      rows = deg
+        ? [[ko() ? '각 (도)' : 'angle (degrees)', fmt(d, 2) + '°'], ['sin x°', fmt(s, 4)], ['sin x° ÷ ' + fmt(d, 2), fmt(s / d, 5)], ['π / 180', fmt(Math.PI / 180, 5)]]
+        : [[ko() ? '각 x (라디안)' : 'angle x (radians)', fmt(x)], ['sin x', fmt(s, 4)], ['sin x ÷ x', fmt(s / x, 5)]];
+      hl = 2;
+      if (deg) v = { ok: false, text: ko() ? '분모가 도 단위 숫자(라디안보다 약 57.3배 큰 수)라서 비가 1이 아니라 π/180 ≈ 0.01745에 다가가요. 그래서 도로 재면 미분 공식에 π/180이 붙어요.'
+                                         : 'The denominator is the degree number (about 57.3 times the radian value), so the ratio tends to π/180 ≈ 0.01745, not 1. In degrees, every trig derivative picks up π/180.' };
+      else v = { ok: x <= 0.05 ? true : null, text: ko() ? 'x가 0에 가까워질수록 호(긴 점선)와 세로 선분 sin x(짧은 점선)의 길이가 거의 같아져서, 비 sin x / x가 1에 다가가요.'
+                                                       : 'As x shrinks, the arc (long dashes) and the vertical segment sin x (dotted) become almost equal, so sin x / x approaches 1.' };
+    } else {
+      var F = FN[K], a = +A.value, m = F.df(a);
+      rows = [[ko() ? 'P의 x좌표' : 'x of P', fmt(a)], [F.name, fmt(F.f(a), 3)], [ko() ? '접선의 기울기' : 'tangent slope', fmt(m, 3)], [F.dname, fmt(m, 3)]];
+      hl = 2;
+      v = Math.abs(m) < 0.01
+        ? { ok: true, text: ko() ? '꼭대기나 바닥이라 접선이 수평이에요: 기울기 0, 점선 그래프가 x축과 만나요.' : 'A peak or valley: the tangent is flat, slope 0, and the dotted graph meets the x-axis.' }
+        : { ok: null, text: ko() ? 'P에서 접선의 기울기(지금 ' + fmt(m, 3) + ')는 같은 x에서 점선 그래프 y = ' + F.dname + '의 높이와 같아요. 그래서 (' + F.name + ')′ = ' + F.dname + '.'
+                                 : 'The tangent slope ' + fmt(m, 3) + ' at P is exactly the height of the dotted graph y = ' + F.dname + ' at the same x. So (' + F.name + ')′ = ' + F.dname + '.' };
+    }
+    $('tg-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('tg-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var lim = m === 'lim';
+    if (playX.isPlaying()) playX.stop();
+    if (playA.isPlaying()) playA.stop();
+    $('tg-x-row').hidden = !lim; $('tg-deg-row').hidden = !lim; $('tg-play-x-row').hidden = !lim;
+    $('tg-fn-row').hidden = lim; $('tg-a-row').hidden = lim; $('tg-play-a-row').hidden = lim;
+    legend(); update();
+  }
+
+  Graph.bindSlider(X, $('tg-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(A, $('tg-a-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  DEG.addEventListener('change', update);
+  $('tg-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  $('tg-fn').addEventListener('change', function (e) { K = e.target.value; legend(); update(); });
+  [X, A].forEach(function (el) { el.addEventListener('change', function () { $('tg-live').textContent = $('tg-verdict').textContent; }); });
+  // ▶ x → 0 / 점 P 움직이기
+  var playX = Graph.player({ button: $('tg-play-x'), input: X, duration: 6000, reverse: true });
+  var playA = Graph.player({ button: $('tg-play-a'), input: A, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+
+/* 07-① 지수함수와 로그함수의 미분: 기울기 ÷ 높이 = ln a, 그 값이 1이 되는 밑이 e */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var A = $('ex-a'), X = $('ex-x'), N = $('ex-n');
+  var mode = document.querySelector('input[name="ex-pick"]:checked').value;
+  var seq = function (n) { return Math.pow(1 + 1 / n, n); };
+
+  var g = Graph.create($('ex-canvas'), { xMin: -2.4, xMax: 1.9, yMin: -0.5, yMax: 5.2, aspect: 0.85, maxHeight: 380 });
+  g.render = function () {
+    var c = g.c;
+    if (mode === 'base') {
+      var a = +A.value, x = +X.value, la = Math.log(a), h = Math.pow(a, x), m = h * la;
+      var f = function (t) { return Math.pow(a, t); };
+      g.setView({ xMin: -2.4, xMax: 2.1, yMin: -0.5, yMax: 6.2 });
+      g.clear(); g.grid(); g.axes();
+      g.plot(function (t) { return f(t) * la; }, { color: c.third, width: 3, dash: [2, 5] });
+      g.plot(f, { color: c.main, width: 3.5 });
+      g.lineThrough(x, h, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+      // 높이 막대와 기울기 삼각형 (가로 1, 세로 m)
+      g.line(x, 0, x, h, { color: c.main, width: 2, dash: [4, 4] });
+      g.label(x, h / 2, ko() ? '높이 ' + fmt(h) : 'height ' + fmt(h), { color: c.main, align: 'right', dx: -8, bold: true });
+      g.line(x, h, x + 1, h, { color: c.text2, width: 1.5 });
+      g.line(x + 1, h, x + 1, h + m, { color: c.accent, width: 3 });
+      g.label(x + 1, h + m / 2, (ko() ? '기울기 ' : 'slope ') + fmt(m), { color: c.accent, align: 'left', dx: 8, bold: true });
+      g.label(x + 0.5, h, '1', { color: c.text2, dy: 14 });
+      g.point(x, h, { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10, dy: -12 } });
+    } else {
+      var n = +N.value;
+      g.setView({ xMin: -6, xMax: 106, yMin: 1.85, yMax: 2.85 });
+      g.clear(); g.grid({ xStep: 10, yStep: 0.1 }); g.axes({ xLabel: 'n', yLabel: '', xStep: 20, yStep: 0.2 });
+      g.hline(Math.E, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(g.o.xMax, Math.E, 'e ≈ 2.71828', { color: c.accent, align: 'right', dx: -6, dy: 16, bold: true });
+      for (var k = 1; k <= n; k++) g.point(k, seq(k), { color: c.main, r: k === n ? 6.5 : 3 });
+      g.label(n, seq(n), fmt(seq(n), 5), { color: c.main, align: n > 70 ? 'right' : 'left', dx: n > 70 ? -10 : 10, dy: 18, bold: true });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', dot: '<circle cx="18" cy="6" r="4" style="fill:var(--g-main)"/>' };
+  var LEG = {
+    base: { ko: [['main', 'y = aˣ (실선)'], ['accent', 'P에서의 접선 (긴 점선)'], ['third', '기울기 그래프 y = (aˣ)′ (짧은 점선)']],
+            en: [['main', 'y = aˣ (solid)'], ['accent', 'tangent at P (long dashes)'], ['third', 'slope graph y = (aˣ)′ (dotted)']] },
+    seq:  { ko: [['dot', '(1 + 1/n)ⁿ 의 값 (점)'], ['accent', 'e ≈ 2.71828 (긴 점선)']],
+            en: [['dot', 'values of (1 + 1/n)ⁿ (dots)'], ['accent', 'e ≈ 2.71828 (long dashes)']] }
+  };
+
+  function update() {
+    var rows, v, hl;
+    if (mode === 'base') {
+      var a = +A.value, x = +X.value, la = Math.log(a), h = Math.pow(a, x);
+      rows = [['a', fmt(a, 3)], [ko() ? 'P의 높이 aˣ' : 'height aˣ', fmt(h, 3)], [ko() ? 'P의 기울기 aˣ ln a' : 'slope aˣ ln a', fmt(h * la, 3)],
+              [ko() ? '기울기 ÷ 높이 = ln a' : 'slope ÷ height = ln a', fmt(la, 3)]];
+      hl = 3;
+      if (Math.abs(a - Math.E) < 0.005) v = { ok: true, text: ko() ? 'a = e: ln e = 1이라 어느 점에서나 기울기 = 높이예요. 점선(기울기 그래프)이 원래 그래프와 겹쳐요. 그래서 (eˣ)′ = eˣ이에요.'
+                                                                  : 'a = e: ln e = 1, so slope = height at every point. The dotted slope graph lies on the curve itself: (eˣ)′ = eˣ.' };
+      else v = { ok: null, text: ko() ? '기울기 ÷ 높이는 P의 위치와 상관없이 항상 ln a예요 (지금 ' + fmt(la, 3) + '). 기울기가 높이보다 ' + (la < 1 ? '작아요' : '커요') + '. 이 값이 1이 되는 밑을 찾아보세요.'
+                                       : 'slope ÷ height stays at ln a = ' + fmt(la, 3) + ' wherever P is. The slope is ' + (la < 1 ? 'smaller' : 'larger') + ' than the height. Find the base that makes it 1.' };
+    } else {
+      var n = +N.value, s = seq(n);
+      rows = [['n', String(n)], ['(1 + 1/n)ⁿ', fmt(s, 5)], ['e − (1 + 1/n)ⁿ', fmt(Math.E - s, 5)]];
+      hl = 1;
+      v = { ok: null, text: ko() ? 'n이 커질수록 e ≈ 2.71828에 아래에서 다가가요. 괄호 안 1 + 1/n은 1로 가지만, n제곱을 하니까 1이 아니라 e로 가요.'
+                                 : 'As n grows, the values climb toward e ≈ 2.71828. The base 1 + 1/n tends to 1, but raised to the n-th power it tends to e, not 1.' };
+    }
+    $('ex-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('ex-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var base = m === 'base';
+    if (play.isPlaying()) play.stop();
+    $('ex-a-row').hidden = !base; $('ex-x-row').hidden = !base; $('ex-snap-row').hidden = !base;
+    $('ex-n-row').hidden = base; $('ex-play-row').hidden = base;
+    $('ex-legend').innerHTML = LEG[m][Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    update();
+  }
+
+  Graph.bindSlider(A, $('ex-a-out'), { format: function (v) { return fmt(v, 3); }, onInput: function () { update(); } });
+  Graph.bindSlider(X, $('ex-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(N, $('ex-n-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  $('ex-snap').addEventListener('click', function () { A.value = Math.E; A.dispatchEvent(new Event('input')); $('ex-live').textContent = $('ex-verdict').textContent; });
+  $('ex-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  [A, X, N].forEach(function (el) { el.addEventListener('change', function () { $('ex-live').textContent = $('ex-verdict').textContent; }); });
+  var play = Graph.player({ button: $('ex-play'), input: N, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') setMode(mode); else g.draw(); });
+  setMode(mode);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit3" data-chapter="12">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s12-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s12-1" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li><strong>미분과 적분은 서로 거꾸로</strong>라는 것을 보여 주는, 미적분학에서 가장 중요한 정리예요.</li>
+          <li>(1) 넓이 함수 \(\int_a^xf(t)\,dt\)를 미분하면 원래 함수 \(f(x)\)가 돼요.</li>
+          <li>(2) 정적분은 리만 합의 극한을 계산하지 않고, 역도함수 \(F\)로 \(F(b)-F(a)\)만 구하면 돼요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>The most important theorem in calculus: <strong>differentiation and integration undo each other</strong>.</li>
+          <li>(1) Differentiating the area function \(\int_a^xf(t)\,dt\) gives back \(f(x)\).</li>
+          <li>(2) A definite integral needs no Riemann-sum limit: just compute \(F(b)-F(a)\) with an antiderivative \(F\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">미적분학의 기본정리 (\(f\)가 연속)</span><span class="def-label" data-lang="en">Fundamental theorem (\(f\) continuous)</span>
+          $$\frac{d}{dx}\int_a^xf(t)\,dt=f(x),\qquad \int_a^bf(x)\,dx=F(b)-F(a)=\Big[F(x)\Big]_a^b\quad(F'=f)$$
+          <p class="note" data-lang="ko">두 번째 식은 \(\int_a^bF'(x)\,dx=F(b)-F(a)\)로도 쓸 수 있어서 <strong>순변화량 정리</strong>라고도 불러요 (변화율을 적분하면 전체 변화량).</p>
+          <p class="note" data-lang="en">Written as \(\int_a^bF'(x)\,dx=F(b)-F(a)\), it's the <strong>net change theorem</strong>: integrating a rate gives the total change.</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_0^2x^2\,dx=\left[\frac{x^3}3\right]_0^2=\frac83\) — 11-①에서 리만 합으로 구한 값과 같아요! &nbsp; \(\frac{d}{dx}\int_1^x\sqrt{t^2+1}\,dt=\sqrt{x^2+1}\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_0^2x^2\,dx=\left[\frac{x^3}3\right]_0^2=\frac83\) — the same value as the Riemann sums in 11-①! &nbsp; \(\frac{d}{dx}\int_1^x\sqrt{t^2+1}\,dt=\sqrt{x^2+1}\)</p>
+        </div>
+        <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="ch11.html#s11-1"><span data-lang="ko">← 11-① 정적분의 정의 (리만 합)</span><span data-lang="en">← 11-① Definition (Riemann sums)</span></a></div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s12-2" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>곱의 미분법 \((fg)'=f'g+fg'\)을 적분하면 <strong>부분적분법</strong>이 나와요.</li>
+          <li>두 함수의 곱을 적분할 때, 하나는 미분하고(\(f\)) 하나는 적분해서(\(g'\)) 더 쉬운 적분으로 바꿔요.</li>
+          <li>미분하면 간단해지는 쪽(다항식, \(\ln x\))을 \(f\)로 고르는 것이 요령이에요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Integrating the product rule \((fg)'=f'g+fg'\) gives <strong>integration by parts</strong>.</li>
+          <li>For a product, differentiate one factor (\(f\)) and integrate the other (\(g'\)) to get an easier integral.</li>
+          <li>Tip: choose as \(f\) the factor that simplifies when differentiated (polynomials, \(\ln x\)).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">부분적분법</span><span class="def-label" data-lang="en">Integration by parts</span>
+          $$\int f(x)g'(x)\,dx=f(x)g(x)-\int f'(x)g(x)\,dx$$
+          $$\int_a^bf(x)g'(x)\,dx=\Big[f(x)g(x)\Big]_a^b-\int_a^bf'(x)g(x)\,dx$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C\), &nbsp; \(\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+C\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C\), &nbsp; \(\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+C\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+
+    <section id="s12-3" data-status="core">
+      <div class="core-only">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>합성함수의 미분법을 거꾸로 이용한 것이 <strong>치환적분법</strong>이에요.</li>
+          <li>식 안에 \(g(x)\)와 그 도함수 \(g'(x)\)가 함께 보이면 \(u=g(x)\)로 바꿔요. 이때 \(du=g'(x)\,dx\).</li>
+          <li>정적분에서는 적분 구간도 \(u\)의 범위 \([g(a),g(b)]\)로 함께 바꿔야 해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li><strong>Substitution</strong> is the chain rule in reverse.</li>
+          <li>If \(g(x)\) and its derivative \(g'(x)\) both appear, set \(u=g(x)\), so \(du=g'(x)\,dx\).</li>
+          <li>In a definite integral, change the limits too, to \([g(a),g(b)]\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">치환적분법</span><span class="def-label" data-lang="en">Substitution</span>
+          $$\int f\big(g(x)\big)g'(x)\,dx=\int f(u)\,du,\qquad \int_a^bf\big(g(x)\big)g'(x)\,dx=\int_{g(a)}^{g(b)}f(u)\,du$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(u=x^2+1\): \(\int2x(x^2+1)^3\,dx=\int u^3\,du=\frac{(x^2+1)^4}{4}+C\). &nbsp; \(u=x^2\): \(\int_0^12xe^{x^2}dx=\int_0^1e^u\,du=e-1\)</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(u=x^2+1\): \(\int2x(x^2+1)^3\,dx=\int u^3\,du=\frac{(x^2+1)^4}{4}+C\). &nbsp; \(u=x^2\): \(\int_0^12xe^{x^2}dx=\int_0^1e^u\,du=e-1\)</p>
+        </div>
+        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+</body>
+</html>

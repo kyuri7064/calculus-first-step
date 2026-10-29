@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 · 미적분학 첫걸음</title>
+  <script src="../js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="../js/i18n.js"></script>
+  <script defer src="../js/curriculum.js"></script>
+  <script defer src="../js/graph.js"></script>
+  <script defer src="../js/profiles.js"></script>
+  <script defer src="../js/site.js"></script>
+</head>
+<body data-root="../" data-page="unit2" data-chapter="08">
+
+<main id="main" tabindex="-1">
+  <div class="container page-head" style="padding-bottom:0" data-render="chapter-crumb"></div>
+  <div class="chapter-bar" data-render="chapter-bar"></div>
+  <div class="container chapter-intro" data-render="chapter-intro"></div>
+
+  <div class="container sections" id="sections">
+    <!-- 완성된 소단원은 여기에 <section id="s08-번호"> … </section> 으로 넣는다.
+         없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
+
+    <section id="s08-1">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li><strong>롤의 정리:</strong> 양 끝 함숫값이 같으면, 그 사이에 접선이 수평인 점(\(f'(c)=0\))이 있어요.</li>
+          <li><strong>평균값 정리:</strong> 구간의 평균변화율(할선의 기울기)과 같은 순간변화율을 갖는 점 \(c\)가 반드시 있어요.</li>
+          <li>그래서 \(f'>0\)이면 증가, \(f'\lt0\)이면 감소, \(f'=0\)이면 상수함수라는 것을 증명할 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li><strong>Rolle's theorem:</strong> if the endpoint values are equal, somewhere between the tangent is horizontal (\(f'(c)=0\)).</li>
+          <li><strong>Mean value theorem:</strong> some point \(c\) has instantaneous rate equal to the average rate (the secant slope).</li>
+          <li>It proves that \(f'>0\) means increasing, \(f'\lt0\) decreasing, and \(f'=0\) constant.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">평균값 정리</span><span class="def-label" data-lang="en">Mean value theorem</span>
+          <p data-lang="ko">\(f\)가 \([a,b]\)에서 연속이고 \((a,b)\)에서 미분가능하면, 다음을 만족하는 \(c\)가 \((a,b)\)에 적어도 하나 있어요.</p>
+          <p data-lang="en">If \(f\) is continuous on \([a,b]\) and differentiable on \((a,b)\), there is at least one \(c\in(a,b)\) with</p>
+          $$f'(c)=\frac{f(b)-f(a)}{b-a}$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 고속도로 두 지점 100 km를 1시간에 지났다면, 그 사이 어느 순간엔 속력이 정확히 시속 100 km였어요. &nbsp; \(f(x)=x^2\), \([0,2]\): \(2c=\frac{4-0}{2}\)에서 \(c=1\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> If a car covers 100 km in 1 hour, at some instant its speed was exactly 100 km/h. &nbsp; \(f(x)=x^2\) on \([0,2]\): \(2c=\frac{4-0}{2}\), so \(c=1\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 할선과 평행한 접선 찾기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="mv-pick">
+              <label><input type="radio" name="mv-pick" value="cubic" checked><span>\(\frac13x^3-x\)</span></label>
+              <label><input type="radio" name="mv-pick" value="wave"><span>\(\sin2x+\frac x2\)</span></label>
+              <label><input type="radio" name="mv-pick" value="abs"><span>\(|x|\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="mv-canvas" role="img" data-i18n-attr="aria-label:mv.canvas"></canvas>
+          </div>
+          <ul class="legend" id="mv-legend"></ul>
+          <table class="readout-table"><tbody id="mv-table"></tbody></table>
+          <p class="verdict" id="mv-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="mv-a"><span data-lang="ko">왼쪽 끝</span><span data-lang="en">Left end</span> \(a\)</label>
+              <input id="mv-a" type="range" min="-2.4" max="2.4" step="0.01" value="-0.6">
+              <output id="mv-a-out" for="mv-a">−0.60</output>
+            </div>
+            <div class="slider-row">
+              <label for="mv-b"><span data-lang="ko">오른쪽 끝</span><span data-lang="en">Right end</span> \(b\)</label>
+              <input id="mv-b" type="range" min="-2.4" max="2.4" step="0.01" value="2.2">
+              <output id="mv-b-out" for="mv-b">2.20</output>
+            </div>
+            <div class="control-buttons">
+              <button class="btn btn-outline btn-sm" id="mv-rolle" type="button"><span data-lang="ko">양 끝 높이 같게 (롤의 정리)</span><span data-lang="en">Equal end heights (Rolle)</span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="mv-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=x^2-4x\)에 대하여 구간 \([1,4]\)에서 평균값 정리를 만족하는 \(c\)를 구하시오.</p>
+            <p data-lang="en">For \(f(x)=x^2-4x\) on \([1,4]\), find the \(c\) given by the mean value theorem.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-1-a" hidden>
+              <p data-lang="ko">평균변화율은 \(\frac{f(4)-f(1)}{4-1}=\frac{0-(-3)}{3}=1\)이에요. \(f'(c)=2c-4=1\)에서 \(c=\frac52\)이고, 이것은 \((1,4)\) 안에 있어요.</p>
+              <p data-lang="en">The average rate is \(\frac{f(4)-f(1)}{4-1}=\frac{0-(-3)}{3}=1\). From \(f'(c)=2c-4=1\), \(c=\frac52\), which lies in \((1,4)\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">모든 실수 \(a,\,b\)에 대하여 \(|\sin a-\sin b|\le|a-b|\)임을 보이시오.</p>
+            <p data-lang="en">Show that \(|\sin a-\sin b|\le|a-b|\) for all real \(a,\,b\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-1-b" hidden>
+              <p data-lang="ko">\(a=b\)이면 당연해요. \(a\ne b\)이면 \(\sin x\)는 어디서나 미분가능하므로 평균값 정리에 의해 \(\frac{\sin a-\sin b}{a-b}=\cos c\)인 \(c\)가 \(a\)와 \(b\) 사이에 있어요. \(|\cos c|\le1\)이므로 \(|\sin a-\sin b|=|\cos c|\,|a-b|\le|a-b|\)예요.</p>
+              <p data-lang="en">Trivial if \(a=b\). Otherwise \(\sin x\) is differentiable everywhere, so by the MVT some \(c\) between \(a\) and \(b\) has \(\frac{\sin a-\sin b}{a-b}=\cos c\). Since \(|\cos c|\le1\), \(|\sin a-\sin b|=|\cos c|\,|a-b|\le|a-b|\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">평균값 정리의 \(c\)는 구간의 한가운데 \(\frac{a+b}{2}\)이다.</p>
+              <p data-lang="en">The \(c\) in the MVT is the midpoint \(\frac{a+b}{2}\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">한가운데일 필요가 없어요. \(f(x)=x^3\), \([0,3]\)이면 평균변화율 9에서 \(3c^2=9\), \(c=\sqrt3\approx1.73\)으로 가운데 1.5가 아니에요. 정리는 "어딘가에 <strong>있다</strong>"만 알려 줘요.</p>
+              <p data-lang="en">It need not be the midpoint. For \(x^3\) on \([0,3]\): average rate 9, \(3c^2=9\), \(c=\sqrt3\approx1.73\), not 1.5. The theorem only says such a \(c\) <strong>exists</strong>.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">연속이기만 하면 평균값 정리를 쓸 수 있다.</p>
+              <p data-lang="en">Continuity alone is enough for the MVT.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\((a,b)\)에서 <strong>미분가능</strong>해야 해요. 그림에서 \(|x|\)를 고르고 구간에 0을 넣으면, 기울기가 \(\pm1\)뿐이라 할선과 평행한 접선이 없어요.</p>
+              <p data-lang="en">\(f\) must be <strong>differentiable</strong> on \((a,b)\). Choose \(|x|\) in the picture with 0 inside the interval: slopes are only \(\pm1\), so no tangent is parallel to the secant.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s08-2">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>주변보다 높은 점이 <strong>극대</strong>, 낮은 점이 <strong>극소</strong>예요. 극댓값·극솟값을 합쳐 극값이라고 해요.</li>
+          <li>미분가능한 함수가 극값을 가지면 그 점에서 \(f'(c)=0\)이에요. 하지만 \(f'(c)=0\)이라고 꼭 극값은 아니에요.</li>
+          <li>\(f'\)의 부호가 \(+\to-\)로 바뀌면 극대, \(-\to+\)로 바뀌면 극소예요. \(f''\)의 부호로도 판정할 수 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>A point higher than its neighbors is a <strong>local maximum</strong>; lower, a <strong>local minimum</strong>. Together: extrema.</li>
+          <li>If a differentiable function has an extremum at \(c\), then \(f'(c)=0\) — but \(f'(c)=0\) doesn't guarantee one.</li>
+          <li>If \(f'\) changes \(+\to-\), it's a local max; \(-\to+\), a local min. The sign of \(f''\) also works.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">이계도함수 판정법 (\(f'(c)=0\))</span><span class="def-label" data-lang="en">Second derivative test (\(f'(c)=0\))</span>
+          <p data-lang="ko">\(f''(c)\lt0\)이면 \(x=c\)에서 극대, &nbsp; \(f''(c)>0\)이면 극소</p>
+          <p data-lang="en">\(f''(c)\lt0\): local maximum at \(c\); &nbsp; \(f''(c)>0\): local minimum</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=x^3-3x\): \(f'(x)=3(x+1)(x-1)\). \(x=-1\)에서 극댓값 2, \(x=1\)에서 극솟값 \(-2\). &nbsp; \(g(x)=x^3\)은 \(g'(0)=0\)이지만 극값이 아니에요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=x^3-3x\): \(f'(x)=3(x+1)(x-1)\). Local max 2 at \(x=-1\), local min \(-2\) at \(x=1\). &nbsp; \(g(x)=x^3\) has \(g'(0)=0\) but no extremum.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: f′의 부호가 바뀌는 곳에서 극값 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="xt-pick">
+              <label><input type="radio" name="xt-pick" value="cubic" checked><span>\(x^3-3x\)</span></label>
+              <label><input type="radio" name="xt-pick" value="quartic"><span>\(x^4-2x^2\)</span></label>
+              <label><input type="radio" name="xt-pick" value="flat"><span>\(x^3\)</span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title"><span data-lang="ko">⬆️ \(y=f(x)\)와 점 P에서의 접선</span><span data-lang="en">⬆️ \(y=f(x)\) and the tangent at P</span></p>
+          <div class="viz-canvas-wrap"><canvas id="xt-top" role="img" data-i18n-attr="aria-label:xt.top"></canvas></div>
+          <p class="mini-chart-title"><span data-lang="ko">⬇️ \(y=f'(x)\)와 부호 (+ 증가 / − 감소)</span><span data-lang="en">⬇️ \(y=f'(x)\) and its sign (+ increasing / − decreasing)</span></p>
+          <div class="viz-canvas-wrap"><canvas id="xt-bot" role="img" data-i18n-attr="aria-label:xt.bot"></canvas></div>
+          <ul class="legend" id="xt-legend"></ul>
+          <table class="readout-table"><tbody id="xt-table"></tbody></table>
+          <p class="verdict" id="xt-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="xt-x"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span></label>
+              <input id="xt-x" type="range" min="-2.2" max="2.2" step="0.01" value="-1.8">
+              <output id="xt-x-out" for="xt-x">−1.80</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="xt-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="xt-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=2x^3-3x^2-12x+1\)의 극댓값과 극솟값을 구하시오.</p>
+            <p data-lang="en">Find the local maximum and minimum values of \(f(x)=2x^3-3x^2-12x+1\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-2-a" hidden>
+              <p data-lang="ko">\(f'(x)=6x^2-6x-12=6(x+1)(x-2)\)이에요. \(f'\)의 부호는 \(x\lt-1\)에서 \(+\), \(-1\lt x\lt2\)에서 \(-\), \(x>2\)에서 \(+\)예요. 따라서 \(x=-1\)에서 극댓값 \(f(-1)=8\), \(x=2\)에서 극솟값 \(f(2)=-19\)예요.</p>
+              <p data-lang="en">\(f'(x)=6x^2-6x-12=6(x+1)(x-2)\). The sign of \(f'\) is \(+\) for \(x\lt-1\), \(-\) on \((-1,2)\), \(+\) for \(x>2\). So the local max is \(f(-1)=8\) and the local min is \(f(2)=-19\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=xe^{-x}\)의 극값을 이계도함수 판정법으로 구하시오.</p>
+            <p data-lang="en">Use the second derivative test to find the extrema of \(f(x)=xe^{-x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-2-b" hidden>
+              <p data-lang="ko">\(f'(x)=(1-x)e^{-x}=0\)에서 \(x=1\). \(f''(x)=(x-2)e^{-x}\)이므로 \(f''(1)=-\frac1e\lt0\)이에요. 따라서 \(x=1\)에서 극댓값 \(f(1)=\frac1e\)을 가져요.</p>
+              <p data-lang="en">\(f'(x)=(1-x)e^{-x}=0\) gives \(x=1\). Since \(f''(x)=(x-2)e^{-x}\), \(f''(1)=-\frac1e\lt0\), so there is a local maximum \(f(1)=\frac1e\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f'(c)=0\)이면 \(x=c\)에서 극값을 가진다.</p>
+              <p data-lang="en">If \(f'(c)=0\), then \(f\) has an extremum at \(c\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(f'\)의 <strong>부호가 바뀌어야</strong> 극값이에요. 그림에서 \(x^3\)을 고르면 \(f'(0)=0\)이지만 \(f'\)이 양쪽 모두 \(+\)라서 계속 증가하고, 극값이 아니에요.</p>
+              <p data-lang="en">\(f'\) must <strong>change sign</strong>. Choose \(x^3\): \(f'(0)=0\), but \(f'\) is \(+\) on both sides, so it keeps increasing — no extremum.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">극댓값은 항상 극솟값보다 크다.</p>
+              <p data-lang="en">A local maximum is always larger than a local minimum.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">"극"은 <strong>주변</strong>과만 비교해요. \(f(x)=x+\frac1x\)은 \(x=-1\)에서 극댓값 \(-2\), \(x=1\)에서 극솟값 \(2\)라서 극댓값이 더 작아요.</p>
+              <p data-lang="en">"Local" compares only with <strong>nearby</strong> points. \(f(x)=x+\frac1x\) has local max \(-2\) at \(x=-1\) and local min \(2\) at \(x=1\): the max is smaller.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s08-3">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>\(f''>0\)인 구간에서 곡선은 <strong>아래쪽으로 볼록</strong>(그릇 모양), \(f''\lt0\)이면 <strong>위쪽으로 볼록</strong>(산 모양)이에요.</li>
+          <li>볼록한 방향이 바뀌는 점을 <strong>변곡점</strong>이라고 해요.</li>
+          <li>\(f''(c)=0\)이라고 꼭 변곡점은 아니에요. 좌우에서 \(f''\)의 부호가 바뀌는지 확인해야 해요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Where \(f''>0\) the curve is <strong>concave up</strong> (bowl-shaped); where \(f''\lt0\), <strong>concave down</strong> (hill-shaped).</li>
+          <li>A point where the concavity changes is an <strong>inflection point</strong>.</li>
+          <li>\(f''(c)=0\) alone doesn't make an inflection point; \(f''\) must change sign.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">판정</span><span class="def-label" data-lang="en">Test</span>
+          <p data-lang="ko">\(f''(x)>0\) → 아래쪽으로 볼록 &nbsp;|&nbsp; \(f''(x)\lt0\) → 위쪽으로 볼록 &nbsp;|&nbsp; \(f''\)의 부호가 바뀌는 점 → 변곡점</p>
+          <p data-lang="en">\(f''(x)>0\) → concave up &nbsp;|&nbsp; \(f''(x)\lt0\) → concave down &nbsp;|&nbsp; \(f''\) changes sign → inflection point</p>
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=x^3\): \(f''(x)=6x\), 원점이 변곡점. &nbsp; \(g(x)=x^4\): \(g''(0)=0\)이지만 항상 \(g''\ge0\)이라 변곡점이 아니에요.</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=x^3\): \(f''(x)=6x\), inflection at the origin. &nbsp; \(g(x)=x^4\): \(g''(0)=0\) but \(g''\ge0\), so no inflection.</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: f″의 부호로 칠한 볼록 구간과 접선의 위치 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="cv-pick">
+              <label><input type="radio" name="cv-pick" value="cubic" checked><span>\(x^3-3x\)</span></label>
+              <label><input type="radio" name="cv-pick" value="quartic"><span>\(\frac14(x^4-6x^2)\)</span></label>
+              <label><input type="radio" name="cv-pick" value="flat"><span>\(x^4\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="cv-canvas" role="img" data-i18n-attr="aria-label:cv.canvas"></canvas>
+          </div>
+          <ul class="legend" id="cv-legend"></ul>
+          <table class="readout-table"><tbody id="cv-table"></tbody></table>
+          <p class="verdict" id="cv-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="cv-x"><span data-lang="ko">점 P의 x좌표</span><span data-lang="en">x-coordinate of P</span></label>
+              <input id="cv-x" type="range" min="-2.2" max="2.2" step="0.01" value="-1.5">
+              <output id="cv-x-out" for="cv-x">−1.50</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="cv-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="cv-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=x^3-6x^2+9x+1\)의 그래프가 아래쪽으로 볼록·위쪽으로 볼록인 구간과 변곡점을 구하시오.</p>
+            <p data-lang="en">For \(f(x)=x^3-6x^2+9x+1\), find where the graph is concave up or down, and the inflection point.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-3-a" hidden>
+              <p data-lang="ko">\(f'(x)=3x^2-12x+9\), \(f''(x)=6x-12\)이에요. \(x\lt2\)이면 \(f''\lt0\)이라 위쪽으로 볼록, \(x>2\)이면 \(f''>0\)이라 아래쪽으로 볼록이에요. \(x=2\)에서 부호가 바뀌므로 변곡점은 \((2,\,f(2))=(2,\,3)\)이에요.</p>
+              <p data-lang="en">\(f'(x)=3x^2-12x+9\), \(f''(x)=6x-12\). For \(x\lt2\), \(f''\lt0\): concave down; for \(x>2\), \(f''>0\): concave up. The sign changes at \(x=2\), so the inflection point is \((2,\,f(2))=(2,\,3)\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=xe^{-x}\)의 변곡점을 구하시오.</p>
+            <p data-lang="en">Find the inflection point of \(f(x)=xe^{-x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-3-b" hidden>
+              <p data-lang="ko">\(f'(x)=(1-x)e^{-x}\), \(f''(x)=(x-2)e^{-x}\)이에요. \(e^{-x}>0\)이므로 \(f''\)의 부호는 \(x-2\)의 부호와 같아서 \(x=2\)에서 바뀌어요. 변곡점은 \(\left(2,\,\frac{2}{e^2}\right)\)이에요.</p>
+              <p data-lang="en">\(f'(x)=(1-x)e^{-x}\), \(f''(x)=(x-2)e^{-x}\). Since \(e^{-x}>0\), \(f''\) has the sign of \(x-2\), which changes at \(x=2\). The inflection point is \(\left(2,\,\frac{2}{e^2}\right)\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f''(c)=0\)이면 \(x=c\)는 변곡점이다.</p>
+              <p data-lang="en">If \(f''(c)=0\), then \(x=c\) is an inflection point.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(f''\)의 <strong>부호가 바뀌어야</strong> 해요. 그림에서 \(x^4\)를 고르면 \(f''(0)=0\)이지만 양쪽 모두 아래쪽으로 볼록이라 변곡점이 아니에요.</p>
+              <p data-lang="en">\(f''\) must <strong>change sign</strong>. Choose \(x^4\): \(f''(0)=0\), but it is concave up on both sides, so there is no inflection.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">아래쪽으로 볼록이면 증가한다.</p>
+              <p data-lang="en">Concave up means increasing.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">볼록은 <strong>기울기가 변하는 방향</strong>이고, 증가·감소는 기울기의 <strong>부호</strong>예요. \(y=x^2\)은 \(x\lt0\)에서 감소하지만 아래쪽으로 볼록이에요 (기울기가 음수이면서 점점 커져요).</p>
+              <p data-lang="en">Concavity is how the <strong>slope changes</strong>; increasing/decreasing is the slope's <strong>sign</strong>. \(y=x^2\) decreases for \(x\lt0\) yet is concave up (the slope is negative but growing).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s08-4">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>그래프가 한없이 가까워지는 직선을 <strong>점근선</strong>이라고 해요.</li>
+          <li>\(x\to a\)일 때 \(f(x)\to\pm\infty\)이면 <strong>수직점근선</strong> \(x=a\), \(x\to\pm\infty\)일 때 \(f(x)\to b\)이면 <strong>수평점근선</strong> \(y=b\).</li>
+          <li>\(f(x)-(mx+n)\to0\)이면 기울어진 <strong>사선점근선</strong> \(y=mx+n\)이 있어요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>A line that the graph gets arbitrarily close to is an <strong>asymptote</strong>.</li>
+          <li>\(f(x)\to\pm\infty\) as \(x\to a\): <strong>vertical asymptote</strong> \(x=a\). \(f(x)\to b\) as \(x\to\pm\infty\): <strong>horizontal asymptote</strong> \(y=b\).</li>
+          <li>If \(f(x)-(mx+n)\to0\), there is an <strong>oblique asymptote</strong> \(y=mx+n\).</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">사선점근선 구하기</span><span class="def-label" data-lang="en">Finding an oblique asymptote</span>
+          $$m=\lim_{x\to\infty}\frac{f(x)}{x}\ (m\ne0),\qquad n=\lim_{x\to\infty}\big(f(x)-mx\big)$$
+          <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(f(x)=\frac{x^2+1}{x}=x+\frac1x\): 수직점근선 \(x=0\), 사선점근선 \(y=x\). &nbsp; \(g(x)=\frac{2x}{x-1}\): 수직 \(x=1\), 수평 \(y=2\).</p>
+          <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(f(x)=\frac{x^2+1}{x}=x+\frac1x\): vertical \(x=0\), oblique \(y=x\). &nbsp; \(g(x)=\frac{2x}{x-1}\): vertical \(x=1\), horizontal \(y=2\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 멀리서 보면 그래프가 점근선에 달라붙는다 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="as-pick">
+              <label><input type="radio" name="as-pick" value="h" checked><span>\(\frac{2x}{x-1}\)</span></label>
+              <label><input type="radio" name="as-pick" value="o1"><span>\(x+\frac1x\)</span></label>
+              <label><input type="radio" name="as-pick" value="o2"><span>\(\frac{x^2-1}{x-2}\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="as-canvas" role="img" data-i18n-attr="aria-label:as.canvas"></canvas>
+          </div>
+          <ul class="legend" id="as-legend"></ul>
+          <table class="readout-table"><tbody id="as-table"></tbody></table>
+          <p class="verdict" id="as-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="as-w"><span data-lang="ko">보는 범위 (멀리 보기)</span><span data-lang="en">View range (zoom out)</span> \(R\)</label>
+              <input id="as-w" type="range" min="4" max="60" step="1" value="6">
+              <output id="as-w-out" for="as-w">6</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="as-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="as-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=\dfrac{3x+1}{x-2}\)의 점근선을 모두 구하시오.</p>
+            <p data-lang="en">Find all asymptotes of \(f(x)=\dfrac{3x+1}{x-2}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-4-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-4-a" hidden>
+              <p data-lang="ko">\(x\to2\)이면 분모만 0으로 가고 분자는 \(7\)이라 \(f(x)\to\pm\infty\): 수직점근선 \(x=2\). \(x\to\pm\infty\)이면 \(\frac{3+\frac1x}{1-\frac2x}\to3\): 수평점근선 \(y=3\)이에요.</p>
+              <p data-lang="en">As \(x\to2\), only the denominator tends to 0 (the numerator tends to 7), so \(f(x)\to\pm\infty\): vertical asymptote \(x=2\). As \(x\to\pm\infty\), \(\frac{3+\frac1x}{1-\frac2x}\to3\): horizontal asymptote \(y=3\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=\dfrac{2x^2+x}{x+1}\)의 점근선을 모두 구하시오.</p>
+            <p data-lang="en">Find all asymptotes of \(f(x)=\dfrac{2x^2+x}{x+1}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-4-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-4-b" hidden>
+              <p data-lang="ko">나눗셈을 하면 \(2x^2+x=(x+1)(2x-1)+1\)이라 \(f(x)=2x-1+\frac{1}{x+1}\)이에요. \(x\to\pm\infty\)일 때 \(\frac1{x+1}\to0\)이므로 사선점근선 \(y=2x-1\), 그리고 \(x=-1\)에서 수직점근선이에요. 공식으로 확인하면 \(m=\lim\frac{f(x)}{x}=2\), \(n=\lim(f(x)-2x)=-1\).</p>
+              <p data-lang="en">Division gives \(2x^2+x=(x+1)(2x-1)+1\), so \(f(x)=2x-1+\frac{1}{x+1}\). As \(x\to\pm\infty\), \(\frac1{x+1}\to0\): oblique asymptote \(y=2x-1\); and a vertical asymptote at \(x=-1\). By the formulas: \(m=\lim\frac{f(x)}{x}=2\), \(n=\lim(f(x)-2x)=-1\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">그래프는 점근선과 절대 만나지 않는다.</p>
+              <p data-lang="en">A graph never touches its asymptote.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">점근선은 "<strong>멀리 갈 때</strong>" 가까워지는 선이라 가까운 곳에서는 만나도 돼요. \(f(x)=\frac{x}{x^2+1}\)은 수평점근선 \(y=0\)과 원점에서 만나요.</p>
+              <p data-lang="en">An asymptote is approached <strong>far away</strong>; nearby, the graph may cross it. \(f(x)=\frac{x}{x^2+1}\) crosses its horizontal asymptote \(y=0\) at the origin.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">분모가 0이 되는 \(x\)에는 항상 수직점근선이 있다.</p>
+              <p data-lang="en">Wherever the denominator is 0, there is a vertical asymptote.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">약분되면 구멍일 뿐이에요. \(\frac{x^2-1}{x-1}=x+1\ (x\ne1)\)은 \(x\to1\)일 때 2로 가니 수직점근선이 아니에요. \(f(x)\to\pm\infty\)인지 꼭 확인하세요.</p>
+              <p data-lang="en">If it cancels, it is just a hole. \(\frac{x^2-1}{x-1}=x+1\ (x\ne1)\) tends to 2 as \(x\to1\): no vertical asymptote. Always check that \(f(x)\to\pm\infty\).</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="s08-5">
+      <div class="concept-body">
+      <div class="concept-core">
+        <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
+        <ol class="core-summary" data-lang="ko">
+          <li>지금까지 배운 것(정의역, 대칭, 절편, 증감, 극값, 오목·볼록, 점근선)을 모아 그래프의 <strong>개형</strong>을 그려요.</li>
+          <li>\(f'\)과 \(f''\)의 부호를 한 <strong>표</strong>에 정리하면 실수 없이 그릴 수 있어요.</li>
+          <li>정확한 점을 많이 찍는 것보다, 모양이 바뀌는 중요한 점을 정확히 찾는 것이 핵심이에요.</li>
+        </ol>
+        <ol class="core-summary" data-lang="en">
+          <li>Combine everything — domain, symmetry, intercepts, increase/decrease, extrema, concavity, asymptotes — to <strong>sketch</strong> the graph.</li>
+          <li>Putting the signs of \(f'\) and \(f''\) in one <strong>table</strong> prevents mistakes.</li>
+          <li>Finding the key points where the shape changes matters more than plotting many points.</li>
+        </ol>
+        <div class="def-box">
+          <span class="def-label" data-lang="ko">예: \(f(x)=x^3-3x\)</span><span class="def-label" data-lang="en">Example: \(f(x)=x^3-3x\)</span>
+          $$\begin{array}{c|ccccccc} x & \cdots & -1 & \cdots & 0 & \cdots & 1 & \cdots\\ \hline f' & + & 0 & - & - & - & 0 & +\\ f'' & - & - & - & 0 & + & + & +\\ f & \nearrow & 2 & \searrow & 0 & \searrow & -2 & \nearrow \end{array}$$
+          <p class="note" data-lang="ko">원점에 대칭(기함수), 극대 \((-1,2)\), 극소 \((1,-2)\), 변곡점 \((0,0)\), \(x\)절편 \(0,\pm\sqrt3\).</p>
+          <p class="note" data-lang="en">Symmetric about the origin (odd), local max \((-1,2)\), local min \((1,-2)\), inflection \((0,0)\), \(x\)-intercepts \(0,\pm\sqrt3\).</p>
+        </div>
+      </div>
+
+      <!-- 직관 그림: 단계별로 정보를 쌓아 개형 완성하기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="sk-pick">
+              <label><input type="radio" name="sk-pick" value="cubic" checked><span>\(x^3-3x\)</span></label>
+              <label><input type="radio" name="sk-pick" value="quartic"><span>\(x^4-4x^3\)</span></label>
+              <label><input type="radio" name="sk-pick" value="rat"><span>\(\frac{x}{x^2+1}\)</span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="sk-canvas" role="img" data-i18n-attr="aria-label:sk.canvas"></canvas>
+          </div>
+          <ul class="legend" id="sk-legend"></ul>
+          <div class="sign-wrap"><table class="sign-table" id="sk-table"></table></div>
+          <p class="verdict" id="sk-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="sk-s"><span data-lang="ko">단계</span><span data-lang="en">Step</span></label>
+              <input id="sk-s" type="range" min="1" max="6" step="1" value="1">
+              <output id="sk-s-out" for="sk-s">1</output>
+            </div>
+            <div class="control-buttons">
+              <button class="btn btn-outline btn-sm" id="sk-prev" type="button"><span data-lang="ko">◀ 이전 단계</span><span data-lang="en">◀ Previous</span></button>
+              <button class="btn btn-outline btn-sm" id="sk-next" type="button"><span data-lang="ko">다음 단계 ▶</span><span data-lang="en">Next ▶</span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="sk-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(f(x)=x^3-3x^2\)의 증감과 오목·볼록을 표로 정리하고 그래프의 개형을 그리시오.</p>
+            <p data-lang="en">Tabulate the increase/decrease and concavity of \(f(x)=x^3-3x^2\), and sketch its graph.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-5-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-5-a" hidden>
+              <p data-lang="ko">\(f'(x)=3x(x-2)\), \(f''(x)=6(x-1)\)이에요.</p>
+              <p data-lang="en">\(f'(x)=3x(x-2)\), \(f''(x)=6(x-1)\).</p>
+              $$\begin{array}{c|ccccccc} x & \cdots & 0 & \cdots & 1 & \cdots & 2 & \cdots\\ \hline f' & + & 0 & - & - & - & 0 & +\\ f'' & - & - & - & 0 & + & + & +\\ f & \nearrow & 0 & \searrow & -2 & \searrow & -4 & \nearrow \end{array}$$
+              <p data-lang="ko">극대 \((0,0)\), 극소 \((2,-4)\), 변곡점 \((1,-2)\), \(x\)절편 \(0,\,3\)을 지나는 곡선이에요.</p>
+              <p data-lang="en">Local max \((0,0)\), local min \((2,-4)\), inflection \((1,-2)\), \(x\)-intercepts \(0,\,3\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(f(x)=x^2e^{-x}\)의 극값, 변곡점, 점근선을 구하시오.</p>
+            <p data-lang="en">Find the extrema, inflection points and asymptote of \(f(x)=x^2e^{-x}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-08-5-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-08-5-b" hidden>
+              <p data-lang="ko">\(f'(x)=x(2-x)e^{-x}\)이라 \(x=0\)에서 극솟값 0, \(x=2\)에서 극댓값 \(\frac{4}{e^2}\)이에요. \(f''(x)=(x^2-4x+2)e^{-x}\)의 부호는 \(x=2\pm\sqrt2\)에서 바뀌므로 이 두 곳이 변곡점이에요. \(x\to\infty\)이면 \(x^2e^{-x}\to0\)이라 수평점근선 \(y=0\)이 있어요 (\(x\to-\infty\)이면 한없이 커져요).</p>
+              <p data-lang="en">\(f'(x)=x(2-x)e^{-x}\): local min 0 at \(x=0\), local max \(\frac{4}{e^2}\) at \(x=2\). \(f''(x)=(x^2-4x+2)e^{-x}\) changes sign at \(x=2\pm\sqrt2\): two inflection points. As \(x\to\infty\), \(x^2e^{-x}\to0\): horizontal asymptote \(y=0\) (as \(x\to-\infty\) it grows without bound).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">극값만 찾으면 개형이 완성된다.</p>
+              <p data-lang="en">Finding the extrema completes the sketch.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">휘는 방향과 <strong>멀리서의 모습</strong>도 필요해요. 그림에서 \(\frac{x}{x^2+1}\)을 고르면 극값 다음에 오목·볼록, 변곡점 3개, 점근선 \(y=0\)까지 있어야 제대로 된 모양이 나와요.</p>
+              <p data-lang="en">You also need the bending and the <strong>behavior far away</strong>. Choose \(\frac{x}{x^2+1}\): after the extrema come concavity, three inflection points and the asymptote \(y=0\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">감소하는 구간은 항상 아래로 볼록하게 그린다.</p>
+              <p data-lang="en">A decreasing piece is always drawn concave up.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">증감(\(f'\))과 볼록(\(f''\))은 따로 정해져요. \(x^4-4x^3\)은 \(0\lt x\lt2\)에서 감소하면서 <strong>위로 볼록</strong>이에요. 그래서 표에 \(f''\) 줄이 꼭 필요해요.</p>
+              <p data-lang="en">Increase (\(f'\)) and concavity (\(f''\)) are independent. \(x^4-4x^3\) decreases on \(0\lt x\lt2\) while <strong>concave down</strong>. That is why the table needs the \(f''\) row.</p></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <nav class="chapter-nav" data-render="chapter-nav"></nav>
+  </div>
+</main>
+
+<script>
+/* 08-⑤ 함수의 그래프의 개형: 정보를 한 단계씩 쌓아 곡선 완성하기 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var S = $('sk-s'), R3 = Math.sqrt(3);
+  // 정수에 가까우면 정수로, 아니면 소수 둘째 자리까지
+  var num = function (v) { return Math.abs(v - Math.round(v)) < 1e-9 ? fmt(Math.round(v), 0) : fmt(v, 2); };
+
+  var FN = {
+    cubic:   { f: function (x) { return x * x * x - 3 * x; }, df: function (x) { return 3 * x * x - 3; }, d2: function (x) { return 6 * x; },
+               crit: [-1, 1], infl: [0], xint: [-R3, 0, R3], asym: null, view: [-2.4, 2.4, -3.4, 3.4] },
+    quartic: { f: function (x) { return x * x * x * x - 4 * x * x * x; }, df: function (x) { return 4 * x * x * x - 12 * x * x; }, d2: function (x) { return 12 * x * x - 24 * x; },
+               crit: [0, 3], infl: [0, 2], xint: [0, 4], asym: null, view: [-1.4, 4.6, -32, 14] },
+    rat:     { f: function (x) { return x / (x * x + 1); }, df: function (x) { return (1 - x * x) / Math.pow(x * x + 1, 2); }, d2: function (x) { return 2 * x * (x * x - 3) / Math.pow(x * x + 1, 3); },
+               crit: [-1, 1], infl: [-R3, 0, R3], xint: [0], asym: 0, view: [-6, 6, -0.85, 0.85] }
+  };
+  var K = document.querySelector('input[name="sk-pick"]:checked').value;
+  var sgn = function (v) { return v > 1e-9 ? '+' : v < -1e-9 ? '−' : '0'; };
+  function kind(F, c) { var l = F.df(c - 0.01), r = F.df(c + 0.01); return l > 0 && r < 0 ? 'max' : l < 0 && r > 0 ? 'min' : 'none'; }
+  function isInfl(F, c) { return F.d2(c - 0.01) * F.d2(c + 0.01) < 0; }
+  /* 표의 열: 구간과 중요한 점을 번갈아 */
+  function columns(F) {
+    var pts = F.crit.concat(F.infl).sort(function (a, b) { return a - b; }).filter(function (v, i, arr) { return i === 0 || Math.abs(v - arr[i - 1]) > 1e-9; });
+    var cols = [{ x: pts[0] - 1, pt: false }];
+    pts.forEach(function (p, i) { cols.push({ x: p, pt: true }); cols.push({ x: i < pts.length - 1 ? (p + pts[i + 1]) / 2 : p + 1, pt: false }); });
+    return cols;
+  }
+
+  var g = Graph.create($('sk-canvas'), { xMin: -2.4, xMax: 2.4, yMin: -3, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], s = +S.value, c = g.c, V = F.view;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear();
+    if (s >= 4) {
+      var xs = [V[0]].concat(F.infl, [V[1]]);
+      for (var i = 0; i < xs.length - 1; i++) {
+        var up = F.d2((xs[i] + xs[i + 1]) / 2) > 0;
+        g.band('x', xs[i], xs[i + 1], up ? { fill: c.fillMain } : { fill: c.fillAccent, hatch: 'd', hatchColor: c.accent });
+      }
+    }
+    g.grid(); g.axes();
+    if (s >= 2) {
+      var ends = [V[0]].concat(F.crit, [V[1]]);
+      for (var j = 0; j < ends.length - 1; j++) {
+        var mid = (ends[j] + ends[j + 1]) / 2;
+        g.label(mid, V[3], F.df(mid) > 0 ? '↗' : '↘', { color: c.text, dy: 18, bold: true, font: '700 20px sans-serif' });
+      }
+    }
+    if (s >= 6) {
+      if (F.asym !== null) g.hline(F.asym, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.plot(F.f, { color: c.main, width: 3.5, samples: 800 });
+    }
+    // ① 절편
+    F.xint.forEach(function (x) { g.point(x, 0, { color: c.text, r: 4.5, filled: false }); });
+    g.point(0, F.f(0), { color: c.text, r: 4.5, filled: false });
+    if (s >= 3) F.crit.forEach(function (x) {
+      var k = kind(F, x); if (k === 'none') return;
+      g.point(x, F.f(x), { color: c.main, r: 6.5 });
+      g.label(x, F.f(x), (k === 'max' ? (ko() ? '극대 ' : 'max ') : (ko() ? '극소 ' : 'min ')) + num(F.f(x)), { color: c.text, dy: k === 'max' ? -14 : 20, bold: true });
+    });
+    if (s >= 5) F.infl.forEach(function (x) {
+      if (!isInfl(F, x)) return;
+      g.point(x, F.f(x), { color: c.third, r: 6 });
+      g.label(x, F.f(x), ko() ? '변곡' : 'infl.', { color: c.third, align: 'left', dx: 9, dy: 14, bold: true });
+    });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             up: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             down: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             dot: '<circle cx="18" cy="6" r="4.5" style="fill:var(--g-third)"/>', ring: '<circle cx="18" cy="6" r="4" style="fill:none;stroke:var(--text);stroke-width:1.5"/>' };
+  var LEG = {
+    ko: [['ring', '절편 (○)'], ['up', '아래로 볼록 ∪ (색칠)'], ['down', '위로 볼록 ∩ (빗금)'], ['dot', '변곡점'], ['accent', '점근선 (긴 점선)'], ['main', '완성된 곡선 (실선)']],
+    en: [['ring', 'intercepts (○)'], ['up', 'concave up ∪ (shaded)'], ['down', 'concave down ∩ (hatched)'], ['dot', 'inflection point'], ['accent', 'asymptote (long dashes)'], ['main', 'finished curve (solid)']]
+  };
+  var STEP = {
+    ko: ['① 절편: x절편과 y절편을 먼저 찍어요.', '② 증감: f′의 부호로 올라가는(↗)·내려가는(↘) 구간을 정해요.', '③ 극값: f′의 부호가 바뀌는 점이 극대·극소예요.',
+         '④ 오목·볼록: f″의 부호로 휘는 방향(∪ / ∩)을 정해요.', '⑤ 변곡점: f″의 부호가 바뀌는 점을 찍어요.', '⑥ 점근선을 긋고, 모든 정보를 이어 곡선을 완성해요.'],
+    en: ['① Intercepts: plot the x- and y-intercepts first.', '② Increase/decrease: the sign of f′ gives rising (↗) and falling (↘) pieces.', '③ Extrema: where f′ changes sign, there is a local max or min.',
+         '④ Concavity: the sign of f″ gives the bending (∪ / ∩).', '⑤ Inflection points: where f″ changes sign.', '⑥ Draw any asymptote, then connect everything into the curve.']
+  };
+
+  function table() {
+    var F = FN[K], s = +S.value, cols = columns(F);
+    var head = '<tr><th>x</th>' + cols.map(function (c) { return c.pt ? '<td class="pt">' + num(c.x) + '</td>' : '<td>⋯</td>'; }).join('') + '</tr>';
+    var row = function (label, show, cell) { return '<tr' + (show ? '' : ' class="dim"') + '><th>' + label + '</th>' + cols.map(function (c) { return '<td' + (c.pt ? ' class="pt"' : '') + '>' + cell(c) + '</td>'; }).join('') + '</tr>'; };
+    var d1 = row("f′", s >= 2, function (c) { return sgn(F.df(c.x)); });
+    var d2 = row("f″", s >= 4, function (c) { return sgn(F.d2(c.x)); });
+    var fr = row('f', s >= 3, function (c) {
+      if (c.pt) return num(F.f(c.x));
+      return (F.df(c.x) > 0 ? '↗' : '↘') + (s >= 4 ? (F.d2(c.x) > 0 ? '∪' : '∩') : '');
+    });
+    $('sk-table').innerHTML = head + d1 + d2 + fr;
+  }
+  function update() {
+    var s = +S.value, el = $('sk-verdict');
+    table();
+    el.className = 'verdict ' + (s === 6 ? 'ok' : '');
+    el.textContent = (s === 6 ? '✓ ' : '→ ') + STEP[Site.lang()][s - 1];
+    $('sk-prev').disabled = s <= 1; $('sk-next').disabled = s >= 6;
+    g.draw();
+  }
+  function setLegend() {
+    $('sk-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+  function go(d) { S.value = Math.min(6, Math.max(1, +S.value + d)); S.dispatchEvent(new Event('input')); $('sk-live').textContent = $('sk-verdict').textContent; }
+
+  Graph.bindSlider(S, $('sk-s-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  $('sk-prev').addEventListener('click', function () { go(-1); });
+  $('sk-next').addEventListener('click', function () { go(1); });
+  $('sk-pick').addEventListener('change', function (e) { K = e.target.value; S.value = 1; S.dispatchEvent(new Event('input')); });
+  S.addEventListener('change', function () { $('sk-live').textContent = $('sk-verdict').textContent; });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  update();
+});
+
+/* 08-④ 그래프의 점근선: 멀리서 보면 그래프가 점근선에 달라붙는다 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var W = $('as-w');
+
+  // v: 수직점근선 x = v, m·n: 멀리서의 점근선 y = mx + n
+  var FN = {
+    h:  { f: function (x) { return 2 * x / (x - 1); }, v: 1, m: 0, n: 2, name: 'y = 2', vname: 'x = 1' },
+    o1: { f: function (x) { return x + 1 / x; }, v: 0, m: 1, n: 0, name: 'y = x', vname: 'x = 0' },
+    o2: { f: function (x) { return (x * x - 1) / (x - 2); }, v: 2, m: 1, n: 2, name: 'y = x + 2', vname: 'x = 2' }
+  };
+  var K = document.querySelector('input[name="as-pick"]:checked').value;
+  function line(F, x) { return F.m * x + F.n; }
+
+  var g = Graph.create($('as-canvas'), { xMin: -6, xMax: 6, yMin: -6, yMax: 6, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], R = +W.value, c = g.c, px = 0.9 * R;
+    var cy = F.m ? 0 : F.n, hy = F.m ? R * 1.2 : Math.max(4, R * 0.25);
+    g.setView({ xMin: -R, xMax: R, yMin: cy - hy, yMax: cy + hy });
+    g.clear(); g.grid(); g.axes();
+    g.vline(F.v, { color: c.accent, width: 2, dash: [11, 6] });
+    if (F.m) g.lineThrough(0, F.n, F.m, { color: c.accent, width: 2, dash: [11, 6] });
+    else g.hline(F.n, { color: c.accent, width: 2, dash: [11, 6] });
+    // 수직점근선 양옆은 따로 그려서 이어지지 않게
+    g.plot(F.f, { color: c.main, width: 3, to: F.v - 1e-6, samples: 1500 });
+    g.plot(F.f, { color: c.main, width: 3, from: F.v + 1e-6, samples: 1500 });
+    g.label(F.v, g.o.yMax, F.vname, { color: c.accent, align: 'left', dx: 6, dy: 14, bold: true });
+    g.label(g.o.xMin, line(F, g.o.xMin), F.name, { color: c.accent, align: 'left', dx: 8, dy: F.m ? 22 : -12, bold: true });
+    // 오른쪽 멀리의 점에서 그래프와 점근선 사이의 틈
+    g.line(px, line(F, px), px, F.f(px), { color: c.third, width: 3 });
+    g.point(px, F.f(px), { color: c.third, r: 5 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-third);stroke-width:3"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선)'], ['accent', '점근선 (긴 점선)'], ['third', 'x = 0.9R에서 그래프와 점근선 사이의 틈 (보라)']],
+    en: [['main', 'y = f(x) (solid)'], ['accent', 'asymptotes (long dashes)'], ['third', 'gap between graph and asymptote at x = 0.9R (purple)']]
+  };
+
+  function update() {
+    var F = FN[K], R = +W.value, px = 0.9 * R, gap = F.f(px) - line(F, px), near = F.v + 1 / R;
+    var rows = [['x', fmt(px, 1)], ['f(x)', fmt(F.f(px), 4)], [(ko() ? '점근선 ' : 'asymptote ') + F.name, fmt(line(F, px), 4)],
+                [ko() ? '틈 f(x) − (점근선)' : 'gap f(x) − asymptote', fmt(gap, 4)],
+                [ko() ? 'f(' + F.v + ' + 1/R)' : 'f(' + F.v + ' + 1/R)', fmt(F.f(near), 1)]];
+    $('as-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 3 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var v = { ok: R >= 40 ? true : null, text: ko()
+      ? '멀리 볼수록(R이 클수록) 틈(지금 ' + fmt(gap, 4) + ')이 0으로 줄어들어 그래프가 ' + F.name + '에 달라붙어요. 반대로 x = ' + F.v + '에 가까이 가면 f(x)가 한없이 커져요 (수직점근선 ' + F.vname + ').'
+      : 'The farther you look (larger R), the closer the gap gets to 0 (now ' + fmt(gap, 4) + '): the graph hugs ' + F.name + '. Near x = ' + F.v + ', f(x) blows up, so ' + F.vname + ' is a vertical asymptote.' };
+    var el = $('as-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setLegend() {
+    $('as-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(W, $('as-w-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  $('as-pick').addEventListener('change', function (e) { K = e.target.value; update(); });
+  W.addEventListener('change', function () { $('as-live').textContent = $('as-verdict').textContent; });
+  Graph.player({ button: $('as-play'), input: W, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  update();
+});
+
+/* 08-③ 그래프의 오목과 볼록: f″의 부호, 접선과 곡선의 위치, 변곡점 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('cv-x');
+
+  // zeros: f″ = 0 인 점
+  var FN = {
+    cubic:   { f: function (x) { return x * x * x - 3 * x; }, df: function (x) { return 3 * x * x - 3; }, d2: function (x) { return 6 * x; },
+               zeros: [0], range: [-2.2, 2.2], y: [-4.4, 4.4] },
+    quartic: { f: function (x) { return (x * x * x * x - 6 * x * x) / 4; }, df: function (x) { return x * x * x - 3 * x; }, d2: function (x) { return 3 * x * x - 3; },
+               zeros: [-1, 1], range: [-2.8, 2.8], y: [-3, 4] },
+    flat:    { f: function (x) { return x * x * x * x; }, df: function (x) { return 4 * x * x * x; }, d2: function (x) { return 12 * x * x; },
+               zeros: [0], range: [-1.5, 1.5], y: [-0.8, 5.2] }
+  };
+  var K = document.querySelector('input[name="cv-pick"]:checked').value;
+  function isInfl(F, c) { return F.d2(c - 0.01) * F.d2(c + 0.01) < 0; }
+
+  var g = Graph.create($('cv-canvas'), { xMin: -2.4, xMax: 2.4, yMin: -4, yMax: 4, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], a = +X.value, c = g.c, p = (F.range[1] - F.range[0]) * 0.05;
+    g.setView({ xMin: F.range[0] - p, xMax: F.range[1] + p, yMin: F.y[0], yMax: F.y[1] });
+    g.clear();
+    // f″ > 0 (아래쪽으로 볼록) 은 색칠, f″ < 0 (위쪽으로 볼록) 은 빗금
+    var xs = [g.o.xMin].concat(F.zeros, [g.o.xMax]);
+    for (var i = 0; i < xs.length - 1; i++) {
+      var mid = (xs[i] + xs[i + 1]) / 2, up = F.d2(mid) > 0;
+      g.band('x', xs[i], xs[i + 1], up ? { fill: c.fillMain } : { fill: c.fillAccent, hatch: 'd', hatchColor: c.accent });
+      g.label(mid, g.o.yMin, up ? (ko() ? '∪ 아래로 볼록' : '∪ concave up') : (ko() ? '∩ 위로 볼록' : '∩ concave down'), { color: c.text, dy: -12, bold: true });
+    }
+    g.grid(); g.axes();
+    g.plot(F.f, { color: c.main, width: 3.5, from: F.range[0], to: F.range[1] });
+    g.lineThrough(a, F.f(a), F.df(a), { color: c.text, width: 2 });
+    F.zeros.forEach(function (z) {
+      var ok = isInfl(F, z);
+      g.point(z, F.f(z), { color: c.third, r: 6.5, filled: ok });
+      g.label(z, F.f(z), ok ? (ko() ? '변곡점' : 'inflection') : (ko() ? '변곡점 아님' : 'not inflection'), { color: c.third, align: 'left', dx: 10, dy: 16, bold: true });
+    });
+    g.point(a, F.f(a), { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10, dy: -12 } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', tan: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--text);stroke-width:2"/>',
+             up: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             down: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             dot: '<circle cx="18" cy="6" r="4.5" style="fill:var(--g-third)"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선)'], ['tan', 'P에서의 접선 (가는 검은 선)'], ['up', 'f″ > 0: 아래로 볼록 ∪ (색칠)'], ['down', 'f″ < 0: 위로 볼록 ∩ (빗금)'], ['dot', 'f″ = 0인 점 (● 변곡점, ○ 아님)']],
+    en: [['main', 'y = f(x) (solid)'], ['tan', 'tangent at P (thin dark line)'], ['up', 'f″ > 0: concave up ∪ (shaded)'], ['down', 'f″ < 0: concave down ∩ (hatched)'], ['dot', 'f″ = 0 (● inflection, ○ not)']]
+  };
+
+  function update() {
+    var F = FN[K], a = +X.value, d2 = F.d2(a), v;
+    var rows = [['P = (a, f(a))', '(' + fmt(a) + ', ' + fmt(F.f(a)) + ')'], ["f′(a)", fmt(F.df(a), 3)], ["f″(a)", fmt(d2, 3)]];
+    $('cv-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var near = F.zeros.filter(function (z) { return Math.abs(z - a) < 0.03; })[0];
+    if (near !== undefined) {
+      v = isInfl(F, near)
+        ? { ok: true, text: ko() ? "f″의 부호가 여기서 바뀌어요: 볼록한 방향이 바뀌는 변곡점이에요. 접선이 곡선을 가로질러 지나가요." : "f″ changes sign here: concavity flips, so this is an inflection point. The tangent cuts through the curve." }
+        : { ok: false, text: ko() ? "f″ = 0이지만 양쪽 모두 f″ > 0이라 볼록한 방향이 그대로예요. 변곡점이 아니에요." : "f″ = 0, but f″ > 0 on both sides, so concavity does not change. Not an inflection point." };
+    } else if (d2 > 0) v = { ok: null, text: ko() ? "f″ > 0: 기울기가 점점 커져서 아래로 볼록(∪)해요. 곡선이 접선보다 위에 있어요." : "f″ > 0: the slope keeps growing, concave up (∪). The curve lies above the tangent." };
+    else v = { ok: null, text: ko() ? "f″ < 0: 기울기가 점점 작아져서 위로 볼록(∩)해요. 곡선이 접선보다 아래에 있어요." : "f″ < 0: the slope keeps shrinking, concave down (∩). The curve lies below the tangent." };
+    var el = $('cv-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k];
+    X.min = F.range[0]; X.max = F.range[1]; X.value = F.range[0] + 0.5;
+    X.dispatchEvent(new Event('input'));
+  }
+  function setLegend() {
+    $('cv-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(X, $('cv-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('cv-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  X.addEventListener('change', function () { $('cv-live').textContent = $('cv-verdict').textContent; });
+  Graph.player({ button: $('cv-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw(); });
+  setLegend();
+  setFn(K);
+});
+
+/* 08-② 함수의 극값: f′의 부호가 바뀌는 곳 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('xt-x');
+
+  // crit: f′ = 0 인 점, range: 보여 줄 x 범위
+  var FN = {
+    cubic:   { f: function (x) { return x * x * x - 3 * x; }, df: function (x) { return 3 * x * x - 3; }, d2: function (x) { return 6 * x; },
+               crit: [-1, 1], range: [-2.2, 2.2], top: [-4.4, 4.4], bot: [-4, 12] },
+    quartic: { f: function (x) { return x * x * x * x - 2 * x * x; }, df: function (x) { return 4 * x * x * x - 4 * x; }, d2: function (x) { return 12 * x * x - 4; },
+               crit: [-1, 0, 1], range: [-1.7, 1.7], top: [-1.6, 3], bot: [-4, 4] },
+    flat:    { f: function (x) { return x * x * x; }, df: function (x) { return 3 * x * x; }, d2: function (x) { return 6 * x; },
+               crit: [0], range: [-1.6, 1.6], top: [-4.2, 4.2], bot: [-1.5, 7.8] }
+  };
+  var K = document.querySelector('input[name="xt-pick"]:checked').value;
+
+  /* 임계점 c의 종류: 왼쪽·오른쪽에서 f′의 부호 */
+  function kind(F, c) {
+    var l = F.df(c - 0.01), r = F.df(c + 0.01);
+    var sl = l > 0 ? '+' : '−', sr = r > 0 ? '+' : '−';
+    return { sl: sl, sr: sr, type: sl === '+' && sr === '−' ? 'max' : sl === '−' && sr === '+' ? 'min' : 'none' };
+  }
+  function name(t) { return ko() ? { max: '극대', min: '극소', none: '극값 아님' }[t] : { max: 'local max', min: 'local min', none: 'not an extremum' }[t]; }
+
+  var top = Graph.create($('xt-top'), { xMin: -2.4, xMax: 2.4, yMin: -4, yMax: 4, aspect: 0.55, minHeight: 190, maxHeight: 260 });
+  var bot = Graph.create($('xt-bot'), { xMin: -2.4, xMax: 2.4, yMin: -4, yMax: 4, aspect: 0.45, minHeight: 160, maxHeight: 220 });
+  function view(g, y) { var F = FN[K], p = (F.range[1] - F.range[0]) * 0.05; g.setView({ xMin: F.range[0] - p, xMax: F.range[1] + p, yMin: y[0], yMax: y[1] }); }
+
+  top.render = function () {
+    var F = FN[K], a = +X.value, c = top.c;
+    view(top, F.top);
+    top.clear(); top.grid(); top.axes();
+    top.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+    top.plot(F.f, { color: c.main, width: 3.5, from: F.range[0], to: F.range[1] });
+    top.lineThrough(a, F.f(a), F.df(a), { color: c.accent, width: 2.5, dash: [11, 6] });
+    F.crit.forEach(function (x) {
+      var k = kind(F, x), y = F.f(x);
+      top.point(x, y, { color: k.type === 'none' ? c.third : c.text, r: 6, filled: k.type !== 'none' });
+      top.label(x, y, name(k.type), { color: k.type === 'none' ? c.third : c.text, dy: k.type === 'min' ? 20 : -14, bold: true });
+    });
+    top.point(a, F.f(a), { color: c.main, r: 6.5, label: 'P', labelStyle: { bold: true, align: 'right', dx: -10, dy: 18 } });
+  };
+  bot.render = function () {
+    var F = FN[K], a = +X.value, c = bot.c;
+    view(bot, F.bot);
+    // f′ > 0 구간은 색칠, f′ < 0 구간은 빗금
+    var xs = [bot.o.xMin].concat(F.crit, [bot.o.xMax]);
+    bot.clear();
+    for (var i = 0; i < xs.length - 1; i++) {
+      var mid = (xs[i] + xs[i + 1]) / 2, pos = F.df(mid) > 0;
+      bot.band('x', xs[i], xs[i + 1], pos ? { fill: c.fillMain } : { fill: c.fillAccent, hatch: 'd', hatchColor: c.accent });
+      bot.label(mid, bot.o.yMin, pos ? (ko() ? '+ 증가' : '+ up') : (ko() ? '− 감소' : '− down'), { color: c.text, dy: -12, bold: true });
+    }
+    bot.grid(); bot.axes({ yLabel: "f′" });
+    bot.vline(a, { color: c.text2, width: 1.2, dash: [4, 4] });
+    bot.plot(F.df, { color: c.third, width: 3, dash: [2, 5], from: F.range[0], to: F.range[1] });
+    F.crit.forEach(function (x) { bot.point(x, 0, { color: c.text, r: 5 }); });
+    bot.point(a, F.df(a), { color: c.accent, r: 6 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선)'], ['accent', 'P에서의 접선 (긴 점선)'], ['third', "y = f′(x) (짧은 점선)"], ['pos', "f′ > 0: 증가 (색칠)"], ['neg', "f′ < 0: 감소 (빗금)"]],
+    en: [['main', 'y = f(x) (solid)'], ['accent', 'tangent at P (long dashes)'], ['third', "y = f′(x) (dotted)"], ['pos', "f′ > 0: increasing (shaded)"], ['neg', "f′ < 0: decreasing (hatched)"]]
+  };
+
+  function update() {
+    var F = FN[K], a = +X.value, m = F.df(a), v;
+    var rows = F.crit.map(function (x) {
+      var k = kind(F, x), d2 = F.d2(x);
+      return ['x = ' + fmt(x, 0), "f′: " + k.sl + ' → ' + k.sr + ', f″ = ' + fmt(d2, 0) + ' ⇒ ' + name(k.type) + (k.type !== 'none' ? ' ' + fmt(F.f(x), 0) : '')];
+    });
+    $('xt-table').innerHTML = rows.map(function (r) { return '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var near = F.crit.filter(function (x) { return Math.abs(x - a) < 0.03; })[0];
+    if (near !== undefined) {
+      var k = kind(F, near);
+      v = k.type === 'none'
+        ? { ok: false, text: ko() ? "f′ = 0이지만 부호가 바뀌지 않아요 (양쪽 모두 " + k.sl + '). 접선은 수평이어도 계속 ' + (k.sl === '+' ? '증가' : '감소') + '하니 극값이 아니에요.'
+                                   : "f′ = 0, but the sign stays " + k.sl + ' → ' + k.sr + '. The tangent is flat, yet f keeps ' + (k.sl === '+' ? 'increasing' : 'decreasing') + ': no extremum.' }
+        : { ok: true, text: ko() ? "f′의 부호가 " + k.sl + ' → ' + k.sr + '로 바뀌어요: ' + (k.type === 'max' ? '올라가다 내려가니 극대' : '내려가다 올라가니 극소') + '예요. f″ = ' + fmt(F.d2(near), 0) + (F.d2(near) < 0 ? ' < 0으로도 극대를 확인할 수 있어요.' : F.d2(near) > 0 ? ' > 0으로도 극소를 확인할 수 있어요.' : '이라 이계도함수 판정법으로는 알 수 없어요.')
+                                 : "f′ changes " + k.sl + ' → ' + k.sr + ': ' + (k.type === 'max' ? 'up then down, a local max' : 'down then up, a local min') + '. f″ = ' + fmt(F.d2(near), 0) + (F.d2(near) < 0 ? ' < 0 confirms the max.' : F.d2(near) > 0 ? ' > 0 confirms the min.' : ', so the second derivative test is silent.') };
+    } else v = { ok: null, text: m > 0 ? (ko() ? "f′(P) > 0: 접선이 올라가요. 이 근처에서 f는 증가해요." : "f′(P) > 0: the tangent rises; f is increasing here.")
+                                       : (ko() ? "f′(P) < 0: 접선이 내려가요. 이 근처에서 f는 감소해요." : "f′(P) < 0: the tangent falls; f is decreasing here.") };
+    var el = $('xt-verdict');
+    el.className = 'verdict ' + (v.ok === true ? 'ok' : v.ok === false ? 'no' : '');
+    el.textContent = (v.ok === true ? '✓ ' : v.ok === false ? '✕ ' : '→ ') + v.text;
+    top.draw(); bot.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k];
+    X.min = F.range[0]; X.max = F.range[1]; X.value = F.range[0] + 0.3;
+    X.dispatchEvent(new Event('input'));
+  }
+  function setLegend() {
+    $('xt-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  Graph.bindSlider(X, $('xt-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('xt-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  X.addEventListener('change', function () { $('xt-live').textContent = $('xt-verdict').textContent; });
+  Graph.player({ button: $('xt-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else { top.draw(); bot.draw(); } });
+  setLegend();
+  setFn(K);
+});
+
+/* 08-① 평균값 정리: 할선과 평행한 접선이 생기는 점 c */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var A = $('mv-a'), B = $('mv-b'), LO = -2.4, HI = 2.4;
+
+  // kink: 미분가능하지 않은 점 (없으면 null)
+  var FN = {
+    cubic: { f: function (x) { return x * x * x / 3 - x; }, df: function (x) { return x * x - 1; }, kink: null, y: [-2.6, 2.6] },
+    wave:  { f: function (x) { return Math.sin(2 * x) + x / 2; }, df: function (x) { return 2 * Math.cos(2 * x) + 0.5; }, kink: null, y: [-2.4, 2.4] },
+    abs:   { f: Math.abs, df: function (x) { return x > 0 ? 1 : -1; }, kink: 0, y: [-0.8, 2.8] }
+  };
+  var K = document.querySelector('input[name="mv-pick"]:checked').value;
+
+  function ends() { var a = +A.value, b = +B.value; return a < b ? [a, b] : [b, a]; }
+  /* f′(c) = 할선 기울기 s 인 c (꺾인 점의 점프는 건너뛴다) */
+  function findC(F, a, b, s) {
+    var N = 1500, out = [], x0 = a, y0 = F.df(a) - s;
+    for (var i = 1; i <= N; i++) {
+      var x1 = a + (b - a) * i / N, y1 = F.df(x1) - s;
+      var jump = F.kink !== null && x0 < F.kink && x1 >= F.kink;
+      if (!jump && y0 * y1 < 0) {
+        var lo = x0, hi = x1;
+        for (var j = 0; j < 40; j++) { var m = (lo + hi) / 2; if ((F.df(lo) - s) * (F.df(m) - s) <= 0) hi = m; else lo = m; }
+        out.push((lo + hi) / 2);
+      }
+      x0 = x1; y0 = y1;
+    }
+    return out;
+  }
+  function state() {
+    var F = FN[K], e = ends(), a = e[0], b = e[1], s = (F.f(b) - F.f(a)) / (b - a);
+    var kinkIn = F.kink !== null && a < F.kink && F.kink < b;
+    var all = F.kink !== null && !kinkIn;          // |x| 의 한쪽 직선 위: 모든 점이 c
+    return { F: F, a: a, b: b, s: s, cs: kinkIn || all ? [] : findC(F, a, b, s), kinkIn: kinkIn, all: all };
+  }
+
+  var g = Graph.create($('mv-canvas'), { xMin: -2.6, xMax: 2.6, yMin: -2.6, yMax: 2.6, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var S = state(), F = S.F, c = g.c;
+    g.setView({ xMin: -2.6, xMax: 2.6, yMin: F.y[0], yMax: F.y[1] });
+    g.clear(); g.grid(); g.axes();
+    g.band('x', S.a, S.b, { fill: c.fillMain });
+    g.plot(F.f, { color: c.main, width: 3.5 });
+    g.lineThrough(S.a, F.f(S.a), S.s, { color: c.accent, width: 2.5, dash: [11, 6] });
+    S.cs.forEach(function (x, i) {
+      g.lineThrough(x, F.f(x), S.s, { color: c.third, width: 2.5, dash: [2, 5] });
+      g.point(x, F.f(x), { color: c.third, r: 6.5 });
+      g.label(x, g.o.yMin, 'c' + (S.cs.length > 1 ? (i + 1) : ''), { color: c.third, dy: -10, bold: true });
+      g.line(x, g.o.yMin, x, F.f(x), { color: c.third, width: 1, dash: [2, 4] });
+    });
+    g.point(S.a, F.f(S.a), { color: c.accent, r: 6, label: 'A', labelStyle: { bold: true, align: 'right', dx: -10 } });
+    g.point(S.b, F.f(S.b), { color: c.accent, r: 6, label: 'B', labelStyle: { bold: true } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', band: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>' };
+  var LEG = {
+    ko: [['main', 'y = f(x) (실선)'], ['band', '구간 [a, b] (색칠한 띠)'], ['accent', '할선 AB: 평균변화율 (긴 점선)'], ['third', '할선과 평행한 접선과 점 c (짧은 점선)']],
+    en: [['main', 'y = f(x) (solid)'], ['band', 'interval [a, b] (shaded)'], ['accent', 'secant AB: average rate (long dashes)'], ['third', 'tangent parallel to the secant, at c (dotted)']]
+  };
+
+  function update() {
+    var S = state(), F = S.F, v, rolle = Math.abs(F.f(S.a) - F.f(S.b)) < 0.01;
+    var cText = S.all ? (ko() ? '구간의 모든 점' : 'every point') : S.cs.length ? S.cs.map(function (x) { return fmt(x, 3); }).join(', ') : (ko() ? '없음' : 'none');
+    var rows = [[ko() ? '구간' : 'interval', '[' + fmt(S.a) + ', ' + fmt(S.b) + ']'],
+                [ko() ? '평균변화율 (할선 기울기)' : 'average rate (secant slope)', fmt(S.s, 3)],
+                [ko() ? "f′(c) = 평균변화율인 c" : "c with f′(c) = average rate", cText]];
+    $('mv-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (S.kinkIn) v = { ok: false, text: ko() ? 'x = 0에서 꺾여서 (a, b)에서 미분가능하지 않아요. 접선의 기울기는 −1 또는 1뿐이라 할선 기울기(' + fmt(S.s, 3) + ')와 같은 점이 없어요. 정리의 조건이 꼭 필요해요.'
+                                             : 'There is a corner at x = 0, so f is not differentiable on (a, b). Tangent slopes are only −1 or 1, never the secant slope ' + fmt(S.s, 3) + '. The hypothesis matters.' };
+    else if (S.all) v = { ok: true, text: ko() ? '그래프가 직선이라 모든 점의 접선이 할선과 같아요. c는 구간의 모든 점이에요.' : 'The graph is a straight line here, so every tangent equals the secant: every point is a c.' };
+    else v = { ok: true, text: (rolle ? (ko() ? '양 끝 높이가 같아 할선이 수평이에요 (롤의 정리). ' : 'Equal end heights make the secant horizontal (Rolle\'s theorem). ') : '')
+                             + (ko() ? '짧은 점선 접선이 할선과 평행한 점 c가 ' + S.cs.length + '개 있어요. 이 점에서 순간변화율 = 평균변화율이에요.'
+                                     : S.cs.length + ' point(s) c where the dotted tangent is parallel to the secant: instantaneous rate = average rate.') };
+    var el = $('mv-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  /* 지금의 b는 두고, f(a) = f(b) 가 되는 a를 왼쪽에서부터 찾는다 */
+  function makeRolle() {
+    var F = FN[K], b = +B.value;
+    if (K === 'abs') { if (b <= 0.2) b = 1.5; A.value = -b; B.value = b; }
+    else {
+      var fb = F.f(b), found = null;
+      for (var i = 0; i < 2000; i++) {
+        var x0 = LO + (b - 0.2 - LO) * i / 2000, x1 = LO + (b - 0.2 - LO) * (i + 1) / 2000;
+        if ((F.f(x0) - fb) * (F.f(x1) - fb) <= 0) { found = (x0 + x1) / 2; break; }
+      }
+      if (found === null) { B.value = K === 'cubic' ? 1.73 : 2; return makeRolle(); }
+      A.value = found.toFixed(2);
+    }
+    A.dispatchEvent(new Event('input')); B.dispatchEvent(new Event('input'));
+    $('mv-live').textContent = $('mv-verdict').textContent;
+  }
+
+  Graph.bindSlider(A, $('mv-a-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(B, $('mv-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('mv-pick').addEventListener('change', function (e) { K = e.target.value; update(); });
+  $('mv-rolle').addEventListener('click', makeRolle);
+  [A, B].forEach(function (el) { el.addEventListener('change', function () { $('mv-live').textContent = $('mv-verdict').textContent; }); });
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { setLegend(); update(); } else g.draw();
+  });
+  function setLegend() {
+    $('mv-legend').innerHTML = LEG[Site.lang()].map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+  setLegend();
+  update();
+});
+</script>
+</body>
+</html>

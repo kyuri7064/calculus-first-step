@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>미적분학 첫걸음</title>
+  <meta name="description" content="움직이는 그림으로 이해하는 고등학교 미적분 학습 사이트">
+  <script src="js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/curriculum.js"></script>
+  <script defer src="js/graph.js"></script>
+  <script defer src="js/profiles.js"></script>
+  <script defer src="js/site.js"></script>
+</head>
+<body data-root="" data-page="home" data-title-ko="미적분학 첫걸음" data-title-en="First Steps in Calculus">
+
+<main id="main" tabindex="-1">
+
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div data-lang="ko">
+          <h1>미적분학 첫걸음</h1>
+          <p class="hero-sub">First Steps in Calculus</p>
+          <p class="hero-lead">그림이 움직이면, 개념이 보인다.<br>슬라이더를 직접 움직이며 극한·미분·적분을 눈으로 이해해요.</p>
+          <div class="hero-chips">
+            <span class="chip chip-main">1학년 · 예습</span>
+            <span class="chip chip-main">2·3학년 · 복습</span>
+            <span class="chip">교과서 『미적분학 첫걸음』 순서 그대로</span>
+          </div>
+        </div>
+        <div data-lang="en">
+          <h1>First Steps in Calculus</h1>
+          <p class="hero-sub">미적분학 첫걸음</p>
+          <p class="hero-lead">When the picture moves, the idea becomes clear.<br>Drag the sliders and see limits, derivatives and integrals for yourself.</p>
+          <div class="hero-chips">
+            <span class="chip chip-main">Grade 1 · Preview</span>
+            <span class="chip chip-main">Grades 2–3 · Review</span>
+            <span class="chip">Follows our textbook's order</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#map">
+            <span data-lang="ko">지도에서 시작하기 ↓</span><span data-lang="en">Start on the map ↓</span>
+          </a>
+          <a class="btn btn-outline" href="#weekly">
+            <span data-lang="ko">이번 주 개념 보기</span><span data-lang="en">Concept of the week</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 미적분 지도 -->
+  <section class="section" id="map" aria-labelledby="map-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="map-title"><span data-lang="ko">미적분 지도</span><span data-lang="en">The Calculus Map</span></h2>
+        <p data-lang="ko">Ⅰ → Ⅱ → Ⅲ 순서로 길을 따라가 보세요. 동그라미를 누르면 단원으로, 번호를 누르면 중단원으로 바로 가요.</p>
+        <p data-lang="en">Follow the road from Ⅰ to Ⅱ to Ⅲ. Tap a circle to open a unit, or a number to jump straight to a chapter.</p>
+      </div>
+      <div class="card map-wrap">
+        <ol class="map" data-render="map"></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 바로가기 -->
+  <section class="section" aria-labelledby="quick-title" style="padding-top:0">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="quick-title"><span data-lang="ko">더 깊이, 더 가까이</span><span data-lang="en">Go Deeper, Get Closer</span></h2>
+      </div>
+      <div class="quick-grid">
+        <a class="card quick-card is-rigor" href="rigor.html">
+          <span class="quick-ico" aria-hidden="true">🔍</span>
+          <h3><span data-lang="ko">B. 엄밀한 정의 놀이터</span><span data-lang="en">B. Rigor Playground</span></h3>
+          <p data-lang="ko">"한없이 가까워진다"를 수학자는 어떻게 정확히 말할까? ε-띠와 δ-띠를 직접 줄여 보며 극한과 연속의 엄밀한 정의를 탐험해요.</p>
+          <p data-lang="en">How do mathematicians say "gets arbitrarily close" precisely? Shrink the ε-band and δ-band yourself to explore rigorous limits and continuity.</p>
+          <span class="go"><span data-lang="ko">놀이터 가기 →</span><span data-lang="en">Open playground →</span></span>
+        </a>
+        <a class="card quick-card" href="applications.html">
+          <span class="quick-ico" aria-hidden="true">🏫</span>
+          <h3><span data-lang="ko">C. 학교 속 미적분</span><span data-lang="en">C. Calculus at School</span></h3>
+          <p data-lang="ko">원뿔 컵에 물을 부을 때 수면은 얼마나 빨리 올라갈까? 울타리로 가장 넓은 화단을 만들려면? 학교 생활 속 미적분을 만나요.</p>
+          <p data-lang="en">How fast does the water rise in a cone-shaped cup? How do you fence the largest garden? Meet calculus in everyday school life.</p>
+          <span class="go"><span data-lang="ko">실생활 응용 보기 →</span><span data-lang="en">See applications →</span></span>
+        </a>
+        <a class="card quick-card is-memo" href="memo.html">
+          <span class="quick-ico" aria-hidden="true">📝</span>
+          <h3><span data-lang="ko">개인 메모장</span><span data-lang="en">My Notes</span></h3>
+          <p data-lang="ko">헷갈렸던 개념, 다시 볼 문제, 떠오른 질문을 자유롭게 적어 두세요. 단원 태그를 달면 나중에 바로 찾아갈 수 있어요.</p>
+          <p data-lang="en">Jot down confusing ideas, problems to revisit, or questions. Tag a chapter to jump back to it later.</p>
+          <span class="go"><span data-lang="ko">메모장 열기 →</span><span data-lang="en">Open notes →</span></span>
+        </a>
+        <a class="card quick-card is-ai" href="ai.html">
+          <span class="quick-ico" aria-hidden="true">🤖</span>
+          <h3><span data-lang="ko">AI 질문하기</span><span data-lang="en">Ask AI</span></h3>
+          <p data-lang="ko">모르는 개념이나 막히는 문제를 AI에게 물어보세요. "힌트만" 모드로 정답 대신 스스로 풀 실마리를 받을 수도 있어요.</p>
+          <p data-lang="en">Ask an AI about concepts or problems you're stuck on. Use "Hints only" to get clues instead of answers.</p>
+          <span class="go"><span data-lang="ko">질문하러 가기 →</span><span data-lang="en">Ask a question →</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 이번 주 개념 -->
+  <section class="section" id="weekly" aria-labelledby="weekly-title" style="padding-top:0">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="weekly-title"><span data-lang="ko">이번 주 개념</span><span data-lang="en">Concept of the Week</span></h2>
+      </div>
+      <div class="card weekly">
+        <div>
+          <div class="weekly-meta">
+            <span class="chip chip-main"><span data-lang="ko">Ⅱ. 미분과 도함수</span><span data-lang="en">Ⅱ. Derivatives</span></span>
+            <span class="chip"><span data-lang="ko">05 미분과 도함수</span><span data-lang="en">05 Differentiation</span></span>
+          </div>
+
+          <div data-lang="ko">
+            <h3>미분계수 <span class="en">(derivative)</span></h3>
+            <ol class="summary-list">
+              <li>미분계수는 한 점에서 함수값이 변하는 <strong>순간 변화율</strong>이에요.</li>
+              <li>그래프에서는 그 점에서 그은 <strong>접선의 기울기</strong>와 같아요.</li>
+              <li>평균변화율(할선의 기울기)에서 \(h\)를 0으로 보낸 <strong>극한값</strong>이에요.</li>
+            </ol>
+          </div>
+          <div data-lang="en">
+            <h3>The Derivative at a Point <span class="en">(미분계수)</span></h3>
+            <ol class="summary-list">
+              <li>The derivative is the <strong>instantaneous rate of change</strong> of a function at one point.</li>
+              <li>On the graph, it equals the <strong>slope of the tangent line</strong> at that point.</li>
+              <li>It is the <strong>limit</strong> of the average rate of change (slope of a secant) as \(h\) goes to 0.</li>
+            </ol>
+          </div>
+
+          <div class="formula-box">
+            $$f'(a)=\lim_{h\to 0}\frac{f(a+h)-f(a)}{h}$$
+          </div>
+          <p class="read-aloud" data-lang="ko"><span aria-hidden="true">🔊</span> <strong>읽는 법:</strong> "에프 프라임 에이는 리미트 h가 0으로 갈 때, 에프 에이 더하기 h 빼기 에프 에이를 h로 나눈 값" <br>(이 극한값이 존재할 때 "미분가능하다"고 해요.)</p>
+          <p class="read-aloud" data-lang="en"><span aria-hidden="true">🔊</span> <strong>Read as:</strong> "f prime of a equals the limit, as h goes to 0, of f of a plus h minus f of a, over h." <br>(When this limit exists, f is called differentiable at a.)</p>
+
+          <a class="btn btn-primary" href="chapters/ch05.html#s05-1">
+            <span data-lang="ko">미분계수 자세히 배우기 →</span><span data-lang="en">Learn more →</span>
+          </a>
+        </div>
+
+        <!-- 미니 직관 그림 -->
+        <div class="viz-panel">
+          <div class="viz-canvas-wrap">
+            <canvas id="weekly-canvas" role="img"
+                    data-i18n-attr="aria-label:w.canvas"></canvas>
+          </div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">곡선 \(y=\tfrac12x^2\) (굵은 실선)</span><span data-lang="en">Curve \(y=\tfrac12x^2\) (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg>
+              <span data-lang="ko">접선 (긴 점선)</span><span data-lang="en">Tangent (long dashes)</span></li>
+          </ul>
+          <div class="viz-readout" aria-hidden="true">
+            <span><span data-lang="ko">접점</span><span data-lang="en">Point</span> P(<b id="weekly-px">1.00</b>, <b id="weekly-py">0.50</b>)</span>
+            <span><span data-lang="ko">접선의 기울기</span><span data-lang="en">Slope</span> \(f'(a)=\) <b id="weekly-slope">1.00</b></span>
+          </div>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="weekly-a"><span data-lang="ko">접점의 x좌표</span><span data-lang="en">x of point</span> \(a\)</label>
+              <input id="weekly-a" type="range" min="-2.5" max="2.5" step="0.01" value="1">
+              <output id="weekly-a-out" for="weekly-a">1.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="weekly-play" type="button" aria-pressed="false">
+                <span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span>
+              </button>
+            </div>
+          </div>
+          <p class="sr-only" id="weekly-live" aria-live="polite"></p>
+          <p class="read-aloud" style="margin:12px 2px 0" data-lang="ko">
+            💡 \(f(x)=\tfrac12x^2\) 이면
+            \[\frac{f(a+h)-f(a)}{h}=a+\frac h2\;\xrightarrow{\;h\to0\;}\;a\]
+            즉 \(f'(a)=a\). 슬라이더 값과 기울기가 항상 같은 이유예요!
+          </p>
+          <p class="read-aloud" style="margin:12px 2px 0" data-lang="en">
+            💡 For \(f(x)=\tfrac12x^2\),
+            \[\frac{f(a+h)-f(a)}{h}=a+\frac h2\;\xrightarrow{\;h\to0\;}\;a\]
+            so \(f'(a)=a\). That's why the slope always matches the slider!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var f = function (x) { return x * x / 2; };
+  var input = document.getElementById('weekly-a');
+  var fmt = Graph.fmt;
+  var g = Graph.create(document.getElementById('weekly-canvas'), {
+    xMin: -3.2, xMax: 3.2, yMin: -1.2, yMax: 4.6, aspect: 0.78, maxHeight: 440
+  });
+
+  g.render = function () {
+    var a = parseFloat(input.value), c = g.c, ko = Site.lang() === 'ko';
+    g.clear(); g.grid(); g.axes();
+    g.plot(f, { color: c.main, width: 3.5 });
+    g.label(2.75, f(2.75), 'y = ½x²', { color: c.main, align: 'right', dx: -14, bold: true });
+    // 접선: 기울기 a, 점 (a, f(a))를 지남
+    g.lineThrough(a, f(a), a, { color: c.accent, width: 2.5, dash: [11, 6] });
+    // 접선 라벨: 곡선 바깥쪽(접선 아래)에 붙여서 곡선·축 눈금과 겹치지 않게
+    var lx = a > 1.2 ? a - 1.5 : a + 1.5;
+    g.label(lx, f(a) + a * (lx - a), ko ? '접선' : 'tangent', {
+      color: c.accent, dy: 18, bold: true
+    });
+    // 기울기 값은 왼쪽 위 구석에 고정
+    g.label(g.o.xMin, g.o.yMax, (ko ? '접선의 기울기 = ' : 'slope = ') + fmt(a), {
+      color: c.accent, align: 'left', dx: 10, dy: 16, bold: true
+    });
+    g.point(a, f(a), { color: c.accent, label: 'P', labelStyle: { bold: true } });
+  };
+
+  Graph.bindSlider(input, document.getElementById('weekly-a-out'), {
+    format: function (v) { return fmt(v); },
+    onInput: function (v) {
+      document.getElementById('weekly-px').textContent = fmt(v);
+      document.getElementById('weekly-py').textContent = fmt(f(v));
+      document.getElementById('weekly-slope').textContent = fmt(v);
+      g.draw();
+    }
+  });
+
+  // 화면 읽기 프로그램용: 손을 뗐을 때만 한 번 읽어 준다
+  input.addEventListener('change', function () {
+    var a = parseFloat(input.value);
+    document.getElementById('weekly-live').textContent = Site.lang() === 'ko'
+      ? 'a가 ' + fmt(a) + '일 때 접선의 기울기는 ' + fmt(a) + '입니다.'
+      : 'At a = ' + fmt(a) + ', the slope of the tangent is ' + fmt(a) + '.';
+  });
+
+  Graph.player({ button: document.getElementById('weekly-play'), input: input, duration: 6000 });
+  document.addEventListener('settingschange', function () { g.draw(); });
+});
+</script>
+</body>
+</html>

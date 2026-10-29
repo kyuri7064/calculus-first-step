@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 질문하기 · 미적분학 첫걸음</title>
+  <script src="js/settings.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/curriculum.js"></script>
+  <script defer src="js/profiles.js"></script>
+  <script defer src="js/site.js"></script>
+</head>
+<body data-root="" data-page="ai" data-title-ko="AI 질문하기 · 미적분학 첫걸음" data-title-en="Ask AI · First Steps in Calculus">
+
+<main id="main" tabindex="-1">
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" data-i18n-attr="aria-label:breadcrumb">
+        <ol>
+          <li><a href="index.html" data-i18n="nav.home"></a></li>
+          <li><span aria-current="page" data-i18n="nav.ai"></span></li>
+        </ol>
+      </nav>
+      <h1><span aria-hidden="true">🤖</span> <span data-i18n="nav.ai"></span></h1>
+      <p class="page-lead" data-lang="ko">모르는 개념이나 막히는 문제를 적으면, AI가 <strong>공부에 도움이 되게</strong> 답하도록 질문을 다듬어 줘요. "힌트만" 모드를 고르면 정답 대신 스스로 풀 수 있는 실마리를 받을 수 있어요.</p>
+      <p class="page-lead" data-lang="en">Type a concept or problem you're stuck on, and this page shapes it into a question that makes the AI answer <strong>in a way that helps you learn</strong>. Choose "Hints only" to get clues instead of the answer.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="ai-layout">
+      <!-- 질문 쓰기 -->
+      <div class="card">
+        <div class="setting">
+          <label class="setting-label" for="ai-q" data-i18n="aiQuestion"></label>
+          <textarea class="field ai-question" id="ai-q" aria-describedby="ai-q-help" data-i18n-attr="placeholder:aiPh"></textarea>
+          <p class="note no-math" id="ai-q-help" style="margin:6px 0 0" data-i18n="memoTexHelp"></p>
+        </div>
+
+        <fieldset class="setting">
+          <legend data-i18n="aiMode"></legend>
+          <div class="seg" id="ai-mode">
+            <label><input type="radio" name="ai-mode" value="explain" checked><span><span data-lang="ko">💡 개념 설명</span><span data-lang="en">💡 Explain</span></span></label>
+            <label><input type="radio" name="ai-mode" value="hint"><span><span data-lang="ko">🧩 힌트만</span><span data-lang="en">🧩 Hints only</span></span></label>
+            <label><input type="radio" name="ai-mode" value="check"><span><span data-lang="ko">✅ 내 풀이 확인</span><span data-lang="en">✅ Check my work</span></span></label>
+            <label><input type="radio" name="ai-mode" value="similar"><span><span data-lang="ko">📝 비슷한 문제</span><span data-lang="en">📝 Similar problems</span></span></label>
+          </div>
+        </fieldset>
+
+        <div class="setting">
+          <label class="setting-label" for="ai-topic" data-i18n="aiTopic"></label>
+          <select class="field" id="ai-topic"></select>
+        </div>
+
+        <section class="memo-preview-wrap" aria-labelledby="ai-qprev-title">
+          <h3 id="ai-qprev-title" class="memo-preview-title" data-i18n="memoPreview"></h3>
+          <div class="memo-preview" id="ai-qprev"></div>
+        </section>
+      </div>
+
+      <!-- 보낼 내용 -->
+      <div class="card">
+        <h2 style="font-size:1.2rem" data-i18n="aiPrompt"></h2>
+        <pre class="ai-prompt" id="ai-prompt"></pre>
+        <div class="ai-actions">
+          <button class="btn btn-primary" id="ai-ask" type="button" data-i18n="aiAsk"></button>
+          <button class="btn btn-outline" id="ai-copy" type="button" data-i18n="aiCopy"></button>
+        </div>
+        <p class="memo-status" id="ai-status" role="status" style="margin-top:10px"></p>
+
+        <div class="viz-msg" style="margin-top:16px">
+          <ul class="ai-tips" data-lang="ko">
+            <li>[Claude에게 물어보기]를 누르면 새 탭에서 Claude가 열리고 질문이 입력돼요. (로그인이 필요할 수 있어요)</li>
+            <li>다른 AI를 쓰고 싶으면 [질문 복사하기] 후 붙여 넣으세요.</li>
+            <li>AI도 <strong>틀릴 수 있어요.</strong> 답은 교과서나 선생님께 꼭 확인하세요.</li>
+            <li>이름, 학번 같은 <strong>개인 정보는 적지 마세요.</strong> 수행평가·시험에서는 학교의 AI 사용 규칙을 따르세요.</li>
+          </ul>
+          <ul class="ai-tips" data-lang="en">
+            <li>[Ask Claude] opens Claude in a new tab with your question filled in. (You may need to sign in.)</li>
+            <li>To use another AI, press [Copy question] and paste it there.</li>
+            <li>AI <strong>can be wrong.</strong> Always double-check with the textbook or your teacher.</li>
+            <li><strong>Don't include personal information</strong> such as your name or student ID. Follow your school's AI rules for assignments and tests.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 질문 기록 (로그인한 프로필별로 저장) -->
+  <section class="container section" aria-labelledby="ai-hist-title" style="padding-top:32px">
+    <div class="card">
+      <div class="hist-head">
+        <h2 id="ai-hist-title" style="font-size:1.3rem;margin:0"><span aria-hidden="true">📜</span> <span data-i18n="aiHistory"></span></h2>
+        <button class="btn btn-delete btn-sm" id="ai-hist-clear" type="button" data-i18n="aiHistoryClear"></button>
+      </div>
+      <p class="owner-bar" id="ai-owner" aria-live="polite"></p>
+      <p class="note" data-i18n="aiHistoryNote"></p>
+      <ul class="hist-list" id="ai-hist"></ul>
+    </div>
+  </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var C = window.CURRICULUM, t = I18N.t;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Q = $('ai-q'), TOPIC = $('ai-topic'), PROMPT = $('ai-prompt');
+
+  var MODES = {
+    ko: {
+      explain: '이 개념을 쉬운 말과 예시로 설명해 줘. 헷갈리기 쉬운 비슷한 개념이 있으면 차이도 알려 줘.',
+      hint: '정답이나 전체 풀이는 바로 알려 주지 말고, 내가 스스로 풀 수 있도록 단계별 힌트를 하나씩 줘. 내가 더 원하면 다음 힌트를 줘.',
+      check: '내 풀이가 맞는지 확인해 줘. 틀린 부분이 있으면 어디서, 왜 틀렸는지 알려 주고 올바른 방향을 알려 줘.',
+      similar: '이 문제와 비슷한 연습 문제 3개를 쉬운 것부터 만들어 줘. 답과 풀이는 맨 마지막에 따로 적어 줘.'
+    },
+    en: {
+      explain: 'Explain this concept in simple words with examples. If there is a similar concept that is easy to confuse, explain the difference.',
+      hint: "Don't give me the answer or a full solution. Give me step-by-step hints one at a time so I can solve it myself.",
+      check: 'Check whether my work is correct. If something is wrong, tell me where and why, and point me in the right direction.',
+      similar: 'Make 3 practice problems similar to this one, from easy to hard. Put the answers and solutions separately at the very end.'
+    }
+  };
+
+  function fillTopics() {
+    var keep = TOPIC.value, L = Site.lang();
+    TOPIC.textContent = '';
+    var none = document.createElement('option'); none.value = ''; none.textContent = '—'; TOPIC.appendChild(none);
+    C.forEach(function (u) {
+      var g = document.createElement('optgroup'); g.label = u.num + '. ' + u.title[L];
+      u.chapters.forEach(function (ch) {
+        var o = document.createElement('option'); o.value = 'ch' + ch.id; o.textContent = ch.id + ' ' + ch.title[L]; g.appendChild(o);
+        ch.sections.forEach(function (s, i) {
+          var so = document.createElement('option'); so.value = C.sectionId(ch.id, i);
+          so.textContent = '　└ ' + ch.id + '-' + (i + 1) + ' ' + s[L]; g.appendChild(so);
+        });
+      });
+      TOPIC.appendChild(g);
+    });
+    TOPIC.value = keep;
+  }
+
+  function buildPrompt() {
+    var mode = document.querySelector('input[name="ai-mode"]:checked').value;
+    var topic = C.describeTag(TOPIC.value, Site.lang());
+    var q = Q.value.trim();
+    var lines = ko() ? [
+      '너는 고등학교 미적분을 가르치는 친절한 선생님이야.',
+      '나는 고등학생이고 교과서 『미적분학 첫걸음』으로 공부하고 있어.',
+      topic ? '관련 단원: ' + topic.label : '',
+      '',
+      '[요청] ' + MODES.ko[mode],
+      '',
+      '[질문]',
+      q || '(질문을 적어 주세요)',
+      '',
+      '고등학생이 이해할 수 있는 수준의 한국어로 답해 줘. 수식은 LaTeX로 써 줘.'
+    ] : [
+      'You are a friendly teacher of high-school calculus.',
+      "I'm a high-school student studying with the textbook \"An Invitation to Calculus\".",
+      topic ? 'Related chapter: ' + topic.label : '',
+      '',
+      '[Request] ' + MODES.en[mode],
+      '',
+      '[Question]',
+      q || '(type your question)',
+      '',
+      'Answer in English at a level a high-school student can follow. Write math in LaTeX.'
+    ];
+    return lines.filter(function (l, i) { return l !== '' || (i > 0 && lines[i - 1] !== ''); }).join('\n');
+  }
+
+  function renderQ() {
+    var prev = $('ai-qprev'), text = Q.value;
+    prev.textContent = text.trim() ? text : t('memoPreviewEmpty');
+    prev.classList.toggle('is-empty', !text.trim());
+    if (text.trim() && window.renderMathInElement) {
+      renderMathInElement(prev, { delimiters: [
+        { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true }
+      ], throwOnError: false });
+    }
+  }
+
+  function update() { PROMPT.textContent = buildPrompt(); renderQ(); }
+
+  /* ---------- 질문 기록 (Profiles.read/write → 로그인한 사람별로 저장) ---------- */
+  var MODE_LABEL = {
+    ko: { explain: '💡 개념 설명', hint: '🧩 힌트만', check: '✅ 내 풀이 확인', similar: '📝 비슷한 문제' },
+    en: { explain: '💡 Explain', hint: '🧩 Hints only', check: '✅ Check my work', similar: '📝 Similar problems' }
+  };
+  function history() { var h = Profiles.read('ai-history', []); return Array.isArray(h) ? h : []; }
+
+  function saveHistory() {
+    var entry = { id: 'q' + Date.now().toString(36), q: Q.value.trim(),
+                  mode: document.querySelector('input[name="ai-mode"]:checked').value, topic: TOPIC.value, at: Date.now() };
+    var h = history().filter(function (x) { return !(x.q === entry.q && x.mode === entry.mode && x.topic === entry.topic); });
+    h.unshift(entry);
+    Profiles.write('ai-history', h.slice(0, 50));   // 최근 50개까지
+    renderHistory();
+  }
+
+  function renderHistory() {
+    var list = $('ai-hist'), h = history(), L = Site.lang();
+    list.textContent = '';
+    $('ai-hist-clear').hidden = !h.length;
+    if (!h.length) {
+      var e = document.createElement('li'); e.className = 'memo-empty'; e.textContent = t('aiHistoryEmpty'); list.appendChild(e);
+      return;
+    }
+    h.forEach(function (x) {
+      var li = document.createElement('li'); li.className = 'hist-item';
+      var meta = document.createElement('p'); meta.className = 'memo-item-meta';
+      var topic = C.describeTag(x.topic, L);
+      meta.textContent = new Date(x.at).toLocaleString(L === 'en' ? 'en-US' : 'ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) +
+        ' · ' + (MODE_LABEL[L][x.mode] || '') + (topic ? ' · 🏷 ' + topic.label : '');
+      var q = document.createElement('p'); q.className = 'hist-q'; q.textContent = x.q;
+      var row = document.createElement('div'); row.className = 'link-row';
+      var reuse = document.createElement('button'); reuse.type = 'button'; reuse.className = 'btn btn-outline btn-sm'; reuse.textContent = t('aiReuse');
+      reuse.addEventListener('click', function () {
+        Q.value = x.q; TOPIC.value = x.topic || '';
+        var r = document.querySelector('input[name="ai-mode"][value="' + x.mode + '"]'); if (r) r.checked = true;
+        update(); window.scrollTo({ top: 0 }); Q.focus();
+      });
+      var del = document.createElement('button'); del.type = 'button'; del.className = 'btn btn-delete btn-sm'; del.textContent = t('memoDelete');
+      del.addEventListener('click', function () {
+        Profiles.write('ai-history', history().filter(function (y) { return y.id !== x.id; })); renderHistory();
+      });
+      row.appendChild(reuse); row.appendChild(del);
+      li.appendChild(meta); li.appendChild(q); li.appendChild(row);
+      list.appendChild(li);
+      if (window.renderMathInElement) renderMathInElement(q, { delimiters: [
+        { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }
+      ], throwOnError: false });
+    });
+  }
+
+  function renderOwner() {
+    var box = $('ai-owner'), p = Profiles.current();
+    box.textContent = '';
+    var s = document.createElement('span'); s.textContent = p ? t('aiOwner', { name: p.name }) : t('aiOwnerGuest'); box.appendChild(s);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-outline btn-sm';
+    b.textContent = p ? t('logout') : t('loginSignup');
+    b.addEventListener('click', function () { if (Profiles.current()) Profiles.logout(); else Site.openProfile(); });
+    box.appendChild(b);
+  }
+
+  $('ai-hist-clear').addEventListener('click', function () {
+    if (window.confirm(t('aiHistoryClearConfirm'))) { Profiles.write('ai-history', []); renderHistory(); }
+  });
+  document.addEventListener('profilechange', function () { renderOwner(); renderHistory(); });
+
+  $('ai-ask').addEventListener('click', function () {
+    if (!Q.value.trim()) { $('ai-status').textContent = t('aiEmpty'); Q.focus(); return; }
+    saveHistory();
+    window.open('https://claude.ai/new?q=' + encodeURIComponent(buildPrompt()), '_blank', 'noopener');
+  });
+  $('ai-copy').addEventListener('click', function () {
+    if (!Q.value.trim()) { $('ai-status').textContent = t('aiEmpty'); Q.focus(); return; }
+    saveHistory();
+    var text = buildPrompt();
+    function fallback() {
+      var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      ta.remove(); $('ai-status').textContent = t(ok ? 'aiCopied' : 'aiCopyFail');
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { $('ai-status').textContent = t('aiCopied'); }, fallback);
+    } else fallback();
+  });
+
+  var timer = null;
+  Q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(update, 150); });
+  $('ai-mode').addEventListener('change', update);
+  TOPIC.addEventListener('change', update);
+  document.addEventListener('settingschange', function (e) {
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { fillTopics(); update(); renderOwner(); renderHistory(); }
+  });
+  renderOwner();
+  renderHistory();
+
+  // 개념 페이지의 [🤖 AI에게 묻기]에서 왔으면 그 소단원을 미리 고른다
+  fillTopics();
+  var topicParam = new URLSearchParams(location.search).get('topic');
+  if (topicParam && C.describeTag(topicParam, 'ko')) TOPIC.value = topicParam;
+  update();
+});
+</script>
+</body>
+</html>

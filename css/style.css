@@ -811,6 +811,9 @@ select.field { cursor: pointer; }
   grid-area: viz; position: sticky; top: calc(var(--header-h) + 80px);
   /* 화면보다 길면 패널 안에서 스크롤 (그림 아래 조작 버튼이 가려지지 않게) */
   max-height: calc(100vh - var(--header-h) - 96px); overflow-y: auto; overscroll-behavior: contain;
+  /* 스크롤바 자리를 늘 비워 둔다. 안 그러면 스크롤바가 생겼다 사라질 때마다 폭이 바뀌어
+     그래프가 다시 그려지고(높이도 바뀜) → 스크롤바가 다시 사라지는 반복으로 화면이 떨린다 */
+  scrollbar-gutter: stable;
   border-radius: var(--radius);
 }
 

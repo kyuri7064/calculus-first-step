@@ -344,15 +344,6 @@
     }).join('') + '</ol></nav>';
   }
 
-  function progress(done, total) {
-    var cells = '';
-    for (var i = 0; i < total; i++) cells += '<i' + (i < done ? ' class="on"' : '') + '></i>';
-    return '<span class="progress"><span class="progress-cells" aria-hidden="true">' + cells + '</span>' +
-      t('readyCount', { n: done, m: total }) + '</span>';
-  }
-
-  function readyIn(ch) { return ch.sections.filter(function (s) { return s.ready; }).length; }
-
   /* ---------- 단원 페이지 (unit1~3.html) ---------- */
   function renderUnit() {
     var C = window.CURRICULUM;
@@ -378,7 +369,7 @@
             '<span>' + esc(T(s)) + '<span class="sr-only"> (' + t(s.ready ? 'ready' : 'core') + ')</span></span></li>';
         }).join('');
         return '<a class="card chapter-card" href="' + ROOT + C.chapterHref(ch.id) + '">' +
-          '<div class="chapter-card-head"><span class="ch-badge">' + ch.id + '</span>' + progress(readyIn(ch), ch.sections.length) + '</div>' +
+          '<div class="chapter-card-head"><span class="ch-badge">' + ch.id + '</span></div>' +
           '<h3>' + esc(T(ch.title)) + '</h3>' +
           '<p class="title-en">' + esc(other(ch.title)) + '</p>' +
           '<p class="intro">' + esc(T(ch.intro)) + '</p>' +
@@ -499,7 +490,6 @@
         '<div class="chapter-meta">' +
           '<span class="chip">' + t('textbookPage', { p: ch.page }) + '</span>' +
           '<span class="chip">' + t('sectionCount', { n: ch.sections.length }) + '</span>' +
-          progress(info.filter(function (x) { return x.written; }).length, ch.sections.length) +
         '</div>';
     }
 

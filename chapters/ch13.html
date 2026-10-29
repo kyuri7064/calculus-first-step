@@ -27,8 +27,9 @@
     <!-- 완성된 소단원은 여기에 <section id="s13-번호"> … </section> 으로 넣는다.
          없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
 
-    <section id="s13-1" data-status="core">
-      <div class="core-only">
+    <section id="s13-1">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>\(e^x\)는 적분해도 \(e^x\)예요. 안쪽이 일차식이면 그 계수로 나눠 줘요.</li>
@@ -46,12 +47,93 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\frac{2x}{x^2+1}\,dx=\ln(x^2+1)+C\), &nbsp; \(\int_0^1e^{2x}\,dx=\left[\frac12e^{2x}\right]_0^1=\frac{e^2-1}{2}\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\frac{2x}{x^2+1}\,dx=\ln(x^2+1)+C\), &nbsp; \(\int_0^1e^{2x}\,dx=\left[\frac12e^{2x}\right]_0^1=\frac{e^2-1}{2}\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 곡선 아래 넓이가 공식과 같아지는 모습 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">적분 고르기</span><span data-lang="en">Choose an integral</span></legend>
+            <div class="seg" id="el-pick">
+              <label><input type="radio" name="el-pick" value="inv" checked><span>\(\int_1^b\frac1x\,dx\)</span></label>
+              <label><input type="radio" name="el-pick" value="exp"><span>\(\int_0^be^{2x}dx\)</span></label>
+              <label><input type="radio" name="el-pick" value="fp"><span>\(\int_0^b\frac{2x}{x^2+1}dx\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="el-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="el-canvas" role="img" data-i18n-attr="aria-label:el.canvas"></canvas>
+          </div>
+          <ul class="legend" id="el-legend"></ul>
+          <table class="readout-table"><tbody id="el-table"></tbody></table>
+          <p class="verdict" id="el-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="el-b"><span data-lang="ko">위끝</span><span data-lang="en">Upper limit</span> \(b\)</label>
+              <input id="el-b" type="range" min="0.2" max="6" step="0.001" value="2.718">
+              <output id="el-b-out" for="el-b">2.72</output>
+            </div>
+            <div class="control-buttons">
+              <button class="btn btn-outline btn-sm" id="el-e" type="button"><span data-lang="ko">\(b=e\)로 맞추기</span><span data-lang="en">Set \(b=e\)</span></button>
+              <button class="play-btn" id="el-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="el-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int_0^1\frac{x}{x^2+1}\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^1\frac{x}{x^2+1}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-1-a" hidden>
+              <p data-lang="ko">분모의 도함수는 \(2x\)라서 \(\frac{x}{x^2+1}=\frac12\cdot\frac{2x}{x^2+1}\)로 맞춰 줘요. \(\frac12\big[\ln(x^2+1)\big]_0^1=\frac12\ln2\)예요.</p>
+              <p data-lang="en">The denominator's derivative is \(2x\), so write \(\frac{x}{x^2+1}=\frac12\cdot\frac{2x}{x^2+1}\). Then \(\frac12\big[\ln(x^2+1)\big]_0^1=\frac12\ln2\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int_1^ex\ln x\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_1^ex\ln x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-1-b" hidden>
+              <p data-lang="ko">\(\ln x\)를 미분하는 쪽(\(f\)), \(x\)를 적분하는 쪽(\(g'\))으로 부분적분해요.</p>
+              <p data-lang="en">Integrate by parts with \(f=\ln x\) and \(g'=x\).</p>
+              $$\int_1^ex\ln x\,dx=\left[\frac{x^2}{2}\ln x\right]_1^e-\int_1^e\frac x2\,dx=\frac{e^2}{2}-\frac{e^2-1}{4}=\frac{e^2+1}{4}$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\frac{1}{2x+1}\,dx=\ln|2x+1|+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\frac{1}{2x+1}\,dx=\ln|2x+1|+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">분자가 분모의 도함수(2)가 아니라 1이에요. \(\frac12\)을 곱해 맞춰야 해요: \(\frac12\ln|2x+1|+C\). \(e^{ax+b}\)에서 \(\frac1a\)이 붙는 것과 같은 이유예요.</p>
+              <p data-lang="en">The numerator is 1, not the denominator's derivative 2. Fix it with \(\frac12\): \(\frac12\ln|2x+1|+C\) — the same reason \(e^{ax+b}\) gets a \(\frac1a\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\frac{1}{x^2+1}\,dx=\ln(x^2+1)+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\frac{1}{x^2+1}\,dx=\ln(x^2+1)+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\ln f\) 꼴은 분자가 <strong>분모의 도함수</strong>일 때만이에요. \(\ln(x^2+1)\)을 미분하면 \(\frac{2x}{x^2+1}\)이 돼요. \(\frac1{x^2+1}\)의 답은 \(\tan^{-1}x+C\)예요(13-④).</p>
+              <p data-lang="en">The \(\ln f\) form needs the numerator to be the <strong>derivative of the denominator</strong>. \(\ln(x^2+1)\) differentiates to \(\frac{2x}{x^2+1}\). The answer for \(\frac1{x^2+1}\) is \(\tan^{-1}x+C\) (13-④).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s13-2" data-status="core">
-      <div class="core-only">
+    <section id="s13-2">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>\(\sin x,\ \cos x,\ \sec^2x\)는 도함수 공식을 거꾸로 써서 바로 적분해요.</li>
@@ -70,12 +152,93 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_0^{\pi}\sin x\,dx=\Big[-\cos x\Big]_0^{\pi}=2\), &nbsp; \(\int_0^{\pi}\sin^2x\,dx=\frac{\pi}{2}\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_0^{\pi}\sin x\,dx=\Big[-\cos x\Big]_0^{\pi}=2\), &nbsp; \(\int_0^{\pi}\sin^2x\,dx=\frac{\pi}{2}\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: sin x 의 넓이 / sin²x = ½ − ½cos2x -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">적분 고르기</span><span data-lang="en">Choose an integral</span></legend>
+            <div class="seg" id="tr-pick">
+              <label><input type="radio" name="tr-pick" value="sin" checked><span>\(\int_0^b\sin x\,dx\)</span></label>
+              <label><input type="radio" name="tr-pick" value="sq"><span>\(\int_0^b\sin^2x\,dx\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="tr-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="tr-canvas" role="img" data-i18n-attr="aria-label:tr.canvas"></canvas>
+          </div>
+          <ul class="legend" id="tr-legend"></ul>
+          <table class="readout-table"><tbody id="tr-table"></tbody></table>
+          <p class="verdict" id="tr-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="tr-b"><span data-lang="ko">위끝</span><span data-lang="en">Upper limit</span> \(b\)</label>
+              <input id="tr-b" type="range" min="0.1" max="6.28" step="0.01" value="3.14">
+              <output id="tr-b-out" for="tr-b">3.14</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="tr-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="tr-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int(3\sin x+\sec^2x)\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int(3\sin x+\sec^2x)\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-2-a" hidden>
+              <p data-lang="ko">\((\cos x)'=-\sin x\), \((\tan x)'=\sec^2x\)를 거꾸로 쓰면 \(-3\cos x+\tan x+C\)예요.</p>
+              <p data-lang="en">Reversing \((\cos x)'=-\sin x\) and \((\tan x)'=\sec^2x\): \(-3\cos x+\tan x+C\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int_0^{\pi}\cos^2x\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^{\pi}\cos^2x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-2-b" hidden>
+              <p data-lang="ko">반각 공식 \(\cos^2x=\frac{1+\cos2x}{2}\)로 차수를 낮춰요.</p>
+              <p data-lang="en">Lower the power with \(\cos^2x=\frac{1+\cos2x}{2}\).</p>
+              $$\int_0^{\pi}\frac{1+\cos2x}{2}\,dx=\left[\frac x2+\frac{\sin2x}{4}\right]_0^{\pi}=\frac\pi2$$
+              <p data-lang="ko">\(\sin^2x\)와 같은 값이에요. 두 그래프는 위아래로 뒤집힌 모양이라 한 주기 동안 넓이가 같아요.</p>
+              <p data-lang="en">The same as for \(\sin^2x\): the two graphs are mirror images, so their areas over a period match.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\sin^2x\,dx=\frac{\sin^3x}{3}+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\sin^2x\,dx=\frac{\sin^3x}{3}+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\frac{\sin^3x}3\)을 미분하면 \(\sin^2x\cos x\)라서 틀려요. 거듭제곱 공식은 \(x^n\)에만 써요. 반각 공식으로 바꿔서 \(\frac x2-\frac{\sin2x}{4}+C\)예요.</p>
+              <p data-lang="en">\(\frac{\sin^3x}3\) differentiates to \(\sin^2x\cos x\), so it's wrong; the power rule is only for \(x^n\). Use the half-angle formula: \(\frac x2-\frac{\sin2x}{4}+C\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\tan x\,dx=\sec^2x+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\tan x\,dx=\sec^2x+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\sec^2x\)는 \(\tan x\)의 <strong>도함수</strong>예요. 적분은 \(\frac{\sin x}{\cos x}\)를 \(-\frac{(\cos x)'}{\cos x}\)로 보고 \(-\ln|\cos x|+C\)예요.</p>
+              <p data-lang="en">\(\sec^2x\) is the <strong>derivative</strong> of \(\tan x\). For the integral, see \(\frac{\sin x}{\cos x}\) as \(-\frac{(\cos x)'}{\cos x}\): \(-\ln|\cos x|+C\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s13-3" data-status="core">
-      <div class="core-only">
+    <section id="s13-3">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>\(\sin mx\cos nx\)처럼 삼각함수의 <strong>곱</strong>은 바로 적분하기 어려워요.</li>
@@ -94,12 +257,94 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\sin3x\cos x\,dx=\frac12\int(\sin4x+\sin2x)\,dx=-\frac{\cos4x}{8}-\frac{\cos2x}{4}+C\). &nbsp; 자연수 \(m\ne n\)이면 \(\int_0^{2\pi}\sin mx\sin nx\,dx=0\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\sin3x\cos x\,dx=\frac12\int(\sin4x+\sin2x)\,dx=-\frac{\cos4x}{8}-\frac{\cos2x}{4}+C\). &nbsp; For natural numbers \(m\ne n\), \(\int_0^{2\pi}\sin mx\sin nx\,dx=0\).</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 두 파동의 곱과 그 넓이 (서로 다른 진동수면 0) -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">곱의 종류</span><span data-lang="en">Kind of product</span></legend>
+            <div class="seg" id="pd-pick">
+              <label><input type="radio" name="pd-pick" value="ss" checked><span>\(\sin mx\sin nx\)</span></label>
+              <label><input type="radio" name="pd-pick" value="sc"><span>\(\sin mx\cos nx\)</span></label>
+              <label><input type="radio" name="pd-pick" value="cc"><span>\(\cos mx\cos nx\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="pd-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="pd-canvas" role="img" data-i18n-attr="aria-label:pd.canvas"></canvas>
+          </div>
+          <ul class="legend" id="pd-legend"></ul>
+          <table class="readout-table"><tbody id="pd-table"></tbody></table>
+          <p class="verdict" id="pd-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="pd-m"><span data-lang="ko">진동수</span><span data-lang="en">Frequency</span> \(m\)</label>
+              <input id="pd-m" type="range" min="1" max="5" step="1" value="2">
+              <output id="pd-m-out" for="pd-m">2</output>
+            </div>
+            <div class="slider-row">
+              <label for="pd-n"><span data-lang="ko">진동수</span><span data-lang="en">Frequency</span> \(n\)</label>
+              <input id="pd-n" type="range" min="1" max="5" step="1" value="3">
+              <output id="pd-n-out" for="pd-n">3</output>
+            </div>
+          </div>
+          <p class="sr-only" id="pd-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int\cos2x\cos x\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int\cos2x\cos x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-3-a" hidden>
+              <p data-lang="ko">\(\cos A\cos B=\frac12\{\cos(A+B)+\cos(A-B)\}\)로 바꾸면</p>
+              <p data-lang="en">Using \(\cos A\cos B=\frac12\{\cos(A+B)+\cos(A-B)\}\),</p>
+              $$\int\cos2x\cos x\,dx=\frac12\int(\cos3x+\cos x)\,dx=\frac{\sin3x}{6}+\frac{\sin x}{2}+C$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int_0^{2\pi}(\sin x+\sin2x)^2\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^{2\pi}(\sin x+\sin2x)^2\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-3-b" hidden>
+              <p data-lang="ko">전개하면 \(\sin^2x+2\sin x\sin2x+\sin^22x\)예요. \([0,2\pi]\)에서 \(\int\sin^2x=\int\sin^22x=\pi\)이고, 진동수가 다른 곱 \(\int\sin x\sin2x=0\)이에요. 따라서 \(\pi+0+\pi=2\pi\).</p>
+              <p data-lang="en">Expand: \(\sin^2x+2\sin x\sin2x+\sin^22x\). On \([0,2\pi]\), \(\int\sin^2x=\int\sin^22x=\pi\) and the mixed term \(\int\sin x\sin2x=0\). So \(\pi+0+\pi=2\pi\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\sin x\cos x\,dx=(-\cos x)(\sin x)+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\sin x\cos x\,dx=(-\cos x)(\sin x)+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">곱은 각각 적분해서 곱할 수 없어요. \(\sin x\cos x=\frac12\sin2x\)로 바꾸면 \(-\frac14\cos2x+C\)예요 (\(u=\sin x\)로 치환해 \(\frac12\sin^2x+C\)로 써도 같은 답이에요 — 상수만 달라요).</p>
+              <p data-lang="en">You can't integrate the factors separately and multiply. Write \(\sin x\cos x=\frac12\sin2x\): \(-\frac14\cos2x+C\) (substituting \(u=\sin x\) gives \(\frac12\sin^2x+C\), the same up to a constant).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\sin A\sin B=\frac12\{\cos(A+B)+\cos(A-B)\}\)</p>
+              <p data-lang="en">\(\sin A\sin B=\frac12\{\cos(A+B)+\cos(A-B)\}\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그건 \(\cos A\cos B\)예요. \(\sin A\sin B=\frac12\{\cos(A-B)-\cos(A+B)\}\)로 부호가 달라요. \(A=B\)를 넣어 \(\sin^2A=\frac{1-\cos2A}{2}\)가 나오는지 확인하면 헷갈리지 않아요.</p>
+              <p data-lang="en">That's \(\cos A\cos B\). \(\sin A\sin B=\frac12\{\cos(A-B)-\cos(A+B)\}\), with a minus. Check with \(A=B\): you should get \(\sin^2A=\frac{1-\cos2A}{2}\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s13-4" data-status="core">
-      <div class="core-only">
+    <section id="s13-4">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>유리함수(다항식 ÷ 다항식)는 분자의 차수가 크거나 같으면 먼저 <strong>나눗셈</strong>으로 차수를 낮춰요.</li>
@@ -117,12 +362,91 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\frac{x^2}{x+1}=x-1+\frac1{x+1}\)이므로 \(\int\frac{x^2}{x+1}\,dx=\frac{x^2}{2}-x+\ln|x+1|+C\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\frac{x^2}{x+1}=x-1+\frac1{x+1}\), so \(\int\frac{x^2}{x+1}\,dx=\frac{x^2}{2}-x+\ln|x+1|+C\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 쪼갠 조각들의 합 = 원래 함수, 넓이도 조각별로 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">유리함수 고르기</span><span data-lang="en">Choose a rational function</span></legend>
+            <div class="seg" id="rt-pick">
+              <label><input type="radio" name="rt-pick" value="pf" checked><span>\(\frac{1}{x(x+1)}\)</span></label>
+              <label><input type="radio" name="rt-pick" value="div"><span>\(\frac{x^2}{x+1}\)</span></label>
+              <label><input type="radio" name="rt-pick" value="at"><span>\(\frac{1}{x^2+1}\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="rt-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="rt-canvas" role="img" data-i18n-attr="aria-label:rt.canvas"></canvas>
+          </div>
+          <ul class="legend" id="rt-legend"></ul>
+          <table class="readout-table"><tbody id="rt-table"></tbody></table>
+          <p class="verdict" id="rt-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="rt-b"><span data-lang="ko">위끝</span><span data-lang="en">Upper limit</span> \(b\)</label>
+              <input id="rt-b" type="range" min="1.2" max="6" step="0.01" value="3">
+              <output id="rt-b-out" for="rt-b">3.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="rt-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="rt-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int\frac{1}{x^2-1}\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int\frac{1}{x^2-1}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-4-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-4-a" hidden>
+              <p data-lang="ko">\(x^2-1=(x-1)(x+1)\)이므로 \(\frac1{x^2-1}=\frac12\left(\frac1{x-1}-\frac1{x+1}\right)\)이에요. 따라서 \(\frac12\ln\left|\frac{x-1}{x+1}\right|+C\).</p>
+              <p data-lang="en">Since \(x^2-1=(x-1)(x+1)\), \(\frac1{x^2-1}=\frac12\left(\frac1{x-1}-\frac1{x+1}\right)\). Hence \(\frac12\ln\left|\frac{x-1}{x+1}\right|+C\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int\frac{x+5}{(x-1)(x+2)}\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int\frac{x+5}{(x-1)(x+2)}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-4-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-4-b" hidden>
+              <p data-lang="ko">\(\frac{x+5}{(x-1)(x+2)}=\frac{A}{x-1}+\frac{B}{x+2}\)로 두면 \(x+5=A(x+2)+B(x-1)\)이에요. \(x=1\)을 넣으면 \(6=3A\), \(A=2\). \(x=-2\)를 넣으면 \(3=-3B\), \(B=-1\). 따라서 \(2\ln|x-1|-\ln|x+2|+C\).</p>
+              <p data-lang="en">Write \(\frac{x+5}{(x-1)(x+2)}=\frac{A}{x-1}+\frac{B}{x+2}\), so \(x+5=A(x+2)+B(x-1)\). \(x=1\): \(6=3A\), \(A=2\). \(x=-2\): \(3=-3B\), \(B=-1\). Hence \(2\ln|x-1|-\ln|x+2|+C\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\frac{1}{x(x+1)}\,dx=\ln|x(x+1)|+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\frac{1}{x(x+1)}\,dx=\ln|x(x+1)|+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\ln|x(x+1)|\)을 미분하면 \(\frac{2x+1}{x(x+1)}\)이라 틀려요. 부분분수로 \(\frac1x-\frac1{x+1}\)로 쪼개면 \(\ln|x|-\ln|x+1|=\ln\left|\frac{x}{x+1}\right|+C\)예요.</p>
+              <p data-lang="en">\(\ln|x(x+1)|\) differentiates to \(\frac{2x+1}{x(x+1)}\). Split into \(\frac1x-\frac1{x+1}\): \(\ln|x|-\ln|x+1|=\ln\left|\frac{x}{x+1}\right|+C\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\frac{x^2}{x+1}\)도 바로 부분분수 \(\frac{A}{x+1}\)로 쪼갤 수 있다.</p>
+              <p data-lang="en">\(\frac{x^2}{x+1}\) can go straight into partial fractions \(\frac{A}{x+1}\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">분자의 차수가 분모보다 크거나 같으면 먼저 <strong>나눗셈</strong>을 해야 해요: \(x-1+\frac1{x+1}\). 그림의 두 번째 함수에서 그래프가 직선 \(y=x-1\)에 붙어 가는 이유가 바로 이 몫이에요.</p>
+              <p data-lang="en">If the numerator's degree is at least the denominator's, <strong>divide</strong> first: \(x-1+\frac1{x+1}\). That quotient is why the second graph hugs the line \(y=x-1\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s13-5" data-status="core">
-      <div class="core-only">
+    <section id="s13-5">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>적분 구간이 무한하거나, 구간 안에서 함수가 무한대로 커지면 보통의 정적분으로 계산할 수 없어요.</li>
@@ -140,7 +464,91 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_1^{\infty}\frac1{x^2}\,dx=\lim_{b\to\infty}\left(1-\frac1b\right)=1\) (수렴). \(\int_1^{\infty}\frac1x\,dx=\lim_{b\to\infty}\ln b=\infty\) (발산). 일반적으로 \(\int_1^\infty\frac{dx}{x^p}\)는 \(p>1\)일 때만 수렴해요.</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_1^{\infty}\frac1{x^2}\,dx=\lim_{b\to\infty}\left(1-\frac1b\right)=1\) (converges); \(\int_1^{\infty}\frac1x\,dx=\lim_{b\to\infty}\ln b=\infty\) (diverges). In general \(\int_1^\infty\frac{dx}{x^p}\) converges only when \(p>1\).</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 끝을 늘려 가며 넓이가 어디로 가는지 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">어디가 무한한가</span><span data-lang="en">What is infinite?</span></legend>
+            <div class="seg" id="im-pick">
+              <label><input type="radio" name="im-pick" value="far" checked><span><span data-lang="ko">구간이 무한 \(\int_1^\infty\frac{dx}{x^p}\)</span><span data-lang="en">Infinite interval \(\int_1^\infty\frac{dx}{x^p}\)</span></span></label>
+              <label><input type="radio" name="im-pick" value="near"><span><span data-lang="ko">함수가 무한 \(\int_0^1\frac{dx}{x^p}\)</span><span data-lang="en">Infinite function \(\int_0^1\frac{dx}{x^p}\)</span></span></label>
+            </div>
+          </fieldset>
+          <div class="viz-canvas-wrap">
+            <canvas id="im-canvas" role="img" data-i18n-attr="aria-label:im.canvas"></canvas>
+          </div>
+          <ul class="legend" id="im-legend"></ul>
+          <table class="readout-table"><tbody id="im-table"></tbody></table>
+          <p class="verdict" id="im-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="im-p"><span data-lang="ko">지수</span><span data-lang="en">Exponent</span> \(p\)</label>
+              <input id="im-p" type="range" min="0.3" max="2.5" step="0.05" value="2">
+              <output id="im-p-out" for="im-p">2.00</output>
+            </div>
+            <div class="slider-row">
+              <label for="im-s" id="im-s-label"></label>
+              <input id="im-s" type="range" min="0" max="3" step="0.01" value="0.5">
+              <output id="im-s-out" for="im-s"></output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="im-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="im-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int_0^{\infty}e^{-x}\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^{\infty}e^{-x}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-5-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-5-a" hidden>
+              <p data-lang="ko">\(\displaystyle\lim_{b\to\infty}\int_0^be^{-x}\,dx=\lim_{b\to\infty}\left(1-e^{-b}\right)=1\)이라 수렴하고, 값은 1이에요.</p>
+              <p data-lang="en">\(\displaystyle\lim_{b\to\infty}\int_0^be^{-x}\,dx=\lim_{b\to\infty}\left(1-e^{-b}\right)=1\): it converges to 1.</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int_0^1\ln x\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^1\ln x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-13-5-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-13-5-b" hidden>
+              <p data-lang="ko">\(x\to0+\)일 때 \(\ln x\to-\infty\)라 이상적분이에요. 부분적분의 결과 \(x\ln x-x\)를 써서</p>
+              <p data-lang="en">\(\ln x\to-\infty\) as \(x\to0+\), so it is improper. With \(x\ln x-x\) from integration by parts,</p>
+              $$\int_0^1\ln x\,dx=\lim_{t\to0+}\Big[x\ln x-x\Big]_t^1=\lim_{t\to0+}\left(-1-t\ln t+t\right)=-1$$
+              <p data-lang="ko">\(t\ln t\to0\)이에요(로피탈의 법칙으로 확인할 수 있어요).</p>
+              <p data-lang="en">Here \(t\ln t\to0\) (check with L'Hôpital's rule).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int_{-1}^1\frac1{x^2}\,dx=\left[-\frac1x\right]_{-1}^1=-2\)</p>
+              <p data-lang="en">\(\displaystyle\int_{-1}^1\frac1{x^2}\,dx=\left[-\frac1x\right]_{-1}^1=-2\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(x=0\)에서 함수가 무한히 커지므로 그냥 대입하면 안 돼요. 양수 함수의 넓이가 음수로 나온 것부터 이상하죠. 0에서 나눠 따져 보면 \(\int_0^1\frac{dx}{x^2}\)이 발산(\(p=2\ge1\))하므로 전체도 발산해요.</p>
+              <p data-lang="en">The function blows up at \(x=0\), so you can't just substitute — a positive function can't have negative area. Split at 0: \(\int_0^1\frac{dx}{x^2}\) diverges (\(p=2\ge1\)), so the whole integral diverges.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(x\to\infty\)일 때 \(f(x)\to0\)이면 \(\int_1^\infty f(x)\,dx\)는 수렴한다.</p>
+              <p data-lang="en">If \(f(x)\to0\) as \(x\to\infty\), then \(\int_1^\infty f(x)\,dx\) converges.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">충분히 <strong>빨리</strong> 0으로 가야 해요. \(\frac1x\)도 0으로 가지만 넓이는 \(\ln b\)로 끝없이 커져요. 그림에서 \(p=1\)로 두고 끝을 늘려 보세요.</p>
+              <p data-lang="en">It must go to 0 <strong>fast enough</strong>. \(\frac1x\to0\), yet its area \(\ln b\) grows without bound. Set \(p=1\) in the picture and push the end out.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   </div>
@@ -150,5 +558,384 @@
   </div>
 </main>
 
+<script>
+/* 13-⑤ 이상적분: 끝을 늘려 가며 넓이의 극한 보기 (∫₁^∞ x^−p 는 p > 1, ∫₀¹ x^−p 는 p < 1 일 때 수렴) */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Pp = $('im-p'), Ss = $('im-s');
+  var mode = document.querySelector('input[name="im-pick"]:checked').value;
+  var f = function (x) { return Math.pow(x, -+Pp.value); };
+  function end() { var s = +Ss.value; return mode === 'far' ? Math.pow(10, s) : Math.pow(10, -s); }   // b = 10^s, t = 10^−s
+  /* ∫ x^−p 의 정확한 값 */
+  function area(a, b, p) { return Math.abs(p - 1) < 1e-9 ? Math.log(b / a) : (Math.pow(b, 1 - p) - Math.pow(a, 1 - p)) / (1 - p); }
+  function limit(p) { return mode === 'far' ? (p > 1 + 1e-9 ? 1 / (p - 1) : Infinity) : (p < 1 - 1e-9 ? 1 / (1 - p) : Infinity); }
+
+  var g = Graph.create($('im-canvas'), { xMin: 0, xMax: 10, yMin: 0, yMax: 1.2, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var c = g.c, e = end();
+    if (mode === 'far') {
+      var xm = Math.max(6, e * 1.05);
+      g.setView({ xMin: -xm * 0.04, xMax: xm, yMin: -0.08, yMax: 1.25 });
+      g.clear(); g.grid(); g.axes();
+      g.area(f, 1, e, { fill: c.fillMain, samples: 600 });
+      g.plot(f, { color: c.main, width: 3.5, from: 0.3, samples: 800 });
+      g.line(e, 0, e, f(e), { color: c.accent, width: 2.5 });
+      g.label(e, 0, 'b', { color: c.accent, dy: 24, bold: true });
+    } else {
+      g.setView({ xMin: -0.05, xMax: 1.1, yMin: -0.6, yMax: 12 });
+      g.clear(); g.grid(); g.axes();
+      g.area(function (x) { return Math.min(f(x), 1e4); }, e, 1, { fill: c.fillMain, samples: 800 });
+      g.plot(f, { color: c.main, width: 3.5, from: 0.004, samples: 1200 });
+      g.line(e, 0, e, Math.min(f(e), 12), { color: c.accent, width: 2.5 });
+      g.label(e, 0, 't', { color: c.accent, dy: 24, bold: true });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', area: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             accent: '<line x1="18" y1="0" x2="18" y2="12" style="stroke:var(--g-accent);stroke-width:2.5"/>' };
+  function legend() {
+    var L = Site.lang(), far = mode === 'far';
+    var items = L === 'ko' ? [['main', 'y = 1/xᵖ (실선)'], ['area', far ? '1부터 b까지의 넓이' : 't부터 1까지의 넓이'], ['accent', far ? '끝 b (점점 오른쪽으로)' : '끝 t (점점 0으로)']]
+                           : [['main', 'y = 1/xᵖ (solid)'], ['area', far ? 'area from 1 to b' : 'area from t to 1'], ['accent', far ? 'end b (moving right)' : 'end t (moving to 0)']];
+    $('im-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('im-s-label').textContent = far ? (L === 'ko' ? '오른쪽 끝 b (멀리)' : 'right end b (far)') : (L === 'ko' ? '왼쪽 끝 t (0 가까이)' : 'left end t (near 0)');
+  }
+
+  function update() {
+    var p = +Pp.value, e = end(), A = mode === 'far' ? area(1, e, p) : area(e, 1, p), Lm = limit(p), v;
+    $('im-s-out').textContent = mode === 'far' ? (e < 100 ? fmt(e, 1) : String(Math.round(e))) : e.toFixed(e >= 0.01 ? 3 : 4);
+    var rows = [['p', fmt(p)], [mode === 'far' ? 'b' : 't', $('im-s-out').textContent], [ko() ? '지금까지의 넓이' : 'area so far', fmt(A, 3)], [ko() ? '극한 (끝까지 갔을 때)' : 'limit', isFinite(Lm) ? fmt(Lm, 3) : '∞']];
+    $('im-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 3 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (isFinite(Lm)) v = { ok: true, text: ko() ? (mode === 'far' ? 'p > 1이라 그래프가 충분히 빨리 0으로 가요. b를 아무리 늘려도 넓이는 ' + fmt(Lm, 3) + '에 다가갈 뿐 넘지 않아요: 수렴.' : 'p < 1이라 0 근처에서 커지는 속도가 느려요. t를 0에 아무리 가까이 해도 넓이는 ' + fmt(Lm, 3) + '에 다가가요: 수렴.')
+                                                   : (mode === 'far' ? 'p > 1, so the graph falls to 0 fast enough. However far b goes, the area approaches ' + fmt(Lm, 3) + ': converges.' : 'p < 1, so it blows up slowly near 0. However close t gets to 0, the area approaches ' + fmt(Lm, 3) + ': converges.') };
+    else v = { ok: false, text: ko() ? (mode === 'far' ? 'p ≤ 1이면 그래프가 0으로 가긴 해도 너무 느려서, b를 늘릴수록 넓이가 끝없이 커져요: 발산.' : 'p ≥ 1이면 0 근처에서 너무 빨리 커져서, t를 0에 가까이 할수록 넓이가 끝없이 커져요: 발산.')
+                                     : (mode === 'far' ? 'For p ≤ 1 the graph tends to 0 too slowly, so the area keeps growing as b increases: diverges.' : 'For p ≥ 1 it blows up too fast near 0, so the area keeps growing as t → 0: diverges.') };
+    var el = $('im-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    Pp.value = m === 'far' ? 2 : 0.5; Ss.value = 0.5;
+    legend(); Pp.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Pp, $('im-p-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Ss.addEventListener('input', update);
+  $('im-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  [Pp, Ss].forEach(function (el) { el.addEventListener('change', function () { $('im-live').textContent = $('im-verdict').textContent; }); });
+  // ▶ 끝을 점점 멀리 (또는 0 가까이)
+  Graph.player({ button: $('im-play'), input: Ss, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
+/* 13-④ 유리함수의 적분: 쪼갠 조각의 합 = 원래 함수, 넓이도 조각별로 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Bv = $('rt-b');
+  // a: 아래끝, F: 역도함수, pieces: [함수, 이름, 색 키]
+  var P = {
+    pf:  { f: function (x) { return 1 / (x * (x + 1)); }, a: 1, F: function (x) { return Math.log(x / (x + 1)); }, range: [1.2, 6], start: 3, view: [-0.3, 6.3, -1.2, 1.2],
+           pieces: [[function (x) { return 1 / x; }, '1/x', 'accent'], [function (x) { return -1 / (x + 1); }, '−1/(x+1)', 'third']], Fn: 'ln|x/(x+1)|',
+           def: '\\(\\dfrac{1}{x(x+1)}=\\dfrac1x-\\dfrac1{x+1}\\)' },
+    div: { f: function (x) { return x * x / (x + 1); }, a: 0, F: function (x) { return x * x / 2 - x + Math.log(x + 1); }, range: [0.5, 6], start: 4, view: [-0.3, 6.3, -1.3, 6],
+           pieces: [[function (x) { return x - 1; }, 'x − 1', 'accent'], [function (x) { return 1 / (x + 1); }, '1/(x+1)', 'third']], Fn: 'x²/2 − x + ln(x+1)',
+           def: '\\(\\dfrac{x^2}{x+1}=(x-1)+\\dfrac1{x+1}\\)' },
+    at:  { f: function (x) { return 1 / (x * x + 1); }, a: 0, F: Math.atan, range: [0.2, 10], start: 1, view: [-0.4, 10.4, -0.15, 1.15],
+           pieces: [], Fn: 'tan⁻¹ b', def: '\\(\\displaystyle\\int_0^b\\frac{dx}{x^2+1}=\\tan^{-1}b\\ \\to\\ \\frac\\pi2\\)' }
+  };
+  var K = document.querySelector('input[name="rt-pick"]:checked').value;
+  function simpson(f, a, b) { var n = 400, h = (b - a) / n, s = f(a) + f(b); for (var i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2); return s * h / 3; }
+
+  var g = Graph.create($('rt-canvas'), { xMin: 0, xMax: 6, yMin: -1, yMax: 1, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var p = P[K], c = g.c, b = +Bv.value, V = p.view;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear(); g.grid(); g.axes();
+    g.area(p.f, p.a, b, { fill: c.fillMain });
+    if (K === 'at') g.hline(Math.PI / 2, { color: c.text2, width: 1, dash: [3, 4] });
+    p.pieces.forEach(function (pc, i) { g.plot(pc[0], { color: c[pc[2]], width: 2.5, dash: i ? [2, 5] : [11, 6], from: K === 'pf' ? 0.15 : V[0] }); });
+    g.plot(p.f, { color: c.main, width: 3.5, from: K === 'pf' ? 0.15 : (K === 'div' ? -0.2 : V[0]) });
+    g.line(b, 0, b, p.f(b), { color: c.accent, width: 2.5 });
+    g.label(b, 0, 'b', { color: c.accent, dy: 24, bold: true });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', area: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>' };
+  function legend() {
+    var p = P[K], L = Site.lang();
+    var items = [['main', (L === 'ko' ? '원래 함수 (실선)' : 'the function (solid)')]];
+    p.pieces.forEach(function (pc, i) { items.push([pc[2], (L === 'ko' ? '쪼갠 조각 ' : 'piece ') + pc[1] + (i ? (L === 'ko' ? ' (짧은 점선)' : ' (dotted)') : (L === 'ko' ? ' (긴 점선)' : ' (long dashes)'))]); });
+    items.push(['area', L === 'ko' ? '넓이 = 정적분' : 'area = definite integral']);
+    $('rt-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var p = P[K], b = +Bv.value, num = simpson(p.f, p.a, b), ex = p.F(b) - p.F(p.a), v;
+    var rows = [['b', fmt(b)], [ko() ? '넓이 (직접 계산)' : 'area (numerical)', fmt(num, 4)], [(ko() ? '공식 ' : 'formula ') + p.Fn, fmt(ex, 4)]];
+    if (K === 'at') rows.push(['π/2', fmt(Math.PI / 2, 4)]);
+    $('rt-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (K === 'pf') v = ko() ? '실선은 두 조각(1/x와 −1/(x+1))을 더한 것과 정확히 같아요. 조각마다 ln으로 적분해 합치면 ln|x/(x+1)|이고, 넓이와 딱 맞아요.'
+                             : 'The solid curve is exactly the sum of the pieces 1/x and −1/(x+1). Integrating each to a log and combining gives ln|x/(x+1)|, matching the area.';
+    else if (K === 'div') v = ko() ? '나눗셈의 몫 x − 1(긴 점선)에 나머지 조각 1/(x+1)을 더하면 원래 함수예요. 멀리 갈수록 나머지가 작아져 그래프가 직선 y = x − 1에 붙어 가요.'
+                                   : 'The quotient x − 1 (long dashes) plus the remainder 1/(x+1) gives the function. Far out the remainder shrinks, so the graph hugs y = x − 1.';
+    else v = ko() ? '1/(x² + 1) 아래 넓이는 tan⁻¹ b예요. b를 아무리 키워도 넓이는 π/2 ≈ 1.5708을 넘지 않아요 (점선). 끝없이 긴 영역인데 넓이가 유한해요 — 13-⑤ 이상적분의 예고편이에요.'
+                  : 'The area under 1/(x² + 1) is tan⁻¹ b. However large b gets, it never exceeds π/2 ≈ 1.5708 (dashed): an endless region with finite area — a preview of 13-⑤.';
+    var el = $('rt-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + v;
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var p = P[k], d = $('rt-def');
+    Bv.min = p.range[0]; Bv.max = p.range[1]; Bv.value = p.start;
+    d.innerHTML = p.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); Bv.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Bv, $('rt-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('rt-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  Bv.addEventListener('change', function () { $('rt-live').textContent = $('rt-verdict').textContent; });
+  Graph.player({ button: $('rt-play'), input: Bv, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setFn(K);
+});
+
+/* 13-③ 삼각함수의 곱의 적분: 진동수가 다르면 [0, 2π] 에서 곱의 넓이가 0 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Mi = $('pd-m'), Ni = $('pd-n'), TAU = 2 * Math.PI;
+  var mode = document.querySelector('input[name="pd-pick"]:checked').value;
+  function parts() {
+    var m = +Mi.value, n = +Ni.value;
+    var f = mode === 'cc' ? function (x) { return Math.cos(m * x); } : function (x) { return Math.sin(m * x); };
+    var h = mode === 'ss' ? function (x) { return Math.sin(n * x); } : function (x) { return Math.cos(n * x); };
+    return { m: m, n: n, f: f, h: h, p: function (x) { return f(x) * h(x); } };
+  }
+  function exact(m, n) { return mode === 'sc' ? 0 : (m === n ? Math.PI : 0); }
+  function simpson(f, a, b) { var N = 600, s = f(a) + f(b), d = (b - a) / N; for (var i = 1; i < N; i++) s += f(a + i * d) * (i % 2 ? 4 : 2); return s * d / 3; }
+
+  var g = Graph.create($('pd-canvas'), { xMin: -0.2, xMax: 6.5, yMin: -1.3, yMax: 1.3, aspect: 0.65, maxHeight: 320 });
+  g.render = function () {
+    var P = parts(), c = g.c;
+    g.clear(); g.grid({ xStep: Math.PI / 2, yStep: 0.5 }); g.axes({ xStep: 1, yStep: 0.5 });
+    g.area(function (x) { return Math.max(P.p(x), 0); }, 0, TAU, { fill: c.fillMain, samples: 600 });
+    g.area(function (x) { return Math.min(P.p(x), 0); }, 0, TAU, { fill: c.fillThird, hatch: 'd', hatchColor: c.third, samples: 600 });
+    g.plot(P.f, { color: c.text2, width: 1.3, dash: [4, 4], from: 0, to: TAU });
+    g.plot(P.h, { color: c.accent, width: 1.3, dash: [8, 5], from: 0, to: TAU });
+    g.plot(P.p, { color: c.main, width: 3, from: 0, to: TAU, samples: 900 });
+    g.label(TAU, 0, '2π', { color: c.text2, dy: -12 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', gray: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1.3;stroke-dasharray:4 4"/>',
+             accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:1.3;stroke-dasharray:8 5"/>',
+             pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>', neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function names() { return mode === 'ss' ? ['sin mx', 'sin nx'] : mode === 'sc' ? ['sin mx', 'cos nx'] : ['cos mx', 'cos nx']; }
+  function legend() {
+    var L = Site.lang(), N = names();
+    var items = L === 'ko' ? [['gray', N[0] + ' (회색 점선)'], ['accent', N[1] + ' (주황 점선)'], ['main', '두 함수의 곱 (실선)'], ['pos', '양의 넓이 (색칠)'], ['neg', '음의 넓이 (빗금)']]
+                           : [['gray', N[0] + ' (gray dashes)'], ['accent', N[1] + ' (orange dashes)'], ['main', 'their product (solid)'], ['pos', 'positive area (shaded)'], ['neg', 'negative area (hatched)']];
+    $('pd-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var P = parts(), up = simpson(function (x) { return Math.max(P.p(x), 0); }, 0, TAU), dn = simpson(function (x) { return Math.min(P.p(x), 0); }, 0, TAU), tot = up + dn, v;
+    var d = $('pd-def'), m = P.m, n = P.n;
+    // kx 를 보기 좋게: 1x → x, −1x → −x, 0x → 0
+    var ax = function (k) { return k === 0 ? '0' : k === 1 ? 'x' : k === -1 ? '-x' : k + 'x'; };
+    var tex = mode === 'ss' ? '\\(\\sin ' + ax(m) + '\\,\\sin ' + ax(n) + '=\\tfrac12\\{\\cos(' + ax(m - n) + ')-\\cos(' + ax(m + n) + ')\\}\\)'
+            : mode === 'sc' ? '\\(\\sin ' + ax(m) + '\\,\\cos ' + ax(n) + '=\\tfrac12\\{\\sin(' + ax(m + n) + ')+\\sin(' + ax(m - n) + ')\\}\\)'
+            : '\\(\\cos ' + ax(m) + '\\,\\cos ' + ax(n) + '=\\tfrac12\\{\\cos(' + ax(m + n) + ')+\\cos(' + ax(m - n) + ')\\}\\)';
+    d.innerHTML = tex;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    var rows = [[ko() ? '양의 넓이' : 'positive area', fmt(up, 3)], [ko() ? '음의 넓이' : 'negative area', fmt(dn, 3)], ['∫[0, 2π] (' + names().join(' · ') + ') dx', fmt(Math.abs(tot) < 5e-4 ? 0 : tot, 3)]];
+    $('pd-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (mode !== 'sc' && m === n) v = ko() ? '진동수가 같으면 곱이 제곱(' + (mode === 'ss' ? 'sin²' : 'cos²') + ')이 되어 대부분 x축 위에 있어요. 넓이는 π예요.'
+                                           : 'With equal frequencies the product is a square (' + (mode === 'ss' ? 'sin²' : 'cos²') + '), mostly above the axis: the area is π.';
+    else if (m === n) v = ko() ? 'sin과 cos은 진동수가 같아도 곱이 ½sin(' + 2 * m + 'x)라서 위아래로 똑같이 출렁여요. 그래서 넓이가 0이에요.'
+                               : 'Even with equal frequencies, sin·cos = ½sin(' + 2 * m + 'x), which swings up and down equally: the area is 0.';
+    else v = ko() ? '진동수가 다르면 곱을 합으로 바꾼 두 파동이 모두 2π 동안 정확히 몇 바퀴를 돌아요. 그래서 색칠한 넓이와 빗금 넓이가 똑같이 상쇄되어 0이에요.'
+                  : 'With different frequencies, both waves in the product-to-sum form complete whole cycles over 2π, so the shaded and hatched areas cancel exactly: 0.';
+    var el = $('pd-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + v + ' (' + (ko() ? '정확한 값 ' : 'exact ') + (exact(m, n) ? 'π' : '0') + ')';
+    g.draw();
+  }
+
+  Graph.bindSlider(Mi, $('pd-m-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  Graph.bindSlider(Ni, $('pd-n-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  $('pd-pick').addEventListener('change', function (e) { mode = e.target.value; legend(); update(); });
+  [Mi, Ni].forEach(function (el) { el.addEventListener('change', function () { $('pd-live').textContent = $('pd-verdict').textContent; }); });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  legend();
+  update();
+});
+
+/* 13-② 삼각함수의 적분: sin x 의 부호 있는 넓이 / sin²x = ½ − ½cos2x */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Bv = $('tr-b'), PI = Math.PI;
+  var mode = document.querySelector('input[name="tr-pick"]:checked').value;
+  var sq = function (x) { var s = Math.sin(x); return s * s; };
+  var wave = function (x) { return -Math.cos(2 * x) / 2; };
+  var DEF = { sin: '\\(\\displaystyle\\int_0^b\\sin x\\,dx=\\Big[-\\cos x\\Big]_0^b=1-\\cos b\\)',
+              sq: '\\(\\sin^2x=\\dfrac12-\\dfrac12\\cos2x\\ \\Rightarrow\\ \\displaystyle\\int_0^b\\sin^2x\\,dx=\\frac b2-\\frac{\\sin2b}{4}\\)' };
+
+  var g = Graph.create($('tr-canvas'), { xMin: -0.3, xMax: 6.6, yMin: -1.3, yMax: 1.3, aspect: 0.7, maxHeight: 340 });
+  g.render = function () {
+    var c = g.c, b = +Bv.value;
+    g.setView({ xMin: -0.3, xMax: 6.6, yMin: -1.3, yMax: 1.3 });
+    g.clear(); g.grid({ xStep: PI / 2, yStep: 0.5 }); g.axes({ xStep: 1, yStep: 0.5 });
+    [PI, 2 * PI].forEach(function (x, i) { g.label(x, 0, i ? '2π' : 'π', { color: c.text2, dy: -12 }); });
+    if (mode === 'sin') {
+      var pos = function (x) { return Math.max(Math.sin(x), 0); }, neg = function (x) { return Math.min(Math.sin(x), 0); };
+      g.area(pos, 0, b, { fill: c.fillMain });
+      g.area(neg, 0, b, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+      g.plot(Math.sin, { color: c.main, width: 3.5 });
+    } else {
+      g.area(sq, 0, b, { fill: c.fillMain });
+      g.hline(0.5, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.plot(wave, { color: c.third, width: 2.5, dash: [2, 5] });
+      g.plot(sq, { color: c.main, width: 3.5 });
+      g.label(6.5, 0.5, 'y = ½', { color: c.accent, align: 'right', dy: -12, bold: true });
+    }
+    g.line(b, 0, b, mode === 'sin' ? Math.sin(b) : sq(b), { color: c.accent, width: 2.5 });
+    g.label(b, 0, 'b', { color: c.accent, dy: 26, bold: true });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>', pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = mode === 'sin'
+      ? (L === 'ko' ? [['main', 'y = sin x (실선)'], ['pos', '양의 넓이 (색칠)'], ['neg', '음의 넓이 (빗금)']] : [['main', 'y = sin x (solid)'], ['pos', 'positive area (shaded)'], ['neg', 'negative area (hatched)']])
+      : (L === 'ko' ? [['main', 'y = sin²x (실선)'], ['accent', '평균 높이 y = ½ (긴 점선)'], ['third', '출렁이는 부분 −½cos2x (짧은 점선)'], ['pos', '넓이 ∫₀ᵇ sin²x dx']]
+                    : [['main', 'y = sin²x (solid)'], ['accent', 'average height y = ½ (long dashes)'], ['third', 'wavy part −½cos2x (dotted)'], ['pos', 'area ∫₀ᵇ sin²x dx']]);
+    $('tr-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var b = +Bv.value, rows, v;
+    if (mode === 'sin') {
+      var val = 1 - Math.cos(b);
+      rows = [['b', fmt(b)], ['1 − cos b', fmt(val, 4)]];
+      v = Math.abs(b - 2 * PI) < 0.02 ? (ko() ? '한 바퀴(2π)를 돌면 위 넓이 2와 아래 넓이 −2가 상쇄되어 0이에요.' : 'Over a full turn (2π), the area +2 above and −2 below cancel: 0.')
+        : Math.abs(b - PI) < 0.02 ? (ko() ? 'b = π에서 넓이가 가장 커요: 1 − cos π = 2. 이후로는 x축 아래(빗금)라 줄어들어요.' : 'At b = π the area peaks: 1 − cos π = 2. After that it lies below the axis (hatched) and shrinks.')
+        : (ko() ? '−cos x가 sin x의 역도함수라서 넓이는 1 − cos b예요. π를 넘으면 음의 넓이가 더해져 줄어들어요.' : '−cos x is an antiderivative of sin x, so the area is 1 − cos b. Past π, negative area is added and it shrinks.');
+    } else {
+      var A = b / 2 - Math.sin(2 * b) / 4;
+      rows = [['b / 2', fmt(b / 2, 4)], ['− sin2b / 4', fmt(-Math.sin(2 * b) / 4, 4)], ['∫₀ᵇ sin²x dx', fmt(A, 4)]];
+      v = ko() ? 'sin²x는 평균 높이 ½과 위아래로 출렁이는 −½cos2x로 나뉘어요. 출렁이는 부분은 π마다 넓이가 0이 되어, 넓이는 거의 b/2예요. b = π이면 정확히 π/2.'
+               : 'sin²x splits into the average height ½ plus the wavy −½cos2x. The wavy part has zero area over each π, so the area is about b/2 — exactly π/2 at b = π.';
+    }
+    $('tr-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === rows.length - 1 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('tr-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + v;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var d = $('tr-def');
+    d.innerHTML = DEF[m];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); update();
+  }
+
+  Graph.bindSlider(Bv, $('tr-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('tr-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  Bv.addEventListener('change', function () { $('tr-live').textContent = $('tr-verdict').textContent; });
+  Graph.player({ button: $('tr-play'), input: Bv, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
+/* 13-① 지수함수와 로그함수의 적분: 곡선 아래 넓이 = 공식 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Bv = $('el-b');
+  // a: 아래끝, F: 역도함수, range: b 의 범위
+  var P = {
+    inv: { f: function (x) { return 1 / x; }, a: 1, F: Math.log, range: [0.2, 6], start: 2.72, view: [-0.3, 6.3, -0.6, 3.6], Fn: 'ln b',
+           def: '\\(\\displaystyle\\int_1^b\\frac1x\\,dx=\\Big[\\ln x\\Big]_1^b=\\ln b\\)' },
+    exp: { f: function (x) { return Math.exp(2 * x); }, a: 0, F: function (x) { return Math.exp(2 * x) / 2; }, range: [0.1, 1.2], start: 0.8, view: [-0.6, 1.35, -0.6, 11.5], Fn: '(e²ᵇ − 1)/2',
+           def: '\\(\\displaystyle\\int_0^be^{2x}\\,dx=\\Big[\\tfrac12e^{2x}\\Big]_0^b=\\frac{e^{2b}-1}{2}\\)' },
+    fp:  { f: function (x) { return 2 * x / (x * x + 1); }, a: 0, F: function (x) { return Math.log(x * x + 1); }, range: [0.2, 5], start: 2, view: [-0.3, 5.3, -0.2, 1.3], Fn: 'ln(b² + 1)',
+           def: '\\(\\displaystyle\\int_0^b\\frac{2x}{x^2+1}\\,dx=\\Big[\\ln(x^2+1)\\Big]_0^b=\\ln(b^2+1)\\)' }
+  };
+  var K = document.querySelector('input[name="el-pick"]:checked').value;
+  function simpson(f, a, b) { var n = 400, h = (b - a) / n, s = f(a) + f(b); for (var i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2); return s * h / 3; }
+
+  var g = Graph.create($('el-canvas'), { xMin: 0, xMax: 6, yMin: 0, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var p = P[K], c = g.c, b = +Bv.value, V = p.view;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear(); g.grid(); g.axes();
+    var lo = Math.min(p.a, b), hi = Math.max(p.a, b);
+    // b < a 이면 거꾸로 가는 적분이라 음수: 빗금
+    g.area(p.f, lo, hi, b >= p.a ? { fill: c.fillMain } : { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+    g.plot(p.f, { color: c.main, width: 3.5, from: K === 'inv' ? 0.12 : V[0] });
+    g.line(p.a, 0, p.a, p.f(p.a), { color: c.text, width: 1.5 });
+    g.line(b, 0, b, p.f(b), { color: c.accent, width: 2.5 });
+    g.label(b, 0, 'b', { color: c.accent, dy: 26, bold: true });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['main', '적분할 함수 (실선)'], ['pos', '넓이 = 정적분 (색칠)']] : [['main', 'integrand (solid)'], ['pos', 'area = definite integral (shaded)']];
+    if (K === 'inv') items.push(['neg', L === 'ko' ? 'b < 1이면 거꾸로 가는 적분: 음수 (빗금)' : 'b < 1: backward integral, negative (hatched)']);
+    $('el-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('el-e').hidden = K !== 'inv';
+  }
+
+  function update() {
+    var p = P[K], b = +Bv.value, area = simpson(p.f, p.a, b), exact = p.F(b) - p.F(p.a), v;
+    var rows = [['b', fmt(b)], [ko() ? '넓이 (직접 잘게 나눠 계산)' : 'area (computed numerically)', fmt(area, 4)], [p.Fn, fmt(exact, 4)]];
+    $('el-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (K === 'inv') v = Math.abs(b - Math.E) < 0.002
+      ? (ko() ? 'b = e ≈ 2.718일 때 넓이가 1이 돼요. 그래서 "1부터 넓이가 1이 되는 곳"이 e라고 정의할 수도 있어요.' : 'At b = e ≈ 2.718 the area becomes 1 — e can even be defined as the point where this area reaches 1.')
+      : (ko() ? '1/x 아래의 넓이가 ln b와 같아요. b < 1이면 넓이가 음수(빗금), b를 2배 하면 넓이가 ln 2 ≈ 0.693씩 늘어나요.' : 'The area under 1/x equals ln b. For b < 1 it is negative (hatched); doubling b adds ln 2 ≈ 0.693.');
+    else if (K === 'exp') v = ko() ? 'e²ˣ의 역도함수는 e²ˣ가 아니라 ½e²ˣ예요. 안쪽 일차식의 계수 2로 나눠 준 값이 넓이와 딱 맞아요.' : 'The antiderivative of e²ˣ is ½e²ˣ, not e²ˣ. Dividing by the inner coefficient 2 matches the area exactly.';
+    else v = ko() ? '분자 2x가 분모 x² + 1의 도함수라서, 넓이가 ln(x² + 1)로 깔끔하게 나와요 (f′/f 꼴).' : 'The numerator 2x is the derivative of x² + 1, so the area is simply ln(x² + 1) (the f′/f form).';
+    var el = $('el-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + v;
+    g.draw();
+  }
+  function setInt(k) {
+    K = k;
+    var p = P[k], d = $('el-def');
+    Bv.min = p.range[0]; Bv.max = p.range[1]; Bv.value = p.start;
+    d.innerHTML = p.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); Bv.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Bv, $('el-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('el-pick').addEventListener('change', function (e) { setInt(e.target.value); });
+  $('el-e').addEventListener('click', function () { Bv.value = Math.E; Bv.dispatchEvent(new Event('input')); $('el-live').textContent = $('el-verdict').textContent; });
+  Bv.addEventListener('change', function () { $('el-live').textContent = $('el-verdict').textContent; });
+  Graph.player({ button: $('el-play'), input: Bv, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setInt(K);
+});
+</script>
 </body>
 </html>

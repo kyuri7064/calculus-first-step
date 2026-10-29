@@ -27,8 +27,9 @@
     <!-- 완성된 소단원은 여기에 <section id="s14-번호"> … </section> 으로 넣는다.
          없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
 
-    <section id="s14-1" data-status="core">
-      <div class="core-only">
+    <section id="s14-1">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>두 곡선 사이의 넓이는 "위 곡선 − 아래 곡선"을 적분해서 구해요.</li>
@@ -46,12 +47,91 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(y=x\)와 \(y=x^2\)은 \(x=0,1\)에서 만나고, 그 사이에서 \(x\ge x^2\)이므로 \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(y=x\) and \(y=x^2\) meet at \(x=0,1\) with \(x\ge x^2\) between, so \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 세로 띠 (위 − 아래) 를 모아 두 곡선 사이 넓이 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">두 곡선 고르기</span><span data-lang="en">Choose two curves</span></legend>
+            <div class="seg" id="ab-pick">
+              <label><input type="radio" name="ab-pick" value="a" checked><span>\(y=x,\ y=x^2\)</span></label>
+              <label><input type="radio" name="ab-pick" value="b"><span>\(y=x,\ y=x^3\)</span></label>
+              <label><input type="radio" name="ab-pick" value="c"><span>\(y=\sin x,\ y=\cos x\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="ab-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="ab-canvas" role="img" data-i18n-attr="aria-label:ab.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ab-legend"></ul>
+          <table class="readout-table"><tbody id="ab-table"></tbody></table>
+          <p class="verdict" id="ab-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ab-x"><span data-lang="ko">세로 띠의 위치</span><span data-lang="en">Strip position</span> \(x\)</label>
+              <input id="ab-x" type="range" min="0" max="1" step="0.005" value="0.4">
+              <output id="ab-x-out" for="ab-x">0.40</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ab-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ab-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">곡선 \(y=x^2\)과 직선 \(y=2x\)로 둘러싸인 부분의 넓이를 구하시오.</p>
+            <p data-lang="en">Find the area enclosed by \(y=x^2\) and \(y=2x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-1-a" hidden>
+              <p data-lang="ko">\(x^2=2x\)에서 교점은 \(x=0,\,2\)이고, 그 사이에서 \(2x\ge x^2\)이에요. \(S=\int_0^2(2x-x^2)\,dx=4-\frac83=\frac43\).</p>
+              <p data-lang="en">\(x^2=2x\) gives \(x=0,\,2\), with \(2x\ge x^2\) between. \(S=\int_0^2(2x-x^2)\,dx=4-\frac83=\frac43\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">곡선 \(y=x^2-2x\)와 직선 \(y=x\)로 둘러싸인 부분의 넓이를 구하시오.</p>
+            <p data-lang="en">Find the area enclosed by \(y=x^2-2x\) and \(y=x\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-1-b" hidden>
+              <p data-lang="ko">\(x^2-2x=x\)에서 \(x=0,\,3\). 그 사이에서는 직선이 위에 있으므로 \(S=\int_0^3\{x-(x^2-2x)\}\,dx=\int_0^3(3x-x^2)\,dx=\frac{27}2-9=\frac92\). 곡선이 \(x\)축 아래로 내려가도 "위 − 아래"는 그대로 써요.</p>
+              <p data-lang="en">\(x^2-2x=x\) gives \(x=0,\,3\); the line is on top, so \(S=\int_0^3(3x-x^2)\,dx=\frac{27}2-9=\frac92\). Even though the parabola dips below the axis, "top − bottom" still works.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(y=x\)와 \(y=x^3\) 사이의 넓이는 \(\int_{-1}^1(x-x^3)\,dx=0\)이다.</p>
+              <p data-lang="en">The area between \(y=x\) and \(y=x^3\) is \(\int_{-1}^1(x-x^3)\,dx=0\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(x=0\)에서 위아래가 바뀌어서 양수와 음수가 상쇄된 거예요. 구간을 나누거나 절댓값을 씌우면 넓이는 \(\frac12\)이에요. 그림의 두 번째 곡선 쌍에서 비교해 보세요.</p>
+              <p data-lang="en">Top and bottom switch at \(x=0\), so positive and negative parts cancel. Split the interval (or use absolute value): the area is \(\frac12\). Compare in the second pair in the picture.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">위아래 순서는 상관없다: \(\int_0^1(x^2-x)\,dx\)도 넓이다.</p>
+              <p data-lang="en">The order doesn't matter: \(\int_0^1(x^2-x)\,dx\) is also the area.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그러면 \(-\frac16\)이 나와요. 넓이는 음수일 수 없으니 항상 <strong>위 곡선 − 아래 곡선</strong>으로 써요. 그림의 세로 띠 높이도 늘 "위 − 아래"예요.</p>
+              <p data-lang="en">That gives \(-\frac16\). Area can't be negative, so always write <strong>top − bottom</strong>. The strip in the picture always has height "top − bottom".</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s14-2" data-status="core">
-      <div class="core-only">
+    <section id="s14-2">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>입체를 \(x\)축에 수직인 평면으로 얇게 자르면, 각 조각의 부피는 (단면의 넓이) × (두께)예요.</li>
@@ -69,12 +149,96 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 반원 \(y=\sqrt{r^2-x^2}\)을 회전시키면 구: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Rotating the semicircle \(y=\sqrt{r^2-x^2}\) gives a sphere: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 회전체를 원판으로 얇게 썰어 부피 어림하기 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">회전시킬 곡선</span><span data-lang="en">Curve to rotate</span></legend>
+            <div class="seg" id="vo-pick">
+              <label><input type="radio" name="vo-pick" value="sph" checked><span><span data-lang="ko">반원 → 구</span><span data-lang="en">Semicircle → sphere</span></span></label>
+              <label><input type="radio" name="vo-pick" value="cone"><span><span data-lang="ko">직선 → 원뿔</span><span data-lang="en">Line → cone</span></span></label>
+              <label><input type="radio" name="vo-pick" value="par"><span>\(\sqrt x\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="vo-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="vo-canvas" role="img" data-i18n-attr="aria-label:vo.canvas"></canvas>
+          </div>
+          <ul class="legend" id="vo-legend"></ul>
+          <table class="readout-table"><tbody id="vo-table"></tbody></table>
+          <p class="verdict" id="vo-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="vo-n"><span data-lang="ko">원판의 개수</span><span data-lang="en">Number of discs</span> \(n\)</label>
+              <input id="vo-n" type="range" min="2" max="60" step="1" value="6">
+              <output id="vo-n-out" for="vo-n">6</output>
+            </div>
+            <div class="slider-row">
+              <label for="vo-x"><span data-lang="ko">살펴볼 단면의 위치</span><span data-lang="en">Cross-section at</span> \(x\)</label>
+              <input id="vo-x" type="range" min="0" max="1" step="0.005" value="0.4">
+              <output id="vo-x-out" for="vo-x"></output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="vo-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="vo-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">곡선 \(y=\sqrt x\) \((0\le x\le4)\)를 \(x\)축 둘레로 회전시킨 입체의 부피를 구하시오.</p>
+            <p data-lang="en">Find the volume when \(y=\sqrt x\) \((0\le x\le4)\) is rotated about the \(x\)-axis.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-2-a" hidden>
+              <p data-lang="ko">단면은 반지름 \(\sqrt x\)인 원이라 넓이가 \(\pi(\sqrt x)^2=\pi x\)예요. \(V=\pi\int_0^4x\,dx=\pi\cdot8=8\pi\).</p>
+              <p data-lang="en">Each cross-section is a circle of radius \(\sqrt x\), area \(\pi x\). \(V=\pi\int_0^4x\,dx=8\pi\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">밑면이 원 \(x^2+y^2\le1\)이고, \(x\)축에 수직인 평면으로 자른 단면이 모두 정사각형인 입체의 부피를 구하시오.</p>
+            <p data-lang="en">A solid has base \(x^2+y^2\le1\), and every cross-section perpendicular to the \(x\)-axis is a square. Find its volume.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-2-b" hidden>
+              <p data-lang="ko">위치 \(x\)에서 정사각형의 한 변은 \(2\sqrt{1-x^2}\)이라 단면의 넓이는 \(S(x)=4(1-x^2)\)예요. 회전체가 아니어도 \(V=\int S(x)\,dx\)는 그대로예요: \(\int_{-1}^14(1-x^2)\,dx=\frac{16}3\).</p>
+              <p data-lang="en">At \(x\) the square's side is \(2\sqrt{1-x^2}\), so \(S(x)=4(1-x^2)\). Not a solid of revolution, but \(V=\int S(x)\,dx\) still works: \(\int_{-1}^14(1-x^2)\,dx=\frac{16}3\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">회전체의 부피는 \(\pi\int_a^bf(x)\,dx\)이다.</p>
+              <p data-lang="en">The volume of revolution is \(\pi\int_a^bf(x)\,dx\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">단면은 반지름 \(f(x)\)인 <strong>원</strong>이라 넓이가 \(\pi\{f(x)\}^2\)이에요. 제곱을 빠뜨리면 원판의 넓이가 아니라 반지름을 더하는 셈이 돼요.</p>
+              <p data-lang="en">Each cross-section is a <strong>circle</strong> of radius \(f(x)\), area \(\pi\{f(x)\}^2\). Without the square you'd be adding radii, not disc areas.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">두 곡선 사이(\(f\ge g\ge0\))를 회전시킨 부피는 \(\pi\int\{f(x)-g(x)\}^2\,dx\)이다.</p>
+              <p data-lang="en">Rotating the region between \(f\ge g\ge0\) gives \(\pi\int\{f(x)-g(x)\}^2\,dx\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">단면은 가운데가 뚫린 고리(와셔)라서 넓이가 (큰 원) − (작은 원) \(=\pi\{f(x)^2-g(x)^2\}\)이에요. 따라서 \(V=\pi\int\{f(x)^2-g(x)^2\}\,dx\).</p>
+              <p data-lang="en">Each cross-section is a ring (washer): big circle − small circle \(=\pi\{f(x)^2-g(x)^2\}\). So \(V=\pi\int\{f(x)^2-g(x)^2\}\,dx\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s14-3" data-status="core">
-      <div class="core-only">
+    <section id="s14-3">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>속도 \(v(t)\)를 적분하면 <strong>위치의 변화량</strong>이에요 (순변화량 정리). 뒤로 간 거리는 빼져요.</li>
@@ -95,7 +259,85 @@
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(v(t)=t^2-4\), \(0\le t\le3\): displacement \(\int_0^3(t^2-4)\,dt=-3\). The direction changes at \(t=2\), so distance \(=\int_0^2(4-t^2)\,dt+\int_2^3(t^2-4)\,dt=\frac{16}3+\frac73=\frac{23}3\).</p>
         </div>
         <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#velocity"><span data-lang="ko">🏫 학교 속 미적분: 속도와 거리</span><span data-lang="en">🏫 Calculus at School: velocity and distance</span></a></div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 속도 그래프의 넓이 ↔ 수직선 위의 실제 움직임 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">속도 고르기</span><span data-lang="en">Choose a velocity</span></legend>
+            <div class="seg" id="vd-pick">
+              <label><input type="radio" name="vd-pick" value="a" checked><span>\(v=t^2-4\)</span></label>
+              <label><input type="radio" name="vd-pick" value="b"><span>\(v=3-t\)</span></label>
+              <label><input type="radio" name="vd-pick" value="c"><span>\(v=2\cos t\)</span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title"><span data-lang="ko">⬆️ 속도 \(v(t)\)와 \(t\)축 사이의 넓이</span><span data-lang="en">⬆️ Velocity \(v(t)\) and the area to the \(t\)-axis</span></p>
+          <div class="viz-canvas-wrap"><canvas id="vd-v" role="img" data-i18n-attr="aria-label:vd.v"></canvas></div>
+          <p class="mini-chart-title"><span data-lang="ko">⬇️ 수직선 위에서 실제로 움직인 길 (출발점 0)</span><span data-lang="en">⬇️ The actual path on the number line (starting at 0)</span></p>
+          <div class="viz-canvas-wrap"><canvas id="vd-x" role="img" data-i18n-attr="aria-label:vd.x"></canvas></div>
+          <ul class="legend" id="vd-legend"></ul>
+          <table class="readout-table"><tbody id="vd-table"></tbody></table>
+          <p class="verdict" id="vd-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="vd-t"><span data-lang="ko">끝 시각</span><span data-lang="en">End time</span> \(T\)</label>
+              <input id="vd-t" type="range" min="0.05" max="3" step="0.01" value="3">
+              <output id="vd-t-out" for="vd-t">3.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="vd-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="vd-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">속도가 \(v(t)=3-t\)인 점이 \(t=0\)부터 \(t=6\)까지 움직였을 때, 위치의 변화량과 움직인 거리를 구하시오.</p>
+            <p data-lang="en">A point moves with \(v(t)=3-t\) from \(t=0\) to \(t=6\). Find its displacement and the distance traveled.</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-3-a" hidden>
+              <p data-lang="ko">위치의 변화량 \(\int_0^6(3-t)\,dt=18-18=0\): 제자리로 돌아왔어요. \(t=3\)에서 방향이 바뀌므로 거리는 \(\int_0^3(3-t)\,dt+\int_3^6(t-3)\,dt=\frac92+\frac92=9\)예요.</p>
+              <p data-lang="en">Displacement \(\int_0^6(3-t)\,dt=18-18=0\): back where it started. It turns at \(t=3\), so the distance is \(\int_0^3(3-t)\,dt+\int_3^6(t-3)\,dt=\frac92+\frac92=9\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(v(t)=t^2-4t+3\)일 때 \(0\le t\le3\)에서 움직인 거리를 구하시오.</p>
+            <p data-lang="en">With \(v(t)=t^2-4t+3\), find the distance traveled for \(0\le t\le3\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-14-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-14-3-b" hidden>
+              <p data-lang="ko">\(v=(t-1)(t-3)\)이라 \(t=1\)에서 부호가 바뀌어요. \(\int_0^1v\,dt=\frac43\), \(\int_1^3v\,dt=-\frac43\)이므로 거리는 \(\frac43+\frac43=\frac83\)이에요 (위치의 변화량은 0).</p>
+              <p data-lang="en">\(v=(t-1)(t-3)\) changes sign at \(t=1\). \(\int_0^1v\,dt=\frac43\) and \(\int_1^3v\,dt=-\frac43\), so the distance is \(\frac43+\frac43=\frac83\) (displacement 0).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">움직인 거리는 \(\left|\int_a^bv(t)\,dt\right|\)이다.</p>
+              <p data-lang="en">The distance traveled is \(\left|\int_a^bv(t)\,dt\right|\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그건 출발점과 도착점 사이의 거리예요. 갔다가 돌아온 길까지 세려면 \(\int_a^b|v(t)|\,dt\)를 써야 해요. 그림 아래의 길에서 되돌아온 부분을 확인해 보세요.</p>
+              <p data-lang="en">That's just the gap between start and finish. To count going out and coming back, use \(\int_a^b|v(t)|\,dt\). See the return trip in the path below the picture.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">시각 \(t\)에서의 위치는 \(\int_0^tv(s)\,ds\)이다.</p>
+              <p data-lang="en">The position at time \(t\) is \(\int_0^tv(s)\,ds\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">적분은 위치의 <strong>변화량</strong>만 알려 줘요. 처음 위치를 더해야 해요: \(x(t)=x(0)+\int_0^tv(s)\,ds\). 출발점이 5라면 모든 위치가 5만큼 옮겨져요.</p>
+              <p data-lang="en">The integral gives only the <strong>change</strong> in position; add the starting point: \(x(t)=x(0)+\int_0^tv(s)\,ds\). Starting at 5 shifts every position by 5.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   </div>
@@ -105,5 +347,263 @@
   </div>
 </main>
 
+<script>
+/* 14-③ 속도와 거리: ∫v = 위치의 변화량, ∫|v| = 움직인 거리 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var T = $('vd-t'), PI = Math.PI;
+  // x: 위치 (x(0) = 0), turns: 방향이 바뀌는 시각
+  var P = {
+    a: { v: function (t) { return t * t - 4; }, x: function (t) { return t * t * t / 3 - 4 * t; }, tmax: 3, turns: [2], vv: [-4.6, 5.6] },
+    b: { v: function (t) { return 3 - t; }, x: function (t) { return 3 * t - t * t / 2; }, tmax: 6, turns: [3], vv: [-3.6, 3.6] },
+    c: { v: function (t) { return 2 * Math.cos(t); }, x: function (t) { return 2 * Math.sin(t); }, tmax: 2 * PI, turns: [PI / 2, 3 * PI / 2], vv: [-2.4, 2.4] }
+  };
+  var K = document.querySelector('input[name="vd-pick"]:checked').value;
+  /* 0 ~ T 사이의 꺾이는 점까지 포함한 위치 목록 */
+  function path(p, Tm) {
+    var pts = [0].concat(p.turns.filter(function (s) { return s < Tm; }), [Tm]);
+    return pts.map(function (s) { return p.x(s); });
+  }
+  function dist(p, Tm) { var xs = path(p, Tm), d = 0; for (var i = 1; i < xs.length; i++) d += Math.abs(xs[i] - xs[i - 1]); return d; }
+
+  var gv = Graph.create($('vd-v'), { xMin: 0, xMax: 3, yMin: -5, yMax: 5, aspect: 0.5, minHeight: 170, maxHeight: 240 });
+  var gx = Graph.create($('vd-x'), { xMin: -6, xMax: 6, yMin: -1, yMax: 1, aspect: 0.28, minHeight: 110, maxHeight: 150 });
+  gv.render = function () {
+    var p = P[K], c = gv.c, Tm = +T.value;
+    gv.setView({ xMin: -p.tmax * 0.05, xMax: p.tmax * 1.05, yMin: p.vv[0], yMax: p.vv[1] });
+    gv.clear(); gv.grid(); gv.axes({ xLabel: 't', yLabel: 'v' });
+    gv.area(function (t) { return Math.max(p.v(t), 0); }, 0, Tm, { fill: c.fillMain });
+    gv.area(function (t) { return Math.min(p.v(t), 0); }, 0, Tm, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+    gv.plot(p.v, { color: c.main, width: 3.5, from: 0, to: p.tmax });
+    gv.line(Tm, 0, Tm, p.v(Tm), { color: c.accent, width: 2.5 });
+    gv.label(Tm, 0, 'T', { color: c.accent, dy: p.v(Tm) >= 0 ? 16 : -12, bold: true });
+  };
+  gx.render = function () {
+    var p = P[K], c = gx.c, Tm = +T.value, xs = path(p, Tm);
+    // 전체 범위에 맞춘 고정 눈금
+    var all = path(p, p.tmax), lo = Math.min.apply(null, all.concat(0)), hi = Math.max.apply(null, all.concat(0)), pad = (hi - lo) * 0.12 + 0.5;
+    gx.setView({ xMin: lo - pad, xMax: hi + pad, yMin: -1.75, yMax: 1.2 });
+    gx.clear();
+    gx.line(lo - pad, -1, hi + pad, -1, { color: c.axis, width: 1.8 });
+    var step = (hi - lo) > 8 ? 2 : 1;
+    for (var k = Math.ceil((lo - pad) / step) * step; k <= hi + pad; k += step) { gx.line(k, -1.1, k, -0.9, { color: c.axis, width: 1.2 }); gx.label(k, -1.42, fmt(k, 0), { color: c.text2 }); }
+    // 구간마다 한 줄씩 위로 올려 그려서 되돌아온 길이 겹치지 않게
+    for (var i = 1; i < xs.length; i++) {
+      var y = 0.85 - (i - 1) * 0.6, fwd = xs[i] >= xs[i - 1];
+      gx.line(xs[i - 1], y, xs[i], y, { color: fwd ? c.main : c.third, width: 4, dash: fwd ? [] : [2, 5] });
+      gx.point(xs[i], y, { color: fwd ? c.main : c.third, r: 4 });
+      if (i < xs.length - 1) gx.line(xs[i], y, xs[i], y - 0.6, { color: c.text2, width: 1, dash: [2, 3] });
+    }
+    gx.point(0, 0.85, { color: c.text, r: 4.5, filled: false });
+    // 출발점 → 도착점 (위치의 변화량)
+    gx.line(0, -0.55, xs[xs.length - 1], -0.55, { color: c.accent, width: 3, dash: [11, 6] });
+    gx.point(xs[xs.length - 1], -0.55, { color: c.accent, r: 5 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>', pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['pos', 'v > 0: 앞으로 간 거리 (색칠 / 아래 실선)'], ['neg', 'v < 0: 뒤로 간 거리 (빗금 / 아래 짧은 점선)'], ['accent', '출발점 → 도착점: 위치의 변화량 (긴 점선)']]
+                           : [['pos', 'v > 0: forward distance (shaded / solid below)'], ['neg', 'v < 0: backward distance (hatched / dotted below)'], ['accent', 'start → finish: displacement (long dashes)']];
+    $('vd-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var p = P[K], Tm = +T.value, disp = p.x(Tm), d = dist(p, Tm), turned = p.turns.some(function (s) { return s < Tm; }), v;
+    var rows = [['T', fmt(Tm)], [ko() ? '위치의 변화량 ∫v dt' : 'displacement ∫v dt', fmt(disp, 3)], [ko() ? '움직인 거리 ∫|v| dt' : 'distance ∫|v| dt', fmt(d, 3)]];
+    $('vd-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    v = turned
+      ? { ok: false, text: ko() ? '중간에 방향을 바꿨어요. 뒤로 간 부분(빗금)이 ∫v에서는 빠지지만, 실제로 움직인 거리에는 더해져요. 그래서 거리(' + fmt(d, 2) + ')가 위치의 변화량의 크기(' + fmt(Math.abs(disp), 2) + ')보다 커요.'
+                                : 'It turned around. The backward part (hatched) is subtracted in ∫v but added to the distance traveled, so the distance (' + fmt(d, 2) + ') exceeds |displacement| (' + fmt(Math.abs(disp), 2) + ').' }
+      : { ok: true, text: ko() ? '아직 한 방향으로만 움직였어요. 그래서 움직인 거리와 위치의 변화량의 크기가 같아요.' : 'So far it has moved in one direction only, so the distance equals |displacement|.' };
+    var el = $('vd-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '⚠ ') + v.text;
+    gv.draw(); gx.draw();
+  }
+  function setV(k) {
+    K = k;
+    // 2π 같은 끝값에 정확히 닿도록 눈금을 촘촘하게
+    T.step = '0.001'; T.max = P[k].tmax; T.value = P[k].tmax;
+    legend(); T.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(T, $('vd-t-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('vd-pick').addEventListener('change', function (e) { setV(e.target.value); });
+  T.addEventListener('change', function () { $('vd-live').textContent = $('vd-verdict').textContent; });
+  Graph.player({ button: $('vd-play'), input: T, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else { gv.draw(); gx.draw(); } });
+  setV(K);
+});
+
+/* 14-② 입체도형의 부피: 회전체를 원판 n 개로 썰어 부피 어림 → 원판이 얇아지면 π∫f² */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Nn = $('vo-n'), Xs = $('vo-x'), PI = Math.PI;
+  var P = {
+    sph:  { f: function (x) { return Math.sqrt(Math.max(4 - x * x, 0)); }, a: -2, b: 2, V: 32 * PI / 3, Vt: '32π/3', view: [-2.6, 2.6, 2.6],
+            def: '\\(\\displaystyle V=\\pi\\int_{-2}^{2}(4-x^2)\\,dx=\\frac{32}{3}\\pi\\)' },
+    cone: { f: function (x) { return x / 2; }, a: 0, b: 4, V: 16 * PI / 3, Vt: '16π/3', view: [-0.4, 4.4, 2.4],
+            def: '\\(\\displaystyle V=\\pi\\int_0^4\\left(\\frac x2\\right)^2dx=\\frac{16}{3}\\pi\\)' },
+    par:  { f: function (x) { return Math.sqrt(Math.max(x, 0)); }, a: 0, b: 4, V: 8 * PI, Vt: '8π', view: [-0.4, 4.4, 2.4],
+            def: '\\(\\displaystyle V=\\pi\\int_0^4(\\sqrt x)^2dx=8\\pi\\)' }
+  };
+  var K = document.querySelector('input[name="vo-pick"]:checked').value;
+  function discSum(p, n) { var dx = (p.b - p.a) / n, s = 0; for (var i = 0; i < n; i++) { var r = p.f(p.a + (i + 0.5) * dx); s += PI * r * r * dx; } return s; }
+  function xs() { var p = P[K]; return p.a + (p.b - p.a) * +Xs.value; }
+
+  var g = Graph.create($('vo-canvas'), { xMin: -3, xMax: 3, yMin: -3, yMax: 3, aspect: 0.8, maxHeight: 380 });
+  // 원판의 앞면은 납작한 타원 (가로 반지름 = 0.16 × 세로 반지름) 으로 그려 입체처럼 보이게
+  function ellipse(cx, r, style) {
+    var pts = [], rx = 0.16 * r;
+    for (var i = 0; i <= 60; i++) { var t = 2 * PI * i / 60; pts.push([cx + rx * Math.cos(t), r * Math.sin(t)]); }
+    g.polygon(pts, style);
+  }
+  g.render = function () {
+    var p = P[K], c = g.c, n = +Nn.value, dx = (p.b - p.a) / n, V = p.view;
+    var span = 2 * V[2] * (g.w && g.h ? g.w / g.h : 1), cx = (V[0] + V[1]) / 2, half = Math.max(span / 2, (V[1] - V[0]) / 2);
+    var yh = half * (g.w && g.h ? g.h / g.w : 1);
+    g.setView({ xMin: cx - half, xMax: cx + half, yMin: -yh, yMax: yh });
+    g.clear(); g.grid(); g.axes();
+    for (var i = 0; i < n; i++) {
+      var x0 = p.a + i * dx, r = p.f(x0 + dx / 2);
+      g.rect(x0, -r, x0 + dx, r, { fill: c.fillMain, stroke: c.main, width: n > 30 ? 0.6 : 1.2 });
+      if (n <= 12) ellipse(x0 + dx, r, { stroke: c.main, width: 1 });
+    }
+    g.plot(p.f, { color: c.text, width: 2.5, from: p.a, to: p.b, samples: 400 });
+    g.plot(function (x) { return -p.f(x); }, { color: c.text, width: 2.5, dash: [4, 4], from: p.a, to: p.b, samples: 400 });
+    // 살펴볼 단면 (원)
+    var x = xs(), rx = p.f(x);
+    ellipse(x, rx, { fill: c.fillAccent, stroke: c.accent, width: 2.5 });
+    g.line(x, 0, x, rx, { color: c.accent, width: 2.5 });
+    g.label(x, rx / 2, 'r = ' + fmt(rx), { color: c.accent, align: 'left', dx: 8, bold: true });
+  };
+
+  var SW = { text: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--text);stroke-width:2.5"/>', disc: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main);stroke:var(--g-main)"/>',
+             sec: '<ellipse cx="18" cy="6" rx="5" ry="5" style="fill:var(--g-fill-accent);stroke:var(--g-accent);stroke-width:2"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['text', '회전시키는 곡선 y = f(x) (위 실선, 아래는 거울에 비친 모습)'], ['disc', '원판 n개 (두께 Δx)'], ['sec', '살펴보는 단면: 반지름 f(x)인 원']]
+                           : [['text', 'curve y = f(x) being rotated (top, and its mirror below)'], ['disc', 'n discs (thickness Δx)'], ['sec', 'cross-section: circle of radius f(x)']];
+    $('vo-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var p = P[K], n = +Nn.value, s = discSum(p, n), x = xs(), r = p.f(x);
+    $('vo-x-out').textContent = fmt(x);
+    var rows = [[ko() ? '단면의 넓이 πf(x)²' : 'cross-section area πf(x)²', fmt(PI * r * r, 3)], [ko() ? '원판 ' + n + '개의 부피 합' : 'sum of ' + n + ' discs', fmt(s, 3)],
+                [ko() ? '정확한 부피' : 'exact volume', fmt(p.V, 3) + ' (= ' + p.Vt + ')'], [ko() ? '차이' : 'difference', fmt(Math.abs(s - p.V), 3)]];
+    $('vo-table').innerHTML = rows.map(function (rw, i) { return '<tr' + (i === 1 ? ' class="hl"' : '') + '><th>' + rw[0] + '</th><td>' + rw[1] + '</td></tr>'; }).join('');
+    var el = $('vo-verdict');
+    el.className = 'verdict ' + (n >= 40 ? 'ok' : '');
+    el.textContent = (n >= 40 ? '✓ ' : '→ ') + (ko() ? '원판 하나의 부피는 (단면의 넓이 πf(x)²) × (두께 Δx)예요. 원판을 많이 쓸수록 합이 정확한 부피에 다가가고, 그 극한이 π∫f(x)² dx예요.'
+                                                       : 'Each disc has volume (cross-section area πf(x)²) × (thickness Δx). With more discs the sum approaches the exact volume; the limit is π∫f(x)² dx.');
+    g.draw();
+  }
+  function setCurve(k) {
+    K = k;
+    var d = $('vo-def');
+    d.innerHTML = P[k].def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    update();
+  }
+
+  Graph.bindSlider(Nn, $('vo-n-out'), { format: function (v) { return String(Math.round(v)); }, onInput: function () { update(); } });
+  Xs.addEventListener('input', update);
+  $('vo-pick').addEventListener('change', function (e) { setCurve(e.target.value); });
+  [Nn, Xs].forEach(function (el) { el.addEventListener('change', function () { $('vo-live').textContent = $('vo-verdict').textContent; }); });
+  // ▶ 원판을 점점 많이 (얇게)
+  Graph.player({ button: $('vo-play'), input: Nn, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  legend();
+  setCurve(K);
+});
+
+/* 14-① 두 곡선 사이의 넓이: 세로 띠의 높이 = 위 − 아래, 위아래가 바뀌면 나눠서 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('ab-x'), PI = Math.PI;
+  // cross: 구간 안에서 위아래가 바뀌는 점, area / signed: 정확한 값
+  var P = {
+    a: { f: function (x) { return x; }, g: function (x) { return x * x; }, fn: 'x', gn: 'x²', lo: 0, hi: 1, cross: [], area: 1 / 6, signed: 1 / 6, areaText: '1/6',
+         view: [-0.15, 1.15, -0.12, 1.12], def: '\\(\\displaystyle S=\\int_0^1(x-x^2)\\,dx=\\frac16\\)' },
+    b: { f: function (x) { return x; }, g: function (x) { return x * x * x; }, fn: 'x', gn: 'x³', lo: -1, hi: 1, cross: [0], area: 0.5, signed: 0, areaText: '1/2',
+         view: [-1.2, 1.2, -1.15, 1.15], def: '\\(\\displaystyle S=\\int_{-1}^1|x-x^3|\\,dx=2\\int_0^1(x-x^3)\\,dx=\\frac12\\)' },
+    c: { f: Math.sin, g: Math.cos, fn: 'sin x', gn: 'cos x', lo: 0, hi: PI, cross: [PI / 4], area: 2 * Math.SQRT2, signed: 2, areaText: '2√2',
+         view: [-0.2, 3.35, -1.15, 1.15], def: '\\(\\displaystyle S=\\int_0^{\\pi/4}(\\cos x-\\sin x)\\,dx+\\int_{\\pi/4}^{\\pi}(\\sin x-\\cos x)\\,dx=2\\sqrt2\\)' }
+  };
+  var K = document.querySelector('input[name="ab-pick"]:checked').value;
+
+  var g = Graph.create($('ab-canvas'), { xMin: 0, xMax: 1, yMin: 0, yMax: 1, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var p = P[K], c = g.c, x = +X.value, V = p.view, dx = (p.hi - p.lo) / 60;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear(); g.grid(); g.axes();
+    // f 가 위인 부분은 색칠, g 가 위인 부분은 빗금
+    var cuts = [p.lo].concat(p.cross, [p.hi]);
+    for (var i = 0; i < cuts.length - 1; i++) {
+      var a = cuts[i], b = cuts[i + 1], fTop = p.f((a + b) / 2) >= p.g((a + b) / 2), pts = [];
+      for (var k = 0; k <= 80; k++) { var t = a + (b - a) * k / 80; pts.push([t, p.f(t)]); }
+      for (k = 80; k >= 0; k--) { t = a + (b - a) * k / 80; pts.push([t, p.g(t)]); }
+      g.polygon(pts, fTop ? { fill: c.fillMain } : { fill: c.fillAccent, hatch: 'd', hatchColor: c.accent });
+    }
+    g.plot(p.g, { color: c.accent, width: 3, dash: [11, 6] });
+    g.plot(p.f, { color: c.main, width: 3.5 });
+    // 세로 띠: 높이 |f − g|, 폭 dx
+    var top = Math.max(p.f(x), p.g(x)), bot = Math.min(p.f(x), p.g(x));
+    g.rect(x - dx / 2, bot, x + dx / 2, top, { fill: c.fillThird, stroke: c.third, width: 2 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             fm: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>', fa: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             strip: '<rect x="14" y="1" width="8" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>' };
+  function legend() {
+    var p = P[K], L = Site.lang();
+    var items = [['main', 'y = ' + p.fn + (L === 'ko' ? ' (실선)' : ' (solid)')], ['accent', 'y = ' + p.gn + (L === 'ko' ? ' (긴 점선)' : ' (long dashes)')],
+                 ['fm', L === 'ko' ? 'y = ' + p.fn + ' 그래프가 위인 부분 (색칠)' : 'where ' + p.fn + ' is on top (shaded)']];
+    if (p.cross.length) items.push(['fa', L === 'ko' ? 'y = ' + p.gn + ' 그래프가 위인 부분 (빗금)' : 'where ' + p.gn + ' is on top (hatched)']);
+    items.push(['strip', L === 'ko' ? '세로 띠: 높이 = 위 − 아래' : 'vertical strip: height = top − bottom']);
+    $('ab-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var p = P[K], x = +X.value, fx = p.f(x), gx = p.g(x), v;
+    var rows = [[ko() ? '띠의 높이 (위 − 아래)' : 'strip height (top − bottom)', fmt(Math.abs(fx - gx), 3)],
+                [ko() ? '넓이 S' : 'area S', fmt(p.area, 4) + ' (= ' + p.areaText + ')'],
+                [ko() ? '그냥 ∫(' + p.fn + ' − ' + p.gn + ') dx' : 'plain ∫(' + p.fn + ' − ' + p.gn + ') dx', fmt(p.signed, 4)]];
+    $('ab-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 1 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (!p.cross.length) v = { ok: true, text: ko() ? '구간 전체에서 y = ' + p.fn + ' 그래프가 위에 있어요. 띠의 높이 "위 − 아래"를 모두 더하면 넓이예요.' : p.fn + ' stays on top throughout; adding up the strip heights "top − bottom" gives the area.' };
+    else v = { ok: false, text: ko() ? '중간에 위아래가 바뀌어요(빗금 부분). 그냥 적분하면 빗금 부분이 음수로 빠져서 ' + fmt(p.signed, 3) + '이 되고, 실제 넓이 ' + fmt(p.area, 3) + '과 달라요. 교점에서 나눠 각각 "위 − 아래"로 적분해야 해요.'
+                                     : 'Top and bottom switch in the middle (hatched part). A plain integral subtracts that part, giving ' + fmt(p.signed, 3) + ' instead of the true area ' + fmt(p.area, 3) + '. Split at the crossing and integrate "top − bottom" on each piece.' };
+    var el = $('ab-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '⚠ ') + v.text;
+    g.draw();
+  }
+  function setPair(k) {
+    K = k;
+    var p = P[k], d = $('ab-def');
+    X.min = p.lo; X.max = p.hi; X.value = p.lo + (p.hi - p.lo) * 0.35;
+    d.innerHTML = p.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(X, $('ab-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('ab-pick').addEventListener('change', function (e) { setPair(e.target.value); });
+  X.addEventListener('change', function () { $('ab-live').textContent = $('ab-verdict').textContent; });
+  Graph.player({ button: $('ab-play'), input: X, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setPair(K);
+});
+</script>
 </body>
 </html>

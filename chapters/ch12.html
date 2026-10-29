@@ -27,8 +27,9 @@
     <!-- 완성된 소단원은 여기에 <section id="s12-번호"> … </section> 으로 넣는다.
          없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
 
-    <section id="s12-1" data-status="core">
-      <div class="core-only">
+    <section id="s12-1">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li><strong>미분과 적분은 서로 거꾸로</strong>라는 것을 보여 주는, 미적분학에서 가장 중요한 정리예요.</li>
@@ -49,12 +50,91 @@
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int_0^2x^2\,dx=\left[\frac{x^3}3\right]_0^2=\frac83\) — the same value as the Riemann sums in 11-①! &nbsp; \(\frac{d}{dx}\int_1^x\sqrt{t^2+1}\,dt=\sqrt{x^2+1}\)</p>
         </div>
         <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="ch11.html#s11-1"><span data-lang="ko">← 11-① 정적분의 정의 (리만 합)</span><span data-lang="en">← 11-① Definition (Riemann sums)</span></a></div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 넓이 함수 A(x) 의 기울기 = f(x) -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">함수 고르기</span><span data-lang="en">Choose a function</span></legend>
+            <div class="seg" id="ft-pick">
+              <label><input type="radio" name="ft-pick" value="lin" checked><span>\(f(t)=t\)</span></label>
+              <label><input type="radio" name="ft-pick" value="par"><span>\(f(t)=2-t^2\)</span></label>
+              <label><input type="radio" name="ft-pick" value="cos"><span>\(f(t)=\cos t\)</span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title"><span data-lang="ko">⬆️ \(y=f(t)\)와 넓이 \(A(x)=\int_0^xf(t)\,dt\)</span><span data-lang="en">⬆️ \(y=f(t)\) and the area \(A(x)=\int_0^xf(t)\,dt\)</span></p>
+          <div class="viz-canvas-wrap"><canvas id="ft-top" role="img" data-i18n-attr="aria-label:ft.top"></canvas></div>
+          <p class="mini-chart-title"><span data-lang="ko">⬇️ 넓이 함수 \(y=A(x)\)와 그 접선</span><span data-lang="en">⬇️ The area function \(y=A(x)\) and its tangent</span></p>
+          <div class="viz-canvas-wrap"><canvas id="ft-bot" role="img" data-i18n-attr="aria-label:ft.bot"></canvas></div>
+          <ul class="legend" id="ft-legend"></ul>
+          <table class="readout-table"><tbody id="ft-table"></tbody></table>
+          <p class="verdict" id="ft-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ft-x"><span data-lang="ko">넓이를 재는 끝</span><span data-lang="en">Right end of the area</span> \(x\)</label>
+              <input id="ft-x" type="range" min="0" max="2.5" step="0.01" value="1.2">
+              <output id="ft-x-out" for="ft-x">1.20</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ft-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ft-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int_1^3(2x+1)\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_1^3(2x+1)\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-1-a" hidden>
+              <p data-lang="ko">역도함수 \(F(x)=x^2+x\)를 써서 \(\big[x^2+x\big]_1^3=(9+3)-(1+1)=10\)이에요. 리만 합의 극한을 계산할 필요가 없어요.</p>
+              <p data-lang="en">With \(F(x)=x^2+x\): \(\big[x^2+x\big]_1^3=(9+3)-(1+1)=10\). No Riemann-sum limit needed.</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\frac{d}{dx}\int_0^{x^2}\cos t\,dt\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\frac{d}{dx}\int_0^{x^2}\cos t\,dt\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-1-b" hidden>
+              <p data-lang="ko">\(A(u)=\int_0^u\cos t\,dt\)라 하면 \(A'(u)=\cos u\)이고, 구하는 것은 \(A(x^2)\)의 도함수예요. 합성함수의 미분법으로 \(\cos(x^2)\cdot2x\)예요.</p>
+              <p data-lang="en">Let \(A(u)=\int_0^u\cos t\,dt\), so \(A'(u)=\cos u\); we need the derivative of \(A(x^2)\). By the chain rule: \(\cos(x^2)\cdot2x\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\frac{d}{dx}\int_a^xf(t)\,dt=f(x)-f(a)\)</p>
+              <p data-lang="en">\(\displaystyle\frac{d}{dx}\int_a^xf(t)\,dt=f(x)-f(a)\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그냥 \(f(x)\)예요. \(x\)를 아주 조금 늘리면 넓이는 오른쪽 끝의 가는 띠(높이 \(f(x)\))만큼만 늘어나요. 왼쪽 끝 \(a\)는 움직이지 않으니 상관없어요.</p>
+              <p data-lang="en">It is just \(f(x)\). Nudging \(x\) adds only a thin strip at the right end, of height \(f(x)\). The left end \(a\) doesn't move, so it doesn't matter.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int_1^3x^2\,dx=\frac{3^3}{3}=9\)</p>
+              <p data-lang="en">\(\displaystyle\int_1^3x^2\,dx=\frac{3^3}{3}=9\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(F(b)\)만 넣으면 안 되고 \(F(a)\)를 빼야 해요: \(\frac{27}3-\frac13=\frac{26}3\). 아래끝이 0일 때만 \(F(0)=0\)이라 우연히 같아 보여요.</p>
+              <p data-lang="en">You must subtract \(F(a)\): \(\frac{27}3-\frac13=\frac{26}3\). It only looks right when the lower limit is 0, where \(F(0)=0\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s12-2" data-status="core">
-      <div class="core-only">
+    <section id="s12-2">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>곱의 미분법 \((fg)'=f'g+fg'\)을 적분하면 <strong>부분적분법</strong>이 나와요.</li>
@@ -73,12 +153,92 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C\), &nbsp; \(\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+C\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C\), &nbsp; \(\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x+C\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 직사각형 넓이 uv = (곡선 아래 넓이) + (곡선 왼쪽 넓이) -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">곡선 고르기</span><span data-lang="en">Choose a curve</span></legend>
+            <div class="seg" id="bp-pick">
+              <label><input type="radio" name="bp-pick" value="ln" checked><span>\(v=\ln u\)</span></label>
+              <label><input type="radio" name="bp-pick" value="sq"><span>\(v=u^2\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="bp-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="bp-canvas" role="img" data-i18n-attr="aria-label:bp.canvas"></canvas>
+          </div>
+          <ul class="legend" id="bp-legend"></ul>
+          <table class="readout-table"><tbody id="bp-table"></tbody></table>
+          <p class="verdict" id="bp-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="bp-b"><span data-lang="ko">오른쪽 끝</span><span data-lang="en">Right end</span> \(b\)</label>
+              <input id="bp-b" type="range" min="1.2" max="4" step="0.01" value="3">
+              <output id="bp-b-out" for="bp-b">3.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="bp-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="bp-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int x\cos x\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int x\cos x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-2-a" hidden>
+              <p data-lang="ko">미분하면 간단해지는 \(x\)를 \(f\), 적분하기 쉬운 \(\cos x\)를 \(g'\)으로 골라요(\(g=\sin x\)).</p>
+              <p data-lang="en">Take \(f=x\) (simplifies when differentiated) and \(g'=\cos x\) (easy to integrate, \(g=\sin x\)).</p>
+              $$\int x\cos x\,dx=x\sin x-\int\sin x\,dx=x\sin x+\cos x+C$$
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int x^2e^x\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int x^2e^x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-2-b" hidden>
+              <p data-lang="ko">부분적분을 두 번 해요. 한 번 할 때마다 \(x\)의 차수가 1씩 내려가요.</p>
+              <p data-lang="en">Apply it twice; each time the power of \(x\) drops by 1.</p>
+              $$\int x^2e^x\,dx=x^2e^x-\int2xe^x\,dx=x^2e^x-2\left(xe^x-e^x\right)+C=e^x(x^2-2x+2)+C$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\int xe^x\,dx\)에서 \(f=e^x,\ g'=x\)로 골라도 똑같이 쉽다.</p>
+              <p data-lang="en">For \(\int xe^x\,dx\), choosing \(f=e^x,\ g'=x\) is just as easy.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그러면 \(\frac{x^2}2e^x-\int\frac{x^2}2e^x\,dx\)가 되어 남은 적분이 오히려 <strong>더 어려워져요</strong>. 미분하면 간단해지는 쪽(다항식, \(\ln x\))을 \(f\)로 골라야 해요.</p>
+              <p data-lang="en">You'd get \(\frac{x^2}2e^x-\int\frac{x^2}2e^x\,dx\): the remaining integral is <strong>harder</strong>. Pick as \(f\) the factor that simplifies when differentiated (polynomials, \(\ln x\)).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int_a^bfg'\,dx=f(x)g(x)-\int_a^bf'g\,dx\)</p>
+              <p data-lang="en">\(\displaystyle\int_a^bfg'\,dx=f(x)g(x)-\int_a^bf'g\,dx\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">정적분에서는 앞의 \(fg\)에도 \(\big[\ \big]_a^b\)를 붙여 값을 넣어야 해요. 그림에서 \(\big[uv\big]\)는 큰 직사각형에서 작은 직사각형을 뺀 넓이예요.</p>
+              <p data-lang="en">In a definite integral the \(fg\) term needs \(\big[\ \big]_a^b\) too. In the picture, \(\big[uv\big]\) is the big rectangle minus the small one.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s12-3" data-status="core">
-      <div class="core-only">
+    <section id="s12-3">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>합성함수의 미분법을 거꾸로 이용한 것이 <strong>치환적분법</strong>이에요.</li>
@@ -96,7 +256,90 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(u=x^2+1\): \(\int2x(x^2+1)^3\,dx=\int u^3\,du=\frac{(x^2+1)^4}{4}+C\). &nbsp; \(u=x^2\): \(\int_0^12xe^{x^2}dx=\int_0^1e^u\,du=e-1\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(u=x^2+1\): \(\int2x(x^2+1)^3\,dx=\int u^3\,du=\frac{(x^2+1)^4}{4}+C\). &nbsp; \(u=x^2\): \(\int_0^12xe^{x^2}dx=\int_0^1e^u\,du=e-1\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: x 세상의 넓이 = u 세상의 넓이 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">적분 고르기</span><span data-lang="en">Choose an integral</span></legend>
+            <div class="seg" id="su-pick">
+              <label><input type="radio" name="su-pick" value="sq" checked><span>\(2x\,e^{x^2}\ (u=x^2)\)</span></label>
+              <label><input type="radio" name="su-pick" value="sin"><span>\(\cos x\,e^{\sin x}\ (u=\sin x)\)</span></label>
+            </div>
+          </fieldset>
+          <p class="mini-chart-title"><span data-lang="ko">⬆️ \(x\)의 세상: \(y=f(g(x))\,g'(x)\), 구간 \([0,b]\)</span><span data-lang="en">⬆️ The \(x\)-world: \(y=f(g(x))\,g'(x)\) on \([0,b]\)</span></p>
+          <div class="viz-canvas-wrap"><canvas id="su-x" role="img" data-i18n-attr="aria-label:su.x"></canvas></div>
+          <p class="mini-chart-title"><span data-lang="ko">⬇️ \(u\)의 세상: \(y=f(u)\), 구간 \([g(0),g(b)]\)</span><span data-lang="en">⬇️ The \(u\)-world: \(y=f(u)\) on \([g(0),g(b)]\)</span></p>
+          <div class="viz-canvas-wrap"><canvas id="su-u" role="img" data-i18n-attr="aria-label:su.u"></canvas></div>
+          <ul class="legend" id="su-legend"></ul>
+          <table class="readout-table"><tbody id="su-table"></tbody></table>
+          <p class="verdict" id="su-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="su-b"><span data-lang="ko">위끝</span><span data-lang="en">Upper limit</span> \(b\)</label>
+              <input id="su-b" type="range" min="0.1" max="1.4" step="0.01" value="1">
+              <output id="su-b-out" for="su-b">1.00</output>
+            </div>
+            <div class="slider-row">
+              <label for="su-s"><span data-lang="ko">가는 띠의 위치</span><span data-lang="en">Thin strip at</span> \(x\)</label>
+              <input id="su-s" type="range" min="0" max="1" step="0.01" value="0.6">
+              <output id="su-s-out" for="su-s">0.60</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="su-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="su-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int3x^2(x^3+2)^4\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int3x^2(x^3+2)^4\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-3-a" hidden>
+              <p data-lang="ko">\(u=x^3+2\)로 두면 \(du=3x^2\,dx\)가 식 안에 그대로 있어요. \(\int u^4\,du=\frac{u^5}5+C=\frac{(x^3+2)^5}{5}+C\)예요.</p>
+              <p data-lang="en">Let \(u=x^3+2\); then \(du=3x^2\,dx\) is right there. \(\int u^4\,du=\frac{u^5}5+C=\frac{(x^3+2)^5}{5}+C\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int_0^{\pi/2}\sin x\cos^2x\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int_0^{\pi/2}\sin x\cos^2x\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-12-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-12-3-b" hidden>
+              <p data-lang="ko">\(u=\cos x\)이면 \(du=-\sin x\,dx\)이고, 구간은 \(x=0\to u=1\), \(x=\frac\pi2\to u=0\)으로 바뀌어요.</p>
+              <p data-lang="en">With \(u=\cos x\), \(du=-\sin x\,dx\), and the limits become \(x=0\to u=1\), \(x=\frac\pi2\to u=0\).</p>
+              $$\int_0^{\pi/2}\sin x\cos^2x\,dx=-\int_1^0u^2\,du=\int_0^1u^2\,du=\frac13$$
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int(2x+1)^5\,dx=\frac{(2x+1)^6}{6}+C\)</p>
+              <p data-lang="en">\(\displaystyle\int(2x+1)^5\,dx=\frac{(2x+1)^6}{6}+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(u=2x+1\)이면 \(du=2\,dx\), 즉 \(dx=\frac12du\)예요. 이 \(\frac12\)을 빠뜨리면 안 돼요: \(\frac{(2x+1)^6}{12}+C\). 미분해서 확인해 보면 바로 알 수 있어요.</p>
+              <p data-lang="en">With \(u=2x+1\), \(du=2\,dx\), so \(dx=\frac12du\). Don't drop that \(\frac12\): \(\frac{(2x+1)^6}{12}+C\). Differentiating catches it.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int_0^22xe^{x^2}dx=\int_0^2e^u\,du\)</p>
+              <p data-lang="en">\(\displaystyle\int_0^22xe^{x^2}dx=\int_0^2e^u\,du\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">구간도 \(u\)로 바꿔야 해요. \(x=2\)이면 \(u=4\)라서 \(\int_0^4e^u\,du=e^4-1\)이에요. 그림에서 아래 그래프의 구간이 \([0,b^2]\)으로 바뀌는 것을 보세요.</p>
+              <p data-lang="en">Change the limits too: \(x=2\) gives \(u=4\), so it is \(\int_0^4e^u\,du=e^4-1\). Watch the bottom graph's interval become \([0,b^2]\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   </div>
@@ -106,5 +349,246 @@
   </div>
 </main>
 
+<script>
+/* 12-③ 치환적분법: x 세상의 넓이 = u 세상의 넓이, 가는 띠도 짝지어 대응 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Bv = $('su-b'), Sv = $('su-s'), DX = 0.06;
+  // g: 치환, dg: g′, f: u 세상의 함수, Fu: f 의 역도함수
+  var P = {
+    sq:  { g: function (x) { return x * x; }, dg: function (x) { return 2 * x; }, f: Math.exp, Fu: Math.exp, bmax: 1.4, gn: 'x²',
+           xview: [-0.1, 1.5, -0.8, 21], uview: [-0.15, 2.1, -0.5, 8.2] },
+    sin: { g: Math.sin, dg: Math.cos, f: Math.exp, Fu: Math.exp, bmax: 1.55, gn: 'sin x',
+           xview: [-0.1, 1.65, -0.2, 2.9], uview: [-0.1, 1.15, -0.2, 2.9] }
+  };
+  var K = document.querySelector('input[name="su-pick"]:checked').value;
+  var integrand = function (x) { var p = P[K]; return p.f(p.g(x)) * p.dg(x); };
+
+  var gx = Graph.create($('su-x'), { xMin: 0, xMax: 1.5, yMin: 0, yMax: 10, aspect: 0.5, minHeight: 170, maxHeight: 240 });
+  var gu = Graph.create($('su-u'), { xMin: 0, xMax: 2, yMin: 0, yMax: 8, aspect: 0.5, minHeight: 170, maxHeight: 240 });
+  gx.render = function () {
+    var p = P[K], c = gx.c, b = +Bv.value, s = +Sv.value * b, V = p.xview, top = 0;
+    // 세로 범위는 [0, b] 에서 가장 높은 곳에 맞춘다 (넓이가 잘 보이도록)
+    for (var i = 0; i <= 60; i++) top = Math.max(top, integrand(b * i / 60));
+    top = Math.max(top * 1.25, 2);
+    gx.setView({ xMin: V[0], xMax: V[1], yMin: -top * 0.05, yMax: top });
+    gx.clear(); gx.grid(); gx.axes();
+    gx.area(integrand, 0, b, { fill: c.fillMain });
+    gx.rect(s, 0, Math.min(s + DX, b), integrand(s), { fill: c.fillAccent, stroke: c.accent, width: 2 });
+    gx.plot(integrand, { color: c.main, width: 3.5, from: 0, to: p.bmax });
+    gx.label(b, 0, 'b', { color: c.text, dy: 26, bold: true });
+  };
+  gu.render = function () {
+    var p = P[K], c = gu.c, b = +Bv.value, s = +Sv.value * b, V = p.uview;
+    var u0 = p.g(0), u1 = p.g(b), us = p.g(s), us2 = p.g(Math.min(s + DX, b));
+    gu.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    gu.clear(); gu.grid(); gu.axes({ xLabel: 'u' });
+    gu.area(p.f, u0, u1, { fill: c.fillMain, hatch: 'd', hatchColor: c.main });
+    gu.rect(us, 0, us2, p.f(us), { fill: c.fillAccent, stroke: c.accent, width: 2 });
+    gu.plot(p.f, { color: c.third, width: 3, dash: [2, 5], from: V[0], to: V[1] });
+    gu.label(u1, 0, 'g(b)', { color: c.text, dy: 26, bold: true });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>',
+             area: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             strip: '<rect x="14" y="1" width="8" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['main', '위: y = f(g(x))·g′(x) (실선)'], ['third', '아래: y = f(u) = eᵘ (짧은 점선)'], ['area', '두 넓이 (위는 색칠, 아래는 빗금) — 값이 같아요'], ['strip', '짝을 이루는 가는 띠']]
+                           : [['main', 'top: y = f(g(x))·g′(x) (solid)'], ['third', 'bottom: y = f(u) = eᵘ (dotted)'], ['area', 'the two areas (shaded / hatched) — equal'], ['strip', 'matching thin strips']];
+    $('su-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  /* x 세상의 넓이는 수치 적분(심프슨)으로, u 세상은 역도함수로 따로 구해 비교 */
+  function simpson(f, a, b) { var n = 200, h = (b - a) / n, s = f(a) + f(b); for (var i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2); return s * h / 3; }
+  function update() {
+    var p = P[K], b = +Bv.value, s = +Sv.value * b, s2 = Math.min(s + DX, b);
+    var Ax = simpson(integrand, 0, b), Au = p.Fu(p.g(b)) - p.Fu(p.g(0));
+    $('su-s-out').textContent = fmt(s);                     // 띠 위치는 b 에 비례하므로 b 가 바뀌어도 다시 쓴다
+    var rows = [[ko() ? 'x 세상의 넓이 ∫[0, b]' : 'x-world area ∫[0, b]', fmt(Ax, 4)], ['g(b) = ' + p.gn.replace('x', fmt(b)), fmt(p.g(b), 3)],
+                [ko() ? 'u 세상의 넓이 ∫[0, g(b)] eᵘ du' : 'u-world area ∫[0, g(b)] eᵘ du', fmt(Au, 4)],
+                [ko() ? '띠 넓이 (위 / 아래)' : 'strip areas (top / bottom)', fmt(simpson(integrand, s, s2), 4) + ' / ' + fmt(p.Fu(p.g(s2)) - p.Fu(p.g(s)), 4)]];
+    $('su-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('su-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + (ko() ? '모양은 다르지만 두 넓이가 같아요. x의 가는 띠(폭 dx)는 u에서 폭 du = g′(x)dx인 띠로 옮겨 가고, 높이가 g′(x)만큼 줄어드는 대신 폭이 그만큼 늘어나서 넓이가 그대로예요. 구간도 [0, b] → [g(0), g(b)]로 함께 바뀌어요.'
+                                  : 'Different shapes, same area. A thin x-strip of width dx becomes a u-strip of width du = g′(x)dx: the height loses the factor g′(x) while the width gains it, so the area is unchanged. The interval changes too: [0, b] → [g(0), g(b)].');
+    gx.draw(); gu.draw();
+  }
+  function setInt(k) {
+    K = k;
+    Bv.max = P[k].bmax; if (+Bv.value > P[k].bmax) Bv.value = 1;
+    legend(); Bv.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Bv, $('su-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  Graph.bindSlider(Sv, $('su-s-out'), { format: function (v) { return fmt(v * +Bv.value); }, onInput: function () { update(); } });
+  $('su-pick').addEventListener('change', function (e) { setInt(e.target.value); });
+  [Bv, Sv].forEach(function (el) { el.addEventListener('change', function () { $('su-live').textContent = $('su-verdict').textContent; }); });
+  // ▶ 가는 띠를 왼쪽에서 오른쪽으로 옮기기
+  Graph.player({ button: $('su-play'), input: Sv, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else { gx.draw(); gu.draw(); } });
+  setInt(K);
+});
+
+/* 12-② 부분적분법: ∫v du + ∫u dv = [uv] (곡선 아래 넓이 + 곡선 왼쪽 넓이 = 직사각형의 차) */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Bs = $('bp-b');
+  // v(u), 그리고 두 넓이의 정확한 값
+  var C = {
+    ln: { v: Math.log, a: 1, under: function (a, b) { return b * Math.log(b) - b - (a * Math.log(a) - a); }, left: function (a, b) { return b - a; },
+          def: '\\(\\displaystyle\\int_1^b\\ln u\\,du+\\int_0^{\\ln b}e^v\\,dv=b\\ln b\\)', view: [-0.4, 4.4, -0.4, 1.8] },
+    sq: { v: function (u) { return u * u; }, a: 0.5, under: function (a, b) { return (b * b * b - a * a * a) / 3; }, left: function (a, b) { return 2 * (b * b * b - a * a * a) / 3; },
+          def: '\\(\\displaystyle\\int_{0.5}^b u^2\\,du+\\int_{0.25}^{b^2}\\sqrt v\\,dv=b\\cdot b^2-0.5\\cdot0.25\\)', view: [-0.3, 4.3, -0.8, 16.5] }
+  };
+  var K = document.querySelector('input[name="bp-pick"]:checked').value;
+
+  var g = Graph.create($('bp-canvas'), { xMin: 0, xMax: 4, yMin: 0, yMax: 2, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var P = C[K], c = g.c, a = P.a, b = +Bs.value, va = P.v(a), vb = P.v(b), V = P.view;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear(); g.grid(); g.axes({ xLabel: 'u', yLabel: 'v' });
+    // 곡선 아래: ∫ v du (색칠)
+    g.area(P.v, a, b, { fill: c.fillMain });
+    // 곡선 왼쪽: ∫ u dv (빗금) — v축과 곡선 사이
+    var pts = [[0, va]];
+    for (var i = 0; i <= 120; i++) { var u = a + (b - a) * i / 120; pts.push([u, P.v(u)]); }
+    pts.push([0, vb]);
+    g.polygon(pts, { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent });
+    // 작은 직사각형 a × v(a) 는 두 넓이에 들어가지 않는다
+    if (va > 0) g.rect(0, 0, a, va, { fill: c.bg, hatch: 'd', hatchColor: c.text2, stroke: c.text2, width: 1.2 });
+    g.rect(0, 0, b, vb, { stroke: c.text, width: 2 });
+    g.plot(P.v, { color: c.main, width: 3.5, from: Math.max(V[0], K === 'ln' ? 0.05 : V[0]) });
+    g.point(b, vb, { color: c.main, r: 6, label: '(b, v(b))', labelStyle: { bold: true, align: 'right', dx: -10, dy: -12 } });
+    g.point(a, va, { color: c.main, r: 4.5 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+             under: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             left: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             rect: '<rect x="2" y="1" width="32" height="10" style="fill:none;stroke:var(--text);stroke-width:2"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['under', '곡선 아래 넓이 ∫ v du (색칠)'], ['left', '곡선 왼쪽 넓이 ∫ u dv (가로 빗금)'], ['rect', '큰 직사각형 b × v(b) (검은 테두리)']]
+                           : [['under', 'area under the curve ∫ v du (shaded)'], ['left', 'area left of the curve ∫ u dv (horizontal hatch)'], ['rect', 'big rectangle b × v(b) (dark outline)']];
+    if (K === 'sq') items.push(['rect', L === 'ko' ? '빼는 작은 직사각형 0.5 × 0.25 (사선 빗금)' : 'small rectangle 0.5 × 0.25 removed (diagonal hatch)']);
+    $('bp-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var P = C[K], a = P.a, b = +Bs.value, U = P.under(a, b), Lf = P.left(a, b), uv = b * P.v(b) - a * P.v(a);
+    var rows = [['∫ v du', fmt(U, 3)], ['∫ u dv', fmt(Lf, 3)], [ko() ? '두 넓이의 합' : 'sum of the two', fmt(U + Lf, 3)], ['[uv] = b·v(b) − a·v(a)', fmt(uv, 3)]];
+    $('bp-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i >= 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('bp-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + (ko() ? '두 넓이를 합치면 직사각형(의 차) [uv]가 돼요. 그래서 한쪽을 모를 때 ∫ v du = [uv] − ∫ u dv로 구해요. 이것이 부분적분법이에요.' + (K === 'ln' ? ' 여기서는 ∫ ln u du = b ln b − (b − 1)이에요.' : '')
+                                  : 'The two areas add up to the rectangle (difference) [uv]. So if one is hard, ∫ v du = [uv] − ∫ u dv. That is integration by parts.' + (K === 'ln' ? ' Here ∫ ln u du = b ln b − (b − 1).' : ''));
+    g.draw();
+  }
+  function setCurve(k) {
+    K = k;
+    var d = $('bp-def');
+    Bs.min = k === 'ln' ? 1.2 : 1; Bs.max = k === 'ln' ? 4 : 4; Bs.value = k === 'ln' ? 3 : 2.5;
+    d.innerHTML = C[k].def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); Bs.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Bs, $('bp-b-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('bp-pick').addEventListener('change', function (e) { setCurve(e.target.value); });
+  Bs.addEventListener('change', function () { $('bp-live').textContent = $('bp-verdict').textContent; });
+  Graph.player({ button: $('bp-play'), input: Bs, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setCurve(K);
+});
+
+/* 12-① 미적분학의 기본정리: 넓이 함수 A(x) = ∫₀ˣ f 의 기울기 = f(x) */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('ft-x');
+  // A: 0 에서 x 까지의 넓이 = F(x) − F(0)
+  var FN = {
+    lin: { f: function (t) { return t; }, A: function (x) { return x * x / 2; }, range: [0, 2.5], top: [-0.5, 2.8], bot: [-0.4, 3.4], An: 'x²/2' },
+    par: { f: function (t) { return 2 - t * t; }, A: function (x) { return 2 * x - x * x * x / 3; }, range: [0, 2.5], top: [-4.5, 2.6], bot: [-0.8, 2.2], An: '2x − x³/3' },
+    cos: { f: Math.cos, A: Math.sin, range: [0, 6.28], top: [-1.4, 1.4], bot: [-1.4, 1.4], An: 'sin x' }
+  };
+  var K = document.querySelector('input[name="ft-pick"]:checked').value;
+  function view(g, y) { var F = FN[K], p = (F.range[1] - F.range[0]) * 0.06; g.setView({ xMin: F.range[0] - p, xMax: F.range[1] + p, yMin: y[0], yMax: y[1] }); }
+
+  var top = Graph.create($('ft-top'), { xMin: 0, xMax: 3, yMin: -1, yMax: 3, aspect: 0.52, minHeight: 180, maxHeight: 250 });
+  var bot = Graph.create($('ft-bot'), { xMin: 0, xMax: 3, yMin: -1, yMax: 3, aspect: 0.5, minHeight: 170, maxHeight: 240 });
+
+  top.render = function () {
+    var F = FN[K], c = top.c, x = +X.value, h = (F.range[1] - F.range[0]) * 0.04;
+    view(top, F.top);
+    top.clear(); top.grid(); top.axes({ xLabel: 't' });
+    // 넓이: f ≥ 0 부분은 색칠, f < 0 부분은 빗금 (음의 넓이)
+    var pos = function (t) { return Math.max(F.f(t), 0); }, neg = function (t) { return Math.min(F.f(t), 0); };
+    top.area(pos, 0, x, { fill: c.fillMain });
+    top.area(neg, 0, x, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+    // 오른쪽 끝의 가는 띠: x 를 h 만큼 늘리면 넓이가 약 f(x)·h 늘어난다
+    top.rect(x, 0, x + h, F.f(x), { fill: c.fillAccent, stroke: c.accent, width: 2 });
+    top.plot(F.f, { color: c.main, width: 3.5, from: F.range[0], to: F.range[1] });
+    top.line(x, 0, x, F.f(x), { color: c.accent, width: 2.5 });
+    top.point(x, F.f(x), { color: c.accent, r: 5.5, label: 'f(x)', labelStyle: { bold: true } });
+  };
+  bot.render = function () {
+    var F = FN[K], c = bot.c, x = +X.value;
+    view(bot, F.bot);
+    bot.clear(); bot.grid(); bot.axes({ yLabel: 'A' });
+    bot.plot(F.A, { color: c.text2, width: 1.5, dash: [4, 4], from: F.range[0], to: F.range[1] });
+    bot.plot(F.A, { color: c.main, width: 3.5, from: F.range[0], to: x });
+    bot.lineThrough(x, F.A(x), F.f(x), { color: c.accent, width: 2.5, dash: [11, 6] });
+    bot.point(x, F.A(x), { color: c.main, r: 6, label: 'A(x)', labelStyle: { bold: true, dy: 18 } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             pos: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             neg: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>',
+             strip: '<rect x="14" y="1" width="8" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['pos', '양의 넓이 (색칠)'], ['neg', 'f < 0인 부분: 음의 넓이 (빗금)'], ['strip', '오른쪽 끝의 가는 띠: 높이 f(x)'], ['main', '넓이 함수 A(x) (아래, 실선)'], ['accent', 'A(x)의 접선 (긴 점선)']]
+                           : [['pos', 'positive area (shaded)'], ['neg', 'where f < 0: negative area (hatched)'], ['strip', 'thin strip at the right end: height f(x)'], ['main', 'area function A(x) (bottom, solid)'], ['accent', 'tangent to A(x) (long dashes)']];
+    $('ft-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var F = FN[K], x = +X.value, hh = 1e-4, slope = (F.A(x + hh) - F.A(x - hh)) / (2 * hh), fx = F.f(x), v;
+    var rows = [['x', fmt(x)], ['A(x) = ' + F.An, fmt(F.A(x), 3)], [ko() ? 'A(x)의 기울기' : 'slope of A(x)', fmt(slope, 3)], ['f(x)', fmt(fx, 3)]];
+    $('ft-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i >= 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    if (Math.abs(fx) < 0.01) v = ko() ? '여기서 f(x) = 0이라 띠의 높이가 0이에요. 넓이가 잠깐 늘지도 줄지도 않아서 A(x)의 접선이 수평이에요 (A의 꼭대기나 바닥).'
+                                      : 'Here f(x) = 0, so the strip has no height. The area momentarily stops changing and the tangent to A is flat (a peak or valley of A).';
+    else if (fx > 0) v = ko() ? 'x를 조금 늘리면 높이 f(x)인 띠만큼 넓이가 늘어나요. 그래서 A(x)의 기울기가 바로 f(x)예요: d/dx ∫₀ˣ f(t) dt = f(x).'
+                              : 'Nudging x adds a strip of height f(x), so the slope of A(x) is exactly f(x): d/dx ∫₀ˣ f(t) dt = f(x).';
+    else v = ko() ? 'f(x) < 0이라 띠가 x축 아래에 생겨요. 음의 넓이가 더해지니 A(x)가 줄어들고, 기울기는 음수 f(x)예요.'
+                  : 'f(x) < 0, so the strip lies below the axis. Adding negative area makes A(x) decrease, with negative slope f(x).';
+    var el = $('ft-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + v;
+    top.draw(); bot.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k];
+    X.min = F.range[0]; X.max = F.range[1]; X.value = k === 'cos' ? 1 : 1.2;
+    legend(); X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(X, $('ft-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('ft-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  X.addEventListener('change', function () { $('ft-live').textContent = $('ft-verdict').textContent; });
+  Graph.player({ button: $('ft-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else { top.draw(); bot.draw(); } });
+  setFn(K);
+});
+</script>
 </body>
 </html>

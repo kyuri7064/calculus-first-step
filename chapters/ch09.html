@@ -553,8 +553,9 @@
       </div>
     </section>
 
-    <section id="s09-6" data-status="core">
-      <div class="core-only">
+    <section id="s09-6">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>서로 관계가 있는 여러 양이 <strong>시간에 따라 함께</strong> 변할 때, 그 변화율들 사이의 관계를 <strong>연계변화율</strong>이라고 해요.</li>
@@ -571,7 +572,84 @@
           $$V=\frac{\pi}{12}h^3\ \Rightarrow\ \frac{dV}{dt}=\frac{\pi}{4}h^2\frac{dh}{dt}\ \Rightarrow\ \frac{dh}{dt}=\frac{40}{\pi h^2}$$
         </div>
         <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#related-rates"><span data-lang="ko">🏫 슬라이더로 해 보기: 원뿔 컵에 물 붓기</span><span data-lang="en">🏫 Try it with a slider: filling a cone cup</span></a></div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 미끄러지는 사다리 / 퍼지는 물결 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">상황 고르기</span><span data-lang="en">Choose a situation</span></legend>
+            <div class="seg" id="rr-pick">
+              <label><input type="radio" name="rr-pick" value="ladder" checked><span><span data-lang="ko">미끄러지는 사다리</span><span data-lang="en">Sliding ladder</span></span></label>
+              <label><input type="radio" name="rr-pick" value="ripple"><span><span data-lang="ko">퍼지는 물결</span><span data-lang="en">Spreading ripple</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="rr-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="rr-canvas" role="img" data-i18n-attr="aria-label:rr.canvas"></canvas>
+          </div>
+          <ul class="legend" id="rr-legend"></ul>
+          <table class="readout-table"><tbody id="rr-table"></tbody></table>
+          <p class="verdict" id="rr-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="rr-x" id="rr-x-label"></label>
+              <input id="rr-x" type="range" min="0.5" max="4.9" step="0.01" value="1.5">
+              <output id="rr-x-out" for="rr-x">1.50</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="rr-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="rr-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">공 모양 풍선에 1초에 \(100\ \text{cm}^3\)씩 공기를 넣을 때, 반지름이 \(5\ \text{cm}\)인 순간 반지름이 늘어나는 속도를 구하시오.</p>
+            <p data-lang="en">Air is pumped into a spherical balloon at \(100\ \text{cm}^3\)/s. How fast is the radius growing when it is \(5\ \text{cm}\)?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-6-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-6-a" hidden>
+              <p data-lang="ko">\(V=\frac43\pi r^3\)의 양변을 \(t\)로 미분하면 \(\frac{dV}{dt}=4\pi r^2\frac{dr}{dt}\)예요. \(\frac{dV}{dt}=100\), \(r=5\)를 넣으면 \(100=100\pi\frac{dr}{dt}\), 즉 \(\frac{dr}{dt}=\frac1\pi\approx0.32\ \text{cm/s}\)예요.</p>
+              <p data-lang="en">Differentiate \(V=\frac43\pi r^3\) in \(t\): \(\frac{dV}{dt}=4\pi r^2\frac{dr}{dt}\). With \(\frac{dV}{dt}=100\) and \(r=5\): \(100=100\pi\frac{dr}{dt}\), so \(\frac{dr}{dt}=\frac1\pi\approx0.32\ \text{cm/s}\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">키 \(1.8\ \text{m}\)인 사람이 높이 \(6\ \text{m}\)인 가로등에서 초속 \(1.2\ \text{m}\)로 멀어질 때, 그림자의 길이가 늘어나는 속도를 구하시오.</p>
+            <p data-lang="en">A \(1.8\ \text{m}\) tall person walks away from a \(6\ \text{m}\) lamppost at \(1.2\ \text{m/s}\). How fast does the shadow lengthen?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-09-6-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-09-6-b" hidden>
+              <p data-lang="ko">가로등까지 거리를 \(x\), 그림자 길이를 \(s\)라 하면 닮음에서 \(\frac{6}{x+s}=\frac{1.8}{s}\), 정리하면 \(s=\frac37x\)예요. 양변을 \(t\)로 미분하면 \(\frac{ds}{dt}=\frac37\cdot\frac{dx}{dt}=\frac37\cdot1.2\approx0.51\ \text{m/s}\)예요. 거리 \(x\)와 상관없이 일정한 속도인 점이 재미있어요.</p>
+              <p data-lang="en">Let \(x\) be the distance to the lamp and \(s\) the shadow length. Similar triangles give \(\frac{6}{x+s}=\frac{1.8}{s}\), i.e. \(s=\frac37x\). Differentiating, \(\frac{ds}{dt}=\frac37\cdot1.2\approx0.51\ \text{m/s}\) — constant, whatever \(x\) is.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">주어진 순간의 값을 먼저 대입하고 나서 미분한다.</p>
+              <p data-lang="en">Plug in the values at the given moment first, then differentiate.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">먼저 넣으면 변하는 양이 상수가 되어 미분하면 0이 돼요. 사다리에서 \(x=3,\ y=4\)를 먼저 넣으면 \(9+16=25\)가 되어 아무것도 알 수 없어요. <strong>미분 먼저, 대입은 나중</strong>이에요.</p>
+              <p data-lang="en">Plugging in first turns changing quantities into constants, whose derivatives are 0. Put \(x=3,\ y=4\) into the ladder equation first and you only get \(9+16=25\). <strong>Differentiate first, substitute last.</strong></p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">사다리 꼭대기도 바닥과 같은 속도로 움직인다.</p>
+              <p data-lang="en">The top of the ladder moves at the same speed as the bottom.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\frac{dy}{dt}=-\frac xy\cdot\frac{dx}{dt}\)라서 바닥이 일정하게 움직여도 꼭대기의 속도는 계속 바뀌어요. 바닥에 가까워질수록(\(y\to0\)) 아주 빨라져요. 음수는 높이가 <strong>줄어든다</strong>는 뜻이에요.</p>
+              <p data-lang="en">\(\frac{dy}{dt}=-\frac xy\cdot\frac{dx}{dt}\), so even with a steady bottom the top's speed keeps changing, becoming huge as \(y\to0\). The negative sign means the height is <strong>decreasing</strong>.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   </div>
@@ -582,6 +660,114 @@
 </main>
 
 <script>
+/* 09-⑥ 연계변화율: 사다리 x² + y² = 25 / 물결 A = πr² */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var X = $('rr-x'), L = 5, DX = 1, DR = 2, PI = Math.PI;
+  var mode = document.querySelector('input[name="rr-pick"]:checked').value;
+  var DEF = { ladder: '\\(x^2+y^2=25\\ \\Rightarrow\\ 2x\\frac{dx}{dt}+2y\\frac{dy}{dt}=0\\ \\Rightarrow\\ \\frac{dy}{dt}=-\\frac xy\\cdot\\frac{dx}{dt}\\)',
+              ripple: '\\(A=\\pi r^2\\ \\Rightarrow\\ \\frac{dA}{dt}=2\\pi r\\frac{dr}{dt}\\)' };
+
+  var g = Graph.create($('rr-canvas'), { xMin: -1, xMax: 6, yMin: -1, yMax: 6, aspect: 0.8, maxHeight: 380 });
+  function arrow(x0, y0, x1, y1, col, dash) {
+    if (Math.hypot(g.X(x1) - g.X(x0), g.Y(y1) - g.Y(y0)) < 3) return;
+    g.line(x0, y0, x1, y1, { color: col, width: 3.5, dash: dash });
+    var ctx = g.ctx, px = g.X(x1), py = g.Y(y1), ang = Math.atan2(py - g.Y(y0), px - g.X(x0)), s = 11;
+    ctx.save(); ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(px, py);
+    ctx.lineTo(px - s * Math.cos(ang - 0.4), py - s * Math.sin(ang - 0.4));
+    ctx.lineTo(px - s * Math.cos(ang + 0.4), py - s * Math.sin(ang + 0.4));
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  function square(cx, cy, half) {
+    var span = 2 * half * (g.w && g.h ? g.w / g.h : 1);
+    g.setView({ xMin: cx - span / 2, xMax: cx + span / 2, yMin: cy - half, yMax: cy + half });
+  }
+
+  g.render = function () {
+    var c = g.c, v = +X.value;
+    if (mode === 'ladder') {
+      var x = v, y = Math.sqrt(L * L - x * x), dy = -x / y * DX;
+      square(2.6, 2.6, 3.3);
+      g.clear(); g.grid({ xStep: 1, yStep: 1 });
+      g.rect(-0.6, -0.6, 0, 6.2, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });     // 벽
+      g.rect(-0.6, -0.6, 6.5, 0, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });     // 바닥
+      g.line(0, 0, 0, 6.2, { color: c.axis, width: 2 }); g.line(0, 0, 6.5, 0, { color: c.axis, width: 2 });
+      g.line(x, 0, 0, y, { color: c.main, width: 6 });
+      arrow(x, 0.25, x + DX * 0.7, 0.25, c.accent, [8, 4]);
+      arrow(0.25, y, 0.25, Math.max(y + dy * 0.7, -0.5), c.third, [2, 4]);
+      g.label(x / 2, 0, 'x = ' + fmt(x), { color: c.text, dy: -12, bold: true });
+      g.label(0, y / 2, 'y = ' + fmt(y), { color: c.text, align: 'left', dx: 8, bold: true });
+      g.label(x / 2, y / 2, ko() ? '사다리 5 m' : 'ladder 5 m', { color: c.main, align: 'left', dx: 10, dy: -10, bold: true });
+      g.point(x, 0, { color: c.main, r: 5 }); g.point(0, y, { color: c.main, r: 5 });
+    } else {
+      var r = v;
+      square(0, 0, 5.6);
+      g.clear(); g.grid({ xStep: 1, yStep: 1 }); g.axes({ xStep: 2, yStep: 2 });
+      var ring = function (rad) { var p = []; for (var i = 0; i <= 160; i++) { var t = 2 * PI * i / 160; p.push([rad * Math.cos(t), rad * Math.sin(t)]); } return p; };
+      g.polygon(ring(r), { fill: c.fillMain, stroke: c.main, width: 3 });
+      // 아주 짧은 시간 dt 뒤의 물결: 넓어진 고리가 dA ≈ (둘레) × dr
+      var r2 = r + DR * 0.25;
+      g.polygon(ring(r2), { stroke: c.accent, width: 2, dash: [8, 5] });
+      arrow(0, 0, r, 0, c.text, []);
+      arrow(r * 0.71, r * 0.71, r2 * 0.71, r2 * 0.71, c.accent, [8, 4]);
+      g.label(r / 2, 0, 'r = ' + fmt(r), { color: c.text, dy: -12, bold: true });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>',
+             accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:3.5;stroke-dasharray:8 4"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  function legend() {
+    var Lg = Site.lang();
+    var items = mode === 'ladder'
+      ? (Lg === 'ko' ? [['main', '길이 5 m 사다리 (굵은 실선)'], ['accent', '바닥이 미끄러지는 속도 dx/dt = 1 m/s (긴 점선)'], ['third', '꼭대기가 내려오는 속도 dy/dt (짧은 점선)']]
+                     : [['main', '5 m ladder (thick)'], ['accent', 'bottom slides at dx/dt = 1 m/s (dashed)'], ['third', 'top falls at dy/dt (dotted)']])
+      : (Lg === 'ko' ? [['main', '지금의 물결 (색칠한 원)'], ['accent', '잠시 뒤의 물결: 반지름이 dr/dt = 2로 늘어남 (긴 점선)']]
+                     : [['main', 'current ripple (shaded disc)'], ['accent', 'a moment later: radius grows at dr/dt = 2 (dashed)']]);
+    $('rr-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('rr-x-label').textContent = mode === 'ladder' ? (Lg === 'ko' ? '바닥까지의 거리 x (m)' : 'distance of the bottom x (m)') : (Lg === 'ko' ? '물결의 반지름 r (cm)' : 'ripple radius r (cm)');
+  }
+
+  function update() {
+    var v = +X.value, rows, txt, hl;
+    if (mode === 'ladder') {
+      var x = v, y = Math.sqrt(L * L - x * x), dy = -x / y * DX;
+      rows = [['x', fmt(x) + ' m'], ['y', fmt(y) + ' m'], ['dx/dt', fmt(DX) + ' m/s'], ['dy/dt = −(x/y)·dx/dt', fmt(dy, 3) + ' m/s']];
+      hl = 3;
+      txt = ko() ? '바닥은 늘 1 m/s로 미끄러지지만, 꼭대기는 ' + fmt(Math.abs(dy), 2) + ' m/s로 내려와요. x가 커질수록(꼭대기가 낮아질수록) x/y가 커져서 점점 더 빨리 떨어져요.'
+                 : 'The bottom always slides at 1 m/s, but the top falls at ' + fmt(Math.abs(dy), 2) + ' m/s. As x grows (the top gets lower), x/y grows and the top falls faster and faster.';
+    } else {
+      var r = v, dA = 2 * PI * r * DR;
+      rows = [['r', fmt(r) + ' cm'], ['dr/dt', fmt(DR) + ' cm/s'], [ko() ? '둘레 2πr' : 'circumference 2πr', fmt(2 * PI * r, 2) + ' cm'], ['dA/dt = 2πr·dr/dt', fmt(dA, 2) + ' cm²/s']];
+      hl = 3;
+      txt = ko() ? '반지름은 늘 2 cm/s로 늘어나지만, 넓이는 ' + fmt(dA, 1) + ' cm²/s로 늘어나요. 새로 생기는 고리의 넓이 ≈ 둘레 × 두께라서, 물결이 커질수록 넓이가 더 빨리 늘어요.'
+                 : 'The radius always grows at 2 cm/s, but the area grows at ' + fmt(dA, 1) + ' cm²/s. The new ring\'s area ≈ circumference × thickness, so a bigger ripple gains area faster.';
+    }
+    $('rr-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('rr-verdict');
+    el.className = 'verdict';
+    el.textContent = '→ ' + txt;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    X.min = m === 'ladder' ? 0.5 : 0.3; X.max = m === 'ladder' ? 4.9 : 4.5; X.value = m === 'ladder' ? 1.5 : 1;
+    var d = $('rr-def');
+    d.innerHTML = DEF[m];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(X, $('rr-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('rr-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  X.addEventListener('change', function () { $('rr-live').textContent = $('rr-verdict').textContent; });
+  Graph.player({ button: $('rr-play'), input: X, duration: 9000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
 /* 09-⑤ 최적화 문제: 모양을 바꾸면 양이 바뀐다 → 그래프의 꼭대기·바닥 */
 document.addEventListener('DOMContentLoaded', function () {
   var $ = function (id) { return document.getElementById(id); };

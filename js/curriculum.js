@@ -98,7 +98,7 @@ window.CURRICULUM = [
           { ko: '일차근사함수', en: 'Linear Approximation', ready: true },
           { ko: '로피탈의 법칙', en: "L'Hôpital's Rule", ready: true },
           { ko: '최적화 문제', en: 'Optimization Problems', ready: true },
-          { ko: '연계변화율', en: 'Related Rates' }
+          { ko: '연계변화율', en: 'Related Rates', ready: true }
         ]}
     ]
   },
@@ -111,9 +111,9 @@ window.CURRICULUM = [
         intro: { ko: '미분을 거꾸로 하는 역도함수와 부정적분, 그리고 간단한 미분방정식을 배워요.',
                  en: 'Learn antiderivatives (differentiation in reverse), indefinite integrals and simple differential equations.' },
         sections: [
-          { ko: '역도함수와 부정적분', en: 'Antiderivatives and Indefinite Integrals' },
-          { ko: '여러 가지 함수의 부정적분', en: 'Indefinite Integrals of Various Functions' },
-          { ko: '미분방정식과 초깃값 문제', en: 'Differential Equations and Initial Value Problems' }
+          { ko: '역도함수와 부정적분', en: 'Antiderivatives and Indefinite Integrals', ready: true },
+          { ko: '여러 가지 함수의 부정적분', en: 'Indefinite Integrals of Various Functions', ready: true },
+          { ko: '미분방정식과 초깃값 문제', en: 'Differential Equations and Initial Value Problems', ready: true }
         ]},
       { id: '11', page: 138,
         title: { ko: '정적분의 정의와 기본 성질', en: 'Definition and Properties of the Definite Integral' },
@@ -121,36 +121,36 @@ window.CURRICULUM = [
                  en: 'Define the definite integral as the limit of Riemann sums of thin rectangles.' },
         sections: [
           { ko: '정적분의 정의', en: 'Definition of the Definite Integral', ready: true },
-          { ko: '정적분의 성질', en: 'Properties of the Definite Integral' }
+          { ko: '정적분의 성질', en: 'Properties of the Definite Integral', ready: true }
         ]},
       { id: '12', page: 146,
         title: { ko: '미적분학의 기본정리', en: 'The Fundamental Theorem of Calculus' },
         intro: { ko: '미분과 적분을 하나로 잇는 기본정리와, 부분적분법·치환적분법을 배워요.',
                  en: 'The theorem that links derivatives and integrals, plus integration by parts and substitution.' },
         sections: [
-          { ko: '미적분학의 기본정리', en: 'The Fundamental Theorem of Calculus' },
-          { ko: '부분적분법', en: 'Integration by Parts' },
-          { ko: '치환적분법', en: 'Integration by Substitution' }
+          { ko: '미적분학의 기본정리', en: 'The Fundamental Theorem of Calculus', ready: true },
+          { ko: '부분적분법', en: 'Integration by Parts', ready: true },
+          { ko: '치환적분법', en: 'Integration by Substitution', ready: true }
         ]},
       { id: '13', page: 158,
         title: { ko: '여러 가지 적분법', en: 'Techniques of Integration' },
         intro: { ko: '지수함수, 로그함수, 삼각함수, 유리함수의 적분과 이상적분을 다뤄요.',
                  en: 'Integrate exponential, logarithmic, trigonometric and rational functions, and handle improper integrals.' },
         sections: [
-          { ko: '지수함수와 로그함수의 적분', en: 'Integrals of Exponential and Logarithmic Functions' },
-          { ko: '삼각함수의 적분', en: 'Integrals of Trigonometric Functions' },
-          { ko: '삼각함수의 곱의 적분', en: 'Integrals of Products of Trigonometric Functions' },
-          { ko: '유리함수의 적분', en: 'Integrals of Rational Functions' },
-          { ko: '이상적분', en: 'Improper Integrals' }
+          { ko: '지수함수와 로그함수의 적분', en: 'Integrals of Exponential and Logarithmic Functions', ready: true },
+          { ko: '삼각함수의 적분', en: 'Integrals of Trigonometric Functions', ready: true },
+          { ko: '삼각함수의 곱의 적분', en: 'Integrals of Products of Trigonometric Functions', ready: true },
+          { ko: '유리함수의 적분', en: 'Integrals of Rational Functions', ready: true },
+          { ko: '이상적분', en: 'Improper Integrals', ready: true }
         ]},
       { id: '14', page: 170,
         title: { ko: '정적분의 활용', en: 'Applications of the Definite Integral' },
         intro: { ko: '넓이, 부피, 이동 거리를 정적분으로 구해요.',
                  en: 'Use definite integrals to find area, volume and distance traveled.' },
         sections: [
-          { ko: '평면도형의 넓이', en: 'Area of Plane Regions' },
-          { ko: '입체도형의 부피', en: 'Volume of Solids' },
-          { ko: '속도와 거리', en: 'Velocity and Distance' }
+          { ko: '평면도형의 넓이', en: 'Area of Plane Regions', ready: true },
+          { ko: '입체도형의 부피', en: 'Volume of Solids', ready: true },
+          { ko: '속도와 거리', en: 'Velocity and Distance', ready: true }
         ]}
     ]
   }

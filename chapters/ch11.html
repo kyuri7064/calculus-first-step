@@ -27,8 +27,9 @@
     <!-- 완성된 소단원은 여기에 <section id="s11-번호"> … </section> 으로 넣는다.
          없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
 
-    <section id="s11-2" data-status="core">
-      <div class="core-only">
+    <section id="s11-2">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>정적분도 합의 극한이라서, 상수배와 합·차를 따로 적분할 수 있어요.</li>
@@ -49,7 +50,85 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int_0^2x^2\,dx=\frac83\)이므로 \(\int_0^2(3x^2+1)\,dx=3\cdot\frac83+2=10\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Since \(\int_0^2x^2\,dx=\frac83\), \(\int_0^2(3x^2+1)\,dx=3\cdot\frac83+2=10\).</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 구간 나누기 / 크기 비교 / 상수배 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">성질 고르기</span><span data-lang="en">Choose a property</span></legend>
+            <div class="seg" id="ip-pick">
+              <label><input type="radio" name="ip-pick" value="split" checked><span><span data-lang="ko">구간 나누기</span><span data-lang="en">Splitting</span></span></label>
+              <label><input type="radio" name="ip-pick" value="cmp"><span><span data-lang="ko">크기 비교</span><span data-lang="en">Comparison</span></span></label>
+              <label><input type="radio" name="ip-pick" value="lin"><span><span data-lang="ko">상수배</span><span data-lang="en">Constant multiple</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="ip-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="ip-canvas" role="img" data-i18n-attr="aria-label:ip.canvas"></canvas>
+          </div>
+          <ul class="legend" id="ip-legend"></ul>
+          <table class="readout-table"><tbody id="ip-table"></tbody></table>
+          <p class="verdict" id="ip-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="ip-s" id="ip-s-label"></label>
+              <input id="ip-s" type="range" min="-0.5" max="3.5" step="0.05" value="1.2">
+              <output id="ip-s-out" for="ip-s">1.20</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="ip-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="ip-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\int_1^3f(x)\,dx=5\), \(\int_1^3g(x)\,dx=2\)일 때 \(\int_1^3\{2f(x)-3g(x)\}\,dx\)의 값을 구하시오.</p>
+            <p data-lang="en">If \(\int_1^3f(x)\,dx=5\) and \(\int_1^3g(x)\,dx=2\), find \(\int_1^3\{2f(x)-3g(x)\}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-11-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-11-2-a" hidden>
+              <p data-lang="ko">상수배와 차를 따로 계산하면 \(2\cdot5-3\cdot2=4\)예요.</p>
+              <p data-lang="en">Split the constants and the difference: \(2\cdot5-3\cdot2=4\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\int_0^4f(x)\,dx=7\), \(\int_2^4f(x)\,dx=3\)일 때 \(\int_0^2f(x)\,dx\)와 \(\int_4^0f(x)\,dx\)를 구하시오.</p>
+            <p data-lang="en">If \(\int_0^4f(x)\,dx=7\) and \(\int_2^4f(x)\,dx=3\), find \(\int_0^2f(x)\,dx\) and \(\int_4^0f(x)\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-11-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-11-2-b" hidden>
+              <p data-lang="ko">\(\int_0^4=\int_0^2+\int_2^4\)이므로 \(\int_0^2f(x)\,dx=7-3=4\). 위끝과 아래끝을 바꾸면 부호가 바뀌어서 \(\int_4^0f(x)\,dx=-7\)이에요.</p>
+              <p data-lang="en">\(\int_0^4=\int_0^2+\int_2^4\), so \(\int_0^2f(x)\,dx=7-3=4\). Swapping the limits flips the sign: \(\int_4^0f(x)\,dx=-7\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\int_a^cf+\int_c^bf=\int_a^bf\)는 \(c\)가 \(a\)와 \(b\) 사이에 있을 때만 성립한다.</p>
+              <p data-lang="en">\(\int_a^cf+\int_c^bf=\int_a^bf\) holds only when \(c\) lies between \(a\) and \(b\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(c\)가 구간 밖이어도 성립해요. 그때는 한쪽이 "거꾸로 가는" 적분이라 음수가 되어 넘친 부분을 빼 줘요. 그림에서 \(c\)를 3보다 크게 옮겨 보세요.</p>
+              <p data-lang="en">It holds even when \(c\) is outside; then one piece runs "backwards", is negative, and subtracts the overshoot. Drag \(c\) past 3 in the picture.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(f(x)\le g(x)\)인 곳이 조금이라도 있으면 \(\int f\le\int g\)이다.</p>
+              <p data-lang="en">If \(f(x)\le g(x)\) somewhere, then \(\int f\le\int g\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">구간 <strong>전체</strong>에서 \(f\le g\)여야 보장돼요. 그림의 "크기 비교"에서 \(b\)를 1.5보다 크게 하면, \(x^2\le x\)인 곳이 있는데도 \(\int_0^bx^2\,dx>\int_0^bx\,dx\)가 돼요.</p>
+              <p data-lang="en">It is guaranteed only if \(f\le g\) on the <strong>whole</strong> interval. In "Comparison", push \(b\) past 1.5: \(x^2\le x\) somewhere, yet \(\int_0^bx^2\,dx>\int_0^bx\,dx\).</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
@@ -250,6 +329,120 @@
 </main>
 
 <script>
+/* 11-② 정적분의 성질: 구간 나누기(+ 거꾸로 가는 적분) / 크기 비교 / 상수배 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var S = $('ip-s'), A = 0, B = 3;
+  var f = function (x) { return x * x - 2 * x + 2; }, Fp = function (x) { return x * x * x / 3 - x * x + 2 * x; };
+  var I = function (a, b) { return Fp(b) - Fp(a); };          // ∫_a^b f
+  var sq = function (x) { return x * x; }, id = function (x) { return x; };
+  var mode = document.querySelector('input[name="ip-pick"]:checked').value;
+  var DEF = { split: '\\(\\displaystyle\\int_0^c f\\,dx+\\int_c^3 f\\,dx=\\int_0^3 f\\,dx,\\quad f(x)=x^2-2x+2\\)',
+              cmp: '\\(\\displaystyle\\int_0^b x^2\\,dx\\ \\text{vs}\\ \\int_0^b x\\,dx\\)',
+              lin: '\\(\\displaystyle\\int_0^3 k\\,f(x)\\,dx=k\\int_0^3 f(x)\\,dx=6k\\)' };
+  var RANGE = { split: [-0.5, 3.5, 0.05, 1.2], cmp: [0.2, 2, 0.01, 0.8], lin: [-2, 3, 0.1, 2] };
+
+  var g = Graph.create($('ip-canvas'), { xMin: -1, xMax: 4, yMin: -1, yMax: 6, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var c = g.c, s = +S.value;
+    if (mode === 'split') {
+      g.setView({ xMin: -0.9, xMax: 3.9, yMin: -0.6, yMax: 6.2 });
+      g.clear(); g.grid(); g.axes();
+      var lo = Math.min(A, s), hi = Math.max(A, s);
+      // ∫_0^c : 0 ≤ c 이면 색칠, c < 0 이면 거꾸로 (빗금)
+      g.area(f, lo, hi, s >= A ? { fill: c.fillMain } : { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+      var lo2 = Math.min(s, B), hi2 = Math.max(s, B);
+      g.area(f, lo2, hi2, s <= B ? { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent } : { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+      g.plot(f, { color: c.main, width: 3.5 });
+      g.vline(s, { color: c.accent, width: 2.5, dash: [11, 6] });
+      g.label(s, 6.2, 'c', { color: c.accent, align: 'left', dx: 6, dy: 14, bold: true });
+      [A, B].forEach(function (x) { g.line(x, 0, x, f(x), { color: c.text, width: 1.5 }); });
+    } else if (mode === 'cmp') {
+      g.setView({ xMin: -0.2, xMax: 2.2, yMin: -0.3, yMax: 4.3 });
+      g.clear(); g.grid(); g.axes();
+      g.area(id, 0, s, { fill: c.fillAccent });
+      g.area(sq, 0, s, { fill: c.fillMain, hatch: 'd', hatchColor: c.main });
+      g.plot(id, { color: c.accent, width: 3, dash: [11, 6] });
+      g.plot(sq, { color: c.main, width: 3.5 });
+      g.vline(s, { color: c.text2, width: 1.5, dash: [4, 4] });
+      g.label(s, 4.3, 'b', { color: c.text, align: 'left', dx: 6, dy: 14, bold: true });
+      if (s > 1) g.band('x', 1, s, { fill: 'rgba(0,0,0,0)', stroke: c.third });
+    } else {
+      g.setView({ xMin: -0.4, xMax: 3.4, yMin: -11, yMax: 16 });
+      g.clear(); g.grid(); g.axes();
+      var kf = function (x) { return s * f(x); };
+      g.area(kf, 0, 3, s >= 0 ? { fill: c.fillAccent } : { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+      g.plot(f, { color: c.text2, width: 2, dash: [4, 4] });
+      g.plot(kf, { color: c.main, width: 3.5 });
+    }
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             fm: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main)"/>',
+             fa: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-accent);stroke:var(--g-accent)"/>',
+             ft: '<rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-third);stroke:var(--g-third)"/>',
+             gray: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:2;stroke-dasharray:4 4"/>' };
+  function legend() {
+    var L = Site.lang(), items;
+    if (mode === 'split') items = L === 'ko' ? [['fm', '∫[0, c] f (색칠)'], ['fa', '∫[c, 3] f (가로 빗금)'], ['ft', '거꾸로 가는 부분: 음수 (사선 빗금)']]
+                                             : [['fm', '∫[0, c] f (shaded)'], ['fa', '∫[c, 3] f (horizontal hatch)'], ['ft', 'backward part: negative (diagonal hatch)']];
+    else if (mode === 'cmp') items = L === 'ko' ? [['main', 'y = x² (실선, 빗금 넓이)'], ['accent', 'y = x (긴 점선, 색칠 넓이)']]
+                                                : [['main', 'y = x² (solid, hatched area)'], ['accent', 'y = x (long dashes, shaded area)']];
+    else items = L === 'ko' ? [['gray', 'y = f(x) (회색 점선)'], ['main', 'y = k·f(x) (실선)'], ['fa', '∫[0, 3] k f (k < 0이면 아래쪽 빗금)']]
+                            : [['gray', 'y = f(x) (gray dashes)'], ['main', 'y = k·f(x) (solid)'], ['fa', '∫[0, 3] k f (hatched below when k < 0)']];
+    $('ip-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('ip-s-label').textContent = mode === 'split' ? (L === 'ko' ? '나누는 점 c' : 'split point c') : mode === 'cmp' ? (L === 'ko' ? '위끝 b' : 'upper limit b') : (L === 'ko' ? '상수 k' : 'constant k');
+  }
+
+  function update() {
+    var s = +S.value, rows, v, hl;
+    if (mode === 'split') {
+      var p = I(A, s), q = I(s, B);
+      rows = [['∫[0, c] f', fmt(p, 3)], ['∫[c, 3] f', fmt(q, 3)], [ko() ? '두 값의 합' : 'sum', fmt(p + q, 3)], ['∫[0, 3] f', fmt(I(A, B), 3)]];
+      hl = 2;
+      v = s >= A && s <= B
+        ? { ok: true, text: ko() ? 'c가 0과 3 사이에 있으면 넓이를 두 조각으로 나눈 것과 같아서, 합이 항상 6이에요.' : 'With c between 0 and 3 the area splits into two pieces, so the sum is always 6.' }
+        : { ok: true, text: ko() ? 'c가 구간 밖이어도 합은 6이에요. ' + (s > B ? '∫[c, 3]는 오른쪽에서 왼쪽으로 가는 적분이라 음수가 되어, 3을 넘친 부분을 빼 줘요.' : '∫[0, c]는 거꾸로 가는 적분이라 음수가 되어, 0보다 왼쪽 부분을 빼 줘요.')
+                                 : 'Even with c outside, the sum is 6. ' + (s > B ? '∫[c, 3] runs right to left, so it is negative and subtracts the overshoot past 3.' : '∫[0, c] runs backward, so it is negative and subtracts the part left of 0.') };
+    } else if (mode === 'cmp') {
+      var a1 = s * s * s / 3, a2 = s * s / 2;
+      rows = [['∫[0, b] x² dx = b³/3', fmt(a1, 3)], ['∫[0, b] x dx = b²/2', fmt(a2, 3)], [ko() ? '비교' : 'comparison', a1 <= a2 + 1e-12 ? '∫x² ≤ ∫x' : '∫x² > ∫x']];
+      hl = 2;
+      v = s <= 1
+        ? { ok: true, text: ko() ? '0 ≤ x ≤ b ≤ 1에서는 항상 x² ≤ x라서 ∫x² ≤ ∫x가 보장돼요. 빗금 넓이가 색칠 넓이 안에 쏙 들어가요.' : 'On 0 ≤ x ≤ b ≤ 1, x² ≤ x everywhere, so ∫x² ≤ ∫x is guaranteed: the hatched area fits inside the shaded one.' }
+        : { ok: false, text: ko() ? 'x > 1에서는 x² > x라서 (보라 테두리 구간) 성질을 쓸 수 없어요. ' + (a1 > a2 ? '실제로 b > 1.5부터는 ∫x²가 더 커요.' : '지금은 아직 ∫x² ≤ ∫x지만, 보장된 것은 아니에요.')
+                                  : 'For x > 1, x² > x (purple-framed part), so the property does not apply. ' + (a1 > a2 ? 'Indeed from b > 1.5, ∫x² is larger.' : 'Right now ∫x² ≤ ∫x still holds, but it is not guaranteed.') };
+    } else {
+      rows = [['k', fmt(s, 1)], ['∫[0, 3] f dx', '6'], ['∫[0, 3] k f dx', fmt(6 * s, 1)]];
+      hl = 2;
+      v = { ok: true, text: ko() ? '그래프를 세로로 k배 늘이면 넓이도 k배가 돼요: ' + fmt(6 * s, 1) + ' = ' + fmt(s, 1) + ' × 6. k가 음수이면 그래프가 x축 아래로 뒤집혀 적분값도 음수예요.'
+                                 : 'Stretching the graph vertically by k stretches the area by k: ' + fmt(6 * s, 1) + ' = ' + fmt(s, 1) + ' × 6. A negative k flips it below the axis, so the integral is negative.' };
+    }
+    $('ip-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === hl ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('ip-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : 'no');
+    el.textContent = (v.ok ? '✓ ' : '✕ ') + v.text;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var R = RANGE[m], d = $('ip-def');
+    S.min = R[0]; S.max = R[1]; S.step = R[2]; S.value = R[3];
+    d.innerHTML = DEF[m];
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); S.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(S, $('ip-s-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('ip-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  S.addEventListener('change', function () { $('ip-live').textContent = $('ip-verdict').textContent; });
+  Graph.player({ button: $('ip-play'), input: S, duration: 8000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
 /* 11-① 정적분의 정의: 리만 합 직사각형 */
 document.addEventListener('DOMContentLoaded', function () {
   var $ = function (id) { return document.getElementById(id); };

@@ -27,8 +27,9 @@
     <!-- 완성된 소단원은 여기에 <section id="s10-번호"> … </section> 으로 넣는다.
          없는 소단원은 site.js가 "준비 중" 카드로 만든다. -->
 
-    <section id="s10-1" data-status="core">
-      <div class="core-only">
+    <section id="s10-1">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>\(F'(x)=f(x)\)일 때 \(F\)를 \(f\)의 <strong>역도함수</strong>라고 해요. 미분을 거꾸로 한 것이에요.</li>
@@ -47,12 +48,96 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int(3x^2+2x)\,dx=x^3+x^2+C\). 확인: \((x^3+x^2+C)'=3x^2+2x\) ✓</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int(3x^2+2x)\,dx=x^3+x^2+C\). Check: \((x^3+x^2+C)'=3x^2+2x\) ✓</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 역도함수의 가족 F(x) + C, 같은 x에서 기울기가 모두 같다 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">미분해서 나와야 할 함수 \(f(x)\)</span><span data-lang="en">The function \(f(x)\) to recover</span></legend>
+            <div class="seg" id="af-pick">
+              <label><input type="radio" name="af-pick" value="lin" checked><span>\(2x\)</span></label>
+              <label><input type="radio" name="af-pick" value="cub"><span>\(3x^2-3\)</span></label>
+              <label><input type="radio" name="af-pick" value="cos"><span>\(\cos x\)</span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="af-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="af-canvas" role="img" data-i18n-attr="aria-label:af.canvas"></canvas>
+          </div>
+          <ul class="legend" id="af-legend"></ul>
+          <table class="readout-table"><tbody id="af-table"></tbody></table>
+          <p class="verdict" id="af-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="af-c"><span data-lang="ko">적분상수</span><span data-lang="en">Constant</span> \(C\)</label>
+              <input id="af-c" type="range" min="-3" max="3" step="0.1" value="1">
+              <output id="af-c-out" for="af-c">1.0</output>
+            </div>
+            <div class="slider-row">
+              <label for="af-x"><span data-lang="ko">기울기를 비교할 위치</span><span data-lang="en">Where to compare slopes</span> \(x\)</label>
+              <input id="af-x" type="range" min="-2" max="2" step="0.01" value="1">
+              <output id="af-x-out" for="af-x">1.00</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="af-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="af-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int(4x^3-6x+1)\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int(4x^3-6x+1)\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-1-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-1-a" hidden>
+              <p data-lang="ko">항마다 따로 적분해요: \(x^4-3x^2+x+C\). 미분해서 \(4x^3-6x+1\)이 나오는지 꼭 확인해요 ✓</p>
+              <p data-lang="en">Integrate term by term: \(x^4-3x^2+x+C\). Check that its derivative is \(4x^3-6x+1\) ✓</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(F'(x)=3x^2-2\)이고 \(F(1)=4\)일 때 \(F(x)\)를 구하시오.</p>
+            <p data-lang="en">Find \(F(x)\) if \(F'(x)=3x^2-2\) and \(F(1)=4\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-1-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-1-b" hidden>
+              <p data-lang="ko">\(F(x)=x^3-2x+C\)이고 \(F(1)=1-2+C=4\)에서 \(C=5\)예요. 따라서 \(F(x)=x^3-2x+5\). 가족 중에서 점 \((1,4)\)를 지나는 곡선 <strong>하나</strong>를 고른 거예요.</p>
+              <p data-lang="en">\(F(x)=x^3-2x+C\), and \(F(1)=1-2+C=4\) gives \(C=5\). So \(F(x)=x^3-2x+5\): we picked the <strong>one</strong> curve of the family through \((1,4)\).</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int2x\,dx=x^2\)</p>
+              <p data-lang="en">\(\displaystyle\int2x\,dx=x^2\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(x^2+1\), \(x^2-3\)도 미분하면 \(2x\)예요. 그림에서 \(C\)를 바꾸면 곡선이 위아래로만 움직이고 기울기는 그대로예요. 그래서 \(x^2+C\)처럼 <strong>\(+C\)</strong>를 꼭 붙여요.</p>
+              <p data-lang="en">\(x^2+1\) and \(x^2-3\) also differentiate to \(2x\). Changing \(C\) in the picture only shifts the curve up or down; the slopes stay. So always write <strong>\(+C\)</strong>: \(x^2+C\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int f(x)g(x)\,dx=\int f(x)\,dx\cdot\int g(x)\,dx\)</p>
+              <p data-lang="en">\(\displaystyle\int f(x)g(x)\,dx=\int f(x)\,dx\cdot\int g(x)\,dx\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">곱의 적분은 따로 나눌 수 없어요. \(\int x\cdot x\,dx=\frac{x^3}3+C\)이지만, \(\frac{x^2}2\cdot\frac{x^2}2=\frac{x^4}4\)는 미분하면 \(x^3\)이라 틀려요. 합·차와 상수배만 나눌 수 있어요.</p>
+              <p data-lang="en">A product can't be split. \(\int x\cdot x\,dx=\frac{x^3}3+C\), but \(\frac{x^2}2\cdot\frac{x^2}2=\frac{x^4}4\) differentiates to \(x^3\). Only sums, differences and constant multiples split.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s10-2" data-status="core">
-      <div class="core-only">
+    <section id="s10-2">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>미분 공식을 거꾸로 읽으면 여러 함수의 부정적분 공식을 얻어요.</li>
@@ -72,12 +157,84 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(\int\sqrt x\,dx=\int x^{\frac12}dx=\frac23x^{\frac32}+C\), &nbsp; \(\int\left(\frac2x+e^x\right)dx=2\ln|x|+e^x+C\)</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(\int\sqrt x\,dx=\int x^{\frac12}dx=\frac23x^{\frac32}+C\), &nbsp; \(\int\left(\frac2x+e^x\right)dx=2\ln|x|+e^x+C\)</p>
         </div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: ∫xʳ dx 에서 r → −1 이면 ln x 가 나타난다 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <p class="note" style="margin:0 0 8px" id="pw-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="pw-canvas" role="img" data-i18n-attr="aria-label:pw.canvas"></canvas>
+          </div>
+          <ul class="legend" id="pw-legend"></ul>
+          <table class="readout-table"><tbody id="pw-table"></tbody></table>
+          <p class="verdict" id="pw-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="pw-r"><span data-lang="ko">지수</span><span data-lang="en">Exponent</span> \(r\)</label>
+              <input id="pw-r" type="range" min="-3" max="2" step="0.05" value="1">
+              <output id="pw-r-out" for="pw-r">1.00</output>
+            </div>
+            <label class="check-row"><input type="checkbox" id="pw-ln" checked><span><span data-lang="ko">\(y=\ln x\) 함께 보기</span><span data-lang="en">Also show \(y=\ln x\)</span></span></label>
+            <div class="control-buttons">
+              <button class="play-btn" id="pw-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="pw-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\displaystyle\int\left(\frac{1}{x^2}+2\sin x\right)dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int\left(\frac{1}{x^2}+2\sin x\right)dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-2-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-2-a" hidden>
+              <p data-lang="ko">\(\frac1{x^2}=x^{-2}\)이므로 \(\int x^{-2}dx=\frac{x^{-1}}{-1}=-\frac1x\), 그리고 \(\int2\sin x\,dx=-2\cos x\)예요. 따라서 \(-\frac1x-2\cos x+C\).</p>
+              <p data-lang="en">\(\frac1{x^2}=x^{-2}\), so \(\int x^{-2}dx=\frac{x^{-1}}{-1}=-\frac1x\), and \(\int2\sin x\,dx=-2\cos x\). Hence \(-\frac1x-2\cos x+C\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">\(\displaystyle\int\frac{(x+1)^2}{x}\,dx\)를 구하시오.</p>
+            <p data-lang="en">Find \(\displaystyle\int\frac{(x+1)^2}{x}\,dx\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-2-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-2-b" hidden>
+              <p data-lang="ko">분자를 전개해서 나누면 \(\frac{x^2+2x+1}{x}=x+2+\frac1x\)이에요. 항마다 적분하면 \(\frac{x^2}{2}+2x+\ln|x|+C\)예요. 분수 꼴은 먼저 쪼개는 것이 요령이에요.</p>
+              <p data-lang="en">Expand and divide: \(\frac{x^2+2x+1}{x}=x+2+\frac1x\). Term by term: \(\frac{x^2}{2}+2x+\ln|x|+C\). Tip: split fractions first.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\frac1x\,dx=\frac{x^0}{0}+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\frac1x\,dx=\frac{x^0}{0}+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(r=-1\)이면 0으로 나누게 되어 공식을 쓸 수 없어요. 답은 \(\ln|x|+C\)예요. 그림에서 \(r\)을 \(-1\)에 가까이 가져가면 곡선이 \(\ln x\)에 달라붙는 것을 볼 수 있어요.</p>
+              <p data-lang="en">With \(r=-1\) you'd divide by 0, so the formula fails; the answer is \(\ln|x|+C\). In the picture, bring \(r\) toward \(-1\) and the curve hugs \(\ln x\).</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\displaystyle\int\sin x\,dx=\cos x+C\)</p>
+              <p data-lang="en">\(\displaystyle\int\sin x\,dx=\cos x+C\)</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\((\cos x)'=-\sin x\)이므로 \(\int\sin x\,dx=-\cos x+C\)예요. 적분한 뒤 미분해서 원래 함수가 나오는지 확인하면 부호 실수를 막을 수 있어요.</p>
+              <p data-lang="en">Since \((\cos x)'=-\sin x\), \(\int\sin x\,dx=-\cos x+C\). Differentiate your answer to check — it catches sign slips.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
-    <section id="s10-3" data-status="core">
-      <div class="core-only">
+    <section id="s10-3">
+      <div class="concept-body">
+      <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
           <li>모르는 함수의 <strong>도함수가 들어 있는 방정식</strong>을 미분방정식이라 하고, 그 식을 만족하는 함수를 해라고 해요.</li>
@@ -96,7 +253,89 @@
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> A hot object cools at a rate proportional to the temperature difference: \(\frac{dT}{dt}=-k(T-T_0)\), with solution \(T=T_0+(T(0)-T_0)e^{-kt}\) (Newton's law of cooling).</p>
         </div>
         <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#cooling"><span data-lang="ko">🏫 학교 속 미적분: 컵라면이 식는 과정</span><span data-lang="en">🏫 Calculus at School: cup noodles cooling</span></a></div>
-        <p class="viz-soon"><span aria-hidden="true">🎛️</span><span data-i18n="vizSoon"></span></p>
+      </div>
+
+      <!-- 직관 그림: 기울기 장과 초깃값이 고르는 해 곡선 하나 -->
+      <div class="concept-viz">
+        <div class="viz-panel">
+          <h3><span class="h-ico" aria-hidden="true">🎛️</span><span data-i18n="vizTitle"></span></h3>
+          <fieldset class="setting" style="margin-bottom:10px">
+            <legend><span data-lang="ko">미분방정식 고르기</span><span data-lang="en">Choose an equation</span></legend>
+            <div class="seg" id="de-pick">
+              <label><input type="radio" name="de-pick" value="poly" checked><span>\(\frac{dy}{dx}=2x\)</span></label>
+              <label><input type="radio" name="de-pick" value="cool"><span><span data-lang="ko">냉각 \(\frac{dT}{dt}=-k(T-20)\)</span><span data-lang="en">Cooling \(\frac{dT}{dt}=-k(T-20)\)</span></span></label>
+            </div>
+          </fieldset>
+          <p class="note" style="margin:0 0 8px" id="de-def"></p>
+          <div class="viz-canvas-wrap">
+            <canvas id="de-canvas" role="img" data-i18n-attr="aria-label:de.canvas"></canvas>
+          </div>
+          <ul class="legend" id="de-legend"></ul>
+          <table class="readout-table"><tbody id="de-table"></tbody></table>
+          <p class="verdict" id="de-verdict"></p>
+          <div class="controls">
+            <div class="slider-row">
+              <label for="de-y0" id="de-y0-label"></label>
+              <input id="de-y0" type="range" min="-2" max="4" step="0.1" value="1">
+              <output id="de-y0-out" for="de-y0">1.0</output>
+            </div>
+            <div class="slider-row" id="de-k-row" hidden>
+              <label for="de-k"><span data-lang="ko">식는 정도</span><span data-lang="en">Cooling constant</span> \(k\)</label>
+              <input id="de-k" type="range" min="0.03" max="0.3" step="0.01" value="0.1">
+              <output id="de-k-out" for="de-k">0.10</output>
+            </div>
+            <div class="control-buttons">
+              <button class="play-btn" id="de-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+            </div>
+          </div>
+          <p class="sr-only" id="de-live" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="concept-more">
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">✏️</span><span data-i18n="examplesTitle"></span></h3>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-i18n="exampleWord"></span> 1</div>
+            <p data-lang="ko">\(\dfrac{dy}{dx}=3x^2-2\), \(y(1)=2\)를 만족하는 함수 \(y\)를 구하시오.</p>
+            <p data-lang="en">Solve \(\dfrac{dy}{dx}=3x^2-2\) with \(y(1)=2\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-3-a"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-3-a" hidden>
+              <p data-lang="ko">양변을 적분하면 \(y=x^3-2x+C\). \(y(1)=1-2+C=2\)에서 \(C=3\)이므로 \(y=x^3-2x+3\)이에요.</p>
+              <p data-lang="en">Integrate: \(y=x^3-2x+C\). From \(y(1)=1-2+C=2\), \(C=3\), so \(y=x^3-2x+3\).</p>
+            </div>
+          </div>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-i18n="exampleWord"></span> 2</div>
+            <p data-lang="ko">실온 20 ℃에서 90 ℃인 국이 10분 뒤 55 ℃가 되었어요. 뉴턴의 냉각 법칙을 따를 때, 국이 30 ℃가 되는 것은 처음부터 약 몇 분 뒤인지 구하시오.</p>
+            <p data-lang="en">Soup at 90 °C sits in a 20 °C room and is 55 °C after 10 minutes. Under Newton's law of cooling, about when does it reach 30 °C?</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-10-3-b"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-10-3-b" hidden>
+              <p data-lang="ko">\(T=20+70e^{-kt}\)이에요. \(55=20+70e^{-10k}\)에서 \(e^{-10k}=\frac12\), 즉 10분마다 온도 차가 반으로 줄어요. \(30=20+70e^{-kt}\)이면 \(e^{-kt}=\frac17\)이므로 \(t=\frac{10\ln7}{\ln2}\approx28\)분이에요.</p>
+              <p data-lang="en">\(T=20+70e^{-kt}\). From \(55=20+70e^{-10k}\), \(e^{-10k}=\frac12\): the gap halves every 10 minutes. For \(30=20+70e^{-kt}\), \(e^{-kt}=\frac17\), so \(t=\frac{10\ln7}{\ln2}\approx28\) minutes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="concept-block">
+          <h3><span class="h-ico" aria-hidden="true">⚠️</span><span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">초깃값 문제의 답은 \(y=x^2+C\)이다.</p>
+              <p data-lang="en">The answer to an initial value problem is \(y=x^2+C\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(y=x^2+C\)는 곡선 가족 전체예요. 초깃값을 넣어 \(C\)를 정해야 <strong>곡선 하나</strong>가 답이 돼요. 그림에서 초깃값을 바꾸면 고른 곡선이 바뀌는 것을 보세요.</p>
+              <p data-lang="en">\(y=x^2+C\) is the whole family. Use the initial value to fix \(C\) and get <strong>one curve</strong>. In the picture, changing the initial value picks a different curve.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">\(\dfrac{dy}{dx}=y\)의 해는 양변을 적분해서 \(y=\dfrac{y^2}{2}+C\)이다.</p>
+              <p data-lang="en">Integrating \(\dfrac{dy}{dx}=y\) gives \(y=\dfrac{y^2}{2}+C\).</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">오른쪽이 \(x\)가 아니라 \(y\)의 식이면 \(x\)로 바로 적분할 수 없어요. 이 식은 "미분해도 자기 자신"인 함수를 찾는 문제라 해는 \(y=Ce^x\)예요. 냉각 법칙도 같은 종류예요.</p>
+              <p data-lang="en">When the right side involves \(y\), not \(x\), you can't just integrate in \(x\). This asks for a function equal to its own derivative: \(y=Ce^x\). Newton's cooling law is the same kind.</p></div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   </div>
@@ -106,5 +345,223 @@
   </div>
 </main>
 
+<script>
+/* 10-③ 미분방정식과 초깃값 문제: 기울기 장 위에서 초깃값이 곡선 하나를 고른다 */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var Y0 = $('de-y0'), K = $('de-k'), ROOM = 20;
+  var mode = document.querySelector('input[name="de-pick"]:checked').value;
+  var M = {
+    poly: { slope: function (x) { return 2 * x; }, sol: function (x, y0) { return x * x + y0; }, view: [-2.5, 2.5, -2.5, 6.5], step: [0.5, 0.75],
+            y0: [-2, 4, 0.1, 1], def: '\\(\\frac{dy}{dx}=2x\\ \\Rightarrow\\ y=x^2+C,\\quad y(0)=C\\)' },
+    cool: { slope: function (t, T, k) { return -k * (T - ROOM); }, sol: function (t, T0, k) { return ROOM + (T0 - ROOM) * Math.exp(-k * t); }, view: [-1.5, 31, -5, 105], step: [2.5, 10],
+            y0: [10, 95, 1, 90], def: '\\(T=20+(T(0)-20)\\,e^{-kt}\\)' }
+  };
+
+  var g = Graph.create($('de-canvas'), { xMin: -2.5, xMax: 2.5, yMin: -2, yMax: 6, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var P = M[mode], V = P.view, c = g.c, y0 = +Y0.value, k = +K.value;
+    g.setView({ xMin: V[0], xMax: V[1], yMin: V[2], yMax: V[3] });
+    g.clear(); g.grid(); g.axes(mode === 'cool' ? { xLabel: 't', yLabel: 'T' } : {});
+    // 기울기 장: 화면에서 같은 길이의 짧은 선분
+    var sx = g.w / (V[1] - V[0]), sy = g.h / (V[3] - V[2]), half = 9;
+    for (var x = Math.ceil(V[0] / P.step[0]) * P.step[0]; x <= V[1]; x += P.step[0]) {
+      for (var y = Math.ceil(V[2] / P.step[1]) * P.step[1]; y <= V[3]; y += P.step[1]) {
+        var m = P.slope(x, y, k), dxp = 1, dyp = m * sy / sx, n = Math.hypot(dxp, dyp);
+        var ux = half * dxp / n / sx, uy = half * dyp / n / sy;
+        g.line(x - ux, y - uy, x + ux, y + uy, { color: c.text2, width: 1.4 });
+      }
+    }
+    if (mode === 'cool') g.hline(ROOM, { color: c.third, width: 2, dash: [2, 5] });
+    // 가족 몇 개 (흐리게) + 초깃값이 고른 해
+    if (mode === 'poly') for (var cc = -2; cc <= 4; cc += 2) g.plot(function (t) { return t * t + cc; }, { color: c.text2, width: 1, dash: [3, 4] });
+    g.plot(function (t) { return P.sol(t, y0, k); }, { color: c.main, width: 3.5, from: mode === 'cool' ? 0 : V[0] });
+    g.point(0, y0, { color: c.accent, r: 7, label: mode === 'cool' ? 'T(0) = ' + fmt(y0, 0) : 'y(0) = ' + fmt(y0, 1), labelStyle: { bold: true, dx: 10, dy: -12 } });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', field: '<line x1="10" y1="9" x2="26" y2="3" style="stroke:var(--g-axis);stroke-width:1.4"/>',
+             dot: '<circle cx="18" cy="6" r="4.5" style="fill:var(--g-accent)"/>', third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = (L === 'ko' ? [['field', '기울기 장: 각 점에서 해가 가야 할 방향'], ['dot', '초깃값'], ['main', '초깃값을 지나는 해 곡선 (실선)']]
+                            : [['field', 'slope field: the direction a solution must take'], ['dot', 'initial value'], ['main', 'the solution through it (solid)']]);
+    if (mode === 'cool') items.push(['third', L === 'ko' ? '실온 20 ℃ (짧은 점선)' : 'room temperature 20 °C (dotted)']);
+    $('de-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+    $('de-y0-label').textContent = mode === 'cool' ? (L === 'ko' ? '처음 온도 T(0) (℃)' : 'initial temperature T(0) (°C)') : (L === 'ko' ? '초깃값 y(0)' : 'initial value y(0)');
+  }
+
+  function update() {
+    var y0 = +Y0.value, k = +K.value, rows, txt;
+    if (mode === 'poly') {
+      rows = [['y(0)', fmt(y0, 1)], ['C', fmt(y0, 1)], [ko() ? '해' : 'solution', 'y = x² ' + (y0 >= 0 ? '+ ' : '− ') + fmt(Math.abs(y0), 1)], ['y(2)', fmt(4 + y0, 1)]];
+      txt = ko() ? '짧은 선들은 "이 점을 지나는 해는 이 기울기로 가야 한다"는 방향이에요. 이 방향을 따라 이은 곡선이 해예요. 해는 무수히 많지만(흐린 곡선들), 초깃값이 그중 하나를 골라요.'
+                 : 'Each short segment says "a solution through here must have this slope". Following them traces a solution. There are infinitely many (faint curves); the initial value picks one.';
+    } else {
+      var t10 = M.cool.sol(10, y0, k);
+      rows = [['T(0)', fmt(y0, 0) + ' ℃'], ['k', fmt(k)], ['T(10)', fmt(t10, 1) + ' ℃'], [ko() ? '온도 차가 반이 되는 시간' : 'time to halve the gap', fmt(Math.log(2) / k, 1) + (ko() ? '분' : ' min')]];
+      txt = ko() ? '온도 차가 클수록 기울기가 가파라서 빨리 식고, 실온(20 ℃)에 가까워질수록 기울기 선이 평평해져요. 그래서 곡선은 20 ℃에 닿지 않고 점점 다가가요. 온도 차가 반이 되는 시간은 처음 온도와 상관없이 늘 같아요.'
+                 : 'The larger the gap, the steeper the slope and the faster it cools; near 20 °C the segments flatten. So the curve approaches 20 °C without reaching it. The time to halve the gap never depends on the starting temperature.';
+    }
+    $('de-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('de-verdict');
+    el.className = 'verdict';
+    el.textContent = '→ ' + txt;
+    g.draw();
+  }
+  function setMode(m) {
+    mode = m;
+    var P = M[m], d = $('de-def');
+    Y0.min = P.y0[0]; Y0.max = P.y0[1]; Y0.step = P.y0[2]; Y0.value = P.y0[3];
+    $('de-k-row').hidden = m !== 'cool';
+    d.innerHTML = P.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); Y0.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(Y0, $('de-y0-out'), { format: function (v) { return mode === 'cool' ? fmt(v, 0) : fmt(v, 1); }, onInput: function () { update(); } });
+  Graph.bindSlider(K, $('de-k-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('de-pick').addEventListener('change', function (e) { setMode(e.target.value); });
+  [Y0, K].forEach(function (el) { el.addEventListener('change', function () { $('de-live').textContent = $('de-verdict').textContent; }); });
+  Graph.player({ button: $('de-play'), input: Y0, duration: 7000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setMode(mode);
+});
+
+/* 10-② 여러 가지 함수의 부정적분: ∫xʳ dx, 그리고 r → −1 에서 ln x */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var R = $('pw-r'), LN = $('pw-ln');
+  var near = function (r) { return Math.abs(r + 1) < 0.025; };
+  /* x = 1 에서 0 이 되도록 고른 역도함수 F(x) = (x^(r+1) − 1)/(r+1)  (r = −1 이면 ln x) */
+  function F(r) { return near(r) ? Math.log : function (x) { return (Math.pow(x, r + 1) - 1) / (r + 1); }; }
+  var num = function (v) { return Math.abs(v - Math.round(v)) < 1e-9 ? String(Math.round(v)).replace('-', '−') : fmt(v, 2); };
+
+  var g = Graph.create($('pw-canvas'), { xMin: 0, xMax: 4, yMin: -3, yMax: 4, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var r = +R.value, c = g.c;
+    g.setView({ xMin: -0.2, xMax: 4.2, yMin: -3.2, yMax: 4.2 });
+    g.clear(); g.grid(); g.axes();
+    g.plot(function (x) { return x > 0 ? Math.pow(x, r) : NaN; }, { color: c.third, width: 2.5, dash: [2, 5], from: 0.01 });
+    if (LN.checked) g.plot(function (x) { return x > 0 ? Math.log(x) : NaN; }, { color: c.accent, width: 2.5, dash: [11, 6], from: 0.01 });
+    g.plot(F(r), { color: c.main, width: 3.5, from: 0.01 });
+    g.point(1, 0, { color: c.text, r: 4 });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', accent: '<line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/>',
+             third: '<line class="lg-third" x1="0" y1="6" x2="36" y2="6"/>' };
+  function legend() {
+    var L = Site.lang();
+    var items = L === 'ko' ? [['third', '적분할 함수 y = xʳ (짧은 점선)'], ['main', '그 역도함수 중 (1, 0)을 지나는 것 (실선)'], ['accent', 'y = ln x (긴 점선)']]
+                           : [['third', 'integrand y = xʳ (dotted)'], ['main', 'its antiderivative through (1, 0) (solid)'], ['accent', 'y = ln x (long dashes)']];
+    $('pw-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var r = +R.value, v, d = $('pw-def');
+    d.innerHTML = near(r) ? '\\(\\displaystyle\\int x^{-1}\\,dx=\\int\\frac1x\\,dx=\\ln|x|+C\\)'
+                          : '\\(\\displaystyle\\int x^{' + num(r) + '}\\,dx=\\frac{x^{' + num(r + 1) + '}}{' + num(r + 1) + '}+C\\)';
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    var F2 = F(r)(2);
+    var rows = [['r', num(r)], [ko() ? 'x = 2에서 역도함수의 값' : 'antiderivative at x = 2', fmt(F2, 4)], ['ln 2', fmt(Math.log(2), 4)]];
+    $('pw-table').innerHTML = rows.map(function (row, i) { return '<tr' + (i === 1 ? ' class="hl"' : '') + '><th>' + row[0] + '</th><td>' + row[1] + '</td></tr>'; }).join('');
+    if (near(r)) v = { ok: true, text: ko() ? 'r = −1이면 r + 1 = 0이라 공식으로 나눌 수 없어요. 대신 역도함수는 ln x예요. 실선이 긴 점선(ln x)과 정확히 겹쳐요.'
+                                            : 'At r = −1, r + 1 = 0 and the formula would divide by zero. The antiderivative is ln x instead: the solid curve sits exactly on the dashed ln x.' };
+    else if (Math.abs(r + 1) < 0.3) v = { ok: null, text: ko() ? 'r이 −1에 가까워질수록 실선이 ln x에 달라붙어요. x = 2에서 ' + fmt(F2, 4) + ' → ln 2 ≈ 0.6931. 그래서 빈자리를 ln x가 채워요.'
+                                                               : 'As r approaches −1 the solid curve hugs ln x: at x = 2, ' + fmt(F2, 4) + ' → ln 2 ≈ 0.6931. So ln x fills the gap.' };
+    else v = { ok: null, text: ko() ? '지수를 1 올리고(' + num(r + 1) + ') 그 수로 나눠요. 실선을 미분하면 점선 xʳ이 돼요. r을 −1 쪽으로 움직여 보세요.'
+                                    : 'Raise the power by 1 (to ' + num(r + 1) + ') and divide by it. Differentiating the solid curve gives the dotted xʳ. Move r toward −1.' };
+    var el = $('pw-verdict');
+    el.className = 'verdict ' + (v.ok ? 'ok' : '');
+    el.textContent = (v.ok ? '✓ ' : '→ ') + v.text;
+    g.draw();
+  }
+
+  Graph.bindSlider(R, $('pw-r-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  LN.addEventListener('change', update);
+  R.addEventListener('change', function () { $('pw-live').textContent = $('pw-verdict').textContent; });
+  // ▶ r 을 줄여 가며 −1 을 지나가기
+  Graph.player({ button: $('pw-play'), input: R, duration: 9000, reverse: true });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  legend();
+  update();
+});
+
+/* 10-① 부정적분: 역도함수의 가족 F(x) + C */
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = Graph.fmt;
+  var ko = function () { return Site.lang() === 'ko'; };
+  var C = $('af-c'), X = $('af-x');
+  var FN = {
+    lin: { f: function (x) { return 2 * x; }, F: function (x) { return x * x; }, Fn: 'x²', range: [-2.4, 2.4], y: [-4, 8], def: '\\(\\displaystyle\\int 2x\\,dx=x^2+C\\)' },
+    cub: { f: function (x) { return 3 * x * x - 3; }, F: function (x) { return x * x * x - 3 * x; }, Fn: 'x³ − 3x', range: [-2.4, 2.4], y: [-6, 6], def: '\\(\\displaystyle\\int (3x^2-3)\\,dx=x^3-3x+C\\)' },
+    cos: { f: Math.cos, F: Math.sin, Fn: 'sin x', range: [-3.3, 3.3], y: [-4.5, 4.5], def: '\\(\\displaystyle\\int \\cos x\\,dx=\\sin x+C\\)' }
+  };
+  var K = document.querySelector('input[name="af-pick"]:checked').value;
+
+  var g = Graph.create($('af-canvas'), { xMin: -2.5, xMax: 2.5, yMin: -4, yMax: 8, aspect: 0.8, maxHeight: 380 });
+  g.render = function () {
+    var F = FN[K], c = g.c, cc = +C.value, x0 = +X.value, m = F.f(x0);
+    g.setView({ xMin: F.range[0], xMax: F.range[1], yMin: F.y[0], yMax: F.y[1] });
+    g.clear(); g.grid(); g.axes();
+    g.vline(x0, { color: c.text2, width: 1.2, dash: [4, 4] });
+    // 가족의 다른 곡선들 (C = −3, −2, …, 3)
+    for (var k = -3; k <= 3; k++) {
+      g.plot(function (x) { return F.F(x) + k; }, { color: c.text2, width: 1.2 });
+      // 같은 x에서의 짧은 접선: 모두 평행하다
+      var y0 = F.F(x0) + k, d = 0.35;
+      g.line(x0 - d, y0 - m * d, x0 + d, y0 + m * d, { color: c.accent, width: 2.5 });
+    }
+    g.plot(function (x) { return F.F(x) + cc; }, { color: c.main, width: 4 });
+    g.lineThrough(x0, F.F(x0) + cc, m, { color: c.accent, width: 2, dash: [11, 6] });
+    g.point(x0, F.F(x0) + cc, { color: c.main, r: 6.5 });
+    g.label(F.range[1], F.F(F.range[1] * 0.85) + cc, 'C = ' + fmt(cc, 1), { color: c.main, align: 'right', dx: -6, dy: -12, bold: true });
+  };
+
+  var SW = { main: '<line class="lg-main" x1="0" y1="6" x2="36" y2="6"/>', fam: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-axis);stroke-width:1.2"/>',
+             accent: '<line x1="0" y1="6" x2="36" y2="6" style="stroke:var(--g-accent);stroke-width:2.5"/>' };
+  function legend() {
+    var F = FN[K], L = Site.lang();
+    var items = L === 'ko' ? [['main', '고른 역도함수 y = ' + F.Fn + ' + C (굵은 실선)'], ['fam', '다른 C의 역도함수들 (가는 선)'], ['accent', '같은 x에서의 접선 (모두 평행)']]
+                           : [['main', 'chosen antiderivative y = ' + F.Fn + ' + C (thick)'], ['fam', 'other members of the family (thin)'], ['accent', 'tangents at the same x (all parallel)']];
+    $('af-legend').innerHTML = items.map(function (it) { return '<li><svg viewBox="0 0 36 12" aria-hidden="true">' + SW[it[0]] + '</svg><span>' + it[1] + '</span></li>'; }).join('');
+  }
+
+  function update() {
+    var F = FN[K], cc = +C.value, x0 = +X.value, m = F.f(x0);
+    var rows = [[ko() ? '고른 곡선' : 'chosen curve', 'y = ' + F.Fn + (cc >= 0 ? ' + ' : ' − ') + fmt(Math.abs(cc), 1)],
+                [ko() ? 'x = ' + fmt(x0) + '에서의 높이' : 'height at x = ' + fmt(x0), fmt(F.F(x0) + cc, 2)],
+                [ko() ? 'x = ' + fmt(x0) + '에서의 기울기' : 'slope at x = ' + fmt(x0), fmt(m, 2)]];
+    $('af-table').innerHTML = rows.map(function (r, i) { return '<tr' + (i === 2 ? ' class="hl"' : '') + '><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('');
+    var el = $('af-verdict');
+    el.className = 'verdict ok';
+    el.textContent = '✓ ' + (ko() ? 'C를 바꾸면 곡선이 위아래로만 움직여서, 같은 x에서 기울기는 모두 같아요 (f(x) = ' + fmt(m, 2) + '). 그래서 미분해서 f가 되는 함수는 무수히 많고, 부정적분에 + C를 붙여요.'
+                                  : 'Changing C only shifts the curve up or down, so at the same x every slope equals f(x) = ' + fmt(m, 2) + '. Infinitely many functions differentiate to f — hence the + C.');
+    g.draw();
+  }
+  function setFn(k) {
+    K = k;
+    var F = FN[k], d = $('af-def');
+    X.min = F.range[0] + 0.4; X.max = F.range[1] - 0.4;
+    if (+X.value > +X.max || +X.value < +X.min) X.value = 1;
+    d.innerHTML = F.def;
+    if (window.renderMathInElement) renderMathInElement(d, { delimiters: [{ left: '\\(', right: '\\)', display: false }], throwOnError: false });
+    legend(); X.dispatchEvent(new Event('input'));
+  }
+
+  Graph.bindSlider(C, $('af-c-out'), { format: function (v) { return fmt(v, 1); }, onInput: function () { update(); } });
+  Graph.bindSlider(X, $('af-x-out'), { format: function (v) { return fmt(v); }, onInput: function () { update(); } });
+  $('af-pick').addEventListener('change', function (e) { setFn(e.target.value); });
+  [C, X].forEach(function (el) { el.addEventListener('change', function () { $('af-live').textContent = $('af-verdict').textContent; }); });
+  // ▶ C를 바꿔 가며 가족을 훑기
+  Graph.player({ button: $('af-play'), input: C, duration: 6000 });
+  document.addEventListener('settingschange', function (e) { if (e.detail.changed === 'lang' || e.detail.changed === 'all') { legend(); update(); } else g.draw(); });
+  setFn(K);
+});
+</script>
 </body>
 </html>

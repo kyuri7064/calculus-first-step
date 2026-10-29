@@ -36,7 +36,9 @@
       <nav class="anchor-chips" data-i18n-attr="aria-label:aria.appsToc">
         <a class="chip" href="#related-rates"><span data-lang="ko">🥤 원뿔 컵에 물 붓기</span><span data-lang="en">🥤 Filling a cone cup</span></a>
         <a class="chip" href="#optimization"><span data-lang="ko">🌷 가장 넓은 화단 만들기</span><span data-lang="en">🌷 The largest garden</span></a>
-        <a class="chip" href="#more"><span data-lang="ko">🔒 준비 중인 사례</span><span data-lang="en">🔒 Coming soon</span></a>
+        <a class="chip" href="#linear-approx"><span data-lang="ko">🔍 계산기 없이 어림하기</span><span data-lang="en">🔍 Estimating without a calculator</span></a>
+        <a class="chip" href="#cooling"><span data-lang="ko">🍜 컵라면이 식는 과정</span><span data-lang="en">🍜 Cup noodles cooling</span></a>
+        <a class="chip" href="#velocity"><span data-lang="ko">🏃 왕복 달리기</span><span data-lang="en">🏃 Shuttle run</span></a>
       </nav>
     </div>
   </section>
@@ -57,6 +59,20 @@
         <span class="story-ico" aria-hidden="true">💧</span>
         <p data-lang="ko">정수기 옆 원뿔 모양 종이컵(윗면 반지름 4 cm, 높이 8 cm)에 물을 <strong>1초에 10 cm³씩 일정하게</strong> 붓고 있어요. 물을 똑같이 붓는데, 수면도 똑같은 속도로 올라갈까요?</p>
         <p data-lang="en">At the water cooler, a cone-shaped paper cup (top radius 4 cm, height 8 cm) is being filled at a <strong>steady 10 cm³ per second</strong>. The water pours in evenly — does the surface rise evenly too?</p>
+      </div>
+
+      <div class="try-box app-try">
+        <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+        <ol class="try-list" data-lang="ko">
+          <li><span class="try-tag">예측</span>물을 일정하게 부을 때, 수면은 처음과 나중 중 언제 더 빨리 올라갈까?</li>
+          <li><span class="try-tag">조작</span>▶을 누르거나 시간 \(t\)를 움직여 접선의 기울기를 살펴보자.</li>
+          <li><span class="try-tag">설명</span>수면이 점점 느리게 올라가는 이유를 컵 모양으로 설명해 보자.</li>
+        </ol>
+        <ol class="try-list" data-lang="en">
+          <li><span class="try-tag">Predict</span>Pouring at a steady rate, does the surface rise faster at the start or later?</li>
+          <li><span class="try-tag">Try</span>Press ▶ or move \(t\) and watch the tangent's slope.</li>
+          <li><span class="try-tag">Explain</span>Use the shape of the cup to explain why the surface slows down.</li>
+        </ol>
       </div>
 
       <div class="compare-grid" style="margin-top:0">
@@ -155,6 +171,20 @@
         <p data-lang="en">The gardening club has <strong>40 m of fence</strong> for a rectangular flower bed. What width gives the largest area? And what changes if the school wall serves as one side?</p>
       </div>
 
+      <div class="try-box app-try">
+        <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+        <ol class="try-list" data-lang="ko">
+          <li><span class="try-tag">예측</span>벽을 한 변으로 쓰면 가장 넓은 화단도 정사각형일까?</li>
+          <li><span class="try-tag">조작</span>두 방법에서 가로 \(x\)를 움직여 \(A'(x)=0\)인 곳을 찾아보자.</li>
+          <li><span class="try-tag">설명</span>조건이 바뀌면 가장 좋은 모양이 달라지는 이유를 적어 보자.</li>
+        </ol>
+        <ol class="try-list" data-lang="en">
+          <li><span class="try-tag">Predict</span>With the wall as one side, is the largest bed still a square?</li>
+          <li><span class="try-tag">Try</span>In both setups, move \(x\) to find where \(A'(x)=0\).</li>
+          <li><span class="try-tag">Explain</span>Explain why the best shape changes when the conditions change.</li>
+        </ol>
+      </div>
+
       <fieldset class="setting">
         <legend><span data-lang="ko">화단 만드는 방법</span><span data-lang="en">How to build it</span></legend>
         <div class="seg" id="op-mode">
@@ -208,7 +238,7 @@
           <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
           <p data-lang="ko"><strong>네 변 모두 울타리:</strong> 가로가 \(x\)이면 세로는 \(\frac{40-2x}{2}=20-x\)예요.</p>
           <p data-lang="en"><strong>All four sides fenced:</strong> with width \(x\), the length is \(\frac{40-2x}{2}=20-x\).</p>
-          $$A(x)=x(20-x),\qquad A'(x)=20-2x\quad(0<x<20)$$
+          $$A(x)=x(20-x),\qquad A'(x)=20-2x,\qquad 0\lt x\lt 20$$
           <p data-lang="ko">\(A'(x)=0\)에서 \(x=10\). \(x<10\)이면 \(A'>0\)(증가), \(x>10\)이면 \(A'<0\)(감소)이므로 \(x=10\)에서 최대, 넓이는 \(100\ \text{m}^2\)예요.</p>
           <p data-lang="en">\(A'(x)=0\) gives \(x=10\). \(A'>0\) for \(x<10\) (increasing) and \(A'<0\) for \(x>10\) (decreasing), so the maximum is at \(x=10\): \(100\ \text{m}^2\).</p>
           <div class="example-card">
@@ -254,31 +284,381 @@
     </div>
   </section>
 
-  <!-- ===== 준비 중 ===== -->
-  <section class="container rigor-sec" id="more" aria-labelledby="more-title">
-    <h2 id="more-title"><span data-lang="ko">🔒 준비 중인 사례</span><span data-lang="en">🔒 Coming Soon</span></h2>
-    <div class="soon-grid">
-      <article class="card soon-card" id="linear-approx">
-        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
-        <h3><span data-lang="ko">🔍 확대하면 곡선이 접선처럼 — 일차 근사</span><span data-lang="en">🔍 Zoom in and the curve looks straight — Linear approximation</span></h3>
-        <p data-lang="ko">계산기 없이 \(\sqrt{4.1}\)을 어림하는 방법. 확대 슬라이더를 키우면 곡선이 접선과 구별되지 않게 돼요.</p>
-        <p data-lang="en">Estimate \(\sqrt{4.1}\) without a calculator. Zoom in and the curve becomes indistinguishable from its tangent.</p>
-        <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-3"><span data-lang="ko">09-③ 일차근사함수</span><span data-lang="en">09-③ Linear approximation</span></a>
-      </article>
-      <article class="card soon-card" id="cooling">
-        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
-        <h3><span data-lang="ko">🍜 매점 컵라면이 식는 과정 — 미분방정식</span><span data-lang="en">🍜 Cup noodles cooling down — Differential equations</span></h3>
-        <p data-lang="ko">뜨거울수록 빨리 식는다는 뉴턴의 냉각 법칙 \(\frac{dT}{dt}=-k(T-T_{\text{실내}})\)을 그래프로 확인해요.</p>
-        <p data-lang="en">Newton's law of cooling, \(\frac{dT}{dt}=-k(T-T_{\text{room}})\): the hotter it is, the faster it cools.</p>
-        <a class="btn btn-outline btn-sm" href="chapters/ch10.html#s10-3"><span data-lang="ko">10-③ 미분방정식과 초깃값 문제</span><span data-lang="en">10-③ Differential equations</span></a>
-      </article>
-      <article class="card soon-card" id="velocity">
-        <span class="chip badge-soon" style="align-self:flex-start">🔒 <span data-i18n="comingSoon"></span></span>
-        <h3><span data-lang="ko">🏃 체육 시간 달리기 — 속도와 거리</span><span data-lang="en">🏃 Running in P.E. — Velocity and distance</span></h3>
-        <p data-lang="ko">속도 그래프 아래의 넓이가 이동 거리라는 것을, 100 m 달리기 기록으로 확인해요.</p>
-        <p data-lang="en">See that the area under a velocity graph is the distance, using a 100 m sprint.</p>
-        <a class="btn btn-outline btn-sm" href="chapters/ch14.html#s14-3"><span data-lang="ko">14-③ 속도와 거리</span><span data-lang="en">14-③ Velocity and distance</span></a>
-      </article>
+  <!-- ===== 일차 근사 ===== -->
+  <section class="container rigor-sec" id="linear-approx" aria-labelledby="la-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">🔍</span>
+        <div>
+          <h2 id="la-title"><span data-lang="ko">계산기 없이 \(\sqrt{4.1}\) 어림하기 — 일차 근사</span><span data-lang="en">Estimating \(\sqrt{4.1}\) Without a Calculator — Linear Approximation</span></h2>
+          <p class="title-en" data-lang="ko">Linear approximation (일차근사)</p>
+          <p class="title-en" data-lang="en">일차근사 (linear approximation)</p>
+        </div>
+      </div>
+
+      <div class="app-story">
+        <span class="story-ico" aria-hidden="true">📝</span>
+        <p data-lang="ko">수학 시간 쪽지 시험, 계산기 없이 \(\sqrt{4.1}\)을 소수 셋째 자리까지 어림해야 해요. \(\sqrt4=2\)는 아는데, 4.1은 4와 아주 가까워요. 곡선을 크게 확대하면 무엇이 보일까요?</p>
+        <p data-lang="en">Pop quiz: estimate \(\sqrt{4.1}\) to three decimal places without a calculator. You know \(\sqrt4=2\), and 4.1 is very close to 4. What do you see if you zoom far into the curve?</p>
+      </div>
+
+      <div class="try-box app-try">
+        <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+        <ol class="try-list" data-lang="ko">
+          <li><span class="try-tag">예측</span>곡선을 100배 확대하면 \(y=\sqrt x\)와 접선은 어떻게 보일까?</li>
+          <li><span class="try-tag">조작</span>확대 배율을 키워 보고, 어림할 수 \(x\)를 4에서 멀리 옮겨 보자.</li>
+          <li><span class="try-tag">설명</span>\(\sqrt{4.1}\)을 접선으로 어림해도 되는 이유와, 어림값이 실제보다 큰 이유를 적어 보자.</li>
+        </ol>
+        <ol class="try-list" data-lang="en">
+          <li><span class="try-tag">Predict</span>Zoomed in 100×, what will \(y=\sqrt x\) and its tangent look like?</li>
+          <li><span class="try-tag">Try</span>Increase the zoom, then move \(x\) far from 4.</li>
+          <li><span class="try-tag">Explain</span>Why may you estimate \(\sqrt{4.1}\) with the tangent, and why is the estimate a bit too big?</li>
+        </ol>
+      </div>
+
+      <div class="compare-grid" style="margin-top:0">
+        <div class="viz-panel">
+          <h3><span data-lang="ko">멀리서 본 모습</span><span data-lang="en">Seen from afar</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="la-far" role="img" data-i18n-attr="aria-label:c.laFar"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">\(y=\sqrt x\) (굵은 실선)</span><span data-lang="en">\(y=\sqrt x\) (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">\(x=4\)에서의 접선 (긴 점선)</span><span data-lang="en">Tangent at \(x=4\) (long dashes)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-third" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">확대하는 창 (짧은 점선)</span><span data-lang="en">Zoom window (dotted)</span></li>
+          </ul>
+        </div>
+        <div class="viz-panel">
+          <h3><span data-lang="ko">\((4,\,2)\) 근처를 확대한 모습</span><span data-lang="en">Zoomed in near \((4,\,2)\)</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="la-zoom" role="img" data-i18n-attr="aria-label:c.laZoom"></canvas></div>
+          <p class="note" style="margin:8px 2px 0" data-lang="ko">배율을 키울수록 두 선 사이의 틈이 화면에서 사라져요.</p>
+          <p class="note" style="margin:8px 2px 0" data-lang="en">The more you zoom, the more the gap between the two lines vanishes.</p>
+        </div>
+      </div>
+
+      <div class="viz-panel app-controls">
+        <table class="readout-table"><tbody>
+          <tr><th><span data-lang="ko">실제 값</span><span data-lang="en">True value</span> \(\sqrt x\)</th><td id="la-true">—</td></tr>
+          <tr class="hl"><th><span data-lang="ko">접선으로 어림</span><span data-lang="en">Tangent estimate</span> \(2+\frac{x-4}{4}\)</th><td id="la-est">—</td></tr>
+          <tr><th><span data-lang="ko">오차 (어림 − 실제)</span><span data-lang="en">Error (estimate − true)</span></th><td id="la-err">—</td></tr>
+        </tbody></table>
+        <p class="verdict ok" id="la-msg"></p>
+        <div class="controls">
+          <div class="slider-row">
+            <label for="la-x"><span data-lang="ko">어림할 수</span><span data-lang="en">Number to estimate</span> \(x\)</label>
+            <input id="la-x" type="range" min="2" max="7" step="0.01" value="4.1">
+            <output id="la-x-out" for="la-x">4.10</output>
+          </div>
+          <div class="slider-row">
+            <label for="la-z"><span data-lang="ko">확대 배율</span><span data-lang="en">Zoom</span></label>
+            <input id="la-z" type="range" min="0" max="2" step="0.01" value="0">
+            <output id="la-z-out" for="la-z">×1</output>
+          </div>
+          <div class="control-buttons">
+            <button class="play-btn" id="la-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+          </div>
+        </div>
+        <p class="sr-only" id="la-live" aria-live="polite"></p>
+      </div>
+
+      <div class="app-text">
+        <div>
+          <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
+          <p data-lang="ko">\(f(x)=\sqrt x\)이면 \(f'(x)=\frac{1}{2\sqrt x}\)이라 \(f(4)=2\), \(f'(4)=\frac14\)이에요. \(x=4\) 근처에서는 곡선을 접선으로 바꿔 쓸 수 있어요.</p>
+          <p data-lang="en">With \(f(x)=\sqrt x\), \(f'(x)=\frac{1}{2\sqrt x}\), so \(f(4)=2\) and \(f'(4)=\frac14\). Near \(x=4\) the curve can be replaced by its tangent.</p>
+          $$\sqrt x\approx f(4)+f'(4)(x-4)=2+\frac{x-4}{4}$$
+          $$\sqrt{4.1}\approx2+\frac{0.1}{4}=2.025$$
+          <p data-lang="ko">실제 값은 \(2.02485\cdots\)라서, 반올림하면 소수 셋째 자리까지 똑같아요.</p>
+          <p data-lang="en">The true value is \(2.02485\cdots\), which rounds to the same three decimal places.</p>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-lang="ko">문제</span><span data-lang="en">Problem</span></div>
+            <p data-lang="ko">일차근사를 이용하여 \(\sqrt{9.2}\)의 값을 어림하시오.</p>
+            <p data-lang="en">Use a linear approximation to estimate \(\sqrt{9.2}\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-la"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-la" hidden>
+              <p data-lang="ko">9.2와 가까운 제곱수 9를 기준점으로 잡아요. \(f(9)=3\), \(f'(9)=\frac16\)이므로</p>
+              <p data-lang="en">Use the nearby perfect square 9 as the base point: \(f(9)=3\), \(f'(9)=\frac16\), so</p>
+              $$\sqrt{9.2}\approx3+\frac{0.2}{6}=3.0333\cdots$$
+              <p data-lang="ko">실제 값은 \(3.03315\cdots\)예요. 어림값이 조금 큰 것도 확인해 보세요.</p>
+              <p data-lang="en">The true value is \(3.03315\cdots\) — note the estimate is slightly too big.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3><span aria-hidden="true">⚠️</span> <span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">기준점이 4이면 \(\sqrt9\)도 \(2+\frac{9-4}{4}\)로 정확하게 어림할 수 있다.</p>
+              <p data-lang="en">With base point 4, \(2+\frac{9-4}{4}\) also estimates \(\sqrt9\) accurately.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">그러면 3.25가 나오지만 실제는 3이에요. 일차근사는 기준점 <strong>근처</strong>에서만 정확해요. \(x\)를 7까지 옮겨 오차가 커지는 것을 확인해 보세요.</p>
+              <p data-lang="en">That gives 3.25, but the truth is 3. A linear approximation is accurate only <strong>near</strong> the base point. Move \(x\) to 7 and watch the error grow.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">접선으로 어림한 값은 실제보다 클 때도, 작을 때도 있어서 알 수 없다.</p>
+              <p data-lang="en">A tangent estimate may be too big or too small — there is no way to tell.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(\sqrt x\)는 위로 볼록(\(f''\lt0\))해서 접선이 늘 곡선 <strong>위</strong>에 있어요. 그래서 어림값은 항상 실제보다 조금 커요. 오차 칸이 늘 양수인지 확인해 보세요.</p>
+              <p data-lang="en">\(\sqrt x\) is concave down (\(f''\lt0\)), so the tangent always lies <strong>above</strong> the curve, and the estimate is always a little too big. Check that the error is always positive.</p></div>
+          </div>
+          <h3 style="margin-top:20px"><span aria-hidden="true">🔗</span> <span data-lang="ko">관련 개념</span><span data-lang="en">Related concepts</span></h3>
+          <div class="link-row">
+            <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-3"><span data-lang="ko">09-③ 일차근사함수</span><span data-lang="en">09-③ Linear approximation</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch05.html#s05-1"><span data-lang="ko">05-① 미분계수</span><span data-lang="en">05-① The derivative</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch08.html#s08-3"><span data-lang="ko">08-③ 그래프의 오목과 볼록</span><span data-lang="en">08-③ Concavity</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 냉각 ===== -->
+  <section class="container rigor-sec" id="cooling" aria-labelledby="co-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">🍜</span>
+        <div>
+          <h2 id="co-title"><span data-lang="ko">매점 컵라면이 식는 과정 — 미분방정식</span><span data-lang="en">Cup Noodles Cooling Down — Differential Equations</span></h2>
+          <p class="title-en" data-lang="ko">Newton's law of cooling (뉴턴의 냉각 법칙)</p>
+          <p class="title-en" data-lang="en">뉴턴의 냉각 법칙 (Newton's law of cooling)</p>
+        </div>
+      </div>
+
+      <div class="app-story">
+        <span class="story-ico" aria-hidden="true">♨️</span>
+        <p data-lang="ko">매점에서 컵라면에 <strong>95 ℃</strong> 물을 부었어요. 교실은 <strong>20 ℃</strong>. 먹기 좋은 <strong>60 ℃</strong>가 되려면 몇 분 기다려야 할까요? 뜨거울수록 빨리 식는다는 <strong>뉴턴의 냉각 법칙</strong>으로 알아봐요.</p>
+        <p data-lang="en">At the snack bar, <strong>95 °C</strong> water goes into a cup of noodles. The classroom is <strong>20 °C</strong>. How long until it reaches a comfortable <strong>60 °C</strong>? Newton's law of cooling — the hotter it is, the faster it cools — tells us.</p>
+      </div>
+
+      <div class="try-box app-try">
+        <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+        <ol class="try-list" data-lang="ko">
+          <li><span class="try-tag">예측</span>처음 10분과 그다음 10분 중 언제 더 많이 식을까? 계속 기다리면 몇 ℃가 될까?</li>
+          <li><span class="try-tag">조작</span>▶을 눌러 시간을 흘려 보고, 그릇을 바꿔 60 ℃가 되는 시각을 비교해 보자.</li>
+          <li><span class="try-tag">설명</span>식는 속도가 점점 느려지는 이유를 \(\frac{dT}{dt}=-k(T-20)\)으로 설명해 보자.</li>
+        </ol>
+        <ol class="try-list" data-lang="en">
+          <li><span class="try-tag">Predict</span>Does it cool more in the first 10 minutes or the next 10? Where does it end up if you keep waiting?</li>
+          <li><span class="try-tag">Try</span>Press ▶ to let time run, then switch containers and compare when it hits 60 °C.</li>
+          <li><span class="try-tag">Explain</span>Use \(\frac{dT}{dt}=-k(T-20)\) to explain why the cooling slows down.</li>
+        </ol>
+      </div>
+
+      <fieldset class="setting">
+        <legend><span data-lang="ko">컵라면 그릇</span><span data-lang="en">Container</span></legend>
+        <div class="seg" id="co-mode">
+          <label><input type="radio" name="co-mode" value="lid"><span><span data-lang="ko">뚜껑 덮기 (\(k=0.03\))</span><span data-lang="en">Lid on (\(k=0.03\))</span></span></label>
+          <label><input type="radio" name="co-mode" value="cup" checked><span><span data-lang="ko">컵 그대로 (\(k=0.05\))</span><span data-lang="en">Open cup (\(k=0.05\))</span></span></label>
+          <label><input type="radio" name="co-mode" value="bowl"><span><span data-lang="ko">넓은 그릇에 덜기 (\(k=0.09\))</span><span data-lang="en">Wide bowl (\(k=0.09\))</span></span></label>
+        </div>
+      </fieldset>
+
+      <div class="compare-grid" style="margin-top:0">
+        <div class="viz-panel">
+          <h3><span data-lang="ko">컵라면과 온도계</span><span data-lang="en">Noodles and thermometer</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="co-cup" role="img" data-i18n-attr="aria-label:c.coCup"></canvas></div>
+          <p class="note" style="margin:8px 2px 0" data-lang="ko">김(물결선)의 개수는 뜨거운 정도를 나타내요. 정확한 값은 온도계 숫자를 보세요.</p>
+          <p class="note" style="margin:8px 2px 0" data-lang="en">The number of steam wisps shows how hot it is; read the thermometer for the exact value.</p>
+        </div>
+        <div class="viz-panel">
+          <h3><span data-lang="ko">시간 \(t\)에 따른 온도 \(T\)</span><span data-lang="en">Temperature \(T\) over time \(t\)</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="co-graph" role="img" data-i18n-attr="aria-label:c.coGraph"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">\(T(t)\) (굵은 실선)</span><span data-lang="en">\(T(t)\) (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">접선: 기울기 = 식는 속도</span><span data-lang="en">Tangent: slope = cooling rate</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-third" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">먹기 좋은 60 ℃ (짧은 점선)</span><span data-lang="en">Ready at 60 °C (dotted)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="viz-panel app-controls">
+        <table class="readout-table"><tbody>
+          <tr class="hl"><th><span data-lang="ko">온도</span><span data-lang="en">Temperature</span> \(T(t)\)</th><td id="co-T">—</td></tr>
+          <tr><th><span data-lang="ko">교실과의 온도 차</span><span data-lang="en">Difference from room</span> \(T-20\)</th><td id="co-d">—</td></tr>
+          <tr><th><span data-lang="ko">식는 속도</span><span data-lang="en">Cooling rate</span> \(\frac{dT}{dt}\)</th><td id="co-r">—</td></tr>
+          <tr><th><span data-lang="ko">60 ℃가 되는 시각</span><span data-lang="en">Time to reach 60 °C</span></th><td id="co-s">—</td></tr>
+        </tbody></table>
+        <p class="verdict" id="co-msg"></p>
+        <div class="controls">
+          <div class="slider-row">
+            <label for="co-t"><span data-lang="ko">기다린 시간</span><span data-lang="en">Time waited</span> \(t\) (<span data-lang="ko">분</span><span data-lang="en">min</span>)</label>
+            <input id="co-t" type="range" min="0" max="60" step="0.1" value="5">
+            <output id="co-t-out" for="co-t">5.0</output>
+          </div>
+          <div class="control-buttons">
+            <button class="play-btn" id="co-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+          </div>
+        </div>
+        <p class="sr-only" id="co-live" aria-live="polite"></p>
+      </div>
+
+      <div class="app-text">
+        <div>
+          <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
+          <p data-lang="ko">식는 속도는 교실과의 온도 차에 비례해요. (\(k\): 그릇마다 다른 양의 상수)</p>
+          <p data-lang="en">The cooling rate is proportional to the difference from room temperature (\(k\): a positive constant for each container).</p>
+          $$\frac{dT}{dt}=-k\,(T-20),\qquad T(0)=95$$
+          <p data-lang="ko">이 미분방정식의 해는 다음과 같아요. 미분해서 확인해 보면 \(\frac{dT}{dt}=-75k\,e^{-kt}=-k(T-20)\)이고, \(t=0\)을 넣으면 95예요.</p>
+          <p data-lang="en">Its solution is below. Differentiating gives \(\frac{dT}{dt}=-75k\,e^{-kt}=-k(T-20)\), and \(t=0\) gives 95.</p>
+          $$T(t)=20+75\,e^{-kt}$$
+          <div class="example-card">
+            <div class="example-head"><span class="level level-adv" data-i18n="levelAdv"></span><span data-lang="ko">문제</span><span data-lang="en">Problem</span></div>
+            <p data-lang="ko">\(k=0.05\)일 때 컵라면이 60 ℃가 되는 것은 몇 분 후인지 구하시오. (\(\ln\frac{15}{8}\approx0.63\))</p>
+            <p data-lang="en">With \(k=0.05\), after how many minutes does it reach 60 °C? (\(\ln\frac{15}{8}\approx0.63\))</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-co"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-co" hidden>
+              $$20+75e^{-0.05t}=60\iff e^{-0.05t}=\frac{40}{75}=\frac{8}{15}\iff t=\frac{\ln\frac{15}{8}}{0.05}\approx12.6$$
+              <p data-lang="ko">약 12.6분 후예요. 슬라이더를 12.6에 맞춰 확인해 보세요.</p>
+              <p data-lang="en">About 12.6 minutes. Set the slider to 12.6 to check.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3><span aria-hidden="true">⚠️</span> <span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">컵라면은 1분에 몇 ℃씩 일정하게 식는다.</p>
+              <p data-lang="en">The noodles cool by a fixed number of degrees every minute.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">식는 속도는 온도 차 \(T-20\)에 비례해서, 처음엔 빠르고 점점 느려져요. 그래프의 접선이 점점 눕는 것으로 확인할 수 있어요.</p>
+              <p data-lang="en">The rate is proportional to \(T-20\): fast at first, then slower and slower. The tangent on the graph keeps flattening.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">충분히 오래 기다리면 컵라면은 20 ℃보다 더 차가워진다.</p>
+              <p data-lang="en">Wait long enough and the noodles get colder than 20 °C.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(T=20\)이 되면 \(\frac{dT}{dt}=0\)이라 더 식지 않아요. \(e^{-kt}\gt0\)이므로 \(T(t)\gt20\)이고, 직선 \(T=20\)은 그래프의 수평점근선이에요.</p>
+              <p data-lang="en">At \(T=20\), \(\frac{dT}{dt}=0\), so it stops cooling. Since \(e^{-kt}\gt0\), \(T(t)\gt20\): the line \(T=20\) is a horizontal asymptote.</p></div>
+          </div>
+          <h3 style="margin-top:20px"><span aria-hidden="true">🔗</span> <span data-lang="ko">관련 개념</span><span data-lang="en">Related concepts</span></h3>
+          <div class="link-row">
+            <a class="btn btn-outline btn-sm" href="chapters/ch10.html#s10-3"><span data-lang="ko">10-③ 미분방정식과 초깃값 문제</span><span data-lang="en">10-③ Differential equations</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch07.html#s07-1"><span data-lang="ko">07-① 지수함수와 로그함수</span><span data-lang="en">07-① Exponential &amp; log derivatives</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch08.html#s08-4"><span data-lang="ko">08-④ 그래프의 점근선</span><span data-lang="en">08-④ Asymptotes</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 속도와 거리 ===== -->
+  <section class="container rigor-sec" id="velocity" aria-labelledby="ve-title">
+    <div class="card">
+      <div class="rigor-sec-head">
+        <span class="rigor-badge" aria-hidden="true">🏃</span>
+        <div>
+          <h2 id="ve-title"><span data-lang="ko">체육 시간 왕복 달리기 — 변위와 이동 거리</span><span data-lang="en">Shuttle Run in P.E. — Displacement and Distance</span></h2>
+          <p class="title-en" data-lang="ko">Velocity, displacement and distance (속도와 거리)</p>
+          <p class="title-en" data-lang="en">속도와 거리 (velocity, displacement and distance)</p>
+        </div>
+      </div>
+
+      <div class="app-story">
+        <span class="story-ico" aria-hidden="true">🏁</span>
+        <p data-lang="ko">체육 시간 <strong>20 m 왕복 달리기</strong>. 출발선에서 반환점까지 뛰어갔다가 다시 돌아와요. 속도를 \(v(t)=2\pi\sin\frac{\pi t}{5}\) (m/s, \(0\le t\le10\))로 단순하게 나타내면, 속도 그래프의 넓이는 무엇을 알려 줄까요?</p>
+        <p data-lang="en">A <strong>20 m shuttle run</strong> in P.E.: run from the start line to the turning line and back. Modelling the velocity simply as \(v(t)=2\pi\sin\frac{\pi t}{5}\) (m/s, \(0\le t\le10\)), what do the areas under the velocity graph tell us?</p>
+      </div>
+
+      <div class="try-box app-try">
+        <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+        <ol class="try-list" data-lang="ko">
+          <li><span class="try-tag">예측</span>출발선으로 돌아온 순간(\(t=10\)), 변위와 이동 거리는 각각 얼마일까?</li>
+          <li><span class="try-tag">조작</span>▶을 누르거나 끝 시각 \(T\)를 5 앞뒤로 움직여, 두 넓이와 트랙 위 위치를 비교해 보자.</li>
+          <li><span class="try-tag">설명</span>속도의 정적분과 \(|v|\)의 정적분이 각각 무엇인지 한 문장씩 적어 보자.</li>
+        </ol>
+        <ol class="try-list" data-lang="en">
+          <li><span class="try-tag">Predict</span>Back at the start line (\(t=10\)), what are the displacement and the distance?</li>
+          <li><span class="try-tag">Try</span>Press ▶ or move \(T\) across 5, comparing the two areas with the position on the track.</li>
+          <li><span class="try-tag">Explain</span>Write one sentence each on what \(\int v\,dt\) and \(\int|v|\,dt\) mean.</li>
+        </ol>
+      </div>
+
+      <div class="compare-grid" style="margin-top:0">
+        <div class="viz-panel">
+          <h3><span data-lang="ko">위에서 본 달리기 트랙</span><span data-lang="en">The track from above</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="ve-track" role="img" data-i18n-attr="aria-label:c.veTrack"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-main" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">갈 때 (굵은 실선)</span><span data-lang="en">Going out (thick solid)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-third" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">돌아올 때 (짧은 점선)</span><span data-lang="en">Coming back (dotted)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><line class="lg-accent" x1="0" y1="6" x2="36" y2="6"/></svg><span data-lang="ko">출발점 → 지금 위치: 변위 (긴 점선)</span><span data-lang="en">Start → now: displacement (long dashes)</span></li>
+          </ul>
+        </div>
+        <div class="viz-panel">
+          <h3><span data-lang="ko">속도 그래프 \(v(t)\)</span><span data-lang="en">Velocity graph \(v(t)\)</span></h3>
+          <div class="viz-canvas-wrap"><canvas id="ve-graph" role="img" data-i18n-attr="aria-label:c.veGraph"></canvas></div>
+          <ul class="legend">
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><rect x="2" y="1" width="32" height="10" style="fill:var(--g-fill-main);stroke:var(--g-main);stroke-width:1.5"/></svg><span data-lang="ko">\(v\gt0\): 앞으로 간 거리 (색칠)</span><span data-lang="en">\(v\gt0\): distance forward (shaded)</span></li>
+            <li><svg viewBox="0 0 36 12" aria-hidden="true"><defs><pattern id="ve-hp" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 5L5 0" style="stroke:var(--g-third);stroke-width:1.2"/></pattern></defs><rect x="2" y="1" width="32" height="10" style="fill:url(#ve-hp);stroke:var(--g-third);stroke-width:1.5"/></svg><span data-lang="ko">\(v\lt0\): 뒤로 간 거리 (빗금)</span><span data-lang="en">\(v\lt0\): distance backward (hatched)</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="viz-panel app-controls">
+        <table class="readout-table"><tbody>
+          <tr><th><span data-lang="ko">속도</span><span data-lang="en">Velocity</span> \(v(T)\)</th><td id="ve-v">—</td></tr>
+          <tr class="hl"><th><span data-lang="ko">변위</span><span data-lang="en">Displacement</span> \(\int_0^Tv\,dt\)</th><td id="ve-disp">—</td></tr>
+          <tr class="hl"><th><span data-lang="ko">이동 거리</span><span data-lang="en">Distance</span> \(\int_0^T|v|\,dt\)</th><td id="ve-dist">—</td></tr>
+        </tbody></table>
+        <p class="verdict" id="ve-msg"></p>
+        <div class="controls">
+          <div class="slider-row">
+            <label for="ve-T"><span data-lang="ko">끝 시각</span><span data-lang="en">End time</span> \(T\) (s)</label>
+            <input id="ve-T" type="range" min="0" max="10" step="0.01" value="3">
+            <output id="ve-T-out" for="ve-T">3.00 s</output>
+          </div>
+          <div class="control-buttons">
+            <button class="play-btn" id="ve-play" type="button" aria-pressed="false"><span class="play-icon" aria-hidden="true">▶</span><span class="play-text"></span></button>
+          </div>
+        </div>
+        <p class="sr-only" id="ve-live" aria-live="polite"></p>
+      </div>
+
+      <div class="app-text">
+        <div>
+          <h3><span aria-hidden="true">🧮</span> <span data-lang="ko">수학으로 풀기</span><span data-lang="en">Solve it with math</span></h3>
+          <p data-lang="ko">출발선을 원점으로 잡으면, 위치의 변화량(변위)은 속도의 정적분이고, 실제로 달린 거리는 속력 \(|v|\)의 정적분이에요.</p>
+          <p data-lang="en">With the start line at the origin, the change in position (displacement) is the integral of velocity, and the distance actually run is the integral of speed \(|v|\).</p>
+          $$x(T)=\int_0^Tv(t)\,dt=10\left(1-\cos\frac{\pi T}{5}\right),\qquad s(T)=\int_0^T|v(t)|\,dt$$
+          <p data-lang="ko">\(0\le t\le5\)에서는 \(v\ge0\)이라 둘이 같아요. \(t=5\)에 반환점(20 m)에서 방향을 바꾸고, 그 뒤로는 \(v\le0\)이에요.</p>
+          <p data-lang="en">For \(0\le t\le5\), \(v\ge0\), so they agree. At \(t=5\) the runner turns at 20 m, and after that \(v\le0\).</p>
+          <div class="example-card">
+            <div class="example-head"><span class="level level-basic" data-i18n="levelBasic"></span><span data-lang="ko">문제</span><span data-lang="en">Problem</span></div>
+            <p data-lang="ko">\(0\le t\le10\)에서 변위와 이동 거리를 각각 구하시오.</p>
+            <p data-lang="en">Find the displacement and the distance for \(0\le t\le10\).</p>
+            <button class="solution-toggle" type="button" aria-expanded="false" aria-controls="sol-ve"><span data-i18n="solShow"></span></button>
+            <div class="solution" id="sol-ve" hidden>
+              $$\int_0^{10}v\,dt=\Big[-10\cos\frac{\pi t}{5}\Big]_0^{10}=0,\qquad \int_0^{10}|v|\,dt=\int_0^5v\,dt-\int_5^{10}v\,dt=20+20=40$$
+              <p data-lang="ko">출발선으로 돌아와서 변위는 0 m이지만, 실제로는 40 m를 달렸어요.</p>
+              <p data-lang="en">Back at the start, the displacement is 0 m — but 40 m were actually run.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3><span aria-hidden="true">⚠️</span> <span data-i18n="mistakesTitle"></span></h3>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">속도를 정적분하면 언제나 이동 거리가 나온다.</p>
+              <p data-lang="en">Integrating velocity always gives the distance traveled.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">속도의 정적분은 <strong>변위</strong>예요. \(t\)축 아래(빗금) 넓이는 빼져요. 이동 거리는 \(|v|\)를 적분해서, 아래쪽 넓이도 더해요.</p>
+              <p data-lang="en">The integral of velocity is the <strong>displacement</strong>: the area below the \(t\)-axis (hatched) is subtracted. The distance integrates \(|v|\), adding that area instead.</p></div>
+          </div>
+          <div class="mistake">
+            <div class="wrong"><span class="tag" data-i18n="wrong"></span>
+              <p data-lang="ko">변위가 0이면 움직이지 않은 것이다.</p>
+              <p data-lang="en">Zero displacement means no movement.</p></div>
+            <div class="right"><span class="tag" data-i18n="right"></span>
+              <p data-lang="ko">\(T=10\)에서 변위는 0이지만 40 m를 달렸어요. 변위는 "어디에 있는지", 이동 거리는 "얼마나 움직였는지"예요.</p>
+              <p data-lang="en">At \(T=10\) the displacement is 0, yet 40 m were run. Displacement says where you are; distance says how much you moved.</p></div>
+          </div>
+          <h3 style="margin-top:20px"><span aria-hidden="true">🔗</span> <span data-lang="ko">관련 개념</span><span data-lang="en">Related concepts</span></h3>
+          <div class="link-row">
+            <a class="btn btn-outline btn-sm" href="chapters/ch14.html#s14-3"><span data-lang="ko">14-③ 속도와 거리</span><span data-lang="en">14-③ Velocity and distance</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch12.html#s12-1"><span data-lang="ko">12-① 미적분학의 기본정리</span><span data-lang="en">12-① Fundamental theorem</span></a>
+            <a class="btn btn-outline btn-sm" href="chapters/ch09.html#s09-2"><span data-lang="ko">09-② 속도와 가속도</span><span data-lang="en">09-② Velocity and acceleration</span></a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -409,9 +789,204 @@ document.addEventListener('DOMContentLoaded', function () {
   X.addEventListener('change', function () { $('op-live').textContent = $('op-msg').lastChild.textContent; });
   Graph.player({ button: $('op-play'), input: X, duration: 9000 });
 
+  /* ================= 일차 근사: √x 를 x = 4 의 접선으로 =================
+     L(x) = 2 + (x − 4)/4.  √x 는 위로 볼록이라 접선이 늘 곡선 위 → 오차 > 0 */
+  var sq = Math.sqrt, Lin = function (x) { return 2 + (x - 4) / 4; };
+  var LX = $('la-x'), LZ = $('la-z');
+  var zoomOf = function () { return Math.pow(10, +LZ.value); };
+  var LA_ASP = 0.75;
+  var winHalf = function () { return 3.5 / zoomOf(); };   // 확대 창의 가로 반폭
+
+  var far = Graph.create($('la-far'), { xMin: -0.6, xMax: 9.6, yMin: -0.5, yMax: 3.8, aspect: LA_ASP, maxHeight: 320 });
+  far.render = function () {
+    var c = far.c, x = +LX.value, hw = winHalf(), hh = hw * LA_ASP;   // 확대 화면과 같은 비율
+    far.clear(); far.grid({ xStep: 1, yStep: 1 }); far.axes({ xStep: 1, yStep: 1 });
+    far.plot(sq, { color: c.main, width: 3.5, from: 0, to: 9.6 });
+    far.lineThrough(4, 2, 0.25, { color: c.accent, width: 2.5, dash: [11, 6] });
+    // 확대 창 (창이 너무 작으면 최소 크기로 표시)
+    var bw = Math.max(hw, 0.12), bh = Math.max(hh, 0.06);
+    far.rect(4 - bw, 2 - bh, 4 + bw, 2 + bh, { stroke: c.third, width: 2.5, dash: [2, 4] });
+    far.point(4, 2, { color: c.text, r: 5, label: '(4, 2)', labelStyle: { dx: -10, dy: -16, align: 'right', bold: true } });
+    // 어림할 x: 곡선 위 점과 접선 위 점, 그 사이의 틈
+    far.line(x, 0, x, Lin(x), { color: c.text2, width: 1.5, dash: [3, 4] });
+    far.point(x, Lin(x), { color: c.accent, r: 5 });
+    far.point(x, sq(x), { color: c.main, r: 5 });
+    far.label(x, 0, 'x = ' + fmt(x), { color: c.text, dy: -12, bold: true });
+  };
+
+  var zm = Graph.create($('la-zoom'), { xMin: 2, xMax: 6, yMin: 1, yMax: 3, aspect: LA_ASP, maxHeight: 320 });
+  zm.render = function () {
+    var c = zm.c, x = +LX.value, hw = winHalf();
+    var hh = hw * zm.h / zm.w;   // 가로·세로 같은 비율
+    zm.setView({ xMin: 4 - hw, xMax: 4 + hw, yMin: 2 - hh, yMax: 2 + hh });
+    zm.clear(); zm.grid();
+    zm.plot(sq, { color: c.main, width: 3.5 });
+    zm.plot(Lin, { color: c.accent, width: 2.5, dash: [11, 6] });
+    zm.point(4, 2, { color: c.text, r: 5 });
+    if (Math.abs(x - 4) < hw) {
+      zm.point(x, Lin(x), { color: c.accent, r: 5 });
+      zm.point(x, sq(x), { color: c.main, r: 5 });
+    }
+    // 화면 가장자리에서의 틈 (왼쪽이 조금 더 크다)
+    var gap = Lin(4 - hw) - sq(4 - hw);
+    var px = gap / (2 * hh) * zm.h;
+    zm.label(4 - hw, 2 - hh, (ko() ? '가로 폭 ' : 'width ') + fmt(2 * hw, hw < 0.05 ? 3 : 2), { color: c.text2, align: 'left', dx: 8, dy: -28 });
+    zm.label(4 - hw, 2 - hh, (ko() ? '가장자리의 틈: 화면에서 약 ' : 'gap at edge: about ') + fmt(px, 1) + ' px', { color: c.text, align: 'left', dx: 8, dy: -10, bold: true });
+  };
+
+  function laUpdate() {
+    var x = +LX.value, t = sq(x), e = Lin(x), err = e - t;
+    $('la-true').textContent = fmt(t, 5);
+    $('la-est').textContent = fmt(e, 5);
+    $('la-err').textContent = (err >= 0 ? '+' : '') + fmt(err, 5);
+    var good = Math.abs(err) < 0.001;
+    verdict($('la-msg'), good, good
+      ? (ko() ? '오차가 0.001보다 작아요. 4와 가까워서 접선이 곡선과 거의 겹쳐요.' : 'The error is under 0.001: near 4 the tangent almost coincides with the curve.')
+      : (ko() ? '4에서 멀어서 오차가 ' + fmt(err, 3) + '까지 커졌어요. 접선이 곡선 위에 있어서 어림값이 실제보다 커요.'
+              : 'Far from 4, the error has grown to ' + fmt(err, 3) + '. The tangent lies above the curve, so the estimate is too big.'));
+    far.draw(); zm.draw();
+  }
+  Graph.bindSlider(LX, $('la-x-out'), { format: function (v) { return fmt(v); }, onInput: laUpdate });
+  Graph.bindSlider(LZ, $('la-z-out'), { format: function () { var z = zoomOf(); return '×' + (z < 10 ? fmt(z, 1) : Math.round(z)); }, onInput: laUpdate });
+  LX.addEventListener('change', function () { $('la-live').textContent = $('la-msg').lastChild.textContent; });
+  Graph.player({ button: $('la-play'), input: LZ, duration: 6000 });
+
+  /* ================= 냉각: dT/dt = −k(T − 20), T(0) = 95 → T = 20 + 75e^(−kt) ================= */
+  var KS = { lid: 0.03, cup: 0.05, bowl: 0.09 };
+  var ROOM = 20, T0 = 95, READY = 60;
+  var coMode = document.querySelector('input[name="co-mode"]:checked').value;
+  var CT = $('co-t');
+  var temp = function (t) { return ROOM + (T0 - ROOM) * Math.exp(-KS[coMode] * t); };
+  var readyAt = function () { return Math.log((T0 - ROOM) / (READY - ROOM)) / KS[coMode]; };
+
+  var cn = Graph.create($('co-cup'), { xMin: 0, xMax: 10, yMin: 0, yMax: 10.5, aspect: 0.86, maxHeight: 320 });
+  cn.render = function () {
+    var c = cn.c, T = temp(+CT.value);
+    cn.clear();
+    // 컵과 국물
+    cn.polygon([[0.9, 1], [1.4, 6.2], [5.6, 6.2], [6.1, 1]], { fill: c.fillAccent, hatch: 'h', hatchColor: c.accent });
+    cn.polygon([[0.6, 7], [1.3, 1], [5.7, 1], [6.4, 7]], { close: false, stroke: c.text, width: 3 });
+    cn.line(0.6, 7, 6.4, 7, { color: c.text2, width: 1.5, dash: [5, 4] });
+    // 김: 뜨거울수록 많이 (0~3줄)
+    var n = Math.max(0, Math.min(3, Math.ceil((T - 40) / 18)));
+    for (var i = 0; i < n; i++) {
+      var x0 = 2.2 + i * 1.3, pts = [];
+      for (var k = 0; k <= 16; k++) { var yy = 7.4 + k * 0.15; pts.push([x0 + 0.25 * Math.sin(k * 0.9), yy]); }
+      cn.polygon(pts, { close: false, stroke: c.text2, width: 2 });
+    }
+    cn.label(3.5, 0.45, ko() ? '컵라면' : 'noodles', { color: c.text2 });
+    // 온도계 (0~100 ℃ → y 1.2~9.6)
+    var Y = function (deg) { return 1.2 + deg / 100 * 8.4; };
+    cn.rect(8, Y(0), 8.7, Y(100), { stroke: c.text, width: 2 });
+    cn.rect(8, Y(0), 8.7, Y(T), { fill: c.accent });
+    [20, 60, 100].forEach(function (d) {
+      cn.line(8.7, Y(d), 9.0, Y(d), { color: c.text, width: 1.5 });
+      cn.label(9.05, Y(d), d + '', { color: c.text2, align: 'left' });
+    });
+    cn.line(6.7, Y(READY), 8, Y(READY), { color: c.third, width: 2.5, dash: [2, 4] });
+    cn.label(7.95, Y(T), fmt(T, 1) + ' ℃', { color: c.accent, align: 'right', dx: -6, bold: true });
+  };
+
+  var cg = Graph.create($('co-graph'), { xMin: -5, xMax: 63, yMin: -10, yMax: 108, aspect: 0.86, maxHeight: 320 });
+  cg.render = function () {
+    var c = cg.c, t = +CT.value, T = temp(t), m = -KS[coMode] * (T - ROOM), ts = readyAt();
+    cg.clear(); cg.grid({ xStep: 10, yStep: 20 });
+    cg.axes({ xLabel: ko() ? 't (분)' : 't (min)', yLabel: 'T (℃)', xStep: 10, yStep: 20 });
+    cg.line(0, ROOM, 63, ROOM, { color: c.text2, width: 1.5, dash: [6, 5] });
+    cg.label(62, ROOM, ko() ? '교실 20 ℃' : 'room 20 °C', { color: c.text2, align: 'right', dy: 12 });
+    cg.line(0, READY, 63, READY, { color: c.third, width: 2.5, dash: [2, 4] });
+    cg.plot(temp, { color: c.main, width: 3.5, from: 0, to: 63 });
+    cg.line(ts, 0, ts, READY, { color: c.third, width: 1.5, dash: [2, 4] });
+    cg.point(ts, READY, { color: c.third, r: 5 });
+    cg.label(ts, 0, fmt(ts, 1) + (ko() ? '분' : ' min'), { color: c.third, bold: true, align: 'left', dx: 5, dy: -12 });
+    cg.lineThrough(t, T, m, { color: c.accent, width: 2.5, dash: [11, 6] });
+    cg.point(t, T, { color: c.accent, label: (ko() ? '기울기 ' : 'slope ') + fmt(m) + (ko() ? ' ℃/분' : ' °C/min'), labelStyle: { bold: true, dy: -18 } });
+  };
+
+  function coUpdate() {
+    var t = +CT.value, T = temp(t), r = -KS[coMode] * (T - ROOM), ts = readyAt();
+    $('co-T').textContent = fmt(T, 1) + ' ℃';
+    $('co-d').textContent = fmt(T - ROOM, 1) + ' ℃';
+    $('co-r').textContent = fmt(r) + (ko() ? ' ℃/분' : ' °C/min');
+    $('co-s').textContent = fmt(ts, 1) + (ko() ? ' 분' : ' min');
+    var ready = T <= READY + 1e-9;
+    verdict($('co-msg'), ready, ready
+      ? (ko() ? '먹기 좋아요! ' + fmt(ts, 1) + '분에 60 ℃가 됐어요. 온도 차가 줄어서 지금은 1분에 ' + fmt(-r, 1) + ' ℃씩만 식어요.'
+              : 'Ready to eat! It hit 60 °C at ' + fmt(ts, 1) + ' min. With a smaller gap it now cools only ' + fmt(-r, 1) + ' °C per minute.')
+      : (ko() ? '아직 ' + fmt(T, 1) + ' ℃라 뜨거워요. 지금은 1분에 약 ' + fmt(-r, 1) + ' ℃씩 식고 있어요.'
+              : 'Still hot at ' + fmt(T, 1) + ' °C. Right now it cools about ' + fmt(-r, 1) + ' °C per minute.'));
+    cn.draw(); cg.draw();
+  }
+  Graph.bindSlider(CT, $('co-t-out'), { format: function (v) { return fmt(v, 1); }, onInput: coUpdate });
+  $('co-mode').addEventListener('change', function (e) { coMode = e.target.value; coUpdate(); });
+  CT.addEventListener('change', function () { $('co-live').textContent = $('co-msg').lastChild.textContent; });
+  Graph.player({ button: $('co-play'), input: CT, duration: 10000 });
+
+  /* ================= 왕복 달리기: v = 2π sin(πt/5), x = 10(1 − cos(πt/5)) =================
+     t = 5 에 반환점(20 m)에서 방향을 바꾼다 */
+  var VT = $('ve-T');
+  var vel = function (t) { return 2 * Math.PI * Math.sin(Math.PI * t / 5); };
+  var pos = function (t) { return 10 * (1 - Math.cos(Math.PI * t / 5)); };
+  var dist = function (t) { return t <= 5 ? pos(t) : 40 - pos(t); };
+
+  var tr = Graph.create($('ve-track'), { xMin: -3, xMax: 23, yMin: -3.4, yMax: 5, aspect: 0.5, maxHeight: 260 });
+  tr.render = function () {
+    var c = tr.c, T = +VT.value, x = pos(T), back = T > 5;
+    tr.clear();
+    // 트랙과 눈금
+    tr.rect(-1, 0, 21, 3, { fill: c.grid });
+    tr.line(0, -0.2, 0, 3.4, { color: c.text, width: 3 });
+    tr.line(20, -0.2, 20, 3.4, { color: c.text, width: 3, dash: [8, 5] });
+    tr.label(0, 3.4, ko() ? '출발선' : 'start', { color: c.text, dy: -12, bold: true });
+    tr.label(20, 3.4, ko() ? '반환점 20 m' : 'turn 20 m', { color: c.text, dy: -12, bold: true });
+    for (var m = 0; m <= 20; m += 5) tr.label(m, 0, m + '', { color: c.text2, dy: 12 });
+    // 갈 때 / 올 때
+    tr.line(0, 2.1, back ? 20 : x, 2.1, { color: c.main, width: 4 });
+    if (back) tr.line(20, 0.9, x, 0.9, { color: c.third, width: 3.5, dash: [2, 5] });
+    tr.point(x, back ? 0.9 : 2.1, { color: back ? c.third : c.main, r: 7 });
+    tr.label(x, back ? 0.9 : 2.1, back ? '←' : '→', { color: c.text, dy: -16, bold: true });
+    // 변위
+    tr.line(0, -2.1, x, -2.1, { color: c.accent, width: 3, dash: [11, 6] });
+    tr.label(x / 2, -2.1, (ko() ? '변위 ' : 'displacement ') + fmt(x, 1) + ' m', { color: c.accent, dy: 14, bold: true });
+  };
+
+  var vg = Graph.create($('ve-graph'), { xMin: -0.8, xMax: 10.8, yMin: -8.4, yMax: 8.4, aspect: 0.7, maxHeight: 320 });
+  vg.render = function () {
+    var c = vg.c, T = +VT.value;
+    vg.clear(); vg.grid({ xStep: 1, yStep: 2 }); vg.axes({ xLabel: 't (s)', yLabel: 'v (m/s)', xStep: 1, yStep: 2 });
+    if (T > 0) vg.area(vel, 0, Math.min(T, 5), { fill: c.fillMain });
+    if (T > 5) vg.area(vel, 5, T, { fill: c.fillThird, hatch: 'd', hatchColor: c.third });
+    vg.plot(vel, { color: c.text2, width: 1.5, dash: [4, 4], from: 0, to: 10 });
+    if (T > 0) vg.plot(vel, { color: c.main, width: 3.5, from: 0, to: T });
+    vg.label(2.8, 2.6, (ko() ? '앞으로 ' : 'forward ') + fmt(T <= 5 ? pos(T) : 20, 1) + ' m', { color: c.main, bold: true });
+    if (T > 5) vg.label(7.5, -2.6, (ko() ? '뒤로 ' : 'back ') + fmt(20 - pos(T), 1) + ' m', { color: c.third, bold: true });
+    vg.point(T, vel(T), { color: c.accent, r: 6 });
+  };
+
+  function veUpdate() {
+    var T = +VT.value, x = pos(T), d = dist(T);
+    $('ve-v').textContent = fmt(vel(T)) + ' m/s';
+    $('ve-disp').textContent = fmt(x, 2) + ' m';
+    $('ve-dist').textContent = fmt(d, 2) + ' m';
+    var el = $('ve-msg');
+    if (T > 5 + 1e-9) {
+      verdict(el, false, ko()
+        ? '반환점에서 방향을 바꿨어요. 뒤로 간 부분(빗금)이 변위에서는 빠지지만, 이동 거리에는 더해져요. 그래서 이동 거리(' + fmt(d, 1) + ' m)가 변위(' + fmt(x, 1) + ' m)보다 커요.'
+        : 'The runner turned at the line. The backward part (hatched) is subtracted from the displacement but added to the distance, so the distance (' + fmt(d, 1) + ' m) exceeds the displacement (' + fmt(x, 1) + ' m).');
+    } else {
+      verdict(el, true, ko()
+        ? '아직 한 방향(앞)으로만 달렸어요. 그래서 변위와 이동 거리가 같아요.'
+        : 'So far only one direction (forward), so the displacement equals the distance.');
+    }
+    tr.draw(); vg.draw();
+  }
+  Graph.bindSlider(VT, $('ve-T-out'), { format: function (v) { return fmt(v) + ' s'; }, onInput: veUpdate });
+  VT.addEventListener('change', function () { $('ve-live').textContent = $('ve-msg').lastChild.textContent; });
+  Graph.player({ button: $('ve-play'), input: VT, duration: 10000 });
+
   document.addEventListener('settingschange', function (e) {
-    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { rrUpdate(); opUpdate(); }
-    else { cup.draw(); hg.draw(); field.draw(); ag.draw(); }
+    if (e.detail.changed === 'lang' || e.detail.changed === 'all') { rrUpdate(); opUpdate(); laUpdate(); coUpdate(); veUpdate(); }
+    else { cup.draw(); hg.draw(); field.draw(); ag.draw(); far.draw(); zm.draw(); cn.draw(); cg.draw(); tr.draw(); vg.draw(); }
   });
 });
 </script>

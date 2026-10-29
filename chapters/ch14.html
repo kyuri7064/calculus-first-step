@@ -47,6 +47,19 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> \(y=x\)와 \(y=x^2\)은 \(x=0,1\)에서 만나고, 그 사이에서 \(x\ge x^2\)이므로 \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(y=x\) and \(y=x^2\) meet at \(x=0,1\) with \(x\ge x^2\) between, so \(S=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).</p>
         </div>
+        <div class="try-box">
+          <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+          <ol class="try-list" data-lang="ko">
+            <li><span class="try-tag">예측</span>\(y=\sin x\)와 \(y=\cos x\) 사이에서 위아래가 바뀌는 곳은 어디일까?</li>
+            <li><span class="try-tag">조작</span>곡선을 바꾸며 세로 띠를 움직여 띠의 길이를 살펴보자.</li>
+            <li><span class="try-tag">설명</span>넓이를 구할 때 구간을 나누는 이유를 적어 보자.</li>
+          </ol>
+          <ol class="try-list" data-lang="en">
+            <li><span class="try-tag">Predict</span>Where do \(y=\sin x\) and \(y=\cos x\) swap top and bottom?</li>
+            <li><span class="try-tag">Try</span>Switch curves and move the vertical strip to watch its length.</li>
+            <li><span class="try-tag">Explain</span>Explain why you split the interval when finding the area.</li>
+          </ol>
+        </div>
       </div>
 
       <!-- 직관 그림: 세로 띠 (위 − 아래) 를 모아 두 곡선 사이 넓이 -->
@@ -149,6 +162,19 @@
           <p class="ex-line" data-lang="ko"><span class="ex-tag">예</span> 반원 \(y=\sqrt{r^2-x^2}\)을 회전시키면 구: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> Rotating the semicircle \(y=\sqrt{r^2-x^2}\) gives a sphere: \(V=\pi\int_{-r}^{r}(r^2-x^2)\,dx=\frac43\pi r^3\).</p>
         </div>
+        <div class="try-box">
+          <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+          <ol class="try-list" data-lang="ko">
+            <li><span class="try-tag">예측</span>원판의 개수 \(n\)을 늘리면 원판 부피의 합은 어디로 다가갈까?</li>
+            <li><span class="try-tag">조작</span>곡선을 바꾸며 \(n\)과 단면의 위치 \(x\)를 움직여 보자.</li>
+            <li><span class="try-tag">설명</span>회전체의 단면 넓이가 \(\pi f(x)^2\)인 이유를 적어 보자.</li>
+          </ol>
+          <ol class="try-list" data-lang="en">
+            <li><span class="try-tag">Predict</span>As the number of discs \(n\) grows, what does their total volume approach?</li>
+            <li><span class="try-tag">Try</span>Switch curves and move \(n\) and the cross-section \(x\).</li>
+            <li><span class="try-tag">Explain</span>Explain why a cross-section of a solid of revolution has area \(\pi f(x)^2\).</li>
+          </ol>
+        </div>
       </div>
 
       <!-- 직관 그림: 회전체를 원판으로 얇게 썰어 부피 어림하기 -->
@@ -241,14 +267,14 @@
       <div class="concept-core">
         <h3><span class="h-ico" aria-hidden="true">💡</span><span data-i18n="coreTitle"></span></h3>
         <ol class="core-summary" data-lang="ko">
-          <li>속도 \(v(t)\)를 적분하면 <strong>위치의 변화량</strong>이에요 (순변화량 정리). 뒤로 간 거리는 빼져요.</li>
+          <li>속도 \(v(t)\)를 적분하면 <strong>위치의 변화량(변위)</strong>이에요 (순변화량 정리). 뒤로 간 거리는 빼져요.</li>
           <li>실제로 <strong>움직인 거리</strong>는 속력 \(|v(t)|\)를 적분해요.</li>
-          <li>그래프로 보면, 속도 그래프와 \(t\)축 사이의 넓이가 움직인 거리예요.</li>
+          <li>그래프로 보면, 속도 그래프와 \(t\)축 사이의 넓이를 <strong>\(t\)축 아래쪽도 양수로</strong> 더한 값이 움직인 거리예요.</li>
         </ol>
         <ol class="core-summary" data-lang="en">
           <li>Integrating velocity \(v(t)\) gives the <strong>change in position</strong> (net change theorem); backward motion is subtracted.</li>
           <li>The actual <strong>distance traveled</strong> integrates the speed \(|v(t)|\).</li>
-          <li>On a graph, the area between the velocity curve and the \(t\)-axis is the distance.</li>
+          <li>On a graph, the distance is the area between the velocity curve and the \(t\)-axis with the part <strong>below the axis also counted as positive</strong>.</li>
         </ol>
         <div class="def-box">
           <span class="def-label" data-lang="ko">위치의 변화량과 움직인 거리</span><span class="def-label" data-lang="en">Displacement and distance</span>
@@ -259,6 +285,19 @@
           <p class="ex-line" data-lang="en"><span class="ex-tag">e.g.</span> \(v(t)=t^2-4\), \(0\le t\le3\): displacement \(\int_0^3(t^2-4)\,dt=-3\). The direction changes at \(t=2\), so distance \(=\int_0^2(4-t^2)\,dt+\int_2^3(t^2-4)\,dt=\frac{16}3+\frac73=\frac{23}3\).</p>
         </div>
         <div class="link-row" style="margin-top:12px"><a class="btn btn-outline btn-sm" href="../applications.html#velocity"><span data-lang="ko">🏫 학교 속 미적분: 속도와 거리</span><span data-lang="en">🏫 Calculus at School: velocity and distance</span></a></div>
+        <div class="try-box">
+          <h4><span aria-hidden="true">🧪</span> <span data-lang="ko">해 보기</span><span data-lang="en">Try it</span></h4>
+          <ol class="try-list" data-lang="ko">
+            <li><span class="try-tag">예측</span>\(v=t^2-4\)에서 \(T=3\)이면 변위의 크기와 이동 거리 중 어느 쪽이 클까?</li>
+            <li><span class="try-tag">조작</span>속도를 바꾸며 끝 시각 \(T\)를 방향이 바뀌는 순간 앞뒤로 움직여 보자.</li>
+            <li><span class="try-tag">설명</span>변위와 이동 거리의 차이를 한 문장으로 적어 보자.</li>
+          </ol>
+          <ol class="try-list" data-lang="en">
+            <li><span class="try-tag">Predict</span>For \(v=t^2-4\) and \(T=3\), which is larger: |displacement| or distance?</li>
+            <li><span class="try-tag">Try</span>Switch velocities and move \(T\) back and forth across the turning moment.</li>
+            <li><span class="try-tag">Explain</span>In one sentence, how is displacement different from distance?</li>
+          </ol>
+        </div>
       </div>
 
       <!-- 직관 그림: 속도 그래프의 넓이 ↔ 수직선 위의 실제 움직임 -->

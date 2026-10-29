@@ -40,6 +40,7 @@
       logout: '로그아웃',
       accountGuest: '👤 게스트로 사용 중이에요',
       accountIn: '👤 {name} 님으로 로그인 중',
+      accountSyncNote: '로그인해도 다른 기기와 자동 동기화되지는 않아요. 메모는 이 기기·이 브라우저에만 저장돼요.',
       profileTitle: '로그인 / 회원가입',
       profileNote: '이 기기(이 브라우저)에만 저장되는 프로필이에요. 비밀번호가 없어서 같은 컴퓨터를 쓰는 사람도 열어 볼 수 있으니, 실제 이름 대신 별명을 써도 좋아요.',
       profileChoose: '내 프로필로 로그인',
@@ -173,6 +174,12 @@
       'c.ht': '시간에 따른 수면 높이 그래프와 현재 시각의 접선. 접선의 기울기가 수면이 오르는 속도',
       'c.fence': '울타리로 둘러싼 직사각형 화단을 위에서 본 그림과 각 변의 길이, 넓이',
       'c.area': '가로 길이에 따른 화단 넓이 그래프와 현재 위치의 접선. 접선이 수평인 곳이 최대',
+      'c.laFar': 'y = √x 그래프와 x = 4에서의 접선, 확대하는 창, 어림할 x에서 곡선과 접선 사이의 틈',
+      'c.laZoom': '점 (4, 2) 근처를 확대한 그림. 배율을 키울수록 곡선과 접선이 겹쳐 보임',
+      'c.coCup': '컵라면 그림과 현재 온도를 보여 주는 온도계. 60도 눈금에 점선 표시',
+      'c.coGraph': '시간에 따른 컵라면 온도 그래프와 현재 시각의 접선. 20도 점근선과 60도가 되는 시각 표시',
+      'c.veTrack': '20 m 왕복 달리기 트랙을 위에서 본 그림. 갈 때와 올 때의 경로, 지금 위치, 변위 표시',
+      'c.veGraph': '속도 그래프. t축 위 넓이는 앞으로 간 거리(색칠), t축 아래 넓이는 뒤로 간 거리(빗금)',
       'w.canvas': '곡선 y = x²/2 위의 점 P와, 점 P에서 그은 접선을 보여 주는 그래프',
       'sq.canvas': '수열의 항을 번호 순서대로 점으로 찍은 그래프. 수렴하면 극한값 L에 점선이 그어짐',
       'lc.canvas': '고른 계산 요령의 수열을 점으로 찍은 그래프와 극한값 점선. 조임 정리에서는 위아래 경계도 빈 점으로 표시',
@@ -238,8 +245,8 @@
 
       'color.blue': '파란색', 'color.purple': '보라색', 'color.teal': '청록색', 'color.navy': '남색', 'color.magenta': '자주색',
 
-      'nav.ai': 'AI 질문하기',
-      'navShort.ai': 'AI 질문',
+      'nav.ai': 'AI 질문 생성하기',
+      'navShort.ai': 'AI 질문 생성',
       core: '핵심 정리',
       vizSoon: '이 소단원의 직관 그림(슬라이더)은 준비 중이에요. 먼저 핵심 내용과 예를 읽어 보세요.',
 
@@ -298,6 +305,7 @@
       logout: 'Log out',
       accountGuest: '👤 Using as a guest',
       accountIn: '👤 Logged in as {name}',
+      accountSyncNote: 'Logging in does not sync with other devices. Notes are saved only on this device and browser.',
       profileTitle: 'Log in / Sign up',
       profileNote: 'Profiles are saved only on this device (this browser). There is no password, so others using this computer can open them — a nickname is fine.',
       profileChoose: 'Log in to my profile',
@@ -431,6 +439,12 @@
       'c.ht': 'Graph of water height over time with the tangent at the current time; its slope is the rising speed',
       'c.fence': 'Top view of the fenced rectangular garden with side lengths and area',
       'c.area': 'Graph of garden area versus width with the tangent at the current point; the flat tangent marks the maximum',
+      'c.laFar': 'Graph of y = √x with its tangent at x = 4, the zoom window, and the gap between curve and tangent at the chosen x',
+      'c.laZoom': 'Zoomed view near (4, 2); the curve and tangent merge as the zoom increases',
+      'c.coCup': 'Cup of noodles and a thermometer showing the current temperature, with 60 degrees marked by a dotted line',
+      'c.coGraph': 'Graph of the noodle temperature over time with the tangent now, the 20-degree asymptote and the time it reaches 60 degrees',
+      'c.veTrack': 'Top view of the 20 m shuttle-run track with the outbound and return paths, current position and displacement',
+      'c.veGraph': 'Velocity graph: area above the t-axis is distance forward (shaded), below it is distance back (hatched)',
       'w.canvas': 'Graph of the curve y = x²/2 with point P and the tangent line at P',
       'sq.canvas': 'Terms of a sequence plotted in order as dots; a dashed line marks the limit L when it converges',
       'lc.canvas': 'Dots for the sequence of the chosen technique with a dashed limit line; in squeeze mode the upper and lower bounds appear as open dots',
@@ -496,8 +510,8 @@
 
       'color.blue': 'blue', 'color.purple': 'purple', 'color.teal': 'teal', 'color.navy': 'navy', 'color.magenta': 'magenta',
 
-      'nav.ai': 'Ask AI',
-      'navShort.ai': 'Ask AI',
+      'nav.ai': 'Create an AI question',
+      'navShort.ai': 'AI question',
       core: 'Key summary',
       vizSoon: 'The interactive picture for this section is coming soon. Start with the key ideas and examples.',
 

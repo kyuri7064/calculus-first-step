@@ -227,8 +227,12 @@
         if (Profiles.current()) Profiles.logout();
         else { closeDrawer(); openDialog(); }
       });
+      var note = document.createElement('p');
+      note.className = 'account-note';
+      note.textContent = t('accountSyncNote');
       box.appendChild(who);
       box.appendChild(btn);
+      box.appendChild(note);
     }
 
     function renderList() {

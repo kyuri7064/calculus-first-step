@@ -55,7 +55,7 @@
 
   function uid() { return 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   function find(id) { for (var i = 0; i < memos.length; i++) if (memos[i].id === id) return memos[i]; return null; }
-  function isBlank(m) { return !m.title.trim() && !m.body.trim(); }
+  function isBlank(m) { return !m.title.trim() && !m.body.trim() && !(m.att && m.att.length); }
 
   /* 제목도 내용도 없는 메모는 다른 메모로 넘어갈 때 정리 */
   function dropBlank(exceptId) {
@@ -151,6 +151,7 @@
       var dt = document.createElement('span');
       dt.textContent = t('memoUpdated') + ' ' + fmtDate(m.updated);
       meta.appendChild(dt);
+      if (m.att && m.att.length) { var at = document.createElement('span'); at.textContent = t('attCount', { n: m.att.length }); meta.appendChild(at); }
 
       var pv = document.createElement('span');
       pv.className = 'memo-item-preview';
@@ -214,6 +215,334 @@
   }
   function schedulePreview() { clearTimeout(previewTimer); previewTimer = setTimeout(renderPreview, 150); }
 
+  /* ---------- 첨부: 사진 · 그래프 ----------
+     첨부도 메모와 함께 같은 곳(이 브라우저)에 저장된다. 사진은 저장 공간을 아끼려고 줄여서 JPEG로 바꾼다.
+     그래프는 그림이 아니라 식과 범위만 저장하고, 열 때마다 다시 그린다 (색 설정·다크 모드를 따라감). */
+  var PHOTO_MAX = 1280, PHOTO_Q = 0.8, ATT_MAX = 12, EXPR_MAX = 80;
+
+  /* 수식 해석기: eval 없이 정해진 기호만 읽는다 (불러온 파일의 식도 안전하게).
+     지원: + − × ÷ ^, 괄호, x, pi(π), e, sin cos tan sqrt abs exp ln log, 2x 같은 곱셈 생략 */
+  var FUNCS = {
+    sqrt: Math.sqrt, sin: Math.sin, cos: Math.cos, tan: Math.tan, abs: Math.abs,
+    exp: Math.exp, ln: Math.log, log: function (v) { return Math.log(v) / Math.LN10; }
+  };
+  var NAMES = ['sqrt', 'sin', 'cos', 'tan', 'abs', 'exp', 'ln', 'log', 'pi', 'x', 'e'];
+
+  function tokenize(src) {
+    var s = src.replace(/[−–]/g, '-').replace(/[×·]/g, '*').replace(/÷/g, '/').replace(/π/g, 'pi')
+               .replace(/²/g, '^2').replace(/³/g, '^3').replace(/√/g, 'sqrt').replace(/\s+/g, '');
+    var out = [], i = 0;
+    while (i < s.length) {
+      var ch = s[i], m = /^(\d+\.?\d*|\.\d+)/.exec(s.slice(i));
+      if (m) { out.push({ k: 'n', v: parseFloat(m[1]) }); i += m[1].length; continue; }
+      if ('+-*/^()'.indexOf(ch) !== -1) { out.push({ k: ch }); i++; continue; }
+      var low = s.slice(i).toLowerCase(), name = null;
+      for (var j = 0; j < NAMES.length; j++) if (low.indexOf(NAMES[j]) === 0) { name = NAMES[j]; break; }
+      if (!name) throw new Error(ch);
+      out.push(FUNCS[name] ? { k: 'f', v: name } : { k: 'id', v: name });
+      i += name.length;
+    }
+    return out;
+  }
+
+  function compile(src) {
+    var tk = tokenize(src), p = 0;
+    if (!tk.length) throw new Error('empty');
+    function peek() { return tk[p]; }
+    function eat(k) { if (!tk[p] || tk[p].k !== k) throw new Error(k); return tk[p++]; }
+    function startsPrimary(t) { return t && (t.k === 'n' || t.k === 'id' || t.k === 'f' || t.k === '('); }
+    function primary() {
+      var t = tk[p++];
+      if (!t) throw new Error('end');
+      if (t.k === 'n') { var v = t.v; return function () { return v; }; }
+      if (t.k === 'id') {
+        if (t.v === 'x') return function (x) { return x; };
+        var c = t.v === 'pi' ? Math.PI : Math.E;
+        return function () { return c; };
+      }
+      if (t.k === 'f') {
+        var fn = FUNCS[t.v], arg = peek() && peek().k === '(' ? primary() : power();
+        return function (x) { return fn(arg(x)); };
+      }
+      if (t.k === '(') { var e = expr(); eat(')'); return e; }
+      throw new Error(t.k);
+    }
+    function power() {
+      var b = primary();
+      if (peek() && peek().k === '^') { p++; var ex = unary(); return function (x) { return Math.pow(b(x), ex(x)); }; }
+      return b;
+    }
+    function unary() {
+      var t = peek();
+      if (t && (t.k === '-' || t.k === '+')) { p++; var u = unary(); return t.k === '-' ? function (x) { return -u(x); } : u; }
+      return power();
+    }
+    function term() {
+      var a = unary();
+      for (;;) {
+        var t = peek();
+        if (t && (t.k === '*' || t.k === '/')) {
+          p++; var b = unary(), l = a;
+          a = t.k === '*' ? (function (l, b) { return function (x) { return l(x) * b(x); }; })(l, b)
+                          : (function (l, b) { return function (x) { return l(x) / b(x); }; })(l, b);
+        } else if (startsPrimary(t)) {   // 2x, 3sin x, (x+1)(x-1)
+          var c = unary(), l2 = a;
+          a = (function (l, c) { return function (x) { return l(x) * c(x); }; })(l2, c);
+        } else return a;
+      }
+    }
+    function expr() {
+      var a = term();
+      for (;;) {
+        var t = peek();
+        if (!t || (t.k !== '+' && t.k !== '-')) return a;
+        p++; var b = term(), l = a;
+        a = t.k === '+' ? (function (l, b) { return function (x) { return l(x) + b(x); }; })(l, b)
+                        : (function (l, b) { return function (x) { return l(x) - b(x); }; })(l, b);
+      }
+    }
+    var f = expr();
+    if (p < tk.length) throw new Error('rest');
+    return f;
+  }
+
+  /* 그래프 정의 → 그릴 함수들과 화면 범위. 문제가 있으면 오류 메시지 키를 돌려준다 */
+  function prepareGraph(def) {
+    var fs = [];
+    try {
+      [def.f, def.g].forEach(function (s) { if (s && s.trim()) fs.push(compile(s)); });
+    } catch (e) { return { err: 'attErrExpr' }; }
+    if (!fs.length) return { err: 'attErrEmpty' };
+    var a = +def.a, b = +def.b;
+    if (!isFinite(a) || !isFinite(b) || b <= a || b - a > 1000) return { err: 'attErrRange' };
+    var ys = [];
+    fs.forEach(function (f) {
+      for (var i = 0; i <= 400; i++) { var y = f(a + (b - a) * i / 400); if (isFinite(y)) ys.push(y); }
+    });
+    if (!ys.length) return { err: 'attErrNoValue' };
+    ys.sort(function (u, v) { return u - v; });
+    // 점근선 근처의 아주 큰 값 때문에 그래프가 납작해지지 않게 양 끝 2%는 버린다
+    var lo = ys[Math.floor(ys.length * 0.02)], hi = ys[Math.ceil(ys.length * 0.98) - 1];
+    if (lo > 0 && lo < (hi - lo) * 0.5) lo = 0;   // x축이 가까우면 함께 보이게
+    if (hi < 0 && -hi < (hi - lo) * 0.5) hi = 0;
+    if (hi - lo < 1e-9) { lo -= 1; hi += 1; }
+    var pad = (hi - lo) * 0.12;
+    return { fs: fs, view: { xMin: a - (b - a) * 0.04, xMax: b + (b - a) * 0.04, yMin: lo - pad, yMax: hi + pad } };
+  }
+
+  function drawGraph(g, def) {
+    var P = prepareGraph(def), c = g.c;
+    if (P.err) { g.clear(); g.label((g.o.xMin + g.o.xMax) / 2, (g.o.yMin + g.o.yMax) / 2, t(P.err), { color: c.text2 }); return; }
+    g.setView(P.view);
+    g.clear(); g.grid(); g.axes();
+    var styles = [{ color: c.main, width: 3.5 }, { color: c.accent, width: 3, dash: [11, 6] }];
+    P.fs.forEach(function (f, i) { g.plot(f, styles[i]); });
+  }
+
+  function graphCaption(def) {
+    // 두 개일 때는 선 모양(━ 실선, ╍ 점선)을 앞에 붙여 어느 식인지 구분한다
+    var list = [def.f, def.g].filter(function (s) { return s && s.trim(); });
+    return list.map(function (s, i) { return (list.length > 1 ? ['━ ', '╍ '][i] : '') + 'y = ' + s.trim(); }).join(',  ')
+      + '   (' + def.a + ' ≤ x ≤ ' + def.b + ')';
+  }
+
+  var attList = $('att-list'), graphForm = $('att-graph-form'), gfErr = $('gf-err');
+  var liveGraphs = [];   // 지금 화면에 그려진 그래프 (설정이 바뀌면 다시 그림)
+
+  function renderAttachments() {
+    var m = find(currentId);
+    attList.textContent = '';
+    liveGraphs = [];
+    var list = (m && m.att) || [];
+    attList.hidden = !list.length;
+    list.forEach(function (a) {
+      var li = document.createElement('li');
+      li.className = 'attach-item';
+      var cap = document.createElement('p');
+      cap.className = 'attach-cap';
+      if (a.type === 'photo') {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'attach-photo';
+        b.setAttribute('data-view', a.id);
+        b.setAttribute('aria-label', t('attView') + ': ' + (a.name || t('attPhotoName')));
+        var img = document.createElement('img');
+        img.src = a.src; img.alt = ''; img.loading = 'lazy';
+        b.appendChild(img);
+        li.appendChild(b);
+        cap.textContent = '🖼 ' + (a.name || t('attPhotoName'));
+      } else {
+        var wrap = document.createElement('div');
+        wrap.className = 'viz-canvas-wrap';
+        var cv = document.createElement('canvas');
+        cv.setAttribute('role', 'img');
+        cv.setAttribute('aria-label', t('attGraphName') + ': ' + graphCaption(a));
+        wrap.appendChild(cv);
+        li.appendChild(wrap);
+        cap.textContent = '📈 ' + graphCaption(a);
+        var g = Graph.create(cv, { xMin: -5, xMax: 5, yMin: -5, yMax: 5, aspect: 0.62, maxHeight: 300 });
+        g.render = function () { drawGraph(g, a); };
+        liveGraphs.push(g);
+      }
+      var del = document.createElement('button');
+      del.type = 'button'; del.className = 'btn btn-delete btn-sm attach-del';
+      del.setAttribute('data-del', a.id);
+      del.textContent = t('attRemove');
+      var row = document.createElement('div');
+      row.className = 'attach-row';
+      row.appendChild(cap); row.appendChild(del);
+      li.appendChild(row);
+      attList.appendChild(li);
+    });
+    liveGraphs.forEach(function (g) { g.draw(); });
+  }
+
+  /* 첨부 하나 추가. 저장 공간이 모자라면 되돌린다 */
+  function addAttachment(a) {
+    var m = find(currentId);
+    if (!m) return false;
+    m.att = m.att || [];
+    if (m.att.length >= ATT_MAX) { el.status.textContent = t('attErrMany', { n: ATT_MAX }); return false; }
+    a.id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    m.att.push(a);
+    m.updated = Date.now();
+    if (!Profiles.write('memos', memos)) {
+      m.att.pop();
+      el.status.textContent = t('attErrFull');
+      return false;
+    }
+    el.status.textContent = t('memoSaved');
+    renderAttachments();
+    renderList();
+    return true;
+  }
+
+  function removeAttachment(id) {
+    var m = find(currentId);
+    if (!m || !m.att) return;
+    if (!window.confirm(t('attRemoveConfirm'))) return;
+    m.att = m.att.filter(function (a) { return a.id !== id; });
+    m.updated = Date.now();
+    persist();
+    renderAttachments();
+    renderList();
+  }
+
+  /* 사진 → 긴 변 1280px 이하 JPEG (투명한 부분은 흰색) */
+  function shrinkPhoto(file, done) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var k = Math.min(1, PHOTO_MAX / Math.max(img.width, img.height));
+        var w = Math.max(1, Math.round(img.width * k)), h = Math.max(1, Math.round(img.height * k));
+        var cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        var ctx = cv.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        done(cv.toDataURL('image/jpeg', PHOTO_Q));
+      };
+      img.onerror = function () { done(null); };
+      img.src = reader.result;
+    };
+    reader.onerror = function () { done(null); };
+    reader.readAsDataURL(file);
+  }
+
+  function addPhotos(files) {
+    files = Array.prototype.filter.call(files, function (f) { return /^image\//.test(f.type); });
+    if (!files.length) return;
+    el.status.textContent = t('attLoading');
+    var i = 0;
+    (function next() {
+      if (i >= files.length) return;
+      var f = files[i++];
+      shrinkPhoto(f, function (src) {
+        if (!src) { el.status.textContent = t('attErrPhoto'); return next(); }
+        var name = (f.name && f.name !== 'image.png') ? f.name.replace(/\.[^.]+$/, '').slice(0, 60) : '';
+        if (addAttachment({ type: 'photo', src: src, name: name })) next();
+      });
+    })();
+  }
+
+  /* 그래프 넣기 양식 */
+  var gf = { f: $('gf-f'), g: $('gf-g'), a: $('gf-a'), b: $('gf-b') };
+  var gfGraph = null, gfTimer = null;
+  function formDef() { return { f: gf.f.value.slice(0, EXPR_MAX), g: gf.g.value.slice(0, EXPR_MAX), a: +gf.a.value, b: +gf.b.value }; }
+  function showGraphForm(on) {
+    graphForm.hidden = !on;
+    $('att-graph-btn').setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) {
+      gfErr.textContent = '';
+      if (!gfGraph) {
+        gfGraph = Graph.create($('gf-canvas'), { xMin: -5, xMax: 5, yMin: -5, yMax: 5, aspect: 0.62, maxHeight: 300 });
+        gfGraph.render = function () { drawGraph(gfGraph, formDef()); };
+      }
+      gfGraph.draw();
+      gf.f.focus();
+    }
+  }
+  graphForm.addEventListener('input', function () {
+    clearTimeout(gfTimer);
+    gfTimer = setTimeout(function () {
+      var P = prepareGraph(formDef());
+      gfErr.textContent = P.err && (gf.f.value.trim() || gf.g.value.trim()) ? t(P.err) : '';
+      if (gfGraph) gfGraph.draw();
+    }, 200);
+  });
+  graphForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = formDef(), P = prepareGraph(d);
+    if (P.err) { gfErr.textContent = t(P.err); return; }
+    if (addAttachment({ type: 'graph', f: d.f.trim(), g: d.g.trim(), a: d.a, b: d.b })) {
+      gf.f.value = ''; gf.g.value = '';
+      showGraphForm(false);
+      $('att-graph-btn').focus();
+    }
+  });
+  $('gf-cancel').addEventListener('click', function () { showGraphForm(false); $('att-graph-btn').focus(); });
+  $('att-graph-btn').addEventListener('click', function () { showGraphForm(graphForm.hidden); });
+  $('att-photo-btn').addEventListener('click', function () { $('att-photo').click(); });
+  $('att-photo').addEventListener('change', function () { addPhotos(this.files); this.value = ''; });
+  // 캡처한 그림을 본문에 붙여 넣어도 사진으로 첨부 (글자를 붙여 넣을 때는 그대로)
+  el.body.addEventListener('paste', function (e) {
+    var cd = e.clipboardData;
+    if (!cd || (cd.types && Array.prototype.indexOf.call(cd.types, 'text/plain') !== -1)) return;
+    var files = Array.prototype.filter.call(cd.files || [], function (f) { return /^image\//.test(f.type); });
+    if (files.length) { e.preventDefault(); addPhotos(files); }
+  });
+
+  attList.addEventListener('click', function (e) {
+    var d = e.target.closest('[data-del]');
+    if (d) { removeAttachment(d.getAttribute('data-del')); return; }
+    var v = e.target.closest('[data-view]'), m = find(currentId);
+    if (!v || !m) return;
+    var a = m.att.filter(function (x) { return x.id === v.getAttribute('data-view'); })[0];
+    if (!a) return;
+    var dlg = $('att-dialog');
+    $('att-dialog-img').src = a.src;
+    $('att-dialog-img').alt = a.name || t('attPhotoName');
+    $('att-dialog-cap').textContent = a.name || t('attPhotoName');
+    if (dlg.showModal) dlg.showModal(); else window.open(a.src);
+  });
+  $('att-dialog-close').addEventListener('click', function () { $('att-dialog').close(); });
+  $('att-dialog').addEventListener('click', function (e) { if (e.target === this) this.close(); });
+
+  /* 불러온 파일의 첨부는 모양을 확인하고 안전한 것만 남긴다 */
+  function cleanAtt(list) {
+    if (!Array.isArray(list)) return [];
+    return list.filter(function (a) {
+      if (!a || typeof a.id !== 'string') return false;
+      if (a.type === 'photo') return typeof a.src === 'string' && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(a.src);
+      if (a.type === 'graph') return typeof a.f === 'string' && typeof a.g === 'string' && a.f.length <= EXPR_MAX && a.g.length <= EXPR_MAX && isFinite(a.a) && isFinite(a.b);
+      return false;
+    }).slice(0, ATT_MAX).map(function (a) {
+      return a.type === 'photo'
+        ? { id: a.id, type: 'photo', src: a.src, name: typeof a.name === 'string' ? a.name.slice(0, 60) : '' }
+        : { id: a.id, type: 'graph', f: a.f, g: a.g, a: +a.a, b: +a.b };
+    });
+  }
+
   /* ---------- 편집기 ---------- */
   function updateGoLink(m) {
     var info = C.describeTag(m.tag, lang());
@@ -234,6 +563,8 @@
     el.status.textContent = '';
     updateGoLink(m);
     renderPreview();
+    showGraphForm(false);
+    renderAttachments();
     renderList();
     if (window.matchMedia('(max-width: 900px)').matches) el.editor.scrollIntoView({ block: 'start' });
     if (focusField) focusField.focus();
@@ -314,7 +645,8 @@
           var clean = {
             id: m.id, title: m.title.slice(0, 200), body: m.body,
             tag: typeof m.tag === 'string' && C.describeTag(m.tag, 'ko') ? m.tag : '',
-            created: +m.created || Date.now(), updated: +m.updated || Date.now()
+            created: +m.created || Date.now(), updated: +m.updated || Date.now(),
+            att: cleanAtt(m.att)
           };
           var old = find(clean.id);
           if (!old) { memos.push(clean); n++; }
@@ -356,7 +688,9 @@
   });
 
   document.addEventListener('settingschange', function (e) {
-    if (e.detail.changed !== 'lang' && e.detail.changed !== 'all') return;
+    if (gfGraph && !graphForm.hidden) gfGraph.draw();
+    if (e.detail.changed !== 'lang' && e.detail.changed !== 'all') { liveGraphs.forEach(function (g) { g.draw(); }); return; }
+    renderAttachments();
     fillTagSelect(el.filter, true);
     fillTagSelect(el.tag, false);
     buildTexBar();

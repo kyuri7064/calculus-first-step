@@ -992,7 +992,7 @@ select.field { cursor: pointer; }
 .graph-form-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .graph-form-row > label { font-weight: 700; min-width: 2.6em; }
 .graph-form-row > .field:not(.gf-num) { flex: 1; min-width: 0; font-family: ui-monospace, Consolas, monospace; }
-.graph-form .gf-num { width: 6.5em; }
+.graph-form .gf-num { width: 5em; }
 .graph-form-err { margin: 0; color: var(--accent); font-weight: 700; font-size: .92rem; }
 .graph-form-err:empty { display: none; }
 .graph-form-actions { display: flex; gap: 8px; }
@@ -1004,6 +1004,16 @@ select.field { cursor: pointer; }
 .attach-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .attach-cap { margin: 0; font-size: .88rem; color: var(--text-2); overflow-wrap: anywhere; }
 .attach-del { flex: none; }
+.attach-row .attach-cap { flex: 1; }
+.attach-wide { grid-column: 1 / -1; }
+.attach-table-wrap, .table-edit-wrap { overflow-x: auto; }
+.memo-table { border-collapse: collapse; min-width: 100%; }
+.memo-table th, .memo-table td { border: 1.5px solid var(--border-strong); padding: 6px 10px; text-align: center; min-width: 3em; }
+.memo-table th { background: var(--main-soft); font-weight: 800; }
+.table-edit { border-collapse: collapse; }
+.table-edit td { padding: 2px; }
+.table-edit .field { width: 7.5em; min-width: 5em; padding: 6px 8px; font-size: .95rem; }
+.table-edit tr.is-head .field { font-weight: 800; background: var(--main-soft); }
 .photo-dialog { max-width: min(96vw, 1100px); max-height: 94vh; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); }
 .photo-dialog::backdrop { background: rgba(0, 0, 0, .6); }
 .photo-dialog img { display: block; max-width: 100%; max-height: calc(94vh - 80px); margin: 0 auto; }

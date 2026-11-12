@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>개인 메모장 · 미적분학 첫걸음</title>
-  <script src="js/settings.js"></script>
+  <script src="js/settings.js?v=20261112"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20261112">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-  <script defer src="js/i18n.js"></script>
-  <script defer src="js/curriculum.js"></script>
-  <script defer src="js/profiles.js"></script>
-  <script defer src="js/graph.js"></script>
-  <script defer src="js/site.js"></script>
-  <script defer src="js/memo.js"></script>
+  <script defer src="js/i18n.js?v=20261112"></script>
+  <script defer src="js/curriculum.js?v=20261112"></script>
+  <script defer src="js/profiles.js?v=20261112"></script>
+  <script defer src="js/graph.js?v=20261112"></script>
+  <script defer src="js/site.js?v=20261112"></script>
+  <script defer src="js/memo.js?v=20261112"></script>
 </head>
 <body data-root="" data-page="memo" data-title-ko="개인 메모장 · 미적분학 첫걸음" data-title-en="My Notes · First Steps in Calculus">
 
@@ -79,6 +79,7 @@
           <div class="attach-bar" role="group" data-i18n-attr="aria-label:attTitle">
             <button class="btn btn-outline btn-sm" id="att-photo-btn" type="button" data-i18n="attPhoto"></button>
             <button class="btn btn-outline btn-sm" id="att-graph-btn" type="button" aria-expanded="false" aria-controls="att-graph-form" data-i18n="attGraph"></button>
+            <button class="btn btn-outline btn-sm" id="att-table-btn" type="button" aria-expanded="false" aria-controls="att-table-form" data-i18n="attTable"></button>
             <input type="file" id="att-photo" accept="image/*" multiple hidden>
           </div>
           <p class="note" style="margin:-4px 0 0" data-i18n="attHelp"></p>
@@ -105,6 +106,22 @@
             <div class="graph-form-actions">
               <button class="btn btn-primary btn-sm" type="submit" data-i18n="attInsert"></button>
               <button class="btn btn-outline btn-sm" type="button" id="gf-cancel" data-i18n="attCancel"></button>
+            </div>
+          </form>
+
+          <form class="graph-form" id="att-table-form" hidden novalidate>
+            <div class="graph-form-row">
+              <label for="tf-rows" data-i18n="attRows"></label>
+              <input class="field gf-num" id="tf-rows" type="number" min="1" max="12" value="3">
+              <label for="tf-cols" data-i18n="attCols"></label>
+              <input class="field gf-num" id="tf-cols" type="number" min="1" max="8" value="3">
+            </div>
+            <label class="check-row"><input type="checkbox" id="tf-head" checked> <span data-i18n="attHeadRow"></span></label>
+            <p class="note no-math" style="margin:0" data-i18n="attTableHelp"></p>
+            <div class="table-edit-wrap"><table class="table-edit" id="tf-grid"></table></div>
+            <div class="graph-form-actions">
+              <button class="btn btn-primary btn-sm" type="submit" id="tf-submit" data-i18n="attInsert"></button>
+              <button class="btn btn-outline btn-sm" type="button" id="tf-cancel" data-i18n="attCancel"></button>
             </div>
           </form>
 

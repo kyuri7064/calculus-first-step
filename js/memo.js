@@ -370,6 +370,13 @@
         b.appendChild(img);
         li.appendChild(b);
         cap.textContent = '🖼 ' + (a.name || t('attPhotoName'));
+      } else if (a.type === 'table') {
+        li.classList.add('attach-wide');
+        var tw = document.createElement('div');
+        tw.className = 'attach-table-wrap';
+        tw.appendChild(buildTable(a));
+        li.appendChild(tw);
+        cap.textContent = '📊 ' + t('attTableName', { r: a.cells.length, c: a.cells[0].length });
       } else {
         var wrap = document.createElement('div');
         wrap.className = 'viz-canvas-wrap';
@@ -389,24 +396,64 @@
       del.textContent = t('attRemove');
       var row = document.createElement('div');
       row.className = 'attach-row';
-      row.appendChild(cap); row.appendChild(del);
+      row.appendChild(cap);
+      if (a.type === 'table') {
+        var ed = document.createElement('button');
+        ed.type = 'button'; ed.className = 'btn btn-outline btn-sm attach-del';
+        ed.setAttribute('data-edit', a.id);
+        ed.textContent = t('attEdit');
+        row.appendChild(ed);
+      }
+      row.appendChild(del);
       li.appendChild(row);
       attList.appendChild(li);
     });
     liveGraphs.forEach(function (g) { g.draw(); });
+    renderMath(attList);
+  }
+
+  function renderMath(node) {
+    if (window.renderMathInElement) renderMathInElement(node, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false }
+      ],
+      throwOnError: false
+    });
+  }
+
+  /* 표: 글자는 textContent로만 넣는다 (HTML 해석 안 함). $ … $ 는 수식으로 */
+  function buildTable(a) {
+    var tb = document.createElement('table');
+    tb.className = 'memo-table';
+    a.cells.forEach(function (r, i) {
+      var tr = document.createElement('tr');
+      r.forEach(function (v) {
+        var td = document.createElement(a.head && i === 0 ? 'th' : 'td');
+        if (a.head && i === 0) td.scope = 'col';
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    return tb;
   }
 
   /* 첨부 하나 추가. 저장 공간이 모자라면 되돌린다 */
-  function addAttachment(a) {
+  function addAttachment(a, replaceId) {
     var m = find(currentId);
     if (!m) return false;
     m.att = m.att || [];
-    if (m.att.length >= ATT_MAX) { el.status.textContent = t('attErrMany', { n: ATT_MAX }); return false; }
-    a.id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    m.att.push(a);
+    var idx = -1, old = null;
+    m.att.forEach(function (x, i) { if (x.id === replaceId) idx = i; });
+    if (idx === -1 && m.att.length >= ATT_MAX) { el.status.textContent = t('attErrMany', { n: ATT_MAX }); return false; }
+    if (idx === -1) { a.id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); m.att.push(a); }
+    else { a.id = replaceId; old = m.att[idx]; m.att[idx] = a; }
     m.updated = Date.now();
     if (!Profiles.write('memos', memos)) {
-      m.att.pop();
+      if (idx === -1) m.att.pop(); else m.att[idx] = old;
       el.status.textContent = t('attErrFull');
       return false;
     }
@@ -473,6 +520,7 @@
     graphForm.hidden = !on;
     $('att-graph-btn').setAttribute('aria-expanded', on ? 'true' : 'false');
     if (on) {
+      if (!tableForm.hidden) showTableForm(false);
       gfErr.textContent = '';
       if (!gfGraph) {
         gfGraph = Graph.create($('gf-canvas'), { xMin: -5, xMax: 5, yMin: -5, yMax: 5, aspect: 0.62, maxHeight: 300 });
@@ -515,6 +563,12 @@
   attList.addEventListener('click', function (e) {
     var d = e.target.closest('[data-del]');
     if (d) { removeAttachment(d.getAttribute('data-del')); return; }
+    var ed = e.target.closest('[data-edit]'), cur = find(currentId);
+    if (ed && cur) {
+      var ta = cur.att.filter(function (x) { return x.id === ed.getAttribute('data-edit'); })[0];
+      if (ta) showTableForm(true, ta);
+      return;
+    }
     var v = e.target.closest('[data-view]'), m = find(currentId);
     if (!v || !m) return;
     var a = m.att.filter(function (x) { return x.id === v.getAttribute('data-view'); })[0];
@@ -528,15 +582,82 @@
   $('att-dialog-close').addEventListener('click', function () { $('att-dialog').close(); });
   $('att-dialog').addEventListener('click', function (e) { if (e.target === this) this.close(); });
 
+  /* 표 넣기 양식: 행·열 수를 바꾸면 이미 적은 칸은 그대로 두고 칸만 늘리거나 줄인다 */
+  var TBL_ROWS = 12, TBL_COLS = 8, CELL_MAX = 120;
+  var tableForm = $('att-table-form'), tf = { rows: $('tf-rows'), cols: $('tf-cols'), head: $('tf-head'), grid: $('tf-grid') };
+  var tfCells = [], tfEditId = null;
+
+  function clampInt(v, lo, hi) { v = Math.round(+v); return isFinite(v) ? Math.min(hi, Math.max(lo, v)) : lo; }
+  function readGrid() {
+    Array.prototype.forEach.call(tf.grid.querySelectorAll('input'), function (inp) {
+      tfCells[+inp.getAttribute('data-r')][+inp.getAttribute('data-c')] = inp.value;
+    });
+  }
+  function buildGrid() {
+    var R = clampInt(tf.rows.value, 1, TBL_ROWS), K = clampInt(tf.cols.value, 1, TBL_COLS);
+    tf.rows.value = R; tf.cols.value = K;
+    var next = [];
+    for (var r = 0; r < R; r++) { next.push([]); for (var c = 0; c < K; c++) next[r].push((tfCells[r] && tfCells[r][c]) || ''); }
+    tfCells = next;
+    tf.grid.textContent = '';
+    tfCells.forEach(function (row, r) {
+      var tr = document.createElement('tr');
+      if (tf.head.checked && r === 0) tr.className = 'is-head';
+      row.forEach(function (v, c) {
+        var td = document.createElement('td'), inp = document.createElement('input');
+        inp.className = 'field'; inp.type = 'text'; inp.maxLength = CELL_MAX; inp.value = v;
+        inp.setAttribute('data-r', r); inp.setAttribute('data-c', c);
+        inp.setAttribute('aria-label', t('attCell', { r: r + 1, c: c + 1 }));
+        td.appendChild(inp); tr.appendChild(td);
+      });
+      tf.grid.appendChild(tr);
+    });
+  }
+  function showTableForm(on, edit) {
+    tableForm.hidden = !on;
+    $('att-table-btn').setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (!on) { tfEditId = null; return; }
+    if (!graphForm.hidden) showGraphForm(false);
+    tfEditId = edit ? edit.id : null;
+    tfCells = edit ? edit.cells.map(function (r) { return r.slice(); }) : [];
+    tf.rows.value = edit ? edit.cells.length : 3;
+    tf.cols.value = edit ? edit.cells[0].length : 3;
+    tf.head.checked = edit ? !!edit.head : true;
+    $('tf-submit').textContent = t(edit ? 'attSave' : 'attInsert');
+    buildGrid();
+    if (edit) tableForm.scrollIntoView({ block: 'nearest' });
+    var first = tf.grid.querySelector('input');
+    if (first) first.focus();
+  }
+  function onSize() { readGrid(); buildGrid(); }
+  tf.rows.addEventListener('change', onSize);
+  tf.cols.addEventListener('change', onSize);
+  tf.head.addEventListener('change', onSize);
+  tableForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    readGrid();
+    var cells = tfCells.map(function (r) { return r.map(function (v) { return v.trim(); }); });
+    if (addAttachment({ type: 'table', head: tf.head.checked, cells: cells }, tfEditId)) {
+      showTableForm(false);
+      $('att-table-btn').focus();
+    }
+  });
+  $('tf-cancel').addEventListener('click', function () { showTableForm(false); $('att-table-btn').focus(); });
+  $('att-table-btn').addEventListener('click', function () { showTableForm(tableForm.hidden); });
+
   /* 불러온 파일의 첨부는 모양을 확인하고 안전한 것만 남긴다 */
   function cleanAtt(list) {
     if (!Array.isArray(list)) return [];
     return list.filter(function (a) {
       if (!a || typeof a.id !== 'string') return false;
       if (a.type === 'photo') return typeof a.src === 'string' && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(a.src);
+      if (a.type === 'table') return Array.isArray(a.cells) && a.cells.length >= 1 && a.cells.length <= TBL_ROWS &&
+        a.cells.every(function (r) { return Array.isArray(r) && r.length === a.cells[0].length && r.length >= 1 && r.length <= TBL_COLS &&
+          r.every(function (v) { return typeof v === 'string' && v.length <= CELL_MAX; }); });
       if (a.type === 'graph') return typeof a.f === 'string' && typeof a.g === 'string' && a.f.length <= EXPR_MAX && a.g.length <= EXPR_MAX && isFinite(a.a) && isFinite(a.b);
       return false;
     }).slice(0, ATT_MAX).map(function (a) {
+      if (a.type === 'table') return { id: a.id, type: 'table', head: !!a.head, cells: a.cells.map(function (r) { return r.slice(); }) };
       return a.type === 'photo'
         ? { id: a.id, type: 'photo', src: a.src, name: typeof a.name === 'string' ? a.name.slice(0, 60) : '' }
         : { id: a.id, type: 'graph', f: a.f, g: a.g, a: +a.a, b: +a.b };
@@ -564,6 +685,7 @@
     updateGoLink(m);
     renderPreview();
     showGraphForm(false);
+    showTableForm(false);
     renderAttachments();
     renderList();
     if (window.matchMedia('(max-width: 900px)').matches) el.editor.scrollIntoView({ block: 'start' });
@@ -691,6 +813,7 @@
     if (gfGraph && !graphForm.hidden) gfGraph.draw();
     if (e.detail.changed !== 'lang' && e.detail.changed !== 'all') { liveGraphs.forEach(function (g) { g.draw(); }); return; }
     renderAttachments();
+    if (!tableForm.hidden) { $('tf-submit').textContent = t(tfEditId ? 'attSave' : 'attInsert'); readGrid(); buildGrid(); }
     fillTagSelect(el.filter, true);
     fillTagSelect(el.tag, false);
     buildTexBar();
